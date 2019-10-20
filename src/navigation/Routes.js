@@ -12,7 +12,7 @@ import AppContainer from '../Containers/App/appcontainer'
 import Filters from '../Containers/App/nearby/filters'
 import Shop from '../Components/shop/index'
 import SearchResults from '../Containers/App/nearby/searchResult'
-// import App from '../Containers/App/nearby/rangeslider'
+import ServiceDetaild from '../Components/shop/serviceDetails'
 
 class Route extends Component {
   render() {
@@ -29,11 +29,11 @@ class Route extends Component {
           <Scene key='Phoneverification' component={Phoneverification} hideNavBar={true} />
           <Scene key='Veryfiyournumber' component={Veryfiyournumber} hideNavBar={true} />
           <Scene key='Allowaccesslocation' component={Allowaccesslocation} hideNavBar={true} />
-          {/* <Scene key='AppContainer' component={AppContainer} hideNavBar={true} initial /> */}
-          <Scene key='AppContainer' component={Shop} hideNavBar={true} initial />
-          <Scene key='Filters' component={Filters} hideNavBar={true}  />
+          <Scene key='AppContainer' component={AppContainer} hideNavBar={true} />
+          <Scene key='Shop' component={Shop} hideNavBar={true} />
+          <Scene key='Filters' component={Filters} hideNavBar={true} />
           <Scene key='SearchResults' component={SearchResults} hideNavBar={true} />
-          {/* <Scene key='App' component={App} hideNavBar={true} /> */}
+          <Scene key='ServiceDetaild' component={ServiceDetaild} hideNavBar={true} initial />
         </Scene>
       </Router>
     )
