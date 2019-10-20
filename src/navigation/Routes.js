@@ -30,7 +30,7 @@ class Route extends Component {
           <Scene key='Veryfiyournumber' component={Veryfiyournumber} hideNavBar={true} />
           <Scene key='Allowaccesslocation' component={Allowaccesslocation} hideNavBar={true} />
           {/* <Scene key='AppContainer' component={AppContainer} hideNavBar={true} initial /> */}
-          <Scene key='AppContainer' component={Shop} hideNavBar={true} initial />
+          <Scene key='Shop' component={Shop} hideNavBar={true} initial />
           <Scene key='Filters' component={Filters} hideNavBar={true}  />
           <Scene key='SearchResults' component={SearchResults} hideNavBar={true} />
           {/* <Scene key='App' component={App} hideNavBar={true} /> */}
