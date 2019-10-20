@@ -13,6 +13,8 @@ import Filters from '../Containers/App/nearby/filters'
 import Shop from '../Components/shop/index'
 import SearchResults from '../Containers/App/nearby/searchResult'
 import ServiceDetaild from '../Components/shop/serviceDetails'
+import OfferDetails from '../Components/shop/offerDetails'
+import BarberDetails from '../Components/shop/barberDetails'
 
 class Route extends Component {
   render() {
@@ -33,7 +35,9 @@ class Route extends Component {
           <Scene key='Shop' component={Shop} hideNavBar={true} />
           <Scene key='Filters' component={Filters} hideNavBar={true} />
           <Scene key='SearchResults' component={SearchResults} hideNavBar={true} />
-          <Scene key='ServiceDetaild' component={ServiceDetaild} hideNavBar={true} initial />
+          <Scene key='ServiceDetaild' component={ServiceDetaild} hideNavBar={true} />
+          <Scene key='OfferDetails' component={OfferDetails} hideNavBar={true} />
+          <Scene key='BarberDetails' component={BarberDetails} hideNavBar={true} initial />
         </Scene>
       </Router>
     )

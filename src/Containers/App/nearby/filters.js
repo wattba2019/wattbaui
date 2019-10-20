@@ -95,7 +95,7 @@ class Filters extends Component {
                         flexDirection: "row",
                         backgroundColor: "#E8E6E7"
                     }}>
-                        <FontAwesome name="location-arrow" style={{ marginLeft: "5%", color: this.state.iconColor === "search" ? "#003366" : '#909090', fontWeight: 'bold', fontSize: 20 }} />
+                        <FontAwesome name="location-arrow" style={{ marginLeft: "5%", color: '#909090', fontWeight: 'bold', fontSize: 20 }} />
                         <Text style={{ marginLeft: "5%", color: "black", fontWeight: "bold", fontSize: 16 }}>Current location </Text>
                         <Text style={{ color: "#8E8E93", fontWeight: "bold", fontSize: 16 }}>(San Francisco)</Text>
                     </View>

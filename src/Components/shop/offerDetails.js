@@ -8,8 +8,10 @@ import {
 import { connect } from "react-redux";
 import { Actions } from 'react-native-router-flux';
 
+//icons import
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
-class ServiceDetaild extends Component {
+class OfferDetails extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -63,71 +65,79 @@ class ServiceDetaild extends Component {
 
 
                         <View style={{
-                            width: "90%", flexDirection: "row", marginTop: 15
+                            width: "90%", marginTop: 15
                             // backgroundColor: "green"
                         }}>
-                            <Text style={{
-                                // color: "#858585",
-                                color: "black",
-                                fontSize: 18,
-                            }}>Hair Styles</Text>
+                            <Text style={{ marginLeft: 10, color: "black", fontSize: 18, }}>Haircut & Hiarstyle</Text>
+                            <Text style={{ marginLeft: 10, color: "#858585", fontSize: 18, }}>Luxary Package offer till Sep 22,2019</Text>
+
                         </View>
 
                         <View style={{
                             width: "90%", marginTop: 15, flexDirection: "row", justifyContent: "space-between"
                             // backgroundColor: "green"
                         }}>
-                            <Text style={{ color: "#858585", fontSize: 16, }}>Style Name</Text>
-                            <Text style={{ color: "#FD6958", fontSize: 16, fontWeight: "bold" }}>$20</Text>
+                            <Text style={{ color: "#858585", fontSize: 16, }}>Ranya Barber shop is one of the most powerful brande in the hair & beauty care sector in Lahore,Pakistan. That has given hairstyling a new horizon</Text>
                         </View>
+
                         <View style={{
                             width: "90%", marginTop: 15, flexDirection: "row", justifyContent: "space-between"
                             // backgroundColor: "green"
                         }}>
-                            <Text style={{ color: "#858585", fontSize: 16, }}>Style Name</Text>
-                            <Text style={{ color: "#FD6958", fontSize: 16, fontWeight: "bold" }}>$20</Text>
+                            <Text style={{ color: "#000000", fontSize: 16, }}>Services</Text>
+                            <Text style={{ color: "#FD6958", fontSize: 16, fontWeight: "bold" }}>Total: $288.30</Text>
                         </View>
+
                         <View style={{
-                            width: "90%", marginTop: 15, flexDirection: "row", justifyContent: "space-between"
+                            width: "90%", marginTop: 15, flex: 1, flexDirection: "row", justifyContent: "space-between",
                             // backgroundColor: "green"
                         }}>
-                            <Text style={{ color: "#858585", fontSize: 16, }}>Style Name</Text>
-                            <Text style={{ color: "#FD6958", fontSize: 16, fontWeight: "bold" }}>$20</Text>
+                            <View style={{
+                                flex: 1, flexDirection: "row",
+                                // backgroundColor: "red"
+                            }}>
+                                <AntDesign name="check" style={{ marginLeft: "5%", color: '#FD6958',  fontSize: 20 }} />
+                                <Text style={{ color: "#000000", fontSize: 16, marginLeft: 10 }}>Hair Styling</Text>
+                            </View>
+
+                            <View style={{
+                                flex: 1, flexDirection: "row",
+                                // backgroundColor: "grey"
+                            }}>
+                                <AntDesign name="check" style={{ marginLeft: "5%", color: '#FD6958',  fontSize: 20 }} />
+                                <Text style={{ color: "#000000", fontSize: 16, marginLeft: 10 }}>Hair Color</Text>
+                            </View>
                         </View>
+
                         <View style={{
-                            width: "90%", marginTop: 15, flexDirection: "row", justifyContent: "space-between"
+                            width: "90%", marginTop: 15, flex: 1, flexDirection: "row", justifyContent: "space-between",
                             // backgroundColor: "green"
                         }}>
-                            <Text style={{ color: "#858585", fontSize: 16, }}>Style Name</Text>
-                            <Text style={{ color: "#FD6958", fontSize: 16, fontWeight: "bold" }}>$20</Text>
+                            <View style={{
+                                flex: 1, flexDirection: "row",
+                                // backgroundColor: "red"
+                            }}>
+                                <AntDesign name="check" style={{ marginLeft: "5%", color: '#FD6958',  fontSize: 20 }} />
+                                <Text style={{ color: "#000000", fontSize: 16, marginLeft: 10 }}>Spa</Text>
+                            </View>
+
+                            <View style={{
+                                flex: 1, flexDirection: "row",
+                                // backgroundColor: "grey"
+                            }}>
+                                <AntDesign name="check" style={{ marginLeft: "5%", color: '#FD6958',  fontSize: 20 }} />
+                                <Text style={{ color: "#000000", fontSize: 16, marginLeft: 10 }}>Facial</Text>
+                            </View>
                         </View>
-                        <View style={{
-                            width: "90%", marginTop: 15, flexDirection: "row", justifyContent: "space-between"
-                            // backgroundColor: "green"
-                        }}>
-                            <Text style={{ color: "#858585", fontSize: 16, }}>Style Name</Text>
-                            <Text style={{ color: "#FD6958", fontSize: 16, fontWeight: "bold" }}>$20</Text>
-                        </View>
-                        <View style={{
-                            width: "90%", marginTop: 15, flexDirection: "row", justifyContent: "space-between"
-                            // backgroundColor: "green"
-                        }}>
-                            <Text style={{ color: "#858585", fontSize: 16, }}>Style Name</Text>
-                            <Text style={{ color: "#FD6958", fontSize: 16, fontWeight: "bold" }}>$20</Text>
-                        </View>
-                        <View style={{
-                            width: "90%", marginTop: 15, flexDirection: "row", justifyContent: "space-between"
-                            // backgroundColor: "green"
-                        }}>
-                            <Text style={{ color: "#858585", fontSize: 16, }}>Style Name</Text>
-                            <Text style={{ color: "#FD6958", fontSize: 16, fontWeight: "bold" }}>$20</Text>
-                        </View>
+
+
+
 
                         <View
                             style={{ width: "85%", height: 50, marginTop: 30, }}
                         >
                             <TouchableOpacity
-                                // onPress={() => Actions.Allowaccesslocation()}
+                            // onPress={() => Actions.Allowaccesslocation()}
                             >
                                 <ImageBackground source={require('../../../assets/buttonBackground.png')} resizeMode="contain"
                                     style={{ height: "100%", width: "100%", justifyContent: "center", }}
@@ -156,4 +166,4 @@ function mapDispatchToProps(dispatch) {
     return ({
     })
 }
-export default connect(mapStateToProps, mapDispatchToProps)(ServiceDetaild);
+export default connect(mapStateToProps, mapDispatchToProps)(OfferDetails);
