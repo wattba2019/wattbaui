@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
-import { Image, TouchableOpacity, View, Text, StatusBar } from 'react-native';
+import { Image, StyleSheet, TouchableOpacity, View, Text, StatusBar, KeyboardAvoidingView, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
-import {
-    StyleSheet,
-
-} from 'react-native';
+import { Container, Header, Content, Footer, FooterTab, Button, Icon } from 'native-base';
 import Home from '../App/home/index';
+import Nearby from '../App/nearby/index';
 
 
 class AppContainer extends Component {
@@ -19,56 +17,87 @@ class AppContainer extends Component {
 
     render() {
         return (
-            <View style={{ flex: 1, backgroundColor: "red" }}>
+            <View style={{ flex: 1, }}>
                 <StatusBar backgroundColor="white" barStyle="dark-content" />
-
-                {/* //header// */}
-
-                {/* <View style={{ flex: 0.6, flexDirection: "row", alignItems: "center", backgroundColor: "#00274C" }}>
-                    <Text style={{ marginLeft: "5%", fontWeight: "bold", color: "white" }}>UMichMart</Text>
-                </View> */}
-
-
 
                 {/* //body// */}
 
-                <View style={{ flex: 6 }}>
+                <ScrollView style={{ flex: 6 }}>
                     {
-                        (this.state.rout === "Home") ? (<Home />) : <Text>hello world</Text>
+                        (this.state.rout === "Home") ? (<Home />) : null
                     }
-                    {/* {
-                        (this.state.rout === "Sell") ? (<Sell />) : null
-                    } */}
+                    {
+                        (this.state.rout === "Nearby") ? (<Nearby />) : null
+                    }
+
+
+                </ScrollView>
 
 
 
-                </View>
+                <Footer style={{ backgroundColor: "#F8F8F8", borderTopColor: "#8E8E93", borderTopWidth: 0.5 }}>
+                    <FooterTab style={{ backgroundColor: "#F8F8F8", marginHorizontal: 12 }}>
+                        <TouchableOpacity style={{ flex: 1, justifyContent: "center", alignItems: "center" }} onPress={() => { this.setState({ rout: "Home" }) }} >
+                            {
+                                (this.state.rout === "Home") ? (
+                                    <Image source={require('../../../assets/footericons/homeOrange.png')} resizeMode="contain"
+                                        style={{ width: "40%", height: "40%", }}
+                                    />
+                                ) : <Image source={require('../../../assets/footericons/homeGrey.png')} resizeMode="contain"
+                                    style={{ width: "40%", height: "40%", }}
+                                    />
+                            }
+                            <Text style={{ textAlign: "center", marginTop: 0, color: this.state.rout === "Home" ? "#FD6958" : "#8E8E93", fontSize: 12 }}>Home</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={{ flex: 1, justifyContent: "center", alignItems: "center" }} onPress={() => { this.setState({ rout: "Nearby" }) }}  >
+
+                            {
+                                (this.state.rout === "Nearby") ? (
+                                    <Image source={require('../../../assets/footericons/nearbyOrange.png')} resizeMode="contain"
+                                        style={{ width: "40%", height: "40%", }}
+                                    />
+                                ) : <Image source={require('../../../assets/footericons/nearbyGrey.png')} resizeMode="contain"
+                                    style={{ width: "40%", height: "40%", }}
+                                    />
+                            }
+
+                            <Text style={{ textAlign: "center", marginTop: 0, color: this.state.rout === "Nearby" ? "#FD6958" : "#8E8E93", fontSize: 12 }}>Nearby</Text>
+                        </TouchableOpacity>
 
 
 
+                        <TouchableOpacity style={{ flex: 1, justifyContent: "center", alignItems: "center" }} onPress={() => { this.setState({ rout: "Appointments" }) }}>
 
-                {/* //Footer// */}
+                            {
+                                (this.state.rout === "Appointments") ? (
+                                    <Image source={require('../../../assets/footericons/appointmentOrange.png')} resizeMode="contain"
+                                        style={{ width: "40%", height: "40%", }}
+                                    />
+                                ) : <Image source={require('../../../assets/footericons/appointmentGrey.png')} resizeMode="contain"
+                                    style={{ width: "40%", height: "40%", }}
+                                    />
+                            }
 
-                <View style={{ flex: 0.6, flexDirection: "row", backgroundColor: "#00274C" }}>
-                    <TouchableOpacity style={{ flex: 1, justifyContent: "center", alignItems: "center" }} onPress={() => { this.setState({ rout: "Home" }) }} >
-                        {/* <IconFontAwesome name="users" size={20} style={{ color: this.state.rout === "Home" ? "#FFCB05" : "white" }} /> */}
-                        <Text style={{ textAlign: "center", marginTop: 0, color: this.state.rout === "Home" ? "#FFCB05" : "white", fontSize: 12 }}>Home</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={{ flex: 1, justifyContent: "center", alignItems: "center" }} onPress={() => { this.setState({ rout: "Shop" }) }}  >
-                        {/* <IconFontAwesome name="search" size={20} style={{ color: this.state.rout === "Shop" ? "#FFCB05" : "white", }} /> */}
-                        <Text style={{ textAlign: "center", marginTop: 0, color: this.state.rout === "Shop" ? "#FFCB05" : "white", fontSize: 12 }}>Shop</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={{ flex: 1, justifyContent: "center", alignItems: "center" }} onPress={() => { this.setState({ rout: "Sell" }) }}>
-                        {/* <IconFontAwesome name="camera" size={20} style={{ color: this.state.rout === "Sell" ? "#FFCB05" : "white", }} /> */}
-                        <Text style={{ textAlign: "center", marginTop: 0, color: this.state.rout === "Sell" ? "#FFCB05" : "white", fontSize: 12 }}>Sell</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={{ flex: 1, justifyContent: "center", alignItems: "center" }} onPress={() => { this.setState({ rout: "News" }) }}>
-                        {/* <IconFontAwesome name="newspaper-o" size={20} style={{ color: this.state.rout === "News" ? "#FFCB05" : "white", }} /> */}
-                        <Text style={{ textAlign: "center", marginTop: 0, color: this.state.rout === "News" ? "#FFCB05" : "white", fontSize: 12 }}>News</Text>
-                    </TouchableOpacity>
 
-                </View>
+                            <Text style={{ textAlign: "center", marginTop: 0, color: this.state.rout === "Appointments" ? "#FD6958" : "#8E8E93", fontSize: 12 }}>Appointments</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={{ flex: 1, justifyContent: "center", alignItems: "center" }} onPress={() => { this.setState({ rout: "Profile" }) }}>
+                            {
+                                (this.state.rout === "Profile") ? (
+                                    <Image source={require('../../../assets/footericons/profileOrange.png')} resizeMode="contain"
+                                        style={{ width: "40%", height: "40%", }}
+                                    />
+                                ) : <Image source={require('../../../assets/footericons/profileGrey.png')} resizeMode="contain"
+                                    style={{ width: "40%", height: "40%", }}
+                                    />
+                            }
+                            <Text style={{ textAlign: "center", marginTop: 0, color: this.state.rout === "Profile" ? "#FD6958" : "#8E8E93", fontSize: 12 }}>Profile</Text>
+                        </TouchableOpacity>
+
+                    </FooterTab>
+                </Footer>
             </View>
+
 
         );
     }

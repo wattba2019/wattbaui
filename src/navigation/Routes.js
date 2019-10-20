@@ -9,6 +9,8 @@ import Phoneverification from '../Containers/Authentication/phoneveryfication'
 import Veryfiyournumber from '../Containers/Authentication/verifyyournumber'
 import Allowaccesslocation from '../Containers/Authentication/allowaccesslocation'
 import AppContainer from '../Containers/App/appcontainer'
+import Filters from '../Containers/App/nearby/filters'
+import SearchResults from '../Containers/App/nearby/searchResult'
 
 class Route extends Component {
   render() {
@@ -25,7 +27,9 @@ class Route extends Component {
           <Scene key='Phoneverification' component={Phoneverification} hideNavBar={true} />
           <Scene key='Veryfiyournumber' component={Veryfiyournumber} hideNavBar={true} />
           <Scene key='Allowaccesslocation' component={Allowaccesslocation} hideNavBar={true} />
-          <Scene key='AppContainer' component={AppContainer} hideNavBar={true} initial />
+          <Scene key='AppContainer' component={AppContainer} hideNavBar={true} />
+          <Scene key='Filters' component={Filters} hideNavBar={true} initial />
+          <Scene key='SearchResults' component={SearchResults} hideNavBar={true} />
         </Scene>
       </Router>
     )
