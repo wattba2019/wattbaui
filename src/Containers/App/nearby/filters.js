@@ -7,13 +7,15 @@ import {
 } from 'react-native';
 import { connect } from "react-redux";
 import { Actions } from 'react-native-router-flux';
-// import RangeSlider from 'rn-range-slider';
+import RangeSlider from 'rn-range-slider';
 
 class Filters extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            gender: "Female"
+            gender: "Female",
+            service: "Haircut",
+            sortedby: "Popular"
         };
     }
 
@@ -76,13 +78,13 @@ class Filters extends Component {
                         width: "90%", marginTop: 10, flexDirection: "row",
                         // backgroundColor: "green"
                     }}>
-                        <Text style={{ color: "black", fontSize: 16 }}>Location</Text>
+                        <Text style={{ color: "#4A4A4A", fontSize: 16 }}>Location</Text>
                     </View>
 
                     <View style={{
                         marginTop: 10,
                         width: "90%",
-                        height: 50,
+                        height: 45,
                         borderRadius: 50,
                         justifyContent: "center",
                         alignItems: "center",
@@ -97,13 +99,13 @@ class Filters extends Component {
                         width: "90%", marginTop: 10, flexDirection: "row",
                         // backgroundColor: "green"
                     }}>
-                        <Text style={{ color: "black", fontSize: 16 }}>Gender</Text>
+                        <Text style={{ color: "#4A4A4A", fontSize: 16 }}>Gender</Text>
                     </View>
 
                     <View style={{
                         marginTop: 10,
                         width: "90%",
-                        height: 50,
+                        height: 45,
                         borderRadius: 50,
                         justifyContent: "center",
                         alignItems: "center",
@@ -158,7 +160,7 @@ class Filters extends Component {
                         // backgroundColor: "green"
                     }}>
                         <View style={{ flex: 1 }}>
-                            <Text style={{ color: "black", fontSize: 16, }}>Distance</Text>
+                            <Text style={{ color: "#4A4A4A", fontSize: 16, }}>Distance</Text>
                         </View>
                         <View style={{ flex: 1 }}>
                             <TouchableOpacity>
@@ -166,10 +168,15 @@ class Filters extends Component {
                             </TouchableOpacity>
                         </View>
                     </View>
-{/* 
-                    <View style={{ width: "100%", justifyContent: "center", alignItems: "center", }}>
+
+                    <View style={{
+                        width: "100%",
+                        height: 50,
+                        justifyContent: "center", alignItems: "center", top: -20,
+                        // backgroundColor: "red"
+                    }}>
                         <RangeSlider
-                            style={{ width: 300, height: 80 }}
+                            style={{ width: "90%", height: 80 }}
                             gravity={'center'}
                             min={5}
                             max={100}
@@ -177,13 +184,150 @@ class Filters extends Component {
                             selectionColor="#FD6958"
                             blankColor="#E8E6E7"
                             thumbColor="#FD6958"
-                            thumbBorderColor="white"
+                            thumbBorderColor="#F1EBEB"
                             onValueChanged={(low, high, fromUser) => {
                                 this.setState({ rangeLow: low, rangeHigh: high })
                             }} />
 
+                    </View>
 
-                    </View> */}
+                    <View style={{
+                        width: "90%", flexDirection: "row",
+                        // backgroundColor: "green"
+                    }}>
+                        <Text style={{ color: "#4A4A4A", fontSize: 16, }}>Services</Text>
+                    </View>
+
+
+                    <View style={{
+                        width: "90%", flexDirection: "row", marginTop: 5, flexWrap: "wrap"
+                        // backgroundColor: "green"
+                    }}>
+                        <TouchableOpacity style={{
+                            margin: 5,
+                            borderRadius: 25,
+                            borderWidth: 0.5,
+                            borderColor: "grey",
+                            backgroundColor: this.state.service === "Haircut" ? "#FD6958" : null,
+                        }}
+                            onPress={() => { this.setState({ service: "Haircut" }) }}
+
+                        >
+                            <Text style={{
+                                color: "black", fontSize: 15,
+                                marginHorizontal: 25, marginVertical: 5,
+                                color: this.state.service === "Haircut" ? "#ffff" : null,
+                            }}>Haircut</Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity style={{
+                            margin: 5,
+                            borderRadius: 25,
+                            borderWidth: 0.5,
+                            borderColor: "grey",
+                            backgroundColor: this.state.service === "Styling" ? "#FD6958" : null,
+
+                        }}
+                            onPress={() => { this.setState({ service: "Styling" }) }}
+
+                        >
+                            <Text style={{
+                                color: "black", fontSize: 15, marginHorizontal: 25, marginVertical: 5, color: this.state.service === "Styling" ? "#ffff" : null,
+                            }}>Styling</Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity style={{
+                            margin: 5,
+                            borderRadius: 25,
+                            borderWidth: 0.5,
+                            borderColor: "grey",
+                            backgroundColor: this.state.service === "Shampoo" ? "#FD6958" : null,
+
+                        }}
+                            onPress={() => { this.setState({ service: "Shampoo" }) }}
+                        >
+                            <Text style={{
+                                color: "black", fontSize: 15, marginHorizontal: 25, marginVertical: 5, color: this.state.service === "Shampoo" ? "#ffff" : null,
+                            }}>Shampoo</Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity style={{
+                            margin: 5,
+                            borderRadius: 25,
+                            borderWidth: 0.5,
+                            borderColor: "grey",
+                            backgroundColor: this.state.service === "Shaving" ? "#FD6958" : null,
+
+                        }}
+                            onPress={() => { this.setState({ service: "Shaving" }) }}
+
+                        >
+                            <Text style={{
+                                color: "black", fontSize: 15, marginHorizontal: 25, marginVertical: 5, color: this.state.service === "Shaving" ? "#ffff" : null,
+                            }}>Shaving</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={{
+                            margin: 5,
+                            borderRadius: 25,
+                            borderWidth: 0.5,
+                            borderColor: "grey",
+                            backgroundColor: this.state.service === "Spa" ? "#FD6958" : null,
+
+                        }}
+                            onPress={() => { this.setState({ service: "Spa" }) }}
+
+                        >
+                            <Text style={{
+                                color: "black", fontSize: 15, marginHorizontal: 25, marginVertical: 5, color: this.state.service === "Spa" ? "#ffff" : null,
+                            }}>Spa</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={{
+                            margin: 5,
+                            borderRadius: 25,
+                            borderWidth: 0.5,
+                            borderColor: "grey",
+                            backgroundColor: this.state.service === "Facial" ? "#FD6958" : null,
+
+                        }}
+                            onPress={() => { this.setState({ service: "Facial" }) }}
+                        >
+                            <Text style={{
+                                color: "black", fontSize: 15, marginHorizontal: 25, marginVertical: 5, color: this.state.service === "Facial" ? "#ffff" : null,
+                            }}>Facial Mackeup</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={{
+                            margin: 5,
+                            borderRadius: 25,
+                            borderWidth: 0.5,
+                            borderColor: "grey",
+                            backgroundColor: this.state.service === "Hairdryer" ? "#FD6958" : null,
+
+                        }}
+                            onPress={() => { this.setState({ service: "Hairdryer" }) }}
+
+                        >
+                            <Text style={{
+                                color: "black", fontSize: 15, marginHorizontal: 25, marginVertical: 5, color: this.state.service === "Hairdryer" ? "#ffff" : null,
+                            }}>Hairdryer</Text>
+                        </TouchableOpacity>
+
+                    </View>
+
+                    <View style={{
+                        width: "90%", marginTop: 20
+                        // backgroundColor: "green"
+                    }}>
+                        <Text style={{ color: "#4A4A4A", fontSize: 16, }}>Sortby</Text>
+
+                        <TouchableOpacity style={{
+                            marginTop: 10,
+                            backgroundColor: this.state.sortedby === "Sortby" ? "#FD6958" : null,
+
+                        }}>
+                            <Text style={{ color: "black", fontSize: 16, }}>Most Popular</Text>
+                        </TouchableOpacity>
+                    </View>
+
 
                 </View>
             </ScrollView>
