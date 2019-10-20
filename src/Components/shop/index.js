@@ -5,7 +5,7 @@ import {
     images, Dimensions, ImageBackground
 } from 'react-native';
 import { connect } from "react-redux";
-import {  Icon, } from 'native-base';
+import { Icon, } from 'native-base';
 // import IconEntypo from 'react-native-vector-icons/Entypo';
 import ImageSlider from 'react-native-image-slider';
 
@@ -14,7 +14,7 @@ const imagesUri = [
     'https://placeimg.com/640/640/people',
     'https://placeimg.com/640/640/animals',
     'https://placeimg.com/640/640/beer',
-  ];
+];
 class shop extends Component {
     constructor(props) {
         super(props)
@@ -23,8 +23,9 @@ class shop extends Component {
     }
     render() {
         return (
-                <SafeAreaView style={styles.container}>
+            <View style={{ flex: 1 }}>
 
+                <SafeAreaView style={styles.container}>
                     <ImageSlider
                         // loopBothSides
                         autoPlayWithInterval={8000}
@@ -43,8 +44,7 @@ class shop extends Component {
                                         borderWidth: 1, borderRadius: 5, marginRight: 0,
                                         justifyContent: 'center', alignItems: 'center', backgroundColor: '#E94E1B'
                                     }}
-                                        // onPress={this.addToFav.bind(this)}
-
+                                    // onPress={this.addToFav.bind(this)}
                                     >
                                         <Icon name='heart' style={{ color: "#ffff", fontWeight: "bold", fontSize: 23, }} />
                                     </TouchableOpacity>
@@ -52,6 +52,7 @@ class shop extends Component {
                             </View>
                         )} />
                 </SafeAreaView>
+            </View>
         );
     }
 }
@@ -68,7 +69,7 @@ const styles = StyleSheet.create({
 
     },
     container: {
-        flex: 1,
+        flex: 0.5,
     },
     containerForModal: {
         // flex: 1,
@@ -111,7 +112,7 @@ const styles = StyleSheet.create({
         marginLeft: 10, color: "#6a6a6a", textAlign: "right",
     },
     input: { justifyContent: 'center', alignItems: 'center', width: '95%', },
-});  
+});
 
 
 
