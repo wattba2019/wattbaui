@@ -33,11 +33,11 @@ class Route extends Component {
           <Scene key='Allowaccesslocation' component={Allowaccesslocation} hideNavBar={true} />
           <Scene key='AppContainer' component={AppContainer} hideNavBar={true} />
           <Scene key='Shop' component={Shop} hideNavBar={true} />
-          <Scene key='Filters' component={Filters} hideNavBar={true} />
+          <Scene key='Filters' component={Filters} hideNavBar={true}  />
           <Scene key='SearchResults' component={SearchResults} hideNavBar={true} />
           <Scene key='ServiceDetaild' component={ServiceDetaild} hideNavBar={true} />
           <Scene key='OfferDetails' component={OfferDetails} hideNavBar={true} />
-          <Scene key='BarberDetails' component={BarberDetails} hideNavBar={true} initial />
+          <Scene key='BarberDetails' component={BarberDetails} hideNavBar={true}initial />
         </Scene>
       </Router>
     )
