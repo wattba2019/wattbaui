@@ -9,6 +9,9 @@ import { connect } from "react-redux";
 import { Actions } from 'react-native-router-flux';
 import RangeSlider from 'rn-range-slider';
 
+//icons import
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+
 class Filters extends Component {
     constructor(props) {
         super(props);
@@ -23,6 +26,8 @@ class Filters extends Component {
         return (
             <ScrollView contentContainerStyle={styles.contentContainer}
             >
+                <StatusBar backgroundColor="white" barStyle="dark-content" />
+
                 <View style={{
                     flex: 0.8,
                     flexDirection: "row",
@@ -38,7 +43,6 @@ class Filters extends Component {
                     }}>
                         <TouchableOpacity
                             onPress={() => Actions.pop()}
-
                         >
                             <Text style={{ marginTop: 10 }}>Cancle</Text>
                         </TouchableOpacity>
@@ -86,12 +90,13 @@ class Filters extends Component {
                         width: "90%",
                         height: 45,
                         borderRadius: 50,
-                        justifyContent: "center",
+                        // justifyContent: "center",
                         alignItems: "center",
                         flexDirection: "row",
                         backgroundColor: "#E8E6E7"
                     }}>
-                        <Text style={{ color: "black", fontWeight: "bold", fontSize: 16 }}>Current location </Text>
+                        <FontAwesome name="location-arrow" style={{ marginLeft: "5%", color: this.state.iconColor === "search" ? "#003366" : '#909090', fontWeight: 'bold', fontSize: 20 }} />
+                        <Text style={{ marginLeft: "5%", color: "black", fontWeight: "bold", fontSize: 16 }}>Current location </Text>
                         <Text style={{ color: "#8E8E93", fontWeight: "bold", fontSize: 16 }}>(San Francisco)</Text>
                     </View>
 
@@ -314,17 +319,33 @@ class Filters extends Component {
                     </View>
 
                     <View style={{
-                        width: "90%", marginTop: 20
+                        width: "90%", marginTop: 20, marginBottom: 50
                         // backgroundColor: "green"
                     }}>
                         <Text style={{ color: "#4A4A4A", fontSize: 16, }}>Sortby</Text>
 
                         <TouchableOpacity style={{
                             marginTop: 10,
-                            backgroundColor: this.state.sortedby === "Sortby" ? "#FD6958" : null,
+                        }}
+                            onPress={() => { this.setState({ sortedby: "Popular" }) }}
+                        >
+                            <Text style={{ color: "black", fontSize: 16, color: this.state.sortedby === "Popular" ? "#FD6958" : null, }}>Most Popular</Text>
+                        </TouchableOpacity>
 
-                        }}>
-                            <Text style={{ color: "black", fontSize: 16, }}>Most Popular</Text>
+                        <TouchableOpacity style={{
+                            marginTop: 10,
+                        }}
+                            onPress={() => { this.setState({ sortedby: "lowToHigh" }) }}
+                        >
+                            <Text style={{ color: "black", fontSize: 16, color: this.state.sortedby === "lowToHigh" ? "#FD6958" : null, }}>Cost Low to High</Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity style={{
+                            marginTop: 10,
+                        }}
+                            onPress={() => { this.setState({ sortedby: "highToLow" }) }}
+                        >
+                            <Text style={{ color: "black", fontSize: 16, color: this.state.sortedby === "highToLow" ? "#FD6958" : null, }}>Cost High to Low</Text>
                         </TouchableOpacity>
                     </View>
 

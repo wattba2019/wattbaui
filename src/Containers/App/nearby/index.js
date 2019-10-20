@@ -10,7 +10,8 @@ import { Actions } from 'react-native-router-flux';
 // import ShopsCards from '../../../Components/shopscards';
 import IconFontAwesome from 'react-native-vector-icons/FontAwesome';
 
-
+//icons import
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
 class Nearby extends Component {
     constructor(props) {
@@ -95,6 +96,12 @@ class Nearby extends Component {
                     >
 
                         <View
+                            style={{ width: "5%", borderColor: 'gray', backgroundColor: "#E8E6E7", justifyContent: "center", alignItems: "center", }}
+                        >
+                            <AntDesign name="search1" style={{ marginLeft: "3%", color: '#909090', fontWeight: 'bold', fontSize: 15 }} />
+                        </View>
+
+                        <View
                             style={{ width: "80%", borderColor: 'gray', backgroundColor: "#E8E6E7", justifyContent: "center", alignItems: "center", }}
                         >
                             <TextInput
@@ -130,14 +137,14 @@ class Nearby extends Component {
 
                             <ScrollView style={{ marginTop: 30, marginHorizontal: "3%" }} horizontal showsHorizontalScrollIndicator={false}>
                                 <TouchableOpacity style={{
-                                    marginTop: 10,
+                                    marginTop: "54%",
                                     // backgroundColor: "red",
                                 }}
                                 // onPress={() => this.props.navigate.navigate('Product')}
                                 >
                                     <View style={{
                                         height: 170,
-                                        marginTop: 230
+                                        // marginTop: 230
                                         // backgroundColor: "red",
                                     }}>
                                         <ImageBackground source={require('../../../../assets/tinh.png')} style={styles.card} >
@@ -179,13 +186,14 @@ class Nearby extends Component {
 
                                 <TouchableOpacity style={{
                                     margin: 10,
+                                    marginTop: "54%",
                                     // backgroundColor: "red",
                                 }}
                                 // onPress={() => this.props.navigate.navigate('Product')}
                                 >
                                     <View style={{
                                         height: 170,
-                                        marginTop: 230
+                                        // marginTop: 230
 
                                         // backgroundColor: "red",
                                     }}>
