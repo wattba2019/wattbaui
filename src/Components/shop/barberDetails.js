@@ -5,9 +5,11 @@ import {
     Text, TextInput, ScrollView
 
 } from 'react-native';
+import { Icon, Tabs, Tab, TabHeading } from 'native-base';
 import { connect } from "react-redux";
 import { Actions } from 'react-native-router-flux';
 // import ShopsCards from '../../../Components/shopscards';
+import BasicInfo from '../shop/basicInfo';
 
 
 
@@ -15,10 +17,29 @@ class BarberDetails extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            activeColor: "basicinfo"
         };
     }
 
+    activeColor(key) {
+        console.log(key.ref.key)
+        if (key.ref.key == ".0") {
+            this.setState({
+                activeColor: "basicinfo"
+            })
+        }
+        if (key.ref.key == ".1") {
+            this.setState({
+                activeColor: "review"
+            })
+        }
+
+
+    }
+
     render() {
+        const { activeColor } = this.state
+
         return (
             <View style={{
                 flex: 1,
@@ -119,7 +140,7 @@ class BarberDetails extends Component {
                         </View>
 
                         <View
-                            style={{ width: "70%", height: 50, marginTop: 30, marginHorizontal: "15%" }}
+                            style={{ width: "70%", height: 50, marginTop: 30, marginHorizontal: "15%", marginBottom: 20 }}
                         >
                             <TouchableOpacity
                             // onPress={() => Actions.Allowaccesslocation()}
@@ -127,12 +148,51 @@ class BarberDetails extends Component {
                                 <ImageBackground source={require('../../../assets/buttonBackground.png')} resizeMode="contain"
                                     style={{ height: "100%", width: "100%", justifyContent: "center", }}
                                 >
-                                    <Text style={{ textAlign: "center", fontSize: 15, margin: 12, color: "white" }}>Book An Appointment</Text>
+                                    <Text style={{ textAlign: "center", fontSize: 15, margin: 12, color: "white", }}>Book An Appointment</Text>
                                 </ImageBackground>
                             </TouchableOpacity>
 
                         </View>
+
+
+                        <Tabs
+                            onChangeTab={(key) => this.activeColor(key)}
+                            locked={true}
+                            tabBarUnderlineStyle={{ backgroundColor: '#FD6958' }}
+                        >
+                            {/* //basicinfo// */}
+                            <Tab
+                                heading={
+                                    <TabHeading
+                                        style={{ flexDirection: "column", backgroundColor: "white" }}
+                                    >
+                                        <Text style={{ color: activeColor === "basicinfo" ? "#FD6958" : "black", fontWeight: "bold" }}>Basic Info</Text>
+                                    </TabHeading>}
+                            >
+                                <BasicInfo />
+
+                            </Tab>
+
+                            {/* //Review// */}
+                            <Tab
+                                heading={
+                                    <TabHeading
+                                        style={{ flexDirection: "column", backgroundColor: "white" }}
+                                    >
+                                        <Text style={{ color: activeColor === "review" ? "#FD6958" : "black", fontWeight: "bold" }}>Review</Text>
+                                    </TabHeading>
+                                }
+                            >
+                                <View>
+                                    <Text>Under Development</Text>
+                                </View>
+                            </Tab>
+
+
+                        </Tabs>
                     </ScrollView>
+
+
                 </View>
             </View>
         );
