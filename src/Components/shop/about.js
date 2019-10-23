@@ -27,7 +27,7 @@ class About extends Component {
                 <View style={{ paddingHorizontal: 25, paddingVertical: 10 }} >
                     <Text style={{ fontWeight: "bold" }}>About</Text>
                     <Text style={{ color: "grey" }}>Ranya Barber shop is one of the most powerful brande in the hair & beauty care sector in mordern, london. That has given hairstyling in new horizon</Text>
-                    <Text style={{ color: "#D0021B" }}>read more</Text>
+                    <Text style={{ color: "#FD6958" }}>read more</Text>
 
                     <Text style={{ marginTop: 20, fontWeight: "bold" }}>Opening Hours</Text>
 
@@ -51,11 +51,11 @@ class About extends Component {
                         <View style={{ flex: 6, marginTop: 20, }}>
                             <Text style={{ fontWeight: "bold" }}>Address</Text>
                             <Text style={{ color: "grey" }}>47B R-Block Morden, London, Greater London, United Kingdom</Text>
-                            <View style={{ flexDirection: "row", marginTop: 5 }}>
+                            <TouchableOpacity style={{ flexDirection: "row", marginTop: 5 }}>
 
-                                <Entypo name="direction" style={{ color: "#D0021B", fontWeight: 'bold', fontSize: 20 }} />
-                                <Text style={{ color: "#D0021B" }}> Get directions</Text>
-                            </View>
+                                <Entypo name="direction" style={{ color: "#FD6958", fontWeight: 'bold', fontSize: 20 }} />
+                                <Text style={{ color: "#FD6958" }}> Get directions</Text>
+                            </TouchableOpacity>
                         </View>
                         <View style={{ flex: 4, marginTop: 20, justifyContent: "center", alignItems: "center" }}>
                             <Image
@@ -65,7 +65,14 @@ class About extends Component {
                             />
                         </View>
                     </View>
-                    <Text style={{ marginTop: 20, fontWeight: "bold" }}>Photos</Text>
+                    <View style={{ flexDirection: "row",justifyContent:"space-between" }}>
+                        <TouchableOpacity>
+                            <Text style={{ marginTop: 20, fontWeight: "bold" }}>Photos</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity>
+                            <Text style={{ marginTop: 20, fontWeight: "bold" }}>View all</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
 
 
@@ -74,8 +81,8 @@ class About extends Component {
                     <ScrollView horizontal showsHorizontalScrollIndicator={false}>
 
                         <TouchableOpacity style={{
-                            height: 120,
-                            width: 120,
+                            height: 100,
+                            width: 80,
                             justifyContent: "center",
                             alignItems: "center",
                             // backgroundColor: "red",
@@ -83,8 +90,8 @@ class About extends Component {
                         // onPress={() => this.props.navigate.navigate('Product')}
                         >
                             <View style={{
-                                height: 85,
-                                width: 85,
+                                height: 75,
+                                width: 75,
                                 // borderRadius: 10,
                                 justifyContent: "center",
                                 alignItems: "center",
@@ -100,12 +107,12 @@ class About extends Component {
                                     }}
                                 />
                             </View>
-                            <Text style={{ marginTop: 5, fontSize: 14, color: "#8E8E93", textAlign: "right", }}>Hairstyle Name</Text>
+                            {/* <Text style={{ marginTop: 5, fontSize: 14, color: "#8E8E93", textAlign: "right", }}>Hairstyle Name</Text> */}
                         </TouchableOpacity>
 
                         <TouchableOpacity style={{
-                            height: 120,
-                            width: 120,
+                            height: 100,
+                            width: 80,
                             justifyContent: "center",
                             alignItems: "center",
                             // backgroundColor: "red",
@@ -113,8 +120,8 @@ class About extends Component {
                         // onPress={() => this.props.navigate.navigate('Product')}
                         >
                             <View style={{
-                                height: 85,
-                                width: 85,
+                                height: 75,
+                                width: 75,
                                 borderRadius: 50,
                                 justifyContent: "center",
                                 alignItems: "center",
@@ -125,12 +132,12 @@ class About extends Component {
                                     style={{ width: "90%", height: "90%", }}
                                 />
                             </View>
-                            <Text style={{ marginTop: 5, fontSize: 14, color: "#8E8E93", textAlign: "right", }}>Hairstyle Name</Text>
+                            {/* <Text style={{ marginTop: 5, fontSize: 14, color: "#8E8E93", textAlign: "right", }}>Hairstyle Name</Text> */}
                         </TouchableOpacity>
 
                         <TouchableOpacity style={{
-                            height: 120,
-                            width: 120,
+                            height: 100,
+                            width: 80,
                             justifyContent: "center",
                             alignItems: "center",
                             // backgroundColor: "red",
@@ -138,8 +145,8 @@ class About extends Component {
                         // onPress={() => this.props.navigate.navigate('Product')}
                         >
                             <View style={{
-                                height: 85,
-                                width: 85,
+                                height: 75,
+                                width: 75,
                                 borderRadius: 50,
                                 justifyContent: "center",
                                 alignItems: "center",
@@ -152,12 +159,12 @@ class About extends Component {
                                     style={{ width: "90%", height: "90%", }}
                                 />
                             </View>
-                            <Text style={{ marginTop: 5, fontSize: 14, color: "#8E8E93", textAlign: "right", }}>Hairstyle Name</Text>
+                            {/* <Text style={{ marginTop: 5, fontSize: 14, color: "#8E8E93", textAlign: "right", }}>Hairstyle Name</Text> */}
                         </TouchableOpacity>
 
                         <TouchableOpacity style={{
-                            height: 120,
-                            width: 120,
+                            height: 100,
+                            width: 80,
                             justifyContent: "center",
                             alignItems: "center",
                             // backgroundColor: "red",
@@ -165,8 +172,8 @@ class About extends Component {
                         // onPress={() => this.props.navigate.navigate('Product')}
                         >
                             <View style={{
-                                height: 85,
-                                width: 85,
+                                height: 75,
+                                width: 75,
                                 borderRadius: 50,
                                 justifyContent: "center",
                                 alignItems: "center",
@@ -177,11 +184,11 @@ class About extends Component {
                                     style={{ width: "90%", height: "90%", }}
                                 />
                             </View>
-                            <Text style={{ marginTop: 5, fontSize: 14, color: "#8E8E93", textAlign: "right", }}>Hairstyle Name</Text>
+                            {/* <Text style={{ marginTop: 5, fontSize: 14, color: "#8E8E93", textAlign: "right", }}>Hairstyle Name</Text> */}
                         </TouchableOpacity>
                         <TouchableOpacity style={{
-                            height: 120,
-                            width: 120,
+                            height: 100,
+                            width: 80,
                             justifyContent: "center",
                             alignItems: "center",
                             // backgroundColor: "red",
@@ -189,8 +196,8 @@ class About extends Component {
                         // onPress={() => this.props.navigate.navigate('Product')}
                         >
                             <View style={{
-                                height: 85,
-                                width: 85,
+                                height: 75,
+                                width: 75,
                                 borderRadius: 50,
                                 justifyContent: "center",
                                 alignItems: "center",
@@ -201,12 +208,12 @@ class About extends Component {
                                     style={{ width: "90%", height: "90%", }}
                                 />
                             </View>
-                            <Text style={{ marginTop: 5, fontSize: 14, color: "#8E8E93", textAlign: "right", }}>Hairstyle Name</Text>
+                            {/* <Text style={{ marginTop: 5, fontSize: 14, color: "#8E8E93", textAlign: "right", }}>Hairstyle Name</Text> */}
                         </TouchableOpacity>
                     </ScrollView>
                 </View>
 
-                <View style={{ width: "85%", height: 50, marginTop: 30, marginHorizontal: "7%" }}>
+                <View style={{ width: "85%", height: 50, marginTop: 0, marginHorizontal: "7%" }}>
                     <TouchableOpacity
                     // onPress={() => Actions.Allowaccesslocation()}
                     >

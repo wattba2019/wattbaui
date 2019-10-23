@@ -130,11 +130,11 @@ class shop extends Component {
                             </View>
 
                         </View>
-                        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                        <ScrollView horizontal style={{marginVertical:15}} showsHorizontalScrollIndicator={false}>
 
                             <TouchableOpacity style={{
-                                height: 120,
-                                width: 120,
+                                height: 110,
+                                width: 110,
                                 justifyContent: "center",
                                 alignItems: "center",
                                 // backgroundColor: "red",
@@ -142,8 +142,8 @@ class shop extends Component {
                             // onPress={() => this.props.navigate.navigate('Product')}
                             >
                                 <View style={{
-                                    height: 85,
-                                    width: 85,
+                                    height: 75,
+                                    width: 75,
                                     borderRadius: 50,
                                     justifyContent: "center",
                                     alignItems: "center",
@@ -160,8 +160,8 @@ class shop extends Component {
                             </TouchableOpacity>
 
                             <TouchableOpacity style={{
-                                height: 120,
-                                width: 120,
+                                height: 110,
+                                width: 110,
                                 justifyContent: "center",
                                 alignItems: "center",
                                 // backgroundColor: "red",
@@ -169,8 +169,8 @@ class shop extends Component {
                             // onPress={() => this.props.navigate.navigate('Product')}
                             >
                                 <View style={{
-                                    height: 85,
-                                    width: 85,
+                                  height: 75,
+                                  width: 75,
                                     borderRadius: 50,
                                     justifyContent: "center",
                                     alignItems: "center",
@@ -187,8 +187,8 @@ class shop extends Component {
                             </TouchableOpacity>
 
                             <TouchableOpacity style={{
-                                height: 120,
-                                width: 120,
+                                height: 110,
+                                width: 110,
                                 justifyContent: "center",
                                 alignItems: "center",
                                 // backgroundColor: "red",
@@ -196,8 +196,8 @@ class shop extends Component {
                             // onPress={() => this.props.navigate.navigate('Product')}
                             >
                                 <View style={{
-                                    height: 85,
-                                    width: 85,
+                                   height: 75,
+                                   width: 75,
                                     borderRadius: 50,
                                     justifyContent: "center",
                                     alignItems: "center",
@@ -214,8 +214,8 @@ class shop extends Component {
                             </TouchableOpacity>
 
                             <TouchableOpacity style={{
-                                height: 120,
-                                width: 120,
+                                height: 110,
+                                width: 110,
                                 justifyContent: "center",
                                 alignItems: "center",
                                 // backgroundColor: "red",
@@ -223,8 +223,8 @@ class shop extends Component {
                             // onPress={() => this.props.navigate.navigate('Product')}
                             >
                                 <View style={{
-                                    height: 85,
-                                    width: 85,
+                                   height: 75,
+                                   width: 75,
                                     borderRadius: 50,
                                     justifyContent: "center",
                                     alignItems: "center",
@@ -245,7 +245,7 @@ class shop extends Component {
                             <Tabs
                                 onChangeTab={(key) => this.activeColor(key)}
                                 locked={true}
-                                tabBarUnderlineStyle={{ backgroundColor: '#D0021B' }}
+                                tabBarUnderlineStyle={{ backgroundColor: '#FD6958' }}
                             >
                                 {/* //Pin// */}
                                 <Tab
@@ -253,7 +253,7 @@ class shop extends Component {
                                         <TabHeading
                                             style={{ flexDirection: "column", backgroundColor: "white" }}
                                         >
-                                            <Text style={{color:activeColor==="about"?"#D0021B":"black"}}>About</Text>
+                                            <Text style={{color:activeColor==="about"?"#FD6958":"black"}}>About</Text>
                                         </TabHeading>}
                                 >
                                         <About/>
@@ -265,7 +265,7 @@ class shop extends Component {
                                         <TabHeading
                                             style={{ flexDirection: "column", backgroundColor: "white" }}
                                         >
-                                            <Text  style={{color:activeColor==="services"?"#D0021B":"black"}}>Services</Text>
+                                            <Text  style={{color:activeColor==="services"?"#FD6958":"black"}}>Services</Text>
                                         </TabHeading>
                                     }
                                 >
@@ -281,7 +281,7 @@ class shop extends Component {
                                         <TabHeading
                                             style={{ flexDirection: "column", backgroundColor: "white" }}
                                         >
-                                            <Text  style={{color:activeColor==="gallery"?"#D0021B":"black"}}>Gallery</Text>
+                                            <Text  style={{color:activeColor==="gallery"?"#FD6958":"black"}}>Gallery</Text>
                                         </TabHeading>
                                     }
                                 >
@@ -300,7 +300,7 @@ class shop extends Component {
                                         <TabHeading
                                             style={{ flexDirection: "column", backgroundColor: "white" }}
                                         >
-                                            <Text  style={{color:activeColor==="review"?"#D0021B":"black"}}>Review</Text>
+                                            <Text  style={{color:activeColor==="review"?"#FD6958":"black"}}>Review</Text>
                                         </TabHeading>
                                     }
                                 >
