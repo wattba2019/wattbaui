@@ -11,6 +11,7 @@ import Allowaccesslocation from '../Containers/Authentication/allowaccesslocatio
 import AppContainer from '../Containers/App/appcontainer'
 import Filters from '../Containers/App/nearby/filters'
 import Shop from '../Components/shop/index'
+import Bookappointment from '../Components/shop/bookappointment'
 import SearchResults from '../Containers/App/nearby/searchResult'
 // import App from '../Containers/App/nearby/rangeslider'
 
@@ -30,7 +31,8 @@ class Route extends Component {
           <Scene key='Veryfiyournumber' component={Veryfiyournumber} hideNavBar={true} />
           <Scene key='Allowaccesslocation' component={Allowaccesslocation} hideNavBar={true} />
           {/* <Scene key='AppContainer' component={AppContainer} hideNavBar={true} initial /> */}
-          <Scene key='Shop' component={Shop} hideNavBar={true} initial />
+          <Scene key='Shop' component={Shop} hideNavBar={true}initial />
+          <Scene key='Bookappointment' component={Bookappointment} hideNavBar={true}  />
           <Scene key='Filters' component={Filters} hideNavBar={true}  />
           <Scene key='SearchResults' component={SearchResults} hideNavBar={true} />
           {/* <Scene key='App' component={App} hideNavBar={true} /> */}

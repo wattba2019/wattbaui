@@ -9,13 +9,16 @@ import { Icon, Tabs, Tab, TabHeading } from 'native-base';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import About from '../shop/about';
 import Services from '../shop/services';
+import Gallery from '../shop/gallery';
+import Review from '../shop/Review';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Zocial from 'react-native-vector-icons/Zocial';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import ImageSlider from 'react-native-image-slider';
 import shopImage from '../../../assets/Group55346.png';
-let img= require("../../../assets/Group55346.png")
+let img = require("../../../assets/Group55346.png")
 const imagesUri = [
     'https://placeimg.com/640/640/nature',
     'https://placeimg.com/640/640/people',
@@ -26,7 +29,7 @@ class shop extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            activeColor:"about"
+            activeColor: "about"
         }
     }
     activeColor(key) {
@@ -54,47 +57,37 @@ class shop extends Component {
 
     }
     render() {
-        const {activeColor}=this.state
+        const { activeColor } = this.state
         return (
             <View style={{ flex: 1 }}>
                 <SafeAreaView style={styles.container}>
-                    <ImageSlider
-                        // loopBothSides
-                        autoPlayWithInterval={8000}
-                        images={imagesUri}
-                        customSlide={({ index, item, style, width }) => (
-                            // It's important to put style here because it's got offset inside
-                            <View key={index} style={[style, styles.customSlide]}>
-                                <Image resizeMode={"cover"} source={{ uri: item }} style={styles.customImage} />
-
-                                <View style={{
-                                    flex: 1, top: -41, left: -100, backgroundColor: "#fff"
-
-                                }}>
-                                    <Text style={{ color: "green" }}>OPEN</Text>
-
+                    <Image
+                    source={require("../../../assets/Group55346.png")} resizeMode="contain" style={{width:"100%",height:250}}
+                    />
+                                <TouchableOpacity style={{ width: 25, position: 'absolute', top: 0, left: 30, right: 0, bottom: 130, justifyContent: "center" }}>
+                                    <Ionicons name="ios-arrow-back" style={{ color: "#fff", fontWeight: 'bold', fontSize: 28 }} />
+                                </TouchableOpacity>
+                                <View style={{ position: 'absolute', top: 80, left: 30, right: 0, bottom: 0, justifyContent: "center" }}>
+                                    <Text style={{ color: "#fff", fontSize: 18 }}>Rayan BarberShop</Text>
                                 </View>
-
-
-                                <View style={{
-                                    flex: 1, flexDirection: 'row', top: -41, marginLeft: "80%",
-                                    alignItems: 'center', justifyContent: 'flex-end', position: 'relative',
-                                }}>
-                                    <TouchableOpacity style={{
-                                        height: 25, width: 60, borderColor: 'green',
-                                        borderWidth: 1, borderRadius: 4, marginRight: 0,
-                                        justifyContent: 'center', alignItems: 'center',
-                                    }}
-                                    // onPress={this.addToFav.bind(this)}
-                                    >
-                                        <Text style={{ color: "green" }}>OPEN</Text>
-                                    </TouchableOpacity>
+                                <View style={{ position: 'absolute', top: 120, left: 30, right: 0, bottom: 0, justifyContent: "center" }}>
+                                    <Text style={{ color: "#fff", fontSize: 14 }}>47B R-Block Modern, London</Text>
                                 </View>
-                            </View>
-                        )} />
+                                <View style={{ position: 'absolute', top: 170, left: 30, right: 260, bottom: 0, justifyContent: "center", flexDirection: "row" }}>
+                                    <Entypo name="star" style={{ color: "#EBAC43", fontWeight: 'bold', fontSize: 16 }} />
+                                    <Entypo name="star" style={{ color: "#EBAC43", fontWeight: 'bold', fontSize: 16 }} />
+                                    <Entypo name="star" style={{ color: "#EBAC43", fontWeight: 'bold', fontSize: 16 }} />
+                                    <Entypo name="star" style={{ color: "#EBAC43", fontWeight: 'bold', fontSize: 16 }} />
+                                    <Entypo name="star" style={{ color: "#fff", fontWeight: 'bold', fontSize: 16 }} />
+                                </View>
+                                <TouchableOpacity style={{borderColor:"green",borderWidth:1, borderRadius:4,justifyContent:"center",alignItems:"center", position: 'absolute',   right: 20, bottom: 20,width:55, justifyContent: "center" }}>
+                                <Text style={{ color: "green", fontSize: 14 }}>Open</Text>
+                                </TouchableOpacity>
+
+
                 </SafeAreaView>
 
-                <View style={{ flex: 0.65,backgroundColor:"#fff" }}>
+                <View style={{ flex: 0.65, backgroundColor: "#fff" }}>
                     <ScrollView>
 
                         <View style={{ flexDirection: "row", justifyContent: "space-between", paddingHorizontal: "10%", paddingVertical: "5%" }}>
@@ -130,7 +123,7 @@ class shop extends Component {
                             </View>
 
                         </View>
-                        <ScrollView horizontal style={{marginVertical:15}} showsHorizontalScrollIndicator={false}>
+                        <ScrollView horizontal style={{ marginVertical: 15 }} showsHorizontalScrollIndicator={false}>
 
                             <TouchableOpacity style={{
                                 height: 110,
@@ -169,8 +162,8 @@ class shop extends Component {
                             // onPress={() => this.props.navigate.navigate('Product')}
                             >
                                 <View style={{
-                                  height: 75,
-                                  width: 75,
+                                    height: 75,
+                                    width: 75,
                                     borderRadius: 50,
                                     justifyContent: "center",
                                     alignItems: "center",
@@ -196,8 +189,8 @@ class shop extends Component {
                             // onPress={() => this.props.navigate.navigate('Product')}
                             >
                                 <View style={{
-                                   height: 75,
-                                   width: 75,
+                                    height: 75,
+                                    width: 75,
                                     borderRadius: 50,
                                     justifyContent: "center",
                                     alignItems: "center",
@@ -223,8 +216,8 @@ class shop extends Component {
                             // onPress={() => this.props.navigate.navigate('Product')}
                             >
                                 <View style={{
-                                   height: 75,
-                                   width: 75,
+                                    height: 75,
+                                    width: 75,
                                     borderRadius: 50,
                                     justifyContent: "center",
                                     alignItems: "center",
@@ -241,79 +234,72 @@ class shop extends Component {
                             </TouchableOpacity>
                         </ScrollView>
 
-                       
-                            <Tabs
-                                onChangeTab={(key) => this.activeColor(key)}
-                                locked={true}
-                                tabBarUnderlineStyle={{ backgroundColor: '#FD6958' }}
+
+                        <Tabs
+                            onChangeTab={(key) => this.activeColor(key)}
+                            locked={true}
+                            tabBarUnderlineStyle={{ backgroundColor: '#FD6958' }}
+                        >
+                            {/* //Pin// */}
+                            <Tab
+                                heading={
+                                    <TabHeading
+                                        style={{ flexDirection: "column", backgroundColor: "white" }}
+                                    >
+                                        <Text style={{ color: activeColor === "about" ? "#FD6958" : "black" }}>About</Text>
+                                    </TabHeading>}
                             >
-                                {/* //Pin// */}
-                                <Tab
-                                    heading={
-                                        <TabHeading
-                                            style={{ flexDirection: "column", backgroundColor: "white" }}
-                                        >
-                                            <Text style={{color:activeColor==="about"?"#FD6958":"black"}}>About</Text>
-                                        </TabHeading>}
-                                >
-                                        <About/>
-                                </Tab>
+                                <About />
+                            </Tab>
 
-                                {/* //Search// */}
-                                <Tab
-                                    heading={
-                                        <TabHeading
-                                            style={{ flexDirection: "column", backgroundColor: "white" }}
-                                        >
-                                            <Text  style={{color:activeColor==="services"?"#FD6958":"black"}}>Services</Text>
-                                        </TabHeading>
-                                    }
-                                >
-                                    <View>
-                                    <Services/>
+                            {/* //Search// */}
+                            <Tab
+                                heading={
+                                    <TabHeading
+                                        style={{ flexDirection: "column", backgroundColor: "white" }}
+                                    >
+                                        <Text style={{ color: activeColor === "services" ? "#FD6958" : "black" }}>Services</Text>
+                                    </TabHeading>
+                                }
+                            >
+                                <View>
+                                    <Services />
 
-                                    </View>
-                                </Tab>
+                                </View>
+                            </Tab>
 
-                                {/* //Gift// */}
-                                <Tab
-                                    heading={
-                                        <TabHeading
-                                            style={{ flexDirection: "column", backgroundColor: "white" }}
-                                        >
-                                            <Text  style={{color:activeColor==="gallery"?"#FD6958":"black"}}>Gallery</Text>
-                                        </TabHeading>
-                                    }
-                                >
-                                    <View>
-                                        <Text>
-                                            aaaa
-                                            aaaa
-                                            aaaa
-                               </Text>
-                                    </View>
-                                </Tab>
+                            {/* //Gift// */}
+                            <Tab
+                                heading={
+                                    <TabHeading
+                                        style={{ flexDirection: "column", backgroundColor: "white" }}
+                                    >
+                                        <Text style={{ color: activeColor === "gallery" ? "#FD6958" : "black" }}>Gallery</Text>
+                                    </TabHeading>
+                                }
+                            >
+                                <View>
+                                    <Gallery />
+                                </View>
+                            </Tab>
 
-                                {/* //Basket// */}
-                                <Tab
-                                    heading={
-                                        <TabHeading
-                                            style={{ flexDirection: "column", backgroundColor: "white" }}
-                                        >
-                                            <Text  style={{color:activeColor==="review"?"#FD6958":"black"}}>Review</Text>
-                                        </TabHeading>
-                                    }
-                                >
-                                    <View>
-                                        <Text>
-                                            aaaa
-                                            aaaa
-                                            aaaa
-                               </Text>
-                                    </View>
-                                </Tab>
+                            {/* //Basket// */}
+                            <Tab
+                                heading={
+                                    <TabHeading
+                                        style={{ flexDirection: "column", backgroundColor: "white" }}
+                                    >
+                                        <Text style={{ color: activeColor === "review" ? "#FD6958" : "black" }}>Review</Text>
+                                    </TabHeading>
+                                }
+                            >
+                                <View>
+                                    <Review />
 
-                            </Tabs>
+                                </View>
+                            </Tab>
+
+                        </Tabs>
 
 
 
@@ -360,7 +346,7 @@ const styles = StyleSheet.create({
     },
     container: {
         flex: 0.35,
-
+        backgroundColor:"black"
     },
     containerForModal: {
         // flex: 1,

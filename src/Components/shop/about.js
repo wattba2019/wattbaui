@@ -23,8 +23,8 @@ class About extends Component {
     render() {
         const { activeColor } = this.state
         return (
-            <View>
-                <View style={{ paddingHorizontal: 25, paddingVertical: 10 }} >
+            <View style={{}}>
+                <View style={{ paddingHorizontal: 25, paddingVertical: 10, }} >
                     <Text style={{ fontWeight: "bold" }}>About</Text>
                     <Text style={{ color: "grey" }}>Ranya Barber shop is one of the most powerful brande in the hair & beauty care sector in mordern, london. That has given hairstyling in new horizon</Text>
                     <Text style={{ color: "#FD6958" }}>read more</Text>
