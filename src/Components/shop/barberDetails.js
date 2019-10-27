@@ -50,7 +50,7 @@ class BarberDetails extends Component {
                 <StatusBar backgroundColor="white" barStyle="dark-content" />
 
                 <View style={{
-                    flex: 0.8,
+                    flex: 0.6,
                     flexDirection: "row",
                     borderBottomWidth: 0.5,
                     borderBottomColor: 'grey',
@@ -183,7 +183,7 @@ class BarberDetails extends Component {
                                     </TabHeading>
                                 }
                             >
-                                <View>
+                                <View style={{ flex: 1,justifyContent: "center", alignItems: "center" }}>
                                     <Text>Under Development</Text>
                                 </View>
                             </Tab>
