@@ -10,6 +10,9 @@ import { Actions } from 'react-native-router-flux';
 // import ShopsCards from '../../../Components/shopscards';
 
 
+//icons import
+import AntDesign from 'react-native-vector-icons/AntDesign';
+
 
 class Home extends Component {
     constructor(props) {
@@ -28,7 +31,7 @@ class Home extends Component {
             }}>
 
                 <View style={{
-                    height:120,
+                    height: 120,
                     width: "95%",
                     justifyContent: "center",
                     alignItems: "center",
@@ -39,7 +42,7 @@ class Home extends Component {
                     </View>
 
 
-                    <View style={{ width: "105%",top:-5, justifyContent: "center", alignItems: "center", flex: 1, flexDirection: "row" }}>
+                    <View style={{ width: "105%", top: -5, justifyContent: "center", alignItems: "center", flex: 1, flexDirection: "row" }}>
                         <View style={{
                             flex: 8, flexDirection: "row", justifyContent: "center", alignItems: "center",
                             // backgroundColor: "orange"
@@ -86,6 +89,12 @@ class Home extends Component {
                             backgroundColor: "#E8E6E7",
                         }}
                     >
+
+                        <View
+                            style={{ width: "5%", borderColor: 'gray', backgroundColor: "#E8E6E7", justifyContent: "center", alignItems: "center", }}
+                        >
+                            <AntDesign name="search1" style={{ marginLeft: "3%", color: '#909090', fontWeight: 'bold', fontSize: 15 }} />
+                        </View>
 
                         <View
                             style={{ width: "80%", borderColor: 'gray', backgroundColor: "#E8E6E7", justifyContent: "center", alignItems: "center", }}
@@ -186,9 +195,10 @@ class Home extends Component {
                             width: "95%", marginTop: 10, flex: 1, flexDirection: "row",
                             // backgroundColor: "green"
                         }}>
-                            <View style={{ flex: 1 }}>
+                            <TouchableOpacity style={{ flex: 1 }} onPress={() => Actions.SearchResults()}
+                            >
                                 <Text style={{ color: "black", fontWeight: "bold", fontSize: 16 }}>Nearby Barbershops</Text>
-                            </View>
+                            </TouchableOpacity>
                             <View style={{ flex: 1 }}>
                                 <TouchableOpacity>
                                     <Text style={{ fontSize: 16, color: "#8E8E93", textAlign: "right", }}>View All</Text>
@@ -421,9 +431,11 @@ class Home extends Component {
                             width: "95%", marginTop: 10, flex: 1, flexDirection: "row",
                             // backgroundColor: "green"
                         }}>
-                            <View style={{ flex: 1 }}>
+                            <TouchableOpacity style={{ flex: 1 }}
+                                onPress={() => Actions.SearchResults()}
+                            >
                                 <Text style={{ color: "black", fontWeight: "bold", fontSize: 16 }}>Best Barbershops</Text>
-                            </View>
+                            </TouchableOpacity>
                             <View style={{ flex: 1 }}>
                                 <TouchableOpacity>
                                     <Text style={{ fontSize: 16, color: "#8E8E93", textAlign: "right", }}>View All</Text>
@@ -582,7 +594,7 @@ class Home extends Component {
                                             alignItems: "center",
                                             // backgroundColor: "yellow",
                                         }}>
-                                          
+
                                             <Text style={{ color: "#FD6958" }}>Book Now</Text>
                                             <Text style={{ color: "#7F7F7F" }}>$100.00</Text>
                                         </View>
@@ -627,7 +639,7 @@ class Home extends Component {
                                             alignItems: "center",
                                             // backgroundColor: "yellow",
                                         }}>
-                                          
+
                                             <Text style={{ color: "#FD6958" }}>Book Now</Text>
                                             <Text style={{ color: "#7F7F7F" }}>$100.00</Text>
                                         </View>
