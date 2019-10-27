@@ -11,6 +11,7 @@ import { Actions } from 'react-native-router-flux';
 // import ShopsCards from '../../../Components/shopscards';
 import BasicInfo from '../shop/basicInfo';
 import RadioForm, { RadioButton, RadioButtonInput, RadioButtonLabel } from 'react-native-simple-radio-button';
+import Entypo from 'react-native-vector-icons/Entypo';
 
 
 
@@ -59,6 +60,7 @@ class ChooseService extends Component {
                 width: "100%",
                 // alignItems: "center",
                 backgroundColor: "white",
+                paddingHorizontal: 10,
             }}>
                 <StatusBar backgroundColor="white" barStyle="dark-content" />
 
@@ -78,12 +80,17 @@ class ChooseService extends Component {
                         // alignItems: "center",
                         // backgroundColor: "red"
                     }}>
-                        <TouchableOpacity
+                        {/* <TouchableOpacity
                             onPress={() => Actions.pop()}
                         >
                             <Image source={require('../../../assets/ArrowLeft.png')} resizeMode="contain"
                                 style={{ height: 20, width: 20, marginLeft: 25 }}
                             />
+                        </TouchableOpacity> */}
+
+                        <TouchableOpacity onPress={() => Actions.pop()}
+                        >
+                            <Entypo name="cross" style={{ marginLeft: 15, color: "black", fontSize: 25 }} />
                         </TouchableOpacity>
                     </View>
 
@@ -336,7 +343,9 @@ class ChooseService extends Component {
                             <Text style={{ fontWeight: "bold", fontSize: 18 }}>$15</Text>
                         </View>
                         <View style={{ flex: 1, justifyContent: "center", alignItems: "flex-end", }}>
-                            <TouchableOpacity style={{ width: "70%", height: 42, justifyContent: "center", alignItems: "center", backgroundColor: "#FD6958", borderRadius: 8 }}>
+                            <TouchableOpacity
+                                onPress={() => Actions.Bookappointment()}
+                                style={{ width: "70%", height: 42, justifyContent: "center", alignItems: "center", backgroundColor: "#FD6958", borderRadius: 8 }}>
                                 <Text style={{ fontWeight: "bold", fontSize: 18, color: "#ffffff" }}>Next</Text>
                             </TouchableOpacity>
                         </View>

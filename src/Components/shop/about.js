@@ -12,6 +12,7 @@ import Zocial from 'react-native-vector-icons/Zocial';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import ImageSlider from 'react-native-image-slider';
+import { Actions } from 'react-native-router-flux';
 
 class About extends Component {
     constructor(props) {
@@ -215,7 +216,7 @@ class About extends Component {
 
                 <View style={{ width: "85%", height: 50, marginTop: 0, marginHorizontal: "7%" }}>
                     <TouchableOpacity
-                    // onPress={() => Actions.Allowaccesslocation()}
+                    onPress={() => Actions.BarberDetails()}
                     >
                         <ImageBackground source={require('../../../assets/buttonBackground.png')} resizeMode="contain"
                             style={{ height: "100%", width: "100%", justifyContent: "center", }}

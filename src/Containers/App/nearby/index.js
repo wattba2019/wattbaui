@@ -38,7 +38,12 @@ class Nearby extends Component {
                 }}>
                     <View style={{ width: "100%", flexDirection: "row", justifyContent: "space-between", marginTop: 20, }}>
                         <Text style={{ fontSize: 16, fontWeight: "bold", textAlign: "left" }}>Hello, Aqib Khan</Text>
-                        <TouchableOpacity
+                        <TouchableOpacity style={{
+                            width: 50,
+                            alignItems: "flex-end",
+                            zIndex: 1,
+                            // backgroundColor: "red",
+                        }}
                             onPress={() => Actions.Filters()}
                         >
                             <IconFontAwesome name="filter" size={25} style={{ color: "grey" }} />
@@ -73,7 +78,7 @@ class Nearby extends Component {
                             flex: 3, justifyContent: "center", alignItems: "center", flexDirection: "row",
                             // backgroundColor: "green"
                         }}>
-                            <TouchableOpacity style={{ flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
+                            <TouchableOpacity style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", }}>
                                 <Image source={require('../../../../assets/surface1.png')} resizeMode="contain"
                                     style={{ width: "20%", }}
                                 />

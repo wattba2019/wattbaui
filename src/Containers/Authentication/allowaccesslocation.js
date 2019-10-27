@@ -45,7 +45,7 @@ class Allowaccesslocation extends Component {
                 }}>
 
                     <Image source={require('../../../assets/image.png')} resizeMode="contain"
-                        style={{ left: 0, height: "40%", width: "40%",marginTop:40  }}
+                        style={{ left: 0, height: "40%", width: "40%", marginTop: 40 }}
                     />
 
                     <Text style={{ textAlign: "center", fontSize: 18, fontWeight: "bold" }}>
@@ -58,14 +58,18 @@ class Allowaccesslocation extends Component {
                     <View
                         style={{ width: "85%", height: 50, marginTop: 100, }}
                     >
-                        <TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={() => Actions.AppContainer()}
+                        >
                             <ImageBackground source={require('../../../assets/buttonBackground.png')} resizeMode="contain"
                                 style={{ height: "100%", width: "100%", justifyContent: "center", }}
                             >
                                 <Text style={{ textAlign: "center", fontSize: 15, margin: 12, color: "white" }}>Yes, allow</Text>
                             </ImageBackground>
                         </TouchableOpacity>
-                        <TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={() => Actions.AppContainer()}
+                        >
 
                             <Text style={{ textAlign: "center", fontSize: 15, marginTop: 12, }}>Don't allow</Text>
 

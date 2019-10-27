@@ -211,6 +211,7 @@ class Home extends Component {
                                 margin: 10,
                                 // backgroundColor: "red",
                             }}
+                                onPress={() => Actions.Shop()}
                             // onPress={() => this.props.navigate.navigate('Product')}
                             >
                                 <View style={{
@@ -258,6 +259,7 @@ class Home extends Component {
                                 margin: 10,
                                 // backgroundColor: "red",
                             }}
+                                onPress={() => Actions.Shop()}
                             // onPress={() => this.props.navigate.navigate('Product')}
                             >
                                 <View style={{
@@ -448,6 +450,7 @@ class Home extends Component {
                                 margin: 10,
                                 // backgroundColor: "red",
                             }}
+                                onPress={() => Actions.Shop()}
                             // onPress={() => this.props.navigate.navigate('Product')}
                             >
                                 <View style={{
@@ -495,6 +498,7 @@ class Home extends Component {
                                 margin: 10,
                                 // backgroundColor: "red",
                             }}
+                                onPress={() => Actions.Shop()}
                             // onPress={() => this.props.navigate.navigate('Product')}
                             >
                                 <View style={{
@@ -560,6 +564,7 @@ class Home extends Component {
                                 margin: 10,
                                 // backgroundColor: "red",
                             }}
+                                onPress={() => Actions.Shop()}
                             // onPress={() => this.props.navigate.navigate('Product')}
                             >
                                 <View style={{
@@ -605,6 +610,7 @@ class Home extends Component {
                                 margin: 10,
                                 // backgroundColor: "red",
                             }}
+                                onPress={() => Actions.Shop()}
                             // onPress={() => this.props.navigate.navigate('Product')}
                             >
                                 <View style={{

@@ -25,7 +25,7 @@ class Route extends Component {
         titleStyle={{ color: "white" }}
         tintColor="white">
         <Scene >
-          <Scene key='SplashScreen' component={SplashScreen} hideNavBar={true} />
+          <Scene key='SplashScreen' component={SplashScreen} hideNavBar={true} initial />
           <Scene key='Walkthrough' component={Walkthrough} hideNavBar={true} />
           <Scene key='Signin' component={Signin} hideNavBar={true} />
           <Scene key='Forgotyourpassword' component={Forgotyourpassword} hideNavBar={true} />
@@ -33,15 +33,15 @@ class Route extends Component {
           <Scene key='Phoneverification' component={Phoneverification} hideNavBar={true} />
           <Scene key='Veryfiyournumber' component={Veryfiyournumber} hideNavBar={true} />
           <Scene key='Allowaccesslocation' component={Allowaccesslocation} hideNavBar={true} />
-          {/* <Scene key='AppContainer' component={AppContainer} hideNavBar={true} initial /> */}
-          <Scene key='Shop' component={Shop} hideNavBar={true}initial />
-          <Scene key='Bookappointment' component={Bookappointment} hideNavBar={true}  />
-          <Scene key='Filters' component={Filters} hideNavBar={true}  />
+          <Scene key='AppContainer' component={AppContainer} hideNavBar={true} />
+          <Scene key='Shop' component={Shop} hideNavBar={true} />
+          <Scene key='Filters' component={Filters} hideNavBar={true} />
           <Scene key='SearchResults' component={SearchResults} hideNavBar={true} />
           <Scene key='ServiceDetaild' component={ServiceDetaild} hideNavBar={true} />
           <Scene key='OfferDetails' component={OfferDetails} hideNavBar={true} />
           <Scene key='BarberDetails' component={BarberDetails} hideNavBar={true} />
-          <Scene key='ChooseService' component={ChooseService} hideNavBar={true} initial />
+          <Scene key='ChooseService' component={ChooseService} hideNavBar={true} />
+          <Scene key='Bookappointment' component={Bookappointment} hideNavBar={true} />
         </Scene>
       </Router>
     )

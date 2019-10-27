@@ -62,7 +62,7 @@ class Services extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            catogeries:"services"
+            catogeries: "services"
         }
     }
 
@@ -87,32 +87,39 @@ class Services extends Component {
                             flex: 1, flexDirection: "row", borderRadius: 5, height: "100%",
                         }}>
 
-                            <TouchableOpacity style={{
-                                flex: 1,
-                                justifyContent: "center",
-                                alignItems: "center",
-                                backgroundColor: this.state.catogeries === "services" ? "#FD6958" : "#fff",
-                            }}
+                            <TouchableOpacity
+                                // onPress={() => Actions.ServiceDetaild()}
+
+                                style={{
+                                    flex: 1,
+                                    justifyContent: "center",
+                                    alignItems: "center",
+                                    backgroundColor: this.state.catogeries === "services" ? "#FD6958" : "#fff",
+                                }}
                                 onPress={() => { this.setState({ catogeries: "services" }) }}
                             >
                                 <Text style={{ color: this.state.catogeries === "services" ? "#fff" : "#FD6958", fontSize: 13 }}>Services</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity style={{
-                                flex: 2,
-                                justifyContent: "center",
-                                alignItems: "center",
-                                backgroundColor: this.state.catogeries === "packages" ? "#FD6958" : "#fff",
-                            }}
+                            <TouchableOpacity
+                                // onPress={() => Actions.ServiceDetaild()}
+                                style={{
+                                    flex: 2,
+                                    justifyContent: "center",
+                                    alignItems: "center",
+                                    backgroundColor: this.state.catogeries === "packages" ? "#FD6958" : "#fff",
+                                }}
                                 onPress={() => { this.setState({ catogeries: "packages" }) }}
                             >
                                 <Text style={{ color: this.state.catogeries === "packages" ? "#fff" : "#FD6958", fontSize: 13 }}>Packages & Offers</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity style={{
-                                flex: 1,
-                                justifyContent: "center",
-                                alignItems: "center",
-                                backgroundColor: this.state.catogeries === "price" ? "#FD6958" : "#fff",
-                            }}
+                            <TouchableOpacity
+                                // onPress={() => Actions.ServiceDetaild()}
+                                style={{
+                                    flex: 1,
+                                    justifyContent: "center",
+                                    alignItems: "center",
+                                    backgroundColor: this.state.catogeries === "price" ? "#FD6958" : "#fff",
+                                }}
                                 onPress={() => { this.setState({ catogeries: "price" }) }}
                             >
                                 <Text style={{ color: this.state.catogeries === "price" ? "#fff" : "#FD6958", fontSize: 13 }}>Price Table</Text>

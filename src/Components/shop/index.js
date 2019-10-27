@@ -18,6 +18,8 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import ImageSlider from 'react-native-image-slider';
 import shopImage from '../../../assets/Group55346.png';
+import { Actions } from 'react-native-router-flux';
+
 let img = require("../../../assets/Group55346.png")
 const imagesUri = [
     'https://placeimg.com/640/640/nature',
@@ -60,35 +62,37 @@ class shop extends Component {
         const { activeColor } = this.state
         return (
             <View style={{ flex: 1 }}>
-                <SafeAreaView style={styles.container}>
+                <SafeAreaView style={styles.container} >
                     <Image
-                    source={require("../../../assets/Group55346.png")} resizeMode="contain" style={{width:"100%",height:250}}
+                        source={require("../../../assets/Group55346.png")} resizeMode="cover" style={{ width: "100%", height: 250 }}
                     />
-                                <TouchableOpacity style={{ width: 25, position: 'absolute', top: 0, left: 30, right: 0, bottom: 130, justifyContent: "center" }}>
-                                    <Ionicons name="ios-arrow-back" style={{ color: "#fff", fontWeight: 'bold', fontSize: 28 }} />
-                                </TouchableOpacity>
-                                <View style={{ position: 'absolute', top: 80, left: 30, right: 0, bottom: 0, justifyContent: "center" }}>
-                                    <Text style={{ color: "#fff", fontSize: 18 }}>Rayan BarberShop</Text>
-                                </View>
-                                <View style={{ position: 'absolute', top: 120, left: 30, right: 0, bottom: 0, justifyContent: "center" }}>
-                                    <Text style={{ color: "#fff", fontSize: 14 }}>47B R-Block Modern, London</Text>
-                                </View>
-                                <View style={{ position: 'absolute', top: 170, left: 30, right: 260, bottom: 0, justifyContent: "center", flexDirection: "row" }}>
-                                    <Entypo name="star" style={{ color: "#EBAC43", fontWeight: 'bold', fontSize: 16 }} />
-                                    <Entypo name="star" style={{ color: "#EBAC43", fontWeight: 'bold', fontSize: 16 }} />
-                                    <Entypo name="star" style={{ color: "#EBAC43", fontWeight: 'bold', fontSize: 16 }} />
-                                    <Entypo name="star" style={{ color: "#EBAC43", fontWeight: 'bold', fontSize: 16 }} />
-                                    <Entypo name="star" style={{ color: "#fff", fontWeight: 'bold', fontSize: 16 }} />
-                                </View>
-                                <TouchableOpacity style={{borderColor:"green",borderWidth:1, borderRadius:4,justifyContent:"center",alignItems:"center", position: 'absolute',   right: 20, bottom: 20,width:55, justifyContent: "center" }}>
-                                <Text style={{ color: "green", fontSize: 14 }}>Open</Text>
-                                </TouchableOpacity>
+                    <TouchableOpacity onPress={() => Actions.pop()}
+                        style={{ width: 25, position: 'absolute', top: 0, left: 30, right: 0, bottom: 130, justifyContent: "center" }}>
+                        <Ionicons name="ios-arrow-back" style={{ color: "#fff", fontWeight: 'bold', fontSize: 28 }} />
+                    </TouchableOpacity>
+                    <View style={{ position: 'absolute', top: "35%", left: 30, right: 0, bottom: 0, justifyContent: "center" }}>
+                        <Text style={{ color: "#fff", fontSize: 18 }}>Rayan BarberShop</Text>
+                    </View>
+                    <View style={{ position: 'absolute', top: "53%", left: 30, right: 0, marginTop: 5, bottom: 0, justifyContent: "center" }}>
+                        <Text style={{ color: "#fff", fontSize: 14 }}>47B R-Block Modern, London</Text>
+                    </View>
+                    <View style={{ position: 'absolute', top: "80%", left: 30, bottom: 0, marginTop: 5, justifyContent: "center", flexDirection: "row" }}>
+                        <Entypo name="star" style={{ color: "#EBAC43", fontWeight: 'bold', fontSize: 16 }} />
+                        <Entypo name="star" style={{ color: "#EBAC43", fontWeight: 'bold', fontSize: 16 }} />
+                        <Entypo name="star" style={{ color: "#EBAC43", fontWeight: 'bold', fontSize: 16 }} />
+                        <Entypo name="star" style={{ color: "#EBAC43", fontWeight: 'bold', fontSize: 16 }} />
+                        <Entypo name="star" style={{ color: "#fff", fontWeight: 'bold', fontSize: 16 }} />
+                    </View>
+                    <TouchableOpacity style={{ borderColor: "#16BE4E", borderWidth: 1, borderRadius: 4, justifyContent: "center", alignItems: "center", position: 'absolute', right: 20, bottom: 20, height: 30, width: 65, justifyContent: "center" }}>
+                        <Text style={{ color: "#16BE4E", fontSize: 14 }}>Open</Text>
+                    </TouchableOpacity>
 
 
                 </SafeAreaView>
 
                 <View style={{ flex: 0.65, backgroundColor: "#fff" }}>
-                    <ScrollView>
+                    <ScrollView contentContainerStyle={styles.contentContainer}
+                    >
 
                         <View style={{ flexDirection: "row", justifyContent: "space-between", paddingHorizontal: "10%", paddingVertical: "5%" }}>
                             <View>
@@ -346,7 +350,7 @@ const styles = StyleSheet.create({
     },
     container: {
         flex: 0.35,
-        backgroundColor:"black"
+        backgroundColor: "black"
     },
     containerForModal: {
         // flex: 1,

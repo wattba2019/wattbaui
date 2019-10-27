@@ -10,6 +10,7 @@ import { connect } from "react-redux";
 import { Actions } from 'react-native-router-flux';
 // import ShopsCards from '../../../Components/shopscards';
 import BasicInfo from '../shop/basicInfo';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 
 
@@ -65,12 +66,17 @@ class BarberDetails extends Component {
                         // alignItems: "center",
                         // backgroundColor: "red"
                     }}>
-                        <TouchableOpacity
+                        {/* <TouchableOpacity
                             onPress={() => Actions.pop()}
                         >
                             <Image source={require('../../../assets/ArrowLeft.png')} resizeMode="contain"
                                 style={{ height: 20, width: 20, marginLeft: 25 }}
                             />
+                        </TouchableOpacity> */}
+
+                        <TouchableOpacity onPress={() => Actions.pop()}
+                        >
+                            <Ionicons name="ios-arrow-back" style={{ marginLeft: 25, color: "black", fontWeight: 'bold', fontSize: 28 }} />
                         </TouchableOpacity>
                     </View>
 
@@ -143,7 +149,7 @@ class BarberDetails extends Component {
                             style={{ width: "70%", height: 50, marginTop: 30, marginHorizontal: "15%", marginBottom: 20 }}
                         >
                             <TouchableOpacity
-                            // onPress={() => Actions.Allowaccesslocation()}
+                            onPress={() => Actions.ChooseService()}
                             >
                                 <ImageBackground source={require('../../../assets/buttonBackground.png')} resizeMode="contain"
                                     style={{ height: "100%", width: "100%", justifyContent: "center", }}
@@ -183,7 +189,7 @@ class BarberDetails extends Component {
                                     </TabHeading>
                                 }
                             >
-                                <View style={{ flex: 1,justifyContent: "center", alignItems: "center" }}>
+                                <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
                                     <Text>Under Development</Text>
                                 </View>
                             </Tab>

@@ -65,7 +65,10 @@ class Filters extends Component {
                         alignItems: "center",
                         // backgroundColor: "gray"
                     }}>
-                        <TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={() => Actions.SearchResults()}
+
+                        >
                             <Text style={{ marginTop: 10, color: "#FD6958" }}>Save</Text>
                         </TouchableOpacity>
                     </View>

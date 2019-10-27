@@ -34,30 +34,30 @@ class Gallery extends Component {
             <View style={{ paddingHorizontal: 10 }}>
                 <View>
                     <Image
-                        resizeMode="contain" style={{ width: "100%", height: 250 }}
+                        resizeMode="contain" style={{ width: "100%", height: 250, marginTop: 20 }}
                         source={require('../../../assets/ODUD5I0.png')}
                     />
                 </View>
 
                 <View style={{ flexDirection: "row", width: "100%", }}>
 
-                    <View style={{  width: "100%", flex:1}}>
+                    <View style={{ width: "100%", flex: 1,}}>
                         <Image
-                            resizeMode="contain" style={{ width: "100%", height: 250 }}
+                            resizeMode="contain" style={{ width: "100%", height: 250, marginTop: 20 }}
                             source={require('../../../assets/benjamin-raffetseder-1069591-unsplash.png')}
                         />
                         <Image
-                            resizeMode="contain" style={{ width: "100%", height: 250,marginTop:15}}
+                            resizeMode="contain" style={{ width: "100%", height: 250, marginTop: 20 }}
                             source={require('../../../assets/stefan-stefancik-1203044-unsplash.png')}
                         />
                     </View>
-                    <View style={{  width: "100%", flex:1}}>
+                    <View style={{ width: "100%", flex: 1 }}>
                         <Image
-                            resizeMode="contain" style={{ width: "100%",  height: 150 }}
+                            resizeMode="contain" style={{ width: "100%", height: 150, marginTop: 20 }}
                             source={require('../../../assets/radoslaw-prekurat-148700-unsplash.png')}
                         />
                         <Image
-                            resizeMode="contain" style={{ width: "100%", height: 150,marginTop:10  }}
+                            resizeMode="contain" style={{ width: "100%", height: 150, marginTop: 20 }}
                             source={require('../../../assets/brooke-lark-158019-unsplash.png')}
                         />
                     </View>

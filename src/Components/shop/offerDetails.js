@@ -10,6 +10,7 @@ import { Actions } from 'react-native-router-flux';
 
 //icons import
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 class OfferDetails extends Component {
     constructor(props) {
@@ -42,6 +43,11 @@ class OfferDetails extends Component {
                     <Image source={require('../../../assets/servicedetails.png')} resizeMode="cover"
                         style={{ height: "110%", width: "100%", }}
                     />
+
+                    <TouchableOpacity onPress={() => Actions.pop()}
+                        style={{ width: 25, position: 'absolute', top: -30, left: 30, right: 0, bottom: 130, justifyContent: "center" }}>
+                        <Ionicons name="ios-arrow-back" style={{ color: "#fff", fontWeight: 'bold', fontSize: 28 }} />
+                    </TouchableOpacity>
                 </View>
 
 
@@ -96,7 +102,7 @@ class OfferDetails extends Component {
                                 flex: 1, flexDirection: "row",
                                 // backgroundColor: "red"
                             }}>
-                                <AntDesign name="check" style={{ marginLeft: "5%", color: '#FD6958',  fontSize: 20 }} />
+                                <AntDesign name="check" style={{ marginLeft: "5%", color: '#FD6958', fontSize: 20 }} />
                                 <Text style={{ color: "#000000", fontSize: 16, marginLeft: 10 }}>Hair Styling</Text>
                             </View>
 
@@ -104,7 +110,7 @@ class OfferDetails extends Component {
                                 flex: 1, flexDirection: "row",
                                 // backgroundColor: "grey"
                             }}>
-                                <AntDesign name="check" style={{ marginLeft: "5%", color: '#FD6958',  fontSize: 20 }} />
+                                <AntDesign name="check" style={{ marginLeft: "5%", color: '#FD6958', fontSize: 20 }} />
                                 <Text style={{ color: "#000000", fontSize: 16, marginLeft: 10 }}>Hair Color</Text>
                             </View>
                         </View>
@@ -117,7 +123,7 @@ class OfferDetails extends Component {
                                 flex: 1, flexDirection: "row",
                                 // backgroundColor: "red"
                             }}>
-                                <AntDesign name="check" style={{ marginLeft: "5%", color: '#FD6958',  fontSize: 20 }} />
+                                <AntDesign name="check" style={{ marginLeft: "5%", color: '#FD6958', fontSize: 20 }} />
                                 <Text style={{ color: "#000000", fontSize: 16, marginLeft: 10 }}>Spa</Text>
                             </View>
 
@@ -125,7 +131,7 @@ class OfferDetails extends Component {
                                 flex: 1, flexDirection: "row",
                                 // backgroundColor: "grey"
                             }}>
-                                <AntDesign name="check" style={{ marginLeft: "5%", color: '#FD6958',  fontSize: 20 }} />
+                                <AntDesign name="check" style={{ marginLeft: "5%", color: '#FD6958', fontSize: 20 }} />
                                 <Text style={{ color: "#000000", fontSize: 16, marginLeft: 10 }}>Facial</Text>
                             </View>
                         </View>

@@ -8,6 +8,7 @@ import {
 import { connect } from "react-redux";
 import { Actions } from 'react-native-router-flux';
 // import ShopsCards from '../../../Components/shopscards';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 
 
@@ -29,7 +30,7 @@ class SearchResults extends Component {
                 <StatusBar backgroundColor="white" barStyle="dark-content" />
 
                 <View style={{
-                    flex: 0.8,
+                    flex: 0.7,
                     flexDirection: "row",
                     borderBottomWidth: 0.5,
                     borderBottomColor: 'grey',
@@ -44,12 +45,18 @@ class SearchResults extends Component {
                         // alignItems: "center",
                         // backgroundColor: "red"
                     }}>
-                        <TouchableOpacity
+                        {/* <TouchableOpacity
                             onPress={() => Actions.pop()}
                         >
                             <Image source={require('../../../../assets/ArrowLeft.png')} resizeMode="contain"
                                 style={{ height: 20, width: 20, marginLeft: 25 }}
                             />
+                        </TouchableOpacity> */}
+
+
+                        <TouchableOpacity onPress={() => Actions.pop()}
+                        >
+                            <Ionicons name="ios-arrow-back" style={{ marginLeft: 25, color: "black", fontWeight: 'bold', fontSize: 28 }} />
                         </TouchableOpacity>
                     </View>
 
@@ -84,15 +91,18 @@ class SearchResults extends Component {
                 }}>
 
                     <ScrollView>
-                        <View style={{
-                            flexDirection: "row",
-                            height: 100,
-                            marginTop: 10,
-                            marginLeft: 10,
-                            borderBottomWidth: 0.5,
-                            borderBottomColor: 'grey'
-                            // backgroundColor: 'red'
-                        }}>
+                        <TouchableOpacity
+                            onPress={() => Actions.Shop()}
+
+                            style={{
+                                flexDirection: "row",
+                                height: 100,
+                                marginTop: 10,
+                                marginLeft: 10,
+                                borderBottomWidth: 0.5,
+                                borderBottomColor: 'grey'
+                                // backgroundColor: 'red'
+                            }}>
 
                             <View style={{
                                 flex: 3,
@@ -171,17 +181,19 @@ class SearchResults extends Component {
 
                             </View>
 
-                        </View>
+                        </TouchableOpacity>
 
-                        <View style={{
-                            flexDirection: "row",
-                            height: 100,
-                            marginTop: 10,
-                            marginLeft: 10,
-                            borderBottomWidth: 0.5,
-                            borderBottomColor: 'grey'
-                            // backgroundColor: 'red'
-                        }}>
+                        <TouchableOpacity
+                            onPress={() => Actions.Shop()}
+                            style={{
+                                flexDirection: "row",
+                                height: 100,
+                                marginTop: 10,
+                                marginLeft: 10,
+                                borderBottomWidth: 0.5,
+                                borderBottomColor: 'grey'
+                                // backgroundColor: 'red'
+                            }}>
 
                             <View style={{
                                 flex: 3,
@@ -260,16 +272,19 @@ class SearchResults extends Component {
 
                             </View>
 
-                        </View>
-                        <View style={{
-                            flexDirection: "row",
-                            height: 100,
-                            marginTop: 10,
-                            marginLeft: 10,
-                            borderBottomWidth: 0.5,
-                            borderBottomColor: 'grey'
-                            // backgroundColor: 'red'
-                        }}>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity
+                            onPress={() => Actions.Shop()}
+                            style={{
+                                flexDirection: "row",
+                                height: 100,
+                                marginTop: 10,
+                                marginLeft: 10,
+                                borderBottomWidth: 0.5,
+                                borderBottomColor: 'grey'
+                                // backgroundColor: 'red'
+                            }}>
 
                             <View style={{
                                 flex: 3,
@@ -347,7 +362,7 @@ class SearchResults extends Component {
 
 
                             </View>
-                        </View>
+                        </TouchableOpacity>
 
 
 

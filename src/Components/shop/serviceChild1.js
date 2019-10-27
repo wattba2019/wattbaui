@@ -18,6 +18,8 @@ import surface2 from '../../../assets/surface-2.png';
 import dye from '../../../assets/dye.png';
 import makeup from '../../../assets/makeup.png';
 import mascara from '../../../assets/mascara.png';
+import { Actions } from 'react-native-router-flux';
+
 const DATA = [
     {
         image: womenHairstyling,
@@ -66,37 +68,39 @@ class ServiceChild1 extends Component {
     render() {
         const { activeColor } = this.state
         return (
-            <View style={{ paddingVertical: 5, paddingHorizontal: 15 }}>
+            <View style={{ paddingVertical: 5, paddingHorizontal: 15, width: "90%", marginHorizontal: "5%" }}>
 
-            <FlatList
-                data={DATA}
-                renderItem={({ item }) => (
-                    <View style={{ marginTop: 25, flexDirection: "row",flex:1 }}>
-                        <View style={{flex:2}}>
-                            <Image
-                                resizeMode="contain"
-                                style={{ width: 35, height: 35 }}
-                                source={item.image}
-                            />
-                        </View>
-                        <View style={{flex:7}}>
-                            <Text>{item.heading}</Text>
-                            <Text style={{fontSize:11,color:"grey"}}>{item.type} Types</Text>
-                        </View>
-                        <TouchableOpacity style={{flex:1}}>
-                            <Text style={{fontSize:11,color:"#FD6958"}}>View</Text>
+                <FlatList
+                    data={DATA}
+                    renderItem={({ item }) => (
+                        <TouchableOpacity
+                            onPress={() => Actions.ServiceDetaild()}
+                            style={{ marginTop: 25, flexDirection: "row", flex: 1 }}>
+                            <View style={{ flex: 2 }}>
+                                <Image
+                                    resizeMode="contain"
+                                    style={{ width: 35, height: 35 }}
+                                    source={item.image}
+                                />
+                            </View>
+                            <View style={{ flex: 7 }}>
+                                <Text>{item.heading}</Text>
+                                <Text style={{ fontSize: 11, color: "grey" }}>{item.type} Types</Text>
+                            </View>
+                            <TouchableOpacity style={{ flex: 1 }}>
+                                <Text style={{ fontSize: 11, color: "#FD6958" }}>View</Text>
+                            </TouchableOpacity>
+
+
+
+
                         </TouchableOpacity>
+                    )}
+                // keyExtractor={item => item.id}
+                // extraData={selected}
+                />
 
-
-
-
-                    </View>
-                )}
-            // keyExtractor={item => item.id}
-            // extraData={selected}
-            />
-
-        </View>
+            </View>
         );
     }
 }

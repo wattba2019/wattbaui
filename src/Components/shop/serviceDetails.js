@@ -7,6 +7,7 @@ import {
 } from 'react-native';
 import { connect } from "react-redux";
 import { Actions } from 'react-native-router-flux';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 
 class ServiceDetaild extends Component {
@@ -40,6 +41,10 @@ class ServiceDetaild extends Component {
                     <Image source={require('../../../assets/servicedetails.png')} resizeMode="cover"
                         style={{ height: "110%", width: "100%", }}
                     />
+                    <TouchableOpacity onPress={() => Actions.pop()}
+                        style={{ width: 25, position: 'absolute', top: -30, left: 30, right: 0, bottom: 130, justifyContent: "center" }}>
+                        <Ionicons name="ios-arrow-back" style={{ color: "#fff", fontWeight: 'bold', fontSize: 28 }} />
+                    </TouchableOpacity>
                 </View>
 
 
@@ -127,7 +132,7 @@ class ServiceDetaild extends Component {
                             style={{ width: "85%", height: 50, marginTop: 30, }}
                         >
                             <TouchableOpacity
-                                // onPress={() => Actions.Allowaccesslocation()}
+                            // onPress={() => Actions.Allowaccesslocation()}
                             >
                                 <ImageBackground source={require('../../../assets/buttonBackground.png')} resizeMode="contain"
                                     style={{ height: "100%", width: "100%", justifyContent: "center", }}
