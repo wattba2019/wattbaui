@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import { Container, Header, Content, Footer, FooterTab, Button, Icon } from 'native-base';
 import Home from '../App/home/index';
 import Nearby from '../App/nearby/index';
+import Appointments from '../App/appointments/index';
+import Profile from '../App/profile/index'
 
 
 class AppContainer extends Component {
@@ -13,6 +15,15 @@ class AppContainer extends Component {
             rout: "Home"
         }
     }
+
+    componentWillMount() {
+        if (this.props.rout) {
+            this.setState({
+                rout: this.props.rout
+            })
+        }
+    }
+
 
 
     render() {
@@ -28,6 +39,12 @@ class AppContainer extends Component {
                     }
                     {
                         (this.state.rout === "Nearby") ? (<Nearby />) : null
+                    }
+                    {
+                        (this.state.rout === "Appointments") ? (<Appointments />) : null
+                    }
+                    {
+                        (this.state.rout === "Profile") ? (<Profile />) : null
                     }
 
 

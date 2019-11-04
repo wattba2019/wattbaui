@@ -46,29 +46,20 @@ class BookAppointment extends Component {
                     borderBottomColor: 'grey',
 
                 }}>
-                    <View style={{
-                        flex: 1,
-                        justifyContent: "center",
-                    }}>
+                    <View style={{ position: "absolute" }}>
+                        <TouchableOpacity onPress={() => Actions.pop()}>
+                            <Entypo name="cross" style={{ marginLeft: 15, top: 10, color: "black", fontSize: 25 }} />
 
-                        <TouchableOpacity onPress={() => Actions.pop()}
-                        >
-                            <Entypo name="cross" style={{ marginLeft: 15, color: "black", fontSize: 25 }} />
+                            {/* <AntDesign name="arrowleft" style={{ marginLeft: 15, color: "#ffffff", fontSize: 25 }} /> */}
                         </TouchableOpacity>
                     </View>
 
                     <View style={{
-                        flex: 1,
-                        justifyContent: "center", alignItems: "center",
-                        // backgroundColor: "green"
+                        width: "100%",
+                        justifyContent: "center",
+                        alignItems: "center",
                     }}>
-                        <Text style={{ alignItems: "center", }}>Book Appointment</Text>
-                    </View>
-
-                    <View style={{
-                        flex: 1,
-                        // backgroundColor: "red"
-                    }}>
+                        <Text style={{ alignItems: "center", fontSize: 15 }}>Book Appointment</Text>
                     </View>
                 </View>
                 <View style={{ flex: 8, }}>
@@ -341,7 +332,8 @@ class BookAppointment extends Component {
                         </View>
                         <View style={{ flex: 1, justifyContent: "center", alignItems: "flex-end", }}>
                             <TouchableOpacity
-                                onPress={() => alert("Under Development")}
+                                // onPress={() => alert("Under Development")}
+                                onPress={() => Actions.Checkout()}
                                 style={{ width: "70%", height: 42, justifyContent: "center", alignItems: "center", backgroundColor: "#FD6958", borderRadius: 8 }}>
                                 <Text style={{ fontWeight: "bold", fontSize: 18, color: "#ffffff" }}>Book</Text>
                             </TouchableOpacity>

@@ -12,6 +12,7 @@ import IconFontAwesome from 'react-native-vector-icons/FontAwesome';
 
 //icons import
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import Entypo from 'react-native-vector-icons/Entypo';
 
 class Nearby extends Component {
     constructor(props) {
@@ -63,7 +64,7 @@ class Nearby extends Component {
                                 justifyContent: "center", alignItems: "center",
                                 // backgroundColor: "green",
                             }}>
-                                <Image source={require('../../../../assets/Path17909.png')} resizeMode="contain"
+                                <Image source={require('../../../../assets/Path27909.png')} resizeMode="contain"
                                     style={{ height: "50%", width: "50%", }}
                                 />
                             </View>
@@ -79,9 +80,10 @@ class Nearby extends Component {
                             // backgroundColor: "green"
                         }}>
                             <TouchableOpacity style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", }}>
-                                <Image source={require('../../../../assets/surface1.png')} resizeMode="contain"
+                                {/* <Image source={require('../../../../assets/surface1.png')} resizeMode="contain"
                                     style={{ width: "20%", }}
-                                />
+                                /> */}
+                                <Entypo name="direction" style={{ color: "#FD6958", fontWeight: 'bold', fontSize: 20 }} />
                                 <Text style={{ color: "#FD6958" }}>CHANGE</Text>
                             </TouchableOpacity>
                         </View>

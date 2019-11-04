@@ -8,6 +8,7 @@ import {
 import { connect } from "react-redux";
 import { Actions } from 'react-native-router-flux';
 // import ShopsCards from '../../../Components/shopscards';
+import Entypo from 'react-native-vector-icons/Entypo';
 
 
 //icons import
@@ -53,9 +54,10 @@ class Home extends Component {
                                 justifyContent: "center", alignItems: "center",
                                 // backgroundColor: "green",
                             }}>
-                                <Image source={require('../../../../assets/Path17909.png')} resizeMode="contain"
+                                <Image source={require('../../../../assets/Path27909.png')} resizeMode="contain"
                                     style={{ height: "50%", width: "50%", }}
                                 />
+
                             </View>
                             <View style={{
                                 flex: 8
@@ -69,9 +71,11 @@ class Home extends Component {
                             // backgroundColor: "green"
                         }}>
                             <TouchableOpacity style={{ flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
-                                <Image source={require('../../../../assets/surface1.png')} resizeMode="contain"
+                                {/* <Image source={require('../../../../assets/surface1.png')} resizeMode="contain"
                                     style={{ width: "20%", }}
-                                />
+                                /> */}
+                                <Entypo name="direction" style={{ color: "#FD6958", fontWeight: 'bold', fontSize: 20 }} />
+
                                 <Text style={{ color: "#FD6958" }}>CHANGE</Text>
                             </TouchableOpacity>
                         </View>

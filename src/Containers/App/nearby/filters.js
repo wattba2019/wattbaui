@@ -24,15 +24,13 @@ class Filters extends Component {
 
     render() {
         return (
-            <ScrollView contentContainerStyle={styles.contentContainer}
-            >
+            <ScrollView contentContainerStyle={styles.contentContainer}>
                 <StatusBar backgroundColor="white" barStyle="dark-content" />
-
                 <View style={{
                     flex: 0.8,
                     flexDirection: "row",
                     borderBottomWidth: 0.5,
-                    borderBottomColor: "#8E8E93"
+                    borderBottomColor: "#8E8E93",
                     // backgroundColor: "red"
                 }}>
                     <View style={{
@@ -67,7 +65,6 @@ class Filters extends Component {
                     }}>
                         <TouchableOpacity
                             onPress={() => Actions.SearchResults()}
-
                         >
                             <Text style={{ marginTop: 10, color: "#FD6958" }}>Save</Text>
                         </TouchableOpacity>
@@ -78,11 +75,12 @@ class Filters extends Component {
                     flex: 8,
                     justifyContent: "center",
                     alignItems: "center",
-                    width: "100%"
+                    width: "100%",
+                    marginTop: 10,
                     // backgroundColor: "green"
                 }}>
                     <View style={{
-                        width: "90%", marginTop: 10, flexDirection: "row",
+                        width: "90%", marginTop: 65, flexDirection: "row",
                         // backgroundColor: "green"
                     }}>
                         <Text style={{ color: "#4A4A4A", fontSize: 16 }}>Location</Text>

@@ -74,39 +74,21 @@ class ChooseService extends Component {
                     // alignItems: "center", 
                     // backgroundColor: 'red'
                 }}>
-                    <View style={{
-                        flex: 1,
-                        justifyContent: "center",
-                        // alignItems: "center",
-                        // backgroundColor: "red"
-                    }}>
-                        {/* <TouchableOpacity
-                            onPress={() => Actions.pop()}
-                        >
-                            <Image source={require('../../../assets/ArrowLeft.png')} resizeMode="contain"
-                                style={{ height: 20, width: 20, marginLeft: 25 }}
-                            />
-                        </TouchableOpacity> */}
 
-                        <TouchableOpacity onPress={() => Actions.pop()}
-                        >
-                            <Entypo name="cross" style={{ marginLeft: 15, color: "black", fontSize: 25 }} />
+                    <View style={{ position: "absolute" }}>
+                        <TouchableOpacity onPress={() => Actions.pop()}>
+                            <Entypo name="cross" style={{ marginLeft: 15, top: 10, color: "black", fontSize: 25 }} />
                         </TouchableOpacity>
                     </View>
 
                     <View style={{
-                        flex: 1,
-                        justifyContent: "center", alignItems: "center",
-                        // backgroundColor: "green"
+                        width: "100%",
+                        justifyContent: "center",
+                        alignItems: "center",
                     }}>
-                        <Text style={{ alignItems: "center", }}>Book Appointment</Text>
+                        <Text style={{ alignItems: "center", fontSize: 16 }}>Book Appointment</Text>
                     </View>
 
-                    <View style={{
-                        flex: 1,
-                        // backgroundColor: "red"
-                    }}>
-                    </View>
                 </View>
 
 
@@ -182,7 +164,7 @@ class ChooseService extends Component {
 
                                 <View style={{ flex: 0.8, justifyContent: "center", alignItems: "flex-end", backgroundColor: "#F0F0F0" }}>
                                     <Picker
-                                        style={{ width: 200, color: "#8E8E93", }}
+                                        style={{ width: "90%", color: "#8E8E93", }}
                                     // selectedValue={this.state.language}
                                     // onValueChange={(itemValue, itemIndex) =>
                                     //     this.setState({ language: itemValue })
@@ -204,7 +186,7 @@ class ChooseService extends Component {
 
                                 <View style={{ flex: 0.8, justifyContent: "center", alignItems: "flex-end", backgroundColor: "#F0F0F0" }}>
                                     <Picker
-                                        style={{ width: 200, color: "#8E8E93", }}
+                                        style={{ width: "90%", color: "#8E8E93", }}
                                     // selectedValue={this.state.language}
                                     // onValueChange={(itemValue, itemIndex) =>
                                     //     this.setState({ language: itemValue })
@@ -225,7 +207,7 @@ class ChooseService extends Component {
 
                                 <View style={{ flex: 0.8, justifyContent: "center", alignItems: "flex-end", backgroundColor: "#F0F0F0" }}>
                                     <Picker
-                                        style={{ width: 200, color: "#8E8E93", }}
+                                        style={{ width: "90%", color: "#8E8E93", }}
                                     // selectedValue={this.state.language}
                                     // onValueChange={(itemValue, itemIndex) =>
                                     //     this.setState({ language: itemValue })
@@ -246,7 +228,7 @@ class ChooseService extends Component {
 
                                 <View style={{ flex: 0.8, justifyContent: "center", alignItems: "flex-end", backgroundColor: "#F0F0F0" }}>
                                     <Picker
-                                        style={{ width: 200, color: "#8E8E93", }}
+                                        style={{ width: "90%", color: "#8E8E93", }}
                                     // selectedValue={this.state.language}
                                     // onValueChange={(itemValue, itemIndex) =>
                                     //     this.setState({ language: itemValue })
@@ -267,7 +249,7 @@ class ChooseService extends Component {
 
                                 <View style={{ flex: 0.8, justifyContent: "center", alignItems: "flex-end", backgroundColor: "#F0F0F0" }}>
                                     <Picker
-                                        style={{ width: 200, color: "#8E8E93", }}
+                                        style={{ width: "90%", color: "#8E8E93", }}
                                     // selectedValue={this.state.language}
                                     // onValueChange={(itemValue, itemIndex) =>
                                     //     this.setState({ language: itemValue })
@@ -288,7 +270,7 @@ class ChooseService extends Component {
 
                                 <View style={{ flex: 0.8, justifyContent: "center", alignItems: "flex-end", backgroundColor: "#F0F0F0" }}>
                                     <Picker
-                                        style={{ width: 200, color: "#8E8E93", }}
+                                        style={{ width: "90%", color: "#8E8E93", }}
                                     // selectedValue={this.state.language}
                                     // onValueChange={(itemValue, itemIndex) =>
                                     //     this.setState({ language: itemValue })
@@ -309,7 +291,7 @@ class ChooseService extends Component {
 
                                 <View style={{ flex: 0.8, justifyContent: "center", alignItems: "flex-end", backgroundColor: "#F0F0F0" }}>
                                     <Picker
-                                        style={{ width: 200, color: "#8E8E93", }}
+                                        style={{ width: "90%", color: "#8E8E93", }}
                                     // selectedValue={this.state.language}
                                     // onValueChange={(itemValue, itemIndex) =>
                                     //     this.setState({ language: itemValue })

@@ -17,6 +17,11 @@ import ServiceDetaild from '../Components/shop/serviceDetails'
 import OfferDetails from '../Components/shop/offerDetails'
 import BarberDetails from '../Components/shop/barberDetails'
 import ChooseService from '../Components/shop/chooseService'
+import Checkout from '../Components/shop/checkout'
+import Submited from '../Components/shop/submited'
+import Appointments from '../Containers/App/appointments/index'
+import AppointmentDetails from '../Containers/App/appointments/appointmentsDetails'
+import Profile from '../Containers/App/profile/index'
 
 class Route extends Component {
   render() {
@@ -42,6 +47,11 @@ class Route extends Component {
           <Scene key='BarberDetails' component={BarberDetails} hideNavBar={true} />
           <Scene key='ChooseService' component={ChooseService} hideNavBar={true} />
           <Scene key='Bookappointment' component={Bookappointment} hideNavBar={true} />
+          <Scene key='Checkout' component={Checkout} hideNavBar={true} />
+          <Scene key='Submited' component={Submited} hideNavBar={true} />
+          <Scene key='Appointments' component={Appointments} hideNavBar={true} />
+          <Scene key='AppointmentDetails' component={AppointmentDetails} hideNavBar={true} />
+          <Scene key='Profile' component={Profile} hideNavBar={true} />
         </Scene>
       </Router>
     )
