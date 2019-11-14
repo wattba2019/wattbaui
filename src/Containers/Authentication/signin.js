@@ -7,18 +7,61 @@ import {
 } from 'react-native';
 import { connect } from "react-redux";
 import { Actions } from 'react-native-router-flux';
-
+import axios from 'axios';
 
 class Signin extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            email: "",
-            password: ""
+            loader: false,
+            email: "abddullahshah@gmail.com",
+            password: "12345678"
         };
     }
 
+    signin = () => {
+        let { email, password } = this.state;
+
+        this.setState({
+            loader: !this.state.loader
+        })
+        let cloneSignUpData = {
+            email,
+            password
+        }
+        console.log(cloneSignUpData, "cloneSignUpData")
+        var options = {
+            method: 'POST',
+            url: `${this.props.bseUrl}/signine`,
+            headers:
+            {
+                'cache-control': 'no-cache',
+                "Allow-Cross-Origin": '*',
+            },
+            data: cloneSignUpData
+        };
+        axios(options)
+            .then((data) => {
+                console.log(data, "USER_LOGIN_SUCCESSFULLY")
+                this.setState({
+                    loader: !this.state.loader
+                })
+                Actions.Allowaccesslocation()
+            }).catch((err) => {
+                console.log(err.response.data.message, "ERROR_ON_SIGN_IN")
+                alert(err.response.data.message)
+                this.setState({
+                    loader: !this.state.loader
+                })
+            })
+
+
+    }
+
+
     render() {
+        let { email, password, loader } = this.state;
+
         return (
             <ImageBackground source={require('../../../assets/background.png')}
                 style={{
@@ -75,8 +118,8 @@ class Signin extends Component {
                         >
                             <TextInput
                                 style={{ height: 50, width: "90%", }}
-                                // onChangeText={text => onChangeText(text)}
-                                value={this.state.email}
+                                onChangeText={(email) => this.setState({ email })}
+                                value={email}
                                 placeholder={"Email"}
                             />
                         </View>
@@ -85,9 +128,10 @@ class Signin extends Component {
                             style={{ width: "85%", marginTop: 10, borderColor: 'gray', backgroundColor: "#E8E6E7", borderRadius: 25, justifyContent: "center", alignItems: "center" }}
                         >
                             <TextInput
+                                secureTextEntry
                                 style={{ height: 50, width: "90%", }}
-                                // onChangeText={text => onChangeText(text)}
-                                value={this.state.email}
+                                onChangeText={(password) => this.setState({ password })}
+                                value={password}
                                 placeholder={"Password"}
                             />
                         </View>
@@ -96,23 +140,24 @@ class Signin extends Component {
                             style={{ width: "85%", height: 50, marginTop: 30, }}
                         >
                             <TouchableOpacity
-                                onPress={() => Actions.Allowaccesslocation()}
+                                onPress={() => this.signin()}
                             >
                                 <ImageBackground source={require('../../../assets/buttonBackground.png')} resizeMode="contain"
                                     style={{ height: "100%", width: "100%", justifyContent: "center", }}
                                 >
-                                    <Text style={{ textAlign: "center", fontSize: 15, margin: 12, color: "white" }}>Login</Text>
+                                    {
+                                        (loader != true) ? (
+                                            <Text style={{ textAlign: "center", fontSize: 15, margin: 12, color: "white" }}>Login</Text>
+                                        ) : <ActivityIndicator style={{ color: "orange" }} />
+                                    }
                                 </ImageBackground>
                             </TouchableOpacity>
-
                         </View>
-
                         <TouchableOpacity
                             onPress={() => Actions.Forgotyourpassword()}
                         >
                             <Text style={{ textAlign: "center", fontSize: 15, marginTop: 20, color: "black" }}>Forgot your password?</Text>
                         </TouchableOpacity>
-
                         <TouchableOpacity
                             style={{ flexDirection: "row", marginTop: 10, }}
                             onPress={() => Actions.Signup()}
@@ -120,11 +165,7 @@ class Signin extends Component {
                             <Text style={{ textAlign: "center", fontSize: 15, color: "#B7B7C0" }}>Don't have an account? </Text>
                             <Text style={{ textAlign: "center", fontSize: 15, color: "#F28602" }}>Sign up</Text>
                         </TouchableOpacity>
-
-
                     </View>
-
-
                 </ScrollView>
             </ImageBackground>
 
@@ -134,7 +175,7 @@ class Signin extends Component {
 }
 let mapStateToProps = state => {
     return {
-
+        bseUrl: state.root.bseUrl,
     };
 };
 function mapDispatchToProps(dispatch) {

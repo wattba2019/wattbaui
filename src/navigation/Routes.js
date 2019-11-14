@@ -4,6 +4,7 @@ import SplashScreen from '../Containers/SplashScreen/index'
 import Walkthrough from '../Containers/Authentication/index'
 import Signin from '../Containers/Authentication/signin'
 import Forgotyourpassword from '../Containers/Authentication/forgotyourpassword'
+import VerifyCode from '../Containers/Authentication/verifycode'
 import Signup from '../Containers/Authentication/signup'
 import Phoneverification from '../Containers/Authentication/phoneveryfication'
 import Veryfiyournumber from '../Containers/Authentication/verifyyournumber'
@@ -34,6 +35,7 @@ class Route extends Component {
           <Scene key='Walkthrough' component={Walkthrough} hideNavBar={true} />
           <Scene key='Signin' component={Signin} hideNavBar={true} />
           <Scene key='Forgotyourpassword' component={Forgotyourpassword} hideNavBar={true} />
+          <Scene key='VerifyCode' component={VerifyCode} hideNavBar={true} />
           <Scene key='Signup' component={Signup} hideNavBar={true} />
           <Scene key='Phoneverification' component={Phoneverification} hideNavBar={true} />
           <Scene key='Veryfiyournumber' component={Veryfiyournumber} hideNavBar={true} />

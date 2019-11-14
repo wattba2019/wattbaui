@@ -9,32 +9,33 @@ import { connect } from "react-redux";
 import { Actions } from 'react-native-router-flux';
 import axios from 'axios';
 
-import UpdatePassword from '../../Components/updatePassword';
+import ChangePassword from '../../Containers/Authentication/changepassword';
 
-class Forgotyourpassword extends Component {
+class VerifyCode extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            // email: "abddullahshah@gmail.com",
+            // code: "abddullahshah@gmail.com",
             sendPassword: false,
+            changePassword: false,
             loader: false
         };
     }
-    sendEmail = () => {
-        let { email, } = this.state;
-
-        if (email) {
+    verifyCode = () => {
+        let { code } = this.state;
+        if (code) {
             this.setState({
                 loader: !this.state.loader
             })
             let cloneSignUpData = {
-                email,
-                createdAt: new Date().getTime()
+                email: this.props.email,
+                code: code,
+                timestampp: new Date().getTime()
             }
             console.log(cloneSignUpData, "cloneSignUpData")
             var options = {
                 method: 'POST',
-                url: `${this.props.bseUrl}/resetpassword/sendcode`,
+                url: `${this.props.bseUrl}/resetpassword/verifycode`,
                 headers:
                 {
                     'cache-control': 'no-cache',
@@ -44,14 +45,15 @@ class Forgotyourpassword extends Component {
             };
             axios(options)
                 .then((data) => {
-                    console.log(data, "SEND_EMAIL_SUCCESSFULLY")
+                    console.log(data, "VERIFY_CODE_SUCCESSFULLY")
                     this.setState({
                         loader: !this.state.loader,
-                        sendPassword: !this.state.sendPassword
+                        changePassword: !this.state.changePassword
                     })
-                    Actions.VerifyCode({ email: email, })
+                    Actions.Signin()
+                    // Actions.Allowaccesslocation()
                 }).catch((err) => {
-                    console.log(err.response.data.message, "ERROR_ON_SEND_EMAIL_")
+                    console.log(err.response.data.message, "ERROR_ON_VERIFY_CODE_")
                     alert(err.response.data.message)
                     this.setState({
                         loader: !this.state.loader
@@ -59,12 +61,12 @@ class Forgotyourpassword extends Component {
                 })
         }
         else {
-            alert("Email are required")
+            alert("Code are required")
         }
     }
 
     render() {
-        let { email, loader } = this.state;
+        let { code, loader } = this.state;
 
         return (
             <ImageBackground source={require('../../../assets/background.png')}
@@ -75,10 +77,15 @@ class Forgotyourpassword extends Component {
                     width: "100%"
                 }}>
                 <StatusBar backgroundColor="#F86078" barStyle="dark-content" />
-                {/* Email send alert */}
+
+                {/* Change Password Modal*/}
                 {
-                    (this.state.sendPassword === true) ? (
-                        <UpdatePassword />
+                    (this.state.changePassword === true) ? (
+                        <ChangePassword email={this.props.email} closeModal={(data) => {
+                            this.setState({
+                                deleteProfileModal: data
+                            })
+                        }} />
                     ) : null
                 }
                 <View
@@ -123,17 +130,17 @@ class Forgotyourpassword extends Component {
                     }}
                 >
                     <View style={{ justifyContent: "center", alignItems: "center", width: "100%", marginTop: "4%" }}>
-                        <Text style={{ fontSize: 30 }}>Forgot password</Text>
-                        <Text style={{ color: "grey", textAlign: "center" }}>we will need just your email to send you {"\n"} password reset instruction</Text>
+                        <Text style={{ fontSize: 30 }}>Find Your Account</Text>
+                        <Text style={{ color: "grey", textAlign: "center" }}>Type 6 digit code</Text>
                         <View
                             style={{ width: "85%", marginTop: 40, borderColor: 'gray', backgroundColor: "#E8E6E7", borderRadius: 25, justifyContent: "center", alignItems: "center" }}
                         >
                             {/* email input */}
                             <TextInput
                                 style={{ height: 50, width: "90%", }}
-                                onChangeText={(email) => this.setState({ email })}
-                                value={email}
-                                placeholder={"Email"}
+                                onChangeText={(code) => this.setState({ code })}
+                                value={code}
+                                placeholder={"Verification Code"}
                             />
                         </View>
                         {/* Submit Button */}
@@ -141,29 +148,28 @@ class Forgotyourpassword extends Component {
                             style={{ width: "85%", height: 50, marginTop: 30, }}
                         >
                             <TouchableOpacity
-                                onPress={() => this.sendEmail()}
+                                onPress={() => this.verifyCode()}
                             >
                                 <ImageBackground source={require('../../../assets/buttonBackground.png')} resizeMode="contain"
                                     style={{ height: "100%", width: "100%", justifyContent: "center", }}
                                 >
                                     {
                                         (loader != true) ? (
-                                            <Text style={{ textAlign: "center", fontSize: 15, margin: 12, color: "white" }}>Reset Password</Text>
+                                            <Text style={{ textAlign: "center", fontSize: 15, margin: 12, color: "white" }}>Done</Text>
                                         ) : <ActivityIndicator style={{ color: "orange" }} />
                                     }
                                 </ImageBackground>
                             </TouchableOpacity>
-
                         </View>
+                        {/* Resend code */}
                         <TouchableOpacity
-                            onPress={() => Actions.Signin()}
+                            onPress={() => Actions.Forgotyourpassword()}
                         >
-                            <Text style={{ textAlign: "center", fontSize: 15, marginTop: 20, color: "black" }}>back to login</Text>
+                            <Text style={{ textAlign: "center", fontSize: 15, marginTop: 20, color: "black" }}>Resend Code</Text>
                         </TouchableOpacity>
                     </View>
                 </ScrollView>
             </ImageBackground>
-
 
         );
     }
@@ -177,4 +183,4 @@ function mapDispatchToProps(dispatch) {
     return ({
     })
 }
-export default connect(mapStateToProps, mapDispatchToProps)(Forgotyourpassword);
+export default connect(mapStateToProps, mapDispatchToProps)(VerifyCode);
