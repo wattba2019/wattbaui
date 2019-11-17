@@ -31,7 +31,7 @@ class Route extends Component {
         titleStyle={{ color: "white" }}
         tintColor="white">
         <Scene >
-          <Scene key='SplashScreen' component={SplashScreen} hideNavBar={true} initial />
+          <Scene key='SplashScreen' component={SplashScreen} hideNavBar={true} />
           <Scene key='Walkthrough' component={Walkthrough} hideNavBar={true} />
           <Scene key='Signin' component={Signin} hideNavBar={true} />
           <Scene key='Forgotyourpassword' component={Forgotyourpassword} hideNavBar={true} />
@@ -39,7 +39,7 @@ class Route extends Component {
           <Scene key='Signup' component={Signup} hideNavBar={true} />
           <Scene key='Phoneverification' component={Phoneverification} hideNavBar={true} />
           <Scene key='Veryfiyournumber' component={Veryfiyournumber} hideNavBar={true} />
-          <Scene key='Allowaccesslocation' component={Allowaccesslocation} hideNavBar={true} />
+          <Scene key='Allowaccesslocation' component={Allowaccesslocation} hideNavBar={true} initial />
           <Scene key='AppContainer' component={AppContainer} hideNavBar={true} />
           <Scene key='Shop' component={Shop} hideNavBar={true} />
           <Scene key='Filters' component={Filters} hideNavBar={true} />

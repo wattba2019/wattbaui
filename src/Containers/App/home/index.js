@@ -22,6 +22,10 @@ class Home extends Component {
         };
     }
 
+    componentWillMount() {
+        console.log(this.props, "USER_CURRENT_LOCATION")
+    }
+
     render() {
         return (
             <View style={{
@@ -669,7 +673,7 @@ class Home extends Component {
 }
 let mapStateToProps = state => {
     return {
-
+        currentLocation: state.root.currentLocation,
     };
 };
 function mapDispatchToProps(dispatch) {

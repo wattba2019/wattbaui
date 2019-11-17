@@ -32,7 +32,7 @@ class Signin extends Component {
         console.log(cloneSignUpData, "cloneSignUpData")
         var options = {
             method: 'POST',
-            url: `${this.props.bseUrl}/signine`,
+            url: `${this.props.bseUrl}/signin`,
             headers:
             {
                 'cache-control': 'no-cache',
@@ -49,19 +49,16 @@ class Signin extends Component {
                 Actions.Allowaccesslocation()
             }).catch((err) => {
                 console.log(err.response.data.message, "ERROR_ON_SIGN_IN")
+                // console.log(err, "ERROR_ON_SIGN_IN")
                 alert(err.response.data.message)
                 this.setState({
                     loader: !this.state.loader
                 })
             })
-
-
     }
-
 
     render() {
         let { email, password, loader } = this.state;
-
         return (
             <ImageBackground source={require('../../../assets/background.png')}
                 style={{
@@ -82,14 +79,12 @@ class Signin extends Component {
                     <ImageBackground source={require('../../../assets/halfmask.png')} resizeMode="stretch"
                         style={{ height: "100%", width: "100%", justifyContent: "center", }}
                     >
-
                         <View style={{ justifyContent: "center", alignItems: "center", }}>
                             <Image source={require('../../../assets/logo.png')} resizeMode="contain"
                                 style={{ height: "60%", width: "60%", }}
                             />
                         </View>
                     </ImageBackground>
-
                 </View>
                 <ScrollView
                     style={{

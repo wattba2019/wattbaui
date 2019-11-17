@@ -64,9 +64,6 @@ class ChangePassword extends Component {
                         console.log(data, "data")
                         alert(data.data.message)
                         this.closeModal()
-                        // this.setState({
-                        //     updateLoader: !this.state.updateLoader, isModalVisible: false
-                        // })
                     }).catch((err) => {
                         alert(JSON.stringify(err.response.data.message))
                         this.setState({

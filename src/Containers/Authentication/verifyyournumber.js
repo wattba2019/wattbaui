@@ -5,9 +5,10 @@ import {
     Text, TextInput, ScrollView, Picker, Item
 
 } from 'react-native';
+import PhoneInput from 'react-native-phone-input'
+
 import { connect } from "react-redux";
 import { Actions } from 'react-native-router-flux';
-
 
 class Veryfiyournumber extends Component {
     constructor(props) {
@@ -22,13 +23,6 @@ class Veryfiyournumber extends Component {
         return (
             <ScrollView
                 contentContainerStyle={styles.contentContainer}
-            // style={{
-            //     flex: 1,
-            //     // justifyContent: "center",
-            //     // alignItems: "center",
-            //     width: "100%",
-            //     backgroundColor: "white"
-            // }}
             >
                 <StatusBar backgroundColor="white" barStyle="dark-content" />
 
@@ -113,10 +107,14 @@ class Veryfiyournumber extends Component {
                         {/* cancele container */}
 
                         <View style={{ flex: 0.8, width: "100%", justifyContent: "center", alignItems: "center", }}>
-                                <Image source={require('../../../assets/Shape.png')} resizeMode="contain"
-                                    style={{ height: "40%", width: "40%", }}
-                                />
+                            <Image source={require('../../../assets/Shape.png')} resizeMode="contain"
+                                style={{ height: "40%", width: "40%", }}
+                            />
                         </View>
+                    </View>
+                    <View style={styles.container}>
+
+
                     </View>
 
                     <View
@@ -124,7 +122,6 @@ class Veryfiyournumber extends Component {
                     >
                         <TouchableOpacity
                             onPress={() => Actions.Phoneverification()}
-
                         >
                             <ImageBackground source={require('../../../assets/buttonBackground.png')} resizeMode="contain"
                                 style={{ height: "100%", width: "100%", justifyContent: "center", }}

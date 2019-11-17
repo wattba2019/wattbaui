@@ -1,7 +1,7 @@
-import ActionTypes from "../Constant/constant";
-
 const INITIAL_STATE = {
-  bseUrl: "http://192.168.100.62:3002"
+  bseUrl: "http://192.168.10.10:3002",
+  currentLocation: null
+
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -11,7 +11,11 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         user: action.payload
       };
-
+    case "USER_CURRENT_LOCATION_ACTION":
+      return {
+        ...state,
+        currentLocation: action.payload
+      };
     default:
       return state;
   }
