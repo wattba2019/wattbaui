@@ -1,6 +1,7 @@
 const INITIAL_STATE = {
-  bseUrl: "http://192.168.10.10:3002",
-  currentLocation: null
+  bseUrl: "http://192.168.10.8:3002",
+  userProfile: {},
+  currentLocation: null,
 
 };
 
@@ -9,7 +10,7 @@ export default (state = INITIAL_STATE, action) => {
     case "SAVE_USER":
       return {
         ...state,
-        user: action.payload
+        userProfile: action.payload
       };
     case "USER_CURRENT_LOCATION_ACTION":
       return {

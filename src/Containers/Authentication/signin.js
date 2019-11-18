@@ -2,12 +2,13 @@ import React, { Component } from "react";
 import {
     View, Image, ActivityIndicator, StyleSheet,
     ImageBackground, StatusBar, TouchableOpacity,
-    Text, TextInput, ScrollView
+    Text, TextInput, ScrollView, BackHandler
 
 } from 'react-native';
 import { connect } from "react-redux";
 import { Actions } from 'react-native-router-flux';
 import axios from 'axios';
+import { setUserCredentials } from "./../../Store/Action/action";
 
 class Signin extends Component {
     constructor(props) {
@@ -42,11 +43,11 @@ class Signin extends Component {
         };
         axios(options)
             .then((data) => {
-                console.log(data, "USER_LOGIN_SUCCESSFULLY")
+                console.log(data.data, "USER_LOGIN_SUCCESSFULLY")
                 this.setState({
                     loader: !this.state.loader
                 })
-                Actions.Allowaccesslocation()
+                this.props.setUserCredentials(data.data)
             }).catch((err) => {
                 console.log(err.response.data.message, "ERROR_ON_SIGN_IN")
                 // console.log(err, "ERROR_ON_SIGN_IN")
@@ -57,6 +58,9 @@ class Signin extends Component {
             })
     }
 
+    componentWillUnmount() {
+        BackHandler.removeEventListener('hardwareBackPress', BackHandler.exitApp());
+    }
     render() {
         let { email, password, loader } = this.state;
         return (
@@ -175,6 +179,9 @@ let mapStateToProps = state => {
 };
 function mapDispatchToProps(dispatch) {
     return ({
+        setUserCredentials: (user) => {
+            dispatch(setUserCredentials(user));
+        },
     })
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Signin);

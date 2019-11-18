@@ -83,7 +83,7 @@ class VerifyCode extends Component {
                     (this.state.changePassword === true) ? (
                         <ChangePassword email={this.props.email} closeModal={(data) => {
                             this.setState({
-                                deleteProfileModal: data
+                                changePassword: data
                             })
                         }} />
                     ) : null

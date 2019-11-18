@@ -8,24 +8,26 @@ import {
 import { Icon, Tabs, Tab, TabHeading } from 'native-base';
 import { connect } from "react-redux";
 import { Actions } from 'react-native-router-flux';
+
+import ChangePassword from '../../Authentication/changepassword';
+import EditProfile from '../../App/profile/editprofile';
+
 // import ShopsCards from '../../../Components/shopscards';
 import AppointmentCard from '../../../Components/appointmentCard';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
-
-
 class Profile extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            changePassword: false,
+            editProfile: false,
         };
     }
 
-
-
     render() {
-
+        let { changePassword } = this.state
         return (
             <View style={{
                 flex: 1,
@@ -33,6 +35,26 @@ class Profile extends Component {
                 // alignItems: "center",
                 backgroundColor: "white",
             }}>
+                {/* Edit Profile Modal*/}
+                {
+                    (this.state.editProfile === true) ? (
+                        <EditProfile email={this.props.email} closeModal={(data) => {
+                            this.setState({
+                                editProfile: data
+                            })
+                        }} />
+                    ) : null
+                }
+                {/* Change Password Modal*/}
+                {
+                    (this.state.changePassword === true) ? (
+                        <ChangePassword email={this.props.userProfile.email} closeModal={(data) => {
+                            this.setState({
+                                changePassword: data
+                            })
+                        }} />
+                    ) : null
+                }
                 <StatusBar backgroundColor="white" barStyle="dark-content" />
 
                 {/* header */}
@@ -75,7 +97,9 @@ class Profile extends Component {
                     }}>
                         <Text style={{ alignItems: "center", color: "#131313", fontSize: 18, marginLeft: "7%", marginTop: 20 }}>Profile</Text>
 
-                        <TouchableOpacity style={{ width: "90%", marginHorizontal: "5%" }}>
+                        <TouchableOpacity style={{ width: "90%", marginHorizontal: "5%" }}
+                            onPress={() => { this.setState({ editProfile: true }) }}>
+
                             <View style={{ flexDirection: "row", height: 70, alignItems: "center", borderBottomColor: "#F0F2F6", borderBottomWidth: 1, padding: 10 }}>
                                 <Image
                                     resizeMode="contain"
@@ -97,7 +121,8 @@ class Profile extends Component {
                             </View>
                         </TouchableOpacity>
 
-                        <TouchableOpacity style={{ width: "90%", marginHorizontal: "5%" }}>
+                        <TouchableOpacity style={{ width: "90%", marginHorizontal: "5%", }}
+                            onPress={() => { this.setState({ changePassword: true }) }}>
                             <View style={{ flexDirection: "row", height: 70, alignItems: "center", borderBottomColor: "#F0F2F6", borderBottomWidth: 1, padding: 10 }}>
                                 <Image
                                     resizeMode="contain"
@@ -143,7 +168,10 @@ class Profile extends Component {
                             </View>
                         </TouchableOpacity>
 
-                        <TouchableOpacity style={{ width: "90%", marginHorizontal: "5%" }}>
+                        <TouchableOpacity
+                            onPress={() => Actions.Signin()}
+                            style={{ width: "90%", marginHorizontal: "5%" }}
+                        >
                             <View style={{ flexDirection: "row", height: 70, alignItems: "center", borderBottomColor: "#F0F2F6", borderBottomWidth: 1, padding: 10 }}>
                                 <Image
                                     resizeMode="contain"
@@ -164,7 +192,7 @@ class Profile extends Component {
 }
 let mapStateToProps = state => {
     return {
-
+        userProfile: state.root.userProfile,
     };
 };
 function mapDispatchToProps(dispatch) {

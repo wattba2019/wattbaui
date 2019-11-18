@@ -12,7 +12,7 @@ class AppContainer extends Component {
     constructor() {
         super()
         this.state = {
-            rout: "Home"
+            rout: "Profile"
         }
     }
 
