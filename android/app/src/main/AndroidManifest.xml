@@ -1,28 +1,24 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  package="com.barbershop">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.barbershop">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+  <uses-permission android:name="android.permission.INTERNET" />
+  <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
 
-    <application
-      android:name=".MainApplication"
-      android:label="@string/app_name"
-      android:icon="@mipmap/ic_launcher"
-      android:roundIcon="@mipmap/ic_launcher_round"
-      android:allowBackup="false"
-      android:theme="@style/AppTheme">
-      <activity
-        android:name=".MainActivity"
-        android:label="@string/app_name"
-        android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
-        android:windowSoftInputMode="adjustResize">
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
-      </activity>
-      <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
-    </application>
+  <application android:name=".MainApplication" android:label="@string/app_name" android:icon="@mipmap/ic_launcher" android:roundIcon="@mipmap/ic_launcher_round" android:allowBackup="false" android:theme="@style/AppTheme">
+    <!-- self -->
+    <!-- <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyAjrK1ffX05DYhGzH_wEx5xfU89nltWCug" /> -->
+    <!-- hanzala -->
+    <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyBQHKZTwhPJX_9IevM5jKC8kmz0NzqAaBk" />
+    <!-- nabeel -->
+    <!-- <meta-data android:name="com.google.android.geo.AIzaSyDC66H62mQjg5BSdWxfBlEs_NSQdEYwXA0" android:value="AIzaSyDC66H62mQjg5BSdWxfBlEs_NSQdEYwXA0" /> -->
+
+    <activity android:name=".MainActivity" android:label="@string/app_name" android:configChanges="keyboard|keyboardHidden|orientation|screenSize" android:windowSoftInputMode="adjustResize">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN" />
+        <category android:name="android.intent.category.LAUNCHER" />
+      </intent-filter>
+    </activity>
+    <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
+  </application>
 
 </manifest>

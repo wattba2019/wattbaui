@@ -7,18 +7,74 @@ import {
 } from 'react-native';
 import { connect } from "react-redux";
 import { Actions } from 'react-native-router-flux';
-
+import axios from 'axios';
 
 class Phoneverification extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            email: "",
-            password: ""
+            loader: false,
         };
     }
 
+    verify = () => {
+        let { input1, input2, input3, input4, input5, input6, } = this.state
+
+        let sixDigitCode = input1 + input2 + input3 + input4 + input5 + input6
+
+        if (sixDigitCode.length == 6) {
+            this.setState({
+                loader: true
+            })
+            console.log(sixDigitCode, "6_Digit_Code")
+            this.props.confirmResult.confirm(sixDigitCode)
+                .then(user => {
+                    console.log(user)
+                    let cloneData = {
+                        email: this.props.email
+                    }
+                    var options = {
+                        method: 'POST',
+                        url: `${this.props.bseUrl}/signup/activateaccount`,
+                        headers:
+                        {
+                            'cache-control': 'no-cache',
+                            "Allow-Cross-Origin": '*',
+                        },
+                        data: cloneData
+                    };
+                    axios(options)
+                        .then((data) => {
+                            console.log(data.data, "USER_VERIFY_SUCCESSFULLY")
+                            this.setState({
+                                loader: false
+                            })
+                            alert(data.data.message)
+                            Actions.Signin()
+                        }).catch((err) => {
+                            console.log(err.response.data.message, "ERROR_ON_VERIFICATION")
+                            alert(err.response.data.message)
+                            this.setState({
+                                loader: false
+                            })
+                        })
+                })
+                .catch(error => {
+                    console.log(error)
+                    alert(error)
+                    this.setState({
+                        loader: false
+                    })
+                });
+        }
+        else {
+            alert("Please type 6 digit code")
+        }
+    }
+
+
     render() {
+        let { loader } = this.state
         return (
             <ScrollView
                 contentContainerStyle={styles.contentContainer}
@@ -70,62 +126,67 @@ class Phoneverification extends Component {
 
                     <View style={{
                         marginTop: 40,
-                        flexDirection: "row"
+                        flexDirection: "row",
+                        height: "18%",
                     }}>
                         <View
-                            style={{ width: "15%", height: 62, borderColor: 'gray', backgroundColor: this.state.input1 ? "#FD6958" : "#E8E6E7", borderRadius: 80, justifyContent: "center", alignItems: "center", margin: "2%" }}
+                            style={{ width: "14%", height: "80%", borderColor: 'gray', backgroundColor: this.state.input1 ? "#FD6958" : "#E8E6E7", borderRadius: 80, justifyContent: "center", alignItems: "center", margin: "0.5%" }}
                         >
                             <TextInput
                                 keyboardType={"numeric"}
                                 style={{ top: -5, fontSize: 30, color: "white", justifyContent: "center", alignItems: "center", textAlign: "center" }}
-                                // onChangeText={text => onChangeText(text)}
-                                onChangeText={text => this.setState({
-                                    input1: text
-                                })}
+                                onChangeText={input1 => input1.length < 2 ? this.setState({ input1 }) : null}
                                 value={this.state.input1}
-                            // placeholder={"Full Name"}
                             />
                         </View>
                         <View
-                            style={{ width: "15%", height: 62, borderColor: 'gray', backgroundColor: this.state.input2 ? "#FD6958" : "#E8E6E7", borderRadius: 80, justifyContent: "center", alignItems: "center", margin: "2%" }}
+                            style={{ width: "14%", height: "80%", borderColor: 'gray', backgroundColor: this.state.input2 ? "#FD6958" : "#E8E6E7", borderRadius: 80, justifyContent: "center", alignItems: "center", margin: "0.5%" }}
                         >
                             <TextInput
                                 keyboardType={"numeric"}
                                 style={{ top: -5, fontSize: 30, color: "white", justifyContent: "center", alignItems: "center", textAlign: "center" }}
-                                // onChangeText={text => onChangeText(text)}
-                                onChangeText={text => this.setState({
-                                    input2: text
-                                })}
+                                onChangeText={input2 => input2.length < 2 ? this.setState({ input2 }) : null}
                                 value={this.state.input2}
-                            // placeholder={"Full Name"}
                             />
                         </View>
                         <View
-                            style={{ width: "15%", height: 62, borderColor: 'gray', backgroundColor: this.state.input3 ? "#FD6958" : "#E8E6E7", borderRadius: 80, justifyContent: "center", alignItems: "center", margin: "2%" }}
+                            style={{ width: "14%", height: "80%", borderColor: 'gray', backgroundColor: this.state.input3 ? "#FD6958" : "#E8E6E7", borderRadius: 80, justifyContent: "center", alignItems: "center", margin: "0.5%" }}
                         >
                             <TextInput
                                 keyboardType={"numeric"}
                                 style={{ top: -5, fontSize: 30, color: "white", justifyContent: "center", alignItems: "center", textAlign: "center" }}
-                                // onChangeText={text => onChangeText(text)}
-                                onChangeText={text => this.setState({
-                                    input3: text
-                                })}
+                                onChangeText={input3 => input3.length < 2 ? this.setState({ input3 }) : null}
                                 value={this.state.input3}
-                            // placeholder={"Full Name"}
                             />
                         </View>
                         <View
-                            style={{ width: "15%", height: 62, borderColor: 'gray', backgroundColor: this.state.input4 ? "#FD6958" : "#E8E6E7", borderRadius: 80, justifyContent: "center", alignItems: "center", margin: "2%" }}
+                            style={{ width: "14%", height: "80%", borderColor: 'gray', backgroundColor: this.state.input4 ? "#FD6958" : "#E8E6E7", borderRadius: 80, justifyContent: "center", alignItems: "center", margin: "0.5%" }}
                         >
                             <TextInput
                                 keyboardType={"numeric"}
                                 style={{ top: -5, fontSize: 30, color: "white", justifyContent: "center", alignItems: "center", textAlign: "center" }}
-                                // onChangeText={text => onChangeText(text)}
-                                onChangeText={text => this.setState({
-                                    input4: text
-                                })}
+                                onChangeText={input4 => input4.length < 2 ? this.setState({ input4 }) : null}
                                 value={this.state.input4}
-                            // placeholder={"Full Name"}
+                            />
+                        </View>
+                        <View
+                            style={{ width: "14%", height: "80%", borderColor: 'gray', backgroundColor: this.state.input5 ? "#FD6958" : "#E8E6E7", borderRadius: 80, justifyContent: "center", alignItems: "center", margin: "0.5%" }}
+                        >
+                            <TextInput
+                                keyboardType={"numeric"}
+                                style={{ top: -5, fontSize: 30, color: "white", justifyContent: "center", alignItems: "center", textAlign: "center" }}
+                                onChangeText={input5 => input5.length < 2 ? this.setState({ input5 }) : null}
+                                value={this.state.input5}
+                            />
+                        </View>
+                        <View
+                            style={{ width: "14%", height: "80%", borderColor: 'gray', backgroundColor: this.state.input6 ? "#FD6958" : "#E8E6E7", borderRadius: 80, justifyContent: "center", alignItems: "center", margin: "0.5%" }}
+                        >
+                            <TextInput
+                                keyboardType={"numeric"}
+                                style={{ top: -5, fontSize: 30, color: "white", justifyContent: "center", alignItems: "center", textAlign: "center" }}
+                                onChangeText={input6 => input6.length < 2 ? this.setState({ input6 }) : null}
+                                value={this.state.input6}
                             />
                         </View>
 
@@ -136,7 +197,7 @@ class Phoneverification extends Component {
                         <Text style={{ textAlign: "center", fontSize: 15, color: "#B7B7C0" }}>Didn't receive a code?</Text>
                     </View>
                     <TouchableOpacity
-                        onPress={() => alert("Under Development")}
+                        onPress={() => Actions.Veryfiyournumber({ email: this.props.email })}
                     >
                         <Text style={{ color: "#FD6958", textAlign: "center", }}>Resend a new code </Text>
                     </TouchableOpacity>
@@ -145,12 +206,16 @@ class Phoneverification extends Component {
                         style={{ width: "85%", height: 50, marginTop: 50, }}
                     >
                         <TouchableOpacity
-                            onPress={() => alert("Under Development")}
+                            onPress={() => this.verify()}
                         >
                             <ImageBackground source={require('../../../assets/buttonBackground.png')} resizeMode="contain"
                                 style={{ height: "100%", width: "100%", justifyContent: "center", }}
                             >
-                                <Text style={{ textAlign: "center", fontSize: 15, margin: 12, color: "white" }}>Next</Text>
+                                {
+                                    (loader != true) ? (
+                                        <Text style={{ textAlign: "center", fontSize: 15, margin: 12, color: "white" }}>Next</Text>
+                                    ) : <ActivityIndicator style={{ color: "orange" }} />
+                                }
                             </ImageBackground>
                         </TouchableOpacity>
                     </View>
@@ -161,7 +226,7 @@ class Phoneverification extends Component {
 }
 let mapStateToProps = state => {
     return {
-
+        bseUrl: state.root.bseUrl,
     };
 };
 function mapDispatchToProps(dispatch) {
@@ -174,7 +239,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(Phoneverification);
 const styles = StyleSheet.create({
     contentContainer: {
         // flex: 1,
-        paddingBottom: 500,
+        paddingBottom: 250,
         backgroundColor: "white",
 
     },

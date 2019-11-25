@@ -88,7 +88,7 @@ class ChangePassword extends Component {
             <View>
                 <Modal isVisible={this.state.isModalVisible}>
                     <View
-                        style={{ height: this.state.screenHeight / 2.5, justifyContent: 'center', alignItems: "center", }}>
+                        style={{ height: this.state.screenHeight / 2, justifyContent: 'center', alignItems: "center", }}>
                         <View style={{ backgroundColor: "white", width: "90%", height: "100%", borderRadius: 10, justifyContent: "center", alignItems: "center", }}>
                             <View style={{ width: "80%", flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "white" }}>
                                 {/* Cancel Button*/}

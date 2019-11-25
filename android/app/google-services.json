@@ -1,0 +1,56 @@
+{
+  "project_info": {
+    "project_number": "88900422511",
+    "firebase_url": "https://wattba.firebaseio.com",
+    "project_id": "wattba",
+    "storage_bucket": "wattba.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:88900422511:android:9c9d94386f580f9072369a",
+        "android_client_info": {
+          "package_name": "com.barbershop"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "88900422511-bcf4g0do2c6h8qd85f50l77f2t213l4s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.barbershop",
+            "certificate_hash": "9134166e4ec463cb095c61b488e655333b085189"
+          }
+        },
+        {
+          "client_id": "88900422511-jmt8pq858rgjrtpkguhr8e34ui4lcbid.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.barbershop",
+            "certificate_hash": "6e444e39d1abe52a27ba86fc13834f331fb7e310"
+          }
+        },
+        {
+          "client_id": "88900422511-jvt5k3bhikkg8g07g4as1r97l34c4s13.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAjrK1ffX05DYhGzH_wEx5xfU89nltWCug"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "88900422511-jvt5k3bhikkg8g07g4as1r97l34c4s13.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

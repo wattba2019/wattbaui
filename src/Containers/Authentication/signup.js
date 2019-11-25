@@ -13,10 +13,10 @@ class Signup extends Component {
         super(props);
         this.state = {
             loader: false,
-            fullName: "Abdullah Shah",
-            email: "abddullahshah@gmail.com",
-            phoneNumber: "03452153709",
-            password: "12345678",
+            // fullName: "Abdullah Shah",
+            // email: "abddullahshah4@gmail.com",
+            // phoneNumber: "03452153709",
+            // password: "12345678",
         };
     }
     signup = () => {
@@ -44,8 +44,7 @@ class Signup extends Component {
                     console.log(cloneSignUpData, "cloneSignUpData")
                     var options = {
                         method: 'POST',
-                        url: `http://192.168.10.12:3002/signup`,
-                        // url: `${this.props.mainUrl}signup`,
+                        url: `${this.props.bseUrl}/signup`,
                         headers:
                         {
                             'cache-control': 'no-cache',
@@ -59,7 +58,8 @@ class Signup extends Component {
                             this.setState({
                                 loader: !this.state.loader
                             })
-                            Actions.Signin()
+                            // Actions.Signin({ email: email })
+                            Actions.Veryfiyournumber({ email: email })
                         }).catch((err) => {
                             console.log(err.response.data.message, "ERROR_ON_SIGN_UP")
                             alert(err.response.data.message)
@@ -178,7 +178,7 @@ class Signup extends Component {
 }
 let mapStateToProps = state => {
     return {
-
+        bseUrl: state.root.bseUrl,
     };
 };
 function mapDispatchToProps(dispatch) {

@@ -15,13 +15,16 @@ class Signin extends Component {
         super(props);
         this.state = {
             loader: false,
-            email: "abddullahshah@gmail.com",
-            password: "12345678"
+            activateAccount: false,
+            email: "",
+            password: ""
+            // email: "abddullahshah4@gmail.com",
+            // password: "12345678"
         };
     }
 
     signin = () => {
-        let { email, password } = this.state;
+        let { email, password, } = this.state;
 
         this.setState({
             loader: !this.state.loader
@@ -53,7 +56,15 @@ class Signin extends Component {
                 // console.log(err, "ERROR_ON_SIGN_IN")
                 alert(err.response.data.message)
                 this.setState({
-                    loader: !this.state.loader
+                    loader: !this.state.loader,
+                    activateAccount: true
+                }, () => {
+                    setTimeout(() => {
+                        this.setState({
+                            activateAccount: false
+                        })
+                    }, 10000)
+
                 })
             })
     }
@@ -62,7 +73,7 @@ class Signin extends Component {
         BackHandler.removeEventListener('hardwareBackPress', BackHandler.exitApp());
     }
     render() {
-        let { email, password, loader } = this.state;
+        let { email, password, loader, activateAccount } = this.state;
         return (
             <ImageBackground source={require('../../../assets/background.png')}
                 style={{
@@ -152,10 +163,20 @@ class Signin extends Component {
                                 </ImageBackground>
                             </TouchableOpacity>
                         </View>
+                        {
+                            activateAccount ?
+                                <TouchableOpacity
+                                    onPress={() => Actions.ActivateAccount()}
+                                >
+                                    <Text style={{ textAlign: "center", fontSize: 15, marginTop: 20, color: "red" }}>Activate your account?</Text>
+                                </TouchableOpacity> : null
+
+                        }
+
                         <TouchableOpacity
                             onPress={() => Actions.Forgotyourpassword()}
                         >
-                            <Text style={{ textAlign: "center", fontSize: 15, marginTop: 20, color: "black" }}>Forgot your password?</Text>
+                            <Text style={{ textAlign: "center", fontSize: 15, marginTop: activateAccount ? 5 : 20, color: "black" }}>Forgot your password?</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
                             style={{ flexDirection: "row", marginTop: 10, }}

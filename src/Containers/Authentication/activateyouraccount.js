@@ -10,11 +10,12 @@ import { connect } from "react-redux";
 import { Actions } from 'react-native-router-flux';
 import firebase from 'react-native-firebase'
 
-class Veryfiyournumber extends Component {
+class ActivateAccount extends Component {
     constructor(props) {
         super(props);
         this.state = {
             loader: false,
+            email: "",
             countryCode: "+92",
             phoneNumber: ""
             // phoneNumber: "3452153709"
@@ -30,30 +31,36 @@ class Veryfiyournumber extends Component {
     }
 
     sendCode = () => {
-        let { countryCode, phoneNumber, } = this.state
+        let { countryCode, phoneNumber, email } = this.state
         console.log(countryCode + phoneNumber, "PHONE_NUMBER")
-        this.setState({
-            loader: true
-        })
-        firebase.auth().signInWithPhoneNumber(countryCode + phoneNumber)
-            .then(confirmResult => {
-                this.setState({
-                    loader: false
-                })
-                console.log(confirmResult, "CONFIRMATION_RESULT")
-                Actions.Phoneverification({ confirmResult: confirmResult, email: this.props.email })
+        if (email) {
+            this.setState({
+                loader: true
             })
-            .catch(error => {
-                this.setState({
-                    loader: false
+            firebase.auth().signInWithPhoneNumber(countryCode + phoneNumber)
+                .then(confirmResult => {
+                    this.setState({
+                        loader: false
+                    })
+                    console.log(confirmResult, "CONFIRMATION_RESULT")
+                    Actions.Phoneverification({ confirmResult: confirmResult, email: email })
                 })
-                console.log(error)
-                alert(error)
-            });
+                .catch(error => {
+                    this.setState({
+                        loader: false
+                    })
+                    console.log(error)
+                    alert(error)
+                });
+        }
+        else {
+            alert("Please type your valid email")
+        }
+
     }
 
     render() {
-        let { countryCode, phoneNumber, loader } = this.state
+        let { countryCode, phoneNumber, loader, email } = this.state
         return (
             <ScrollView
                 contentContainerStyle={styles.contentContainer}
@@ -65,7 +72,7 @@ class Veryfiyournumber extends Component {
 
                 {/* //header// */}
 
-                <View style={{ height: "15%", flexDirection: "row", width: "100%", }}>
+                <View style={{ height: "12%", flexDirection: "row", width: "100%", }}>
                     <TouchableOpacity
                         style={{ flex: 1.5, }}
                         onPress={() => Actions.pop()}
@@ -96,10 +103,20 @@ class Veryfiyournumber extends Component {
                     <Text style={{ marginTop: 40, textAlign: "center" }}>We have sent you an SMS with a code to{"\n"} number {countryCode + " " + phoneNumber} </Text>
 
                     {/* main container */}
-
+                    <View
+                        style={{ width: "85%", marginTop: 40, borderColor: 'gray', backgroundColor: "#E8E6E7", borderRadius: 25, justifyContent: "center", alignItems: "center" }}
+                    >
+                        <TextInput
+                            style={{ height: 50, width: "90%", }}
+                            onChangeText={(email) => this.setState({ email })}
+                            value={email}
+                            placeholder={"Email"}
+                        />
+                    </View>
                     <View
                         style={{ flex: 1, flexDirection: "row", width: "85%", height: 50, marginTop: 40, backgroundColor: "#E8E6E7", borderRadius: 50 }}
                     >
+
                         {/* picker container */}
 
                         <View style={{ borderRightColor: "grey", borderRightWidth: 0.5, flex: 2.2, flexDirection: "row" }}>
@@ -184,7 +201,7 @@ function mapDispatchToProps(dispatch) {
     return ({
     })
 }
-export default connect(mapStateToProps, mapDispatchToProps)(Veryfiyournumber);
+export default connect(mapStateToProps, mapDispatchToProps)(ActivateAccount);
 
 
 const styles = StyleSheet.create({

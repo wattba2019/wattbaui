@@ -60,9 +60,9 @@ class Allowaccesslocation extends Component {
                         Please allow app access to your location to{"\n"}find Barbershops near you
                   </Text>
                     <View
-                        style={{ width: "85%", height: 50, marginTop: 100, }}
+                        style={{ width: "85%", height: 50, marginTop: 100, flexDirection: "column", }}
                     >
-                        <TouchableOpacity
+                        <TouchableOpacity style={{}}
                             onPress={() => this.allowLocation()}
                         >
                             <ImageBackground source={require('../../../assets/buttonBackground.png')} resizeMode="contain"
@@ -71,10 +71,12 @@ class Allowaccesslocation extends Component {
                                 <Text style={{ textAlign: "center", fontSize: 15, margin: 12, color: "white" }}>Yes, allow</Text>
                             </ImageBackground>
                         </TouchableOpacity>
-                        <TouchableOpacity
+
+                        <TouchableOpacity style={{}}
                             onPress={() => Actions.AppContainer()}
                         >
-                            <Text style={{ textAlign: "center", fontSize: 15, marginTop: 12, }}>Don't allow</Text>
+                            {/* <Text>TEST</Text> */}
+                            <Text onPress={() => Actions.AppContainer()} style={{ textAlign: "center", fontSize: 15, marginTop: 12, }}>Don't allow</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
