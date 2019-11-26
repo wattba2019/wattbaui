@@ -5,23 +5,42 @@ import {
     Text, TextInput, ScrollView, Picker,
 
 } from 'react-native';
+//icons import
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
 import { connect } from "react-redux";
 import { Actions } from 'react-native-router-flux';
 import firebase from 'react-native-firebase'
+import PhoneInput from 'react-native-phone-input'
+import CountryPicker from 'react-native-country-picker-modal';
 
 class Veryfiyournumber extends Component {
     constructor(props) {
         super(props);
         this.state = {
             loader: false,
-            countryCode: "+92",
-            phoneNumber: ""
+            countryCode: "92",
+            phoneNumber: "",
+            cca2: 'PK',
             // phoneNumber: "3452153709"
             // phoneNumber: "3368990497"
             // phoneNumber: "3472076096"
         };
     }
+
+    selectCountry(country) {
+        console.log(country, "country")
+        this.setState({
+            cca2: country.cca2,
+            countryName: country.name,
+            countryCode: country.callingCode[0]
+        })
+    }
+
+    openModal() {
+        this.countryPicker.open();
+    }
+
 
     clearNumber = () => {
         this.setState({
@@ -35,7 +54,7 @@ class Veryfiyournumber extends Component {
         this.setState({
             loader: true
         })
-        firebase.auth().signInWithPhoneNumber(countryCode + phoneNumber)
+        firebase.auth().signInWithPhoneNumber("+" + countryCode + phoneNumber)
             .then(confirmResult => {
                 this.setState({
                     loader: false
@@ -102,14 +121,37 @@ class Veryfiyournumber extends Component {
                     >
                         {/* picker container */}
 
-                        <View style={{ borderRightColor: "grey", borderRightWidth: 0.5, flex: 2.2, flexDirection: "row" }}>
-                            <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-                                <Image source={require('../../../assets/pak.png')} resizeMode="contain"
-                                    style={{ height: "100%", width: "100%", marginLeft: 35 }}
-                                />
+                        <View style={{ borderRightColor: "grey", borderRightWidth: 0.5, flex: 2.2, flexDirection: "row", }}>
+                            <View style={{ flex: 1.5, justifyContent: "center", alignItems: "center", }}>
+                                {/* <Image source={require('../../../assets/pak.png')} resizeMode="contain"
+                                    style={{ height: "80%", width: "80%", marginLeft: 20 }}
+                                /> */}
+                                <View style={{ marginLeft: 20 }}>
+                                    <CountryPicker
+                                        filterable={true}
+                                        closeable={true}
+                                        filterPlaceholder={'Search'}
+                                        autoFocusFilter={true}
+                                        ref={(ref) => {
+                                            this.countryPicker = ref;
+                                        }}
+                                        onSelect={value => this.selectCountry(value)}
+                                        translation="eng"
+                                        countryCode={this.state.cca2}
+                                    >
+
+                                    </CountryPicker>
+                                </View>
                             </View>
-                            <View style={{ flex: 4 }}>
-                                <Picker
+                            <View style={{ flex: 3, flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
+                                <View
+                                    // onPress={() => this.openModal()}
+                                    style={{ flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
+                                    <Text style={{ fontWeight: "bold" }}>{"+" + countryCode}</Text>
+                                    <AntDesign name="caretdown" style={{ marginLeft: "15%", color: '#909090', fontWeight: 'bold', fontSize: 15 }} />
+                                </View>
+
+                                {/* <Picker
                                     selectedValue={this.state.countryCode}
                                     style={{ marginLeft: 15, width: 95 }}
                                     onValueChange={(itemValue, itemIndex) =>
@@ -117,7 +159,7 @@ class Veryfiyournumber extends Component {
                                     }>
                                     <Picker.Item label="+92" value="+92" />
                                     <Picker.Item label="+92" value="+92" />
-                                </Picker>
+                                </Picker> */}
                             </View>
                         </View>
 
@@ -199,3 +241,94 @@ const styles = StyleSheet.create({
 });
 
 
+// import React, { Component } from 'react';
+// import { StyleSheet, View, Text } from 'react-native';
+
+// import PhoneInput from 'react-native-phone-input';
+// import CountryPicker from 'react-native-country-picker-modal';
+
+// class Veryfiyournumber extends Component {
+//     constructor() {
+//         super();
+
+//         // this.onPressFlag = this.onPressFlag.bind(this);
+//         // this.selectCountry = this.selectCountry.bind(this);
+//         this.state = {
+//             // countryName: 'Kenya',
+//             // phoneCode: '254',
+//             cca2: 'PK',
+//         };
+//     }
+
+//     componentDidMount() {
+//         // this.setState({
+//         //     pickerData: this.phone.getPickerData(),
+//         // });
+//     }
+
+//     onPressFlag() {
+//         console.log(this.countryPicker)
+//         // this.countryPicker.openModal();
+//     }
+
+//     selectCountry(country) {
+//         console.log(country, "country")
+
+//         this.setState({
+//             cca2: country.cca2,
+//             countryName: country.name,
+//             phoneCode: country.callingCode[0]
+//         })
+//         // this.phone.selectCountry(country.cca2.toLowerCase());
+//         // this.setState({ cca2: country.cca2 });
+//     }
+
+//     render() {
+//         return (
+//             <View style={styles.container}>
+//                 {/* <PhoneInput disabled={true}
+//                     // ref={(ref) => {
+//                     //     this.phone = ref;
+//                     // }}
+//                     // onSelect={value => this.selectCountry(value)}
+//                     // translation="eng"
+//                     // cca2={this.state.cca2}
+//                     ref={(ref) => {
+//                         this.phone = ref;
+//                     }}
+//                 // onPressFlag={() => this.onPressFlag()}
+//                 /> */}
+
+//                 <CountryPicker
+//                     filterable={true}
+//                     closeable={true}
+//                     filterPlaceholder={'Search'}
+//                     autoFocusFilter={true}
+//                     ref={(ref) => {
+//                         this.countryPicker = ref;
+//                     }}
+//                     onSelect={value => this.selectCountry(value)}
+//                     translation="eng"
+//                     countryCode={this.state.cca2}
+//                 >
+//                     <View style={{}}>
+//                         <Text>
+//                             {`${this.state.countryName}(+${this.state.phoneCode})`}
+//                         </Text>
+//                     </View>
+//                 </CountryPicker>
+//             </View>
+//         );
+//     }
+// }
+
+// let styles = StyleSheet.create({
+//     container: {
+//         flex: 1,
+//         alignItems: 'center',
+//         padding: 20,
+//         paddingTop: 60,
+//     },
+// });
+
+// module.exports = Veryfiyournumber;
