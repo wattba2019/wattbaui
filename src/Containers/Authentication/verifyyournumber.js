@@ -11,25 +11,30 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import { connect } from "react-redux";
 import { Actions } from 'react-native-router-flux';
 import firebase from 'react-native-firebase'
-import PhoneInput from 'react-native-phone-input'
 import CountryPicker from 'react-native-country-picker-modal';
+import axios from 'axios';
 
 class Veryfiyournumber extends Component {
     constructor(props) {
         super(props);
         this.state = {
             loader: false,
-            countryCode: "92",
+            countryCode: "",
+            cca2: '',
             phoneNumber: "",
-            cca2: 'PK',
-            // phoneNumber: "3452153709"
-            // phoneNumber: "3368990497"
-            // phoneNumber: "3472076096"
+            // phoneNumber: "7480824582"
         };
     }
 
+    componentWillMount() {
+        this.setState({
+            cca2: this.props.cca2,
+            countryCode: this.props.countryCode,
+            phoneNumber: this.props.phoneNumber,
+        })
+    }
+
     selectCountry(country) {
-        console.log(country, "country")
         this.setState({
             cca2: country.cca2,
             countryName: country.name,
@@ -41,7 +46,6 @@ class Veryfiyournumber extends Component {
         this.countryPicker.open();
     }
 
-
     clearNumber = () => {
         this.setState({
             phoneNumber: ""
@@ -50,25 +54,54 @@ class Veryfiyournumber extends Component {
 
     sendCode = () => {
         let { countryCode, phoneNumber, } = this.state
-        console.log(countryCode + phoneNumber, "PHONE_NUMBER")
+        let newNumber = "+" + countryCode + phoneNumber;
+        let oldNumber = this.props.phoneNumberWithCode
+        console.log(newNumber, oldNumber, "PHONE_NUMBER")
         this.setState({
             loader: true
         })
-        firebase.auth().signInWithPhoneNumber("+" + countryCode + phoneNumber)
-            .then(confirmResult => {
+        let cloneNumbers = {
+            phoneNumber: oldNumber,
+            newNumber
+        }
+        console.log(cloneNumbers, "cloneNumbers")
+        var options = {
+            method: 'POST',
+            url: `${this.props.bseUrl}/signup/phoneUpdate/`,
+            headers:
+            {
+                'cache-control': 'no-cache',
+                "Allow-Cross-Origin": '*',
+            },
+            data: cloneNumbers
+        };
+        axios(options)
+            .then((data) => {
+                console.log(data, "data")
+                firebase.auth().signInWithPhoneNumber(newNumber)
+                    .then(confirmResult => {
+                        this.setState({
+                            loader: false
+                        })
+                        console.log(confirmResult, "CONFIRMATION_RESULT")
+                        Actions.Phoneverification({ confirmResult: confirmResult, email: this.props.email, newNumber: newNumber })
+                    })
+                    .catch(error => {
+                        this.setState({
+                            loader: false
+                        })
+                        console.log(error)
+                        alert(error)
+                    });
+            }).catch((err) => {
+                console.log(err.response.data.message, "ERROR_ON_UPDATE_PHONE")
+                // console.log(err, "ERROR_ON_UPDATE_PHONE")
+                alert(err.response.data.message)
                 this.setState({
                     loader: false
                 })
-                console.log(confirmResult, "CONFIRMATION_RESULT")
-                Actions.Phoneverification({ confirmResult: confirmResult, email: this.props.email })
             })
-            .catch(error => {
-                this.setState({
-                    loader: false
-                })
-                console.log(error)
-                alert(error)
-            });
+
     }
 
     render() {
@@ -88,7 +121,6 @@ class Veryfiyournumber extends Component {
                     <TouchableOpacity
                         style={{ flex: 1.5, }}
                         onPress={() => Actions.pop()}
-
                     >
                         <View style={{ flex: 2, justifyContent: "center", alignItems: "center", }}>
                             <Image source={require('../../../assets/ArrowLeft.png')}
@@ -96,23 +128,20 @@ class Veryfiyournumber extends Component {
                             />
                         </View>
                     </TouchableOpacity>
+
                     <View style={{ flex: 8, }}>
-
                     </View>
-
                 </View>
 
                 {/* //body// */}
 
                 <View style={{
-                    // flex: 8,
                     width: "100%",
                     justifyContent: "center",
                     alignItems: "center",
-                    // backgroundColor:"white"
                 }}>
                     <Text style={{ fontSize: 30, fontWeight: "bold", textAlign: "center" }}>Verify your {"\n"} phone number</Text>
-                    <Text style={{ marginTop: 40, textAlign: "center" }}>We have sent you an SMS with a code to{"\n"} number {countryCode + " " + phoneNumber} </Text>
+                    <Text style={{ marginTop: 40, textAlign: "center" }}>We have sent you an SMS with a code to{"\n"} number {"+" + countryCode + " " + phoneNumber} </Text>
 
                     {/* main container */}
 
@@ -123,9 +152,6 @@ class Veryfiyournumber extends Component {
 
                         <View style={{ borderRightColor: "grey", borderRightWidth: 0.5, flex: 2.2, flexDirection: "row", }}>
                             <View style={{ flex: 1.5, justifyContent: "center", alignItems: "center", }}>
-                                {/* <Image source={require('../../../assets/pak.png')} resizeMode="contain"
-                                    style={{ height: "80%", width: "80%", marginLeft: 20 }}
-                                /> */}
                                 <View style={{ marginLeft: 20 }}>
                                     <CountryPicker
                                         filterable={true}
@@ -139,27 +165,15 @@ class Veryfiyournumber extends Component {
                                         translation="eng"
                                         countryCode={this.state.cca2}
                                     >
-
                                     </CountryPicker>
                                 </View>
                             </View>
                             <View style={{ flex: 3, flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
                                 <View
-                                    // onPress={() => this.openModal()}
                                     style={{ flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
                                     <Text style={{ fontWeight: "bold" }}>{"+" + countryCode}</Text>
                                     <AntDesign name="caretdown" style={{ marginLeft: "15%", color: '#909090', fontWeight: 'bold', fontSize: 15 }} />
                                 </View>
-
-                                {/* <Picker
-                                    selectedValue={this.state.countryCode}
-                                    style={{ marginLeft: 15, width: 95 }}
-                                    onValueChange={(itemValue, itemIndex) =>
-                                        this.setState({ countryCode: itemValue })
-                                    }>
-                                    <Picker.Item label="+92" value="+92" />
-                                    <Picker.Item label="+92" value="+92" />
-                                </Picker> */}
                             </View>
                         </View>
 
@@ -192,7 +206,6 @@ class Veryfiyournumber extends Component {
                         </TouchableOpacity>
                     </View>
                     <View style={styles.container}>
-
                     </View>
 
                     <View
@@ -217,9 +230,10 @@ class Veryfiyournumber extends Component {
         );
     }
 }
+
 let mapStateToProps = state => {
     return {
-
+        bseUrl: state.root.bseUrl,
     };
 };
 function mapDispatchToProps(dispatch) {
@@ -228,10 +242,8 @@ function mapDispatchToProps(dispatch) {
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Veryfiyournumber);
 
-
 const styles = StyleSheet.create({
     contentContainer: {
-        // flex: 1,
         paddingBottom: 500,
         backgroundColor: "white",
 
@@ -239,96 +251,3 @@ const styles = StyleSheet.create({
     input: { justifyContent: 'center', alignItems: 'center', width: '90%' },
 
 });
-
-
-// import React, { Component } from 'react';
-// import { StyleSheet, View, Text } from 'react-native';
-
-// import PhoneInput from 'react-native-phone-input';
-// import CountryPicker from 'react-native-country-picker-modal';
-
-// class Veryfiyournumber extends Component {
-//     constructor() {
-//         super();
-
-//         // this.onPressFlag = this.onPressFlag.bind(this);
-//         // this.selectCountry = this.selectCountry.bind(this);
-//         this.state = {
-//             // countryName: 'Kenya',
-//             // phoneCode: '254',
-//             cca2: 'PK',
-//         };
-//     }
-
-//     componentDidMount() {
-//         // this.setState({
-//         //     pickerData: this.phone.getPickerData(),
-//         // });
-//     }
-
-//     onPressFlag() {
-//         console.log(this.countryPicker)
-//         // this.countryPicker.openModal();
-//     }
-
-//     selectCountry(country) {
-//         console.log(country, "country")
-
-//         this.setState({
-//             cca2: country.cca2,
-//             countryName: country.name,
-//             phoneCode: country.callingCode[0]
-//         })
-//         // this.phone.selectCountry(country.cca2.toLowerCase());
-//         // this.setState({ cca2: country.cca2 });
-//     }
-
-//     render() {
-//         return (
-//             <View style={styles.container}>
-//                 {/* <PhoneInput disabled={true}
-//                     // ref={(ref) => {
-//                     //     this.phone = ref;
-//                     // }}
-//                     // onSelect={value => this.selectCountry(value)}
-//                     // translation="eng"
-//                     // cca2={this.state.cca2}
-//                     ref={(ref) => {
-//                         this.phone = ref;
-//                     }}
-//                 // onPressFlag={() => this.onPressFlag()}
-//                 /> */}
-
-//                 <CountryPicker
-//                     filterable={true}
-//                     closeable={true}
-//                     filterPlaceholder={'Search'}
-//                     autoFocusFilter={true}
-//                     ref={(ref) => {
-//                         this.countryPicker = ref;
-//                     }}
-//                     onSelect={value => this.selectCountry(value)}
-//                     translation="eng"
-//                     countryCode={this.state.cca2}
-//                 >
-//                     <View style={{}}>
-//                         <Text>
-//                             {`${this.state.countryName}(+${this.state.phoneCode})`}
-//                         </Text>
-//                     </View>
-//                 </CountryPicker>
-//             </View>
-//         );
-//     }
-// }
-
-// let styles = StyleSheet.create({
-//     container: {
-//         flex: 1,
-//         alignItems: 'center',
-//         padding: 20,
-//         paddingTop: 60,
-//     },
-// });
-
-// module.exports = Veryfiyournumber;

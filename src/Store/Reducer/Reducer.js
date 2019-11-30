@@ -1,6 +1,7 @@
 const INITIAL_STATE = {
   bseUrl: "https://fathomless-citadel-43321.herokuapp.com",
-  // bseUrl: "http://192.168.10.10:3002",
+  // bseUrl: "http://192.168.8.102:3002",
+  // bseUrl: "http://192.168.100.33:3002",
   userProfile: {},
   currentLocation: null,
 

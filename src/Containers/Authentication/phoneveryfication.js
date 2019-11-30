@@ -31,7 +31,7 @@ class Phoneverification extends Component {
                 .then(user => {
                     console.log(user)
                     let cloneData = {
-                        email: this.props.email
+                        phoneNumber: this.props.newNumber
                     }
                     var options = {
                         method: 'POST',
@@ -78,18 +78,10 @@ class Phoneverification extends Component {
         return (
             <ScrollView
                 contentContainerStyle={styles.contentContainer}
-            // style={{
-            //     flex: 1,
-            //     // justifyContent: "center",
-            //     // alignItems: "center",
-            //     width: "100%",
-            //     backgroundColor: "white"
-            // }}
             >
                 <StatusBar backgroundColor="white" barStyle="dark-content" />
 
                 <View style={{ flex: 1, width: "100%", backgroundColor: "red" }}>
-
                 </View>
 
                 {/* //header// */}
@@ -98,7 +90,6 @@ class Phoneverification extends Component {
                     <TouchableOpacity
                         style={{ flex: 1.5, }}
                         onPress={() => Actions.pop()}
-
                     >
                         <View style={{ flex: 2, justifyContent: "center", alignItems: "center", }}>
                             <Image source={require('../../../assets/ArrowLeft.png')}
@@ -107,7 +98,6 @@ class Phoneverification extends Component {
                         </View>
                     </TouchableOpacity>
                     <View style={{ flex: 8, }}>
-
                     </View>
 
                 </View>
@@ -115,15 +105,12 @@ class Phoneverification extends Component {
                 {/* //body// */}
 
                 <View style={{
-                    // flex: 8,
                     width: "100%",
                     justifyContent: "center",
                     alignItems: "center",
-                    // backgroundColor:"white"
                 }}>
                     <Text style={{ fontSize: 30, fontWeight: "bold" }}>Phone Verification</Text>
                     <Text style={{}}>Enter your OTP code here</Text>
-
                     <View style={{
                         marginTop: 40,
                         flexDirection: "row",
@@ -189,15 +176,16 @@ class Phoneverification extends Component {
                                 value={this.state.input6}
                             />
                         </View>
-
-
                     </View>
 
                     <View style={{ marginTop: "25%" }}>
                         <Text style={{ textAlign: "center", fontSize: 15, color: "#B7B7C0" }}>Didn't receive a code?</Text>
                     </View>
+
                     <TouchableOpacity
-                        onPress={() => Actions.Veryfiyournumber({ email: this.props.email })}
+                        // onPress={() => Actions.Veryfiyournumber({ email: this.props.email })}
+                        // onPress={() => Actions.pop()}
+                        onPress={() => Actions.ActivateAccount()}
                     >
                         <Text style={{ color: "#FD6958", textAlign: "center", }}>Resend a new code </Text>
                     </TouchableOpacity>
@@ -224,6 +212,7 @@ class Phoneverification extends Component {
         );
     }
 }
+
 let mapStateToProps = state => {
     return {
         bseUrl: state.root.bseUrl,
@@ -235,13 +224,9 @@ function mapDispatchToProps(dispatch) {
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Phoneverification);
 
-
 const styles = StyleSheet.create({
     contentContainer: {
-        // flex: 1,
         paddingBottom: 250,
         backgroundColor: "white",
-
     },
-
 });

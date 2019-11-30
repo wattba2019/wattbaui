@@ -25,6 +25,7 @@ import Appointments from '../Containers/App/appointments/index'
 import AppointmentDetails from '../Containers/App/appointments/appointmentsDetails'
 import Profile from '../Containers/App/profile/index'
 import Googlemapfullview from '../Components/googlemapfullview'
+import VerifyCodeEmail from '../Containers/App/profile/6digitCode'
 
 class Route extends Component {
   render() {
@@ -32,12 +33,13 @@ class Route extends Component {
       <Router navigationBarStyle={{ backgroundColor: "#f27500" }}
         titleStyle={{ color: "white" }}
         tintColor="white">
-        <Scene >
-          <Scene key='SplashScreen' component={SplashScreen} hideNavBar={true} initial />
+        <Scene>
+          <Scene key='SplashScreen' component={SplashScreen} hideNavBar={true} />
           <Scene key='Walkthrough' component={Walkthrough} hideNavBar={true} />
-          <Scene key='Signin' component={Signin} hideNavBar={true} />
+          <Scene key='Signin' component={Signin} hideNavBar={true} initial />
           <Scene key='Forgotyourpassword' component={Forgotyourpassword} hideNavBar={true} />
           <Scene key='VerifyCode' component={VerifyCode} hideNavBar={true} />
+          <Scene key='VerifyCodeEmail' component={VerifyCodeEmail} hideNavBar={true} />
           <Scene key='Signup' component={Signup} hideNavBar={true} />
           <Scene key='ActivateAccount' component={ActivateAccount} hideNavBar={true} />
           <Scene key='Veryfiyournumber' component={Veryfiyournumber} hideNavBar={true} />

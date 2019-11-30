@@ -46,8 +46,6 @@ class AppContainer extends Component {
                     {
                         (this.state.rout === "Profile") ? (<Profile />) : null
                     }
-
-
                 </ScrollView>
 
 
