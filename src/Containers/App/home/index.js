@@ -61,25 +61,23 @@ class Home extends Component {
                                 <Image source={require('../../../../assets/Path27909.png')} resizeMode="contain"
                                     style={{ height: "50%", width: "50%", }}
                                 />
-
                             </View>
+
                             <View style={{
                                 flex: 8
                             }}>
                                 <Text style={{ textAlign: "left" }}>London, Greater London</Text>
-
                             </View>
                         </View>
+
                         <View style={{
                             flex: 3, justifyContent: "center", alignItems: "center", flexDirection: "row",
                             // backgroundColor: "green"
                         }}>
-                            <TouchableOpacity style={{ flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
-                                {/* <Image source={require('../../../../assets/surface1.png')} resizeMode="contain"
-                                    style={{ width: "20%", }}
-                                /> */}
+                            <TouchableOpacity
+                                onPress={() => Actions.Googlemapfullview()}
+                                style={{ flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
                                 <Entypo name="direction" style={{ color: "#FD6958", fontWeight: 'bold', fontSize: 20 }} />
-
                                 <Text style={{ color: "#FD6958" }}>CHANGE</Text>
                             </TouchableOpacity>
                         </View>

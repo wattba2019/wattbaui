@@ -73,9 +73,9 @@ class MapDirection extends React.Component {
                                 latitudeDelta: LATITUDE_DELTA,
                                 longitudeDelta: LONGITUDE_DELTA,
                             }}
-
                         >
-                            <Marker draggable={false} style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, alignItems: 'center', justifyContent: 'center', backgroundColor: 'transparent' }}
+                            <Marker draggable={false}
+                                // style={{ top: 0, bottom: 0, left: 0, right: 0, alignItems: 'center', justifyContent: 'center', backgroundColor: 'transparent' }}
                                 coordinate={
                                     {
                                         latitude: coords.latitude,
@@ -85,7 +85,9 @@ class MapDirection extends React.Component {
                                     }
                                 }
                             // onDragEnd={!this.props.sendLocation ? (e) => this.locationSet(e.nativeEvent.coordinate) : null}
-                            />
+                            >
+                                <Image source={require('../../assets/mapIcon.png')} style={{ height: 35, width: 35 }} />
+                            </Marker>
                         </MapView> : <MapView style={{ width: "99%", height: 500 }}
                             provider={PROVIDER_GOOGLE}
                             region={{

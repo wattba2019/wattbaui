@@ -10,6 +10,8 @@ import { Actions } from 'react-native-router-flux';
 // import ShopsCards from '../../../Components/shopscards';
 import IconFontAwesome from 'react-native-vector-icons/FontAwesome';
 
+import MapDirection from '../../../Components/maps'
+
 //icons import
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -131,7 +133,155 @@ class Nearby extends Component {
                     alignItems: "center",
                     // backgroundColor: "red",
                 }}>
-                    <ScrollView>
+                    <View
+                        style={{
+                            marginTop: 10,
+                            marginBottom: 0,
+                            width: "100%",
+                            marginHorizontal: "0%",
+                            backgroundColor: "#EDEDED",
+                        }}
+                    >
+                        <MapDirection />
+                    </View>
+
+                    <View style={{ position: "absolute", zIndex: 1, bottom: 20, flexDirection: "row", flex: 1, }}>
+
+                        <View style={{ flexDirection: "row", height: 180 }}>
+                            <ScrollView horizontal={true} style={{ flexDirection: "row", zIndex: 1 }}>
+                                <TouchableOpacity style={{
+                                    margin: 10,
+                                    flexDirection: "row",
+                                    marginBottom: 20,
+                                    height: 170
+                                }}
+                                // onPress={() => this.props.navigate.navigate('Product')}
+                                >
+
+                                    <View>
+                                        <ImageBackground source={require('../../../../assets/joshua.png')} style={styles.card} >
+                                        </ImageBackground>
+                                        <View style={{
+                                            top: -10,
+                                            height: 50,
+                                            borderBottomRightRadius: 6,
+                                            borderBottomLeftRadius: 6,
+                                            padding: "2%",
+                                            borderColor: "#E8E6E7",
+                                            borderWidth: 1,
+                                            flex: 1,
+                                            flexDirection: "row",
+                                            backgroundColor: "white",
+                                        }}>
+                                            <View style={{
+                                                flex: 1,
+                                                // backgroundColor: "green",
+                                            }}>
+                                                <Text style={styles.card_text}>Sun in Sky Hair Salon</Text>
+                                                <Text style={{ color: "#7F7F7F" }}>Crescent Town, London</Text>
+                                            </View>
+                                            <View style={{
+                                                flex: 2,
+                                                flexDirection: "row",
+                                                justifyContent: "center",
+                                                alignItems: "center"
+                                                // backgroundColor: "yellow",
+                                            }}>
+                                                <Image source={require('../../../../assets/Path.png')} resizeMode="contain"
+                                                    style={{ width: "30%", }}
+                                                />
+                                                <Text style={{ color: "#7F7F7F" }}>4.0</Text>
+                                            </View>
+                                        </View>
+                                    </View>
+                                </TouchableOpacity>
+                                <TouchableOpacity style={{
+                                    margin: 10,
+                                    flexDirection: "row",
+                                    marginBottom: 20,
+                                    height: 170
+                                }}
+                                // onPress={() => this.props.navigate.navigate('Product')}
+                                >
+
+                                    <View>
+                                        <ImageBackground source={require('../../../../assets/joshua.png')} style={styles.card} >
+                                        </ImageBackground>
+                                        <View style={{
+                                            top: -10,
+                                            height: 50,
+                                            borderBottomRightRadius: 6,
+                                            borderBottomLeftRadius: 6,
+                                            padding: "2%",
+                                            borderColor: "#E8E6E7",
+                                            borderWidth: 1,
+                                            flex: 1,
+                                            flexDirection: "row",
+                                            backgroundColor: "white",
+                                        }}>
+                                            <View style={{
+                                                flex: 1,
+                                                // backgroundColor: "green",
+                                            }}>
+                                                <Text style={styles.card_text}>Sun in Sky Hair Salon</Text>
+                                                <Text style={{ color: "#7F7F7F" }}>Crescent Town, London</Text>
+                                            </View>
+                                            <View style={{
+                                                flex: 2,
+                                                flexDirection: "row",
+                                                justifyContent: "center",
+                                                alignItems: "center"
+                                                // backgroundColor: "yellow",
+                                            }}>
+                                                <Image source={require('../../../../assets/Path.png')} resizeMode="contain"
+                                                    style={{ width: "30%", }}
+                                                />
+                                                <Text style={{ color: "#7F7F7F" }}>4.0</Text>
+                                            </View>
+                                        </View>
+                                    </View>
+                                </TouchableOpacity>
+                            </ScrollView>
+                        </View>
+                    </View>
+
+
+                    {/* <View style={{ flex: 8, }}>
+
+                        <View style={{ flex: 1, height: 450, flexDirection: "row", marginTop: 10, }} >
+                            <View
+                                style={{
+                                    // marginTop: 10,
+                                    marginBottom: 0,
+                                    width: "100%",
+                                    marginHorizontal: "0%",
+                                    backgroundColor: "#EDEDED",
+                                }}
+                            >
+                                <MapDirection />
+                            </View>
+
+                            <View style={{ position: "absolute", zIndex: 1, bottom: 20, flexDirection: "row", flex: 1,}}>
+
+                                <View style={{ flexDirection: "row", height: 50 }}>
+                                    <ScrollView horizontal={true} style={{ flexDirection: "row", zIndex: 1 }}>
+
+                                        <Text>TESTaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</Text>
+                                        <Text>TESTaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</Text>
+                                        <Text>TESTaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</Text>
+                                        <Text>TESTaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</Text>
+                                    </ScrollView>
+
+                                </View>
+
+
+                                
+                            </View>
+                        </View>
+
+                    </View> */}
+
+                    {/* <ScrollView>
                         <ImageBackground source={require('../../../../assets/img.png')}
                             style={{
                                 // backgroundColor: '#fd902a',
@@ -242,9 +392,9 @@ class Nearby extends Component {
                                 </TouchableOpacity>
                             </ScrollView>
                         </ImageBackground>
-                    </ScrollView>
+                    </ScrollView> */}
                 </View>
-            </View>
+            </View >
         );
     }
 }
