@@ -21,18 +21,40 @@ class About extends Component {
         }
     }
 
+
     render() {
         const { activeColor } = this.state
+        let { shop, workingHours } = this.props
         return (
             <View style={{}}>
                 <View style={{ paddingHorizontal: 25, paddingVertical: 10, }} >
-                    <Text style={{ fontWeight: "bold" }}>About</Text>
-                    <Text style={{ color: "grey" }}>Ranya Barber shop is one of the most powerful brande in the hair & beauty care sector in mordern, london. That has given hairstyling in new horizon</Text>
-                    <Text style={{ color: "#FD6958" }}>read more</Text>
+                    <Text style={{ fontWeight: "bold", marginTop: 10 }}>About</Text>
+                    <Text style={{ color: "grey" }}>{shop.about}</Text>
+                    {/* <Text style={{ color: "#FD6958" }}>read more</Text> */}
 
                     <Text style={{ marginTop: 20, fontWeight: "bold" }}>Opening Hours</Text>
+                    {
+                        (workingHours) ? (
+                            workingHours.map((key, index) => {
+                                return (
 
-                    <View style={{ flexDirection: "row", flex: 1 }}>
+                                    <View style={{ flexDirection: "row", flex: 1 }} key={index}>
+                                        <View style={{ flex: 0.5 }}>
+                                            <Text style={{ color: "green" }}>{'\u2B24'} <Text style={{ color: "black" }}> {key.day}</Text></Text>
+                                        </View>
+                                        <View style={{ flex: 0.5 }}>
+                                            <Text>{key.openTime} - {key.closeTime}</Text>
+                                        </View>
+                                    </View>
+
+                                )
+                            })
+
+                        ) : null
+
+                    }
+
+                    {/* <View style={{ flexDirection: "row", flex: 1 }}>
                         <View style={{ flex: 0.5 }}>
                             <Text style={{ color: "green" }}>{'\u2B24'} <Text style={{ color: "black" }}> Monday -Friday</Text></Text>
                         </View>
@@ -47,11 +69,12 @@ class About extends Component {
                         <View style={{ flex: 0.5 }}>
                             <Text style={{}}>9:00AM - 1:00PM</Text>
                         </View>
-                    </View>
+                    </View> */}
+
                     <View style={{ flex: 1, flexDirection: "row" }}>
                         <View style={{ flex: 6, marginTop: 20, }}>
                             <Text style={{ fontWeight: "bold" }}>Address</Text>
-                            <Text style={{ color: "grey" }}>47B R-Block Morden, London, Greater London, United Kingdom</Text>
+                            <Text style={{ color: "grey" }}>{shop.addressLine1}</Text>
                             <TouchableOpacity style={{ flexDirection: "row", marginTop: 5 }}>
 
                                 <Entypo name="direction" style={{ color: "#FD6958", fontWeight: 'bold', fontSize: 20 }} />
@@ -66,7 +89,7 @@ class About extends Component {
                             />
                         </View>
                     </View>
-                    <View style={{ flexDirection: "row",justifyContent:"space-between" }}>
+                    <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
                         <TouchableOpacity>
                             <Text style={{ marginTop: 20, fontWeight: "bold" }}>Photos</Text>
                         </TouchableOpacity>
@@ -216,7 +239,7 @@ class About extends Component {
 
                 <View style={{ width: "85%", height: 50, marginTop: 0, marginHorizontal: "7%" }}>
                     <TouchableOpacity
-                    onPress={() => Actions.BarberDetails()}
+                        onPress={() => Actions.BarberDetails()}
                     >
                         <ImageBackground source={require('../../../assets/buttonBackground.png')} resizeMode="contain"
                             style={{ height: "100%", width: "100%", justifyContent: "center", }}

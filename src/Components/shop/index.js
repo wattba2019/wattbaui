@@ -19,6 +19,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import ImageSlider from 'react-native-image-slider';
 import shopImage from '../../../assets/Group55346.png';
 import { Actions } from 'react-native-router-flux';
+import axios from 'axios';
 
 let img = require("../../../assets/Group55346.png")
 const imagesUri = [
@@ -34,8 +35,47 @@ class shop extends Component {
             activeColor: "about"
         }
     }
+    componentWillMount() {
+        console.log(this.props.shop._id, "USER_ID")
+        // getting all products
+        let urlMgetworkinghours = `${this.props.bseUrl}/workinghour/getworkinghours/${this.props.shop._id}`
+        axios({
+            method: 'get',
+            url: urlMgetworkinghours,
+        })
+            .then(result => {
+                let data = result.data.data[0].workingHours
+                console.log(data, "DATA_FROM_API")
+
+                this.setState({
+                    workingHours: data,
+                    isloader: false
+                })
+            })
+            .catch(err => {
+                console.log(err, "ERROR_ON_GET_WORKING_HOURS")
+            })
+
+        let urlMservicesget = `${this.props.bseUrl}/servicesget/${this.props.shop._id}`
+        console.log(urlMservicesget, "SERVICE")
+        axios({
+            method: 'get',
+            url: urlMservicesget,
+        })
+            .then(result => {
+                let data = result.data.data
+                console.log(data, "DATA_FROM_API")
+                this.setState({
+                    services: data,
+                    isloader: false
+                })
+            })
+            .catch(err => {
+                console.log(err, "ERROR_ON_GET_SERVICES")
+            })
+    }
+
     activeColor(key) {
-        console.log(key.ref.key)
         if (key.ref.key == ".0") {
             this.setState({
                 activeColor: "about"
@@ -59,23 +99,28 @@ class shop extends Component {
 
     }
     render() {
-        const { activeColor } = this.state
+        const { activeColor, workingHours, services } = this.state
+        let { shop } = this.props
         return (
             <View style={{ flex: 1 }}>
                 <SafeAreaView style={styles.container} >
                     <Image
                         source={require("../../../assets/Group55346.png")} resizeMode="cover" style={{ width: "100%", height: 250 }}
                     />
+
                     <TouchableOpacity onPress={() => Actions.pop()}
                         style={{ width: 25, position: 'absolute', top: 0, left: 30, right: 0, bottom: 130, justifyContent: "center" }}>
                         <Ionicons name="ios-arrow-back" style={{ color: "#fff", fontWeight: 'bold', fontSize: 28 }} />
                     </TouchableOpacity>
-                    <View style={{ position: 'absolute', top: "35%", left: 30, right: 0, bottom: 0, justifyContent: "center" }}>
-                        <Text style={{ color: "#fff", fontSize: 18 }}>Rayan BarberShop</Text>
+
+                    <View style={{ width: 230, position: 'absolute', top: "35%", left: 30, right: 0, bottom: 0, justifyContent: "center", }}>
+                        <Text style={{ color: "#fff", fontSize: 18 }}>{shop.businessName}</Text>
+                        <Text style={{ color: "#fff", fontSize: 14 }}>{shop.addressLine1}</Text>
+
                     </View>
-                    <View style={{ position: 'absolute', top: "53%", left: 30, right: 0, marginTop: 5, bottom: 0, justifyContent: "center" }}>
-                        <Text style={{ color: "#fff", fontSize: 14 }}>47B R-Block Modern, London</Text>
-                    </View>
+                    {/* <View style={{ width: 230, position: 'absolute', top: "53%", left: 30, right: 0, marginTop: 5, bottom: 0, justifyContent: "center", }}>
+                        <Text style={{ color: "#fff", fontSize: 14 }}>{shop.addressLine1}</Text>
+                    </View> */}
                     <View style={{ position: 'absolute', top: "80%", left: 30, bottom: 0, marginTop: 5, justifyContent: "center", flexDirection: "row" }}>
                         <Entypo name="star" style={{ color: "#EBAC43", fontWeight: 'bold', fontSize: 16 }} />
                         <Entypo name="star" style={{ color: "#EBAC43", fontWeight: 'bold', fontSize: 16 }} />
@@ -244,7 +289,7 @@ class shop extends Component {
                             locked={true}
                             tabBarUnderlineStyle={{ backgroundColor: '#FD6958' }}
                         >
-                            {/* //Pin// */}
+                            {/* //About// */}
                             <Tab
                                 heading={
                                     <TabHeading
@@ -253,10 +298,10 @@ class shop extends Component {
                                         <Text style={{ color: activeColor === "about" ? "#FD6958" : "black" }}>About</Text>
                                     </TabHeading>}
                             >
-                                <About />
+                                <About shop={shop} workingHours={workingHours} />
                             </Tab>
 
-                            {/* //Search// */}
+                            {/* //Services// */}
                             <Tab
                                 heading={
                                     <TabHeading
@@ -267,12 +312,11 @@ class shop extends Component {
                                 }
                             >
                                 <View>
-                                    <Services />
-
+                                    <Services shop={shop} services={services} />
                                 </View>
                             </Tab>
 
-                            {/* //Gift// */}
+                            {/* //Gallery// */}
                             <Tab
                                 heading={
                                     <TabHeading
@@ -283,11 +327,11 @@ class shop extends Component {
                                 }
                             >
                                 <View>
-                                    <Gallery />
+                                    <Gallery shop={shop} />
                                 </View>
                             </Tab>
 
-                            {/* //Basket// */}
+                            {/* //Review// */}
                             <Tab
                                 heading={
                                     <TabHeading
@@ -298,7 +342,7 @@ class shop extends Component {
                                 }
                             >
                                 <View>
-                                    <Review />
+                                    <Review shop={shop} />
 
                                 </View>
                             </Tab>
@@ -399,8 +443,7 @@ const styles = StyleSheet.create({
 
 let mapStateToProps = state => {
     return {
-        // str: state.root.str,
-        // userDetails: state.root.userDetails,
+        bseUrl: state.root.bseUrl,
     };
 };
 function mapDispatchToProps(dispatch) {

@@ -66,8 +66,9 @@ class Services extends Component {
         }
     }
 
+
     render() {
-        const { activeColor, } = this.state
+        let { shop, services } = this.props
         return (
             <View>
                 <View style={{ alignItems: "center" }}>
@@ -136,7 +137,7 @@ class Services extends Component {
                 {
                     (this.state.catogeries === "services") ?
                         (
-                            <ServiceChild1 />
+                            <ServiceChild1 services={services} />
 
                         ) :
                         (

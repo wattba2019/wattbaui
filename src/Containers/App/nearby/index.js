@@ -15,6 +15,7 @@ import MapDirection from '../../../Components/maps'
 //icons import
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
+import axios from 'axios';
 
 class Nearby extends Component {
     constructor(props) {
@@ -23,7 +24,38 @@ class Nearby extends Component {
         };
     }
 
+    componentDidMount() {
+        this.setState({
+            isloader: true
+        })
+        // getting all products
+        let urlM = `${this.props.bseUrl}/getallshops/`
+        axios({
+            method: 'get',
+            url: urlM,
+        })
+            .then(result => {
+                console.log(result.data.data, "DATA_FROM_API")
+                let shops = result.data.data
+                this.setState({
+                    shops: shops,
+                    isloader: false
+                })
+            })
+            .catch(err => {
+                let error = JSON.parse(JSON.stringify(err))
+                console.log(error, 'ERRROR', err)
+                this.setState({
+                    err: error,
+                    isloader: false
+                })
+            })
+    }
+
+
     render() {
+        let { fullName, } = this.props.userProfile
+        let { shops } = this.state
         return (
             <View style={{
                 flex: 1,
@@ -31,40 +63,34 @@ class Nearby extends Component {
                 alignItems: "center",
                 backgroundColor: "white",
             }}>
-
                 <View style={{
                     height: 120,
                     width: "95%",
                     justifyContent: "center",
                     alignItems: "center",
-                    // backgroundColor: "yellow",
                 }}>
                     <View style={{ width: "100%", flexDirection: "row", justifyContent: "space-between", marginTop: 20, }}>
-                        <Text style={{ fontSize: 16, fontWeight: "bold", textAlign: "left" }}>Hello, Aqib Khan</Text>
+                        <Text style={{ fontSize: 16, fontWeight: "bold", textAlign: "left" }}>{fullName}</Text>
                         <TouchableOpacity style={{
                             width: 50,
                             alignItems: "flex-end",
                             zIndex: 1,
-                            // backgroundColor: "red",
                         }}
                             onPress={() => Actions.Filters()}
                         >
                             <IconFontAwesome name="filter" size={25} style={{ color: "grey" }} />
                         </TouchableOpacity>
-
                     </View>
 
 
                     <View style={{ width: "105%", top: -5, justifyContent: "center", alignItems: "center", flex: 1, flexDirection: "row" }}>
                         <View style={{
                             flex: 8, flexDirection: "row", justifyContent: "center", alignItems: "center",
-                            // backgroundColor: "orange"
                         }}>
 
                             <View style={{
                                 flex: 1,
                                 justifyContent: "center", alignItems: "center",
-                                // backgroundColor: "green",
                             }}>
                                 <Image source={require('../../../../assets/Path27909.png')} resizeMode="contain"
                                     style={{ height: "50%", width: "50%", }}
@@ -79,19 +105,12 @@ class Nearby extends Component {
                         </View>
                         <View style={{
                             flex: 3, justifyContent: "center", alignItems: "center", flexDirection: "row",
-                            // backgroundColor: "green"
                         }}>
                             <TouchableOpacity style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", }}>
-                                {/* <Image source={require('../../../../assets/surface1.png')} resizeMode="contain"
-                                    style={{ width: "20%", }}
-                                /> */}
                                 <Entypo name="direction" style={{ color: "#FD6958", fontWeight: 'bold', fontSize: 20 }} />
                                 <Text style={{ color: "#FD6958" }}>CHANGE</Text>
                             </TouchableOpacity>
                         </View>
-
-
-
                     </View>
 
                     <View
@@ -149,7 +168,75 @@ class Nearby extends Component {
 
                         <View style={{ flexDirection: "row", height: 180 }}>
                             <ScrollView horizontal={true} style={{ flexDirection: "row", zIndex: 1 }}>
-                                <TouchableOpacity style={{
+                                {
+                                    (shops && shops != 0) ? (
+                                        shops.map((key, index) => {
+                                            return (
+                                                <TouchableOpacity style={{
+                                                    margin: 10,
+                                                    flexDirection: "row",
+                                                    marginBottom: 20,
+                                                    height: 170,
+                                                    width: 250,
+                                                }} key={index}
+                                                    onPress={() => Actions.Shop({ shop: key })}
+                                                >
+                                                    <View style={{ width: 250, }}>
+                                                        <View style={{
+                                                            flex: 2,
+                                                            // backgroundColor: "yellow"
+                                                        }}>
+                                                            <Image style={{
+                                                                width: "100%", height: "100%",
+                                                                borderTopLeftRadius: 6,
+                                                                borderTopRightRadius: 6,
+                                                            }}
+                                                                resizeMode="cover"
+                                                                source={{ uri: "https://static4.fashionbeans.com/wp-content/uploads/2017/02/badbarber3.jpg" }}
+                                                            // source={{ uri: key.coverImage }}
+                                                            />
+                                                        </View>
+                                                        <View style={{
+                                                            top: -10,
+                                                            height: 50,
+                                                            borderBottomRightRadius: 6,
+                                                            borderBottomLeftRadius: 6,
+                                                            padding: "2%",
+                                                            borderColor: "#E8E6E7",
+                                                            borderWidth: 1,
+                                                            flex: 1,
+                                                            flexDirection: "row",
+                                                            backgroundColor: "white",
+                                                        }}>
+                                                            <View style={{
+                                                                flex: 5,
+                                                            }}>
+                                                                <Text style={styles.card_text}>{key.businessName}</Text>
+                                                                <Text style={{ color: "#7F7F7F" }}>{key.addressLine1}</Text>
+                                                            </View>
+                                                            <View style={{
+                                                                flex: 2,
+                                                                flexDirection: "row",
+                                                                justifyContent: "center",
+                                                                alignItems: "center"
+                                                            }}>
+                                                                <Image source={require('../../../../assets/Path.png')} resizeMode="contain"
+                                                                    style={{ width: "30%", }}
+                                                                />
+                                                                <Text style={{ color: "#7F7F7F" }}>4.0</Text>
+                                                            </View>
+                                                        </View>
+                                                    </View>
+                                                </TouchableOpacity>
+                                            )
+                                        })
+
+                                    ) : null
+                                }
+
+
+
+                                {/* <TouchableOpacity style={{
                                     margin: 10,
                                     flexDirection: "row",
                                     marginBottom: 20,
@@ -194,8 +281,8 @@ class Nearby extends Component {
                                             </View>
                                         </View>
                                     </View>
-                                </TouchableOpacity>
-                                <TouchableOpacity style={{
+                                </TouchableOpacity> */}
+                                {/* <TouchableOpacity style={{
                                     margin: 10,
                                     flexDirection: "row",
                                     marginBottom: 20,
@@ -240,159 +327,10 @@ class Nearby extends Component {
                                             </View>
                                         </View>
                                     </View>
-                                </TouchableOpacity>
+                                </TouchableOpacity> */}
                             </ScrollView>
                         </View>
                     </View>
-
-
-                    {/* <View style={{ flex: 8, }}>
-
-                        <View style={{ flex: 1, height: 450, flexDirection: "row", marginTop: 10, }} >
-                            <View
-                                style={{
-                                    // marginTop: 10,
-                                    marginBottom: 0,
-                                    width: "100%",
-                                    marginHorizontal: "0%",
-                                    backgroundColor: "#EDEDED",
-                                }}
-                            >
-                                <MapDirection />
-                            </View>
-
-                            <View style={{ position: "absolute", zIndex: 1, bottom: 20, flexDirection: "row", flex: 1,}}>
-
-                                <View style={{ flexDirection: "row", height: 50 }}>
-                                    <ScrollView horizontal={true} style={{ flexDirection: "row", zIndex: 1 }}>
-
-                                        <Text>TESTaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</Text>
-                                        <Text>TESTaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</Text>
-                                        <Text>TESTaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</Text>
-                                        <Text>TESTaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</Text>
-                                    </ScrollView>
-
-                                </View>
-
-
-                                
-                            </View>
-                        </View>
-
-                    </View> */}
-
-                    {/* <ScrollView>
-                        <ImageBackground source={require('../../../../assets/img.png')}
-                            style={{
-                                // backgroundColor: '#fd902a',
-                                marginTop: 10,
-                                flex: 1,
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                width: "100%"
-                            }}>
-
-                            <ScrollView style={{ marginTop: 30, marginHorizontal: "3%" }} horizontal showsHorizontalScrollIndicator={false}>
-                                <TouchableOpacity style={{
-                                    marginTop: "54%",
-                                    // backgroundColor: "red",
-                                }}
-                                // onPress={() => this.props.navigate.navigate('Product')}
-                                >
-                                    <View style={{
-                                        height: 170,
-                                        // marginTop: 230
-                                        // backgroundColor: "red",
-                                    }}>
-                                        <ImageBackground source={require('../../../../assets/tinh.png')} style={styles.card} >
-                                        </ImageBackground>
-                                        <View style={{
-                                            top: -10,
-                                            height: 50,
-                                            borderBottomRightRadius: 6,
-                                            borderBottomLeftRadius: 6,
-                                            padding: "2%",
-                                            borderColor: "#E8E6E7",
-                                            borderWidth: 1,
-                                            flex: 1,
-                                            flexDirection: "row",
-                                            backgroundColor: "white",
-                                        }}>
-                                            <View style={{
-                                                flex: 1,
-                                                // backgroundColor: "green",
-                                            }}>
-                                                <Text style={styles.card_text}>Ranya Barbershop</Text>
-                                                <Text style={{ color: "#7F7F7F" }}>47B R-Block Morden, London</Text>
-                                            </View>
-                                            <View style={{
-                                                flex: 2,
-                                                flexDirection: "row",
-                                                justifyContent: "center",
-                                                alignItems: "center"
-                                                // backgroundColor: "yellow",
-                                            }}>
-                                                <Image source={require('../../../../assets/Path.png')} resizeMode="contain"
-                                                    style={{ width: "30%", }}
-                                                />
-                                                <Text style={{ color: "#7F7F7F" }}>4.0</Text>
-                                            </View>
-                                        </View>
-                                    </View>
-                                </TouchableOpacity>
-
-                                <TouchableOpacity style={{
-                                    margin: 10,
-                                    marginTop: "54%",
-                                    // backgroundColor: "red",
-                                }}
-                                // onPress={() => this.props.navigate.navigate('Product')}
-                                >
-                                    <View style={{
-                                        height: 170,
-                                        // marginTop: 230
-
-                                        // backgroundColor: "red",
-                                    }}>
-                                        <ImageBackground source={require('../../../../assets/joshua.png')} style={styles.card} >
-                                        </ImageBackground>
-                                        <View style={{
-                                            top: -10,
-                                            height: 50,
-                                            borderBottomRightRadius: 6,
-                                            borderBottomLeftRadius: 6,
-                                            padding: "2%",
-                                            borderColor: "#E8E6E7",
-                                            borderWidth: 1,
-                                            flex: 1,
-                                            flexDirection: "row",
-                                            backgroundColor: "white",
-                                        }}>
-                                            <View style={{
-                                                flex: 1,
-                                                // backgroundColor: "green",
-                                            }}>
-                                                <Text style={styles.card_text}>Sun in Sky Hair Salon</Text>
-                                                <Text style={{ color: "#7F7F7F" }}>Crescent Town, London</Text>
-                                            </View>
-                                            <View style={{
-                                                flex: 2,
-                                                flexDirection: "row",
-                                                justifyContent: "center",
-                                                alignItems: "center"
-                                                // backgroundColor: "yellow",
-                                            }}>
-                                                <Image source={require('../../../../assets/Path.png')} resizeMode="contain"
-                                                    style={{ width: "30%", }}
-                                                />
-                                                <Text style={{ color: "#7F7F7F" }}>4.0</Text>
-                                            </View>
-                                        </View>
-                                    </View>
-                                </TouchableOpacity>
-                            </ScrollView>
-                        </ImageBackground>
-                    </ScrollView> */}
                 </View>
             </View >
         );
@@ -400,7 +338,8 @@ class Nearby extends Component {
 }
 let mapStateToProps = state => {
     return {
-
+        userProfile: state.root.userProfile,
+        bseUrl: state.root.bseUrl,
     };
 };
 function mapDispatchToProps(dispatch) {

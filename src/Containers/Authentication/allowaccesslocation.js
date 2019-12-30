@@ -72,13 +72,20 @@ class Allowaccesslocation extends Component {
                             </ImageBackground>
                         </TouchableOpacity>
 
-                        <TouchableOpacity style={{}}
-                            onPress={() => Actions.AppContainer()}
-                        >
-                            {/* <Text>TEST</Text> */}
-                            <Text onPress={() => Actions.AppContainer()} style={{ textAlign: "center", fontSize: 15, marginTop: 12, }}>Don't allow</Text>
-                        </TouchableOpacity>
+
                     </View>
+                    <TouchableOpacity style={{
+                        width: "100%"
+                    }}
+                        onPress={() => Actions.AppContainer()}
+                    >
+                        <Text
+                            onPress={() => Actions.AppContainer()}
+                            style={{ textAlign: "center", fontSize: 15, marginTop: 12, }}
+                        >
+                            Don't allow
+                            </Text>
+                    </TouchableOpacity>
                 </View>
             </ScrollView>
         );

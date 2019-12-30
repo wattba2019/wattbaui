@@ -36,7 +36,7 @@ class Route extends Component {
         <Scene>
           <Scene key='SplashScreen' component={SplashScreen} hideNavBar={true} />
           <Scene key='Walkthrough' component={Walkthrough} hideNavBar={true} />
-          <Scene key='Signin' component={Signin} hideNavBar={true} />
+          <Scene key='Signin' component={Signin} hideNavBar={true} initial />
           <Scene key='Forgotyourpassword' component={Forgotyourpassword} hideNavBar={true} />
           <Scene key='VerifyCode' component={VerifyCode} hideNavBar={true} />
           <Scene key='VerifyCodeEmail' component={VerifyCodeEmail} hideNavBar={true} />
@@ -45,7 +45,7 @@ class Route extends Component {
           <Scene key='Veryfiyournumber' component={Veryfiyournumber} hideNavBar={true} />
           <Scene key='Phoneverification' component={Phoneverification} hideNavBar={true} />
           <Scene key='Allowaccesslocation' component={Allowaccesslocation} hideNavBar={true} />
-          <Scene key='AppContainer' component={AppContainer} hideNavBar={true} initial />
+          <Scene key='AppContainer' component={AppContainer} hideNavBar={true} />
           <Scene key='Shop' component={Shop} hideNavBar={true} />
           <Scene key='Filters' component={Filters} hideNavBar={true} />
           <Scene key='SearchResults' component={SearchResults} hideNavBar={true} />

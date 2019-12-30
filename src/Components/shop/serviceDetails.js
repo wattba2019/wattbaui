@@ -20,22 +20,19 @@ class ServiceDetaild extends Component {
     }
 
     render() {
+        let { serviceDetails, serviceName } = this.props
         return (
             <View style={{
-                // backgroundColor: '#fd902a',
                 flex: 1,
                 justifyContent: 'center',
                 alignItems: 'center',
                 width: "100%"
             }}>
-                {/* <StatusBar backgroundColor="#F86078" barStyle="dark-content" /> */}
                 <StatusBar backgroundColor="white" barStyle="dark-content" />
-
                 <View
                     style={{
                         flex: 1.4,
                         width: "100%",
-                        // backgroundColor: "red"
                     }}
                 >
                     <Image source={require('../../../assets/servicedetails.png')} resizeMode="cover"
@@ -47,38 +44,54 @@ class ServiceDetaild extends Component {
                     </TouchableOpacity>
                 </View>
 
-
                 <ScrollView
                     style={{
                         height: "30%",
-                        // flex: 1,
                         backgroundColor: "white",
                         width: "100%",
                         borderTopLeftRadius: 20,
                         borderTopRightRadius: 20,
-                        // justifyContent: "center",
-                        // alignItems: "center",
-
                     }}
                 >
                     <View style={{
                         justifyContent: "center",
                         alignItems: "center"
                     }}>
+                        {
+                            (serviceName) ? (
+                                <View style={{
+                                    width: "90%", flexDirection: "row", marginTop: 15
+                                }}>
+                                    <Text style={{
+                                        color: "black",
+                                        fontSize: 18,
+                                    }}>{serviceName}</Text>
+                                </View>
+                            ) : null
+                        }
+                        {
+                            (serviceDetails) ? (serviceDetails.map((key, index) => {
+                                return (
+                                    <View key={index} style={{
+                                        width: "90%", marginTop: 15, flexDirection: "row", justifyContent: "space-between"
+                                    }}>
+                                        <Text style={{ color: "#858585", fontSize: 16, }}>{key.serviceName}</Text>
+                                        <Text style={{ color: "#FD6958", fontSize: 16, fontWeight: "bold" }}>${key.price}</Text>
+                                    </View>
+                                )
+                            })
+                            ) : <Text style={{ color: "#FD6958", fontSize: 16, fontWeight: "bold" }}>There is no data</Text>
+                        }
 
 
-                        <View style={{
-                            width: "90%", flexDirection: "row", marginTop: 15
+                        {/* <View style={{
+                            width: "90%", marginTop: 15, flexDirection: "row", justifyContent: "space-between"
                             // backgroundColor: "green"
                         }}>
-                            <Text style={{
-                                // color: "#858585",
-                                color: "black",
-                                fontSize: 18,
-                            }}>Hair Styles</Text>
-                        </View>
-
-                        <View style={{
+                            <Text style={{ color: "#858585", fontSize: 16, }}>Style Name</Text>
+                            <Text style={{ color: "#FD6958", fontSize: 16, fontWeight: "bold" }}>$20</Text>
+                        </View> */}
+                        {/* <View style={{
                             width: "90%", marginTop: 15, flexDirection: "row", justifyContent: "space-between"
                             // backgroundColor: "green"
                         }}>
@@ -119,14 +132,7 @@ class ServiceDetaild extends Component {
                         }}>
                             <Text style={{ color: "#858585", fontSize: 16, }}>Style Name</Text>
                             <Text style={{ color: "#FD6958", fontSize: 16, fontWeight: "bold" }}>$20</Text>
-                        </View>
-                        <View style={{
-                            width: "90%", marginTop: 15, flexDirection: "row", justifyContent: "space-between"
-                            // backgroundColor: "green"
-                        }}>
-                            <Text style={{ color: "#858585", fontSize: 16, }}>Style Name</Text>
-                            <Text style={{ color: "#FD6958", fontSize: 16, fontWeight: "bold" }}>$20</Text>
-                        </View>
+                        </View> */}
 
                         <View
                             style={{ width: "85%", height: 50, marginTop: 30, }}

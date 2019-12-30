@@ -86,7 +86,9 @@ class MapDirection extends React.Component {
                                 }
                             // onDragEnd={!this.props.sendLocation ? (e) => this.locationSet(e.nativeEvent.coordinate) : null}
                             >
-                                <Image source={require('../../assets/mapIcon.png')} style={{ height: 35, width: 35 }} />
+                                {/* <View style={{ width: 70, height: 70, backgroundColor: "orange" }}>
+                                </View> */}
+                                    <Image source={require('../../assets/mapIcon.png')} style={{ height: 35, width: 35 }} />
                             </Marker>
                         </MapView> : <MapView style={{ width: "99%", height: 500 }}
                             provider={PROVIDER_GOOGLE}

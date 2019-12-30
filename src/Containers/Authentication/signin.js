@@ -16,10 +16,12 @@ class Signin extends Component {
         this.state = {
             loader: false,
             activateAccount: false,
-            email: "",
-            password: ""
-            // email: "abddullahshah@gmail.com",
-            // password: "123456789"
+            // email: "",
+            // password: ""
+            // email: "mynameisabdullahv1@gmail.com",
+            // password: "12345678"
+            email: "abddullahshah@gmail.com",
+            password: "123456789"
         };
     }
 

@@ -27,6 +27,7 @@ class Home extends Component {
     }
 
     render() {
+        let { fullName } = this.props.userProfile
         return (
             <View style={{
                 flex: 1,
@@ -43,7 +44,7 @@ class Home extends Component {
                     // backgroundColor: "yellow",
                 }}>
                     <View style={{ width: "100%", marginTop: 20 }}>
-                        <Text style={{ fontSize: 16, fontWeight: "bold", textAlign: "left" }}>Hello, Aqib Khan</Text>
+                        <Text style={{ fontSize: 16, fontWeight: "bold", textAlign: "left" }}>{fullName}</Text>
                     </View>
 
 
@@ -672,6 +673,7 @@ class Home extends Component {
 let mapStateToProps = state => {
     return {
         currentLocation: state.root.currentLocation,
+        userProfile: state.root.userProfile,
     };
 };
 function mapDispatchToProps(dispatch) {
