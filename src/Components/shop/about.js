@@ -1,43 +1,51 @@
 import React, { Component } from 'react';
 import {
-    View, Text, StyleSheet, TouchableOpacity, StatusBar,
-    ScrollView, Picker, Image, SafeAreaView, ActivityIndicator,
-    images, Dimensions, ImageBackground
+    View, Text, StyleSheet, TouchableOpacity,
+    ScrollView, Image, ImageBackground
 } from 'react-native';
 import { connect } from "react-redux";
-import { Icon, Tabs, Tab, TabHeading } from 'native-base';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Entypo from 'react-native-vector-icons/Entypo';
-import Zocial from 'react-native-vector-icons/Zocial';
-import AntDesign from 'react-native-vector-icons/AntDesign';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import ImageSlider from 'react-native-image-slider';
 import { Actions } from 'react-native-router-flux';
 
 class About extends Component {
     constructor(props) {
         super(props)
         this.state = {
+            readmore: false
         }
     }
-
+    readmore = (data) => {
+        this.setState({
+            readmore: data
+        })
+    }
 
     render() {
-        const { activeColor } = this.state
-        let { shop, workingHours } = this.props
+        let { shop, workingHours, gallery } = this.props
+        let { readmore } = this.state
         return (
-            <View style={{}}>
+            <View>
                 <View style={{ paddingHorizontal: 25, paddingVertical: 10, }} >
                     <Text style={{ fontWeight: "bold", marginTop: 10 }}>About</Text>
-                    <Text style={{ color: "grey" }}>{shop.about}</Text>
-                    {/* <Text style={{ color: "#FD6958" }}>read more</Text> */}
-
+                    {
+                        (readmore == true) ? (
+                            <Text style={{ color: "grey" }}>{shop.about}</Text>
+                        ) : <>
+                                <Text style={{ color: "grey" }}>{shop.about.substring(0, 80)}</Text>
+                                <TouchableOpacity style={{ width: "20%" }}
+                                    onPress={() => {
+                                        this.readmore(true)
+                                    }}
+                                >
+                                    <Text style={{ color: "#FD6958" }}>read more</Text>
+                                </TouchableOpacity>
+                            </>
+                    }
                     <Text style={{ marginTop: 20, fontWeight: "bold" }}>Opening Hours</Text>
                     {
                         (workingHours) ? (
                             workingHours.map((key, index) => {
                                 return (
-
                                     <View style={{ flexDirection: "row", flex: 1 }} key={index}>
                                         <View style={{ flex: 0.5 }}>
                                             <Text style={{ color: "green" }}>{'\u2B24'} <Text style={{ color: "black" }}> {key.day}</Text></Text>
@@ -46,31 +54,10 @@ class About extends Component {
                                             <Text>{key.openTime} - {key.closeTime}</Text>
                                         </View>
                                     </View>
-
                                 )
                             })
-
                         ) : null
-
                     }
-
-                    {/* <View style={{ flexDirection: "row", flex: 1 }}>
-                        <View style={{ flex: 0.5 }}>
-                            <Text style={{ color: "green" }}>{'\u2B24'} <Text style={{ color: "black" }}> Monday -Friday</Text></Text>
-                        </View>
-                        <View style={{ flex: 0.5 }}>
-                            <Text style={{}}>8:30AM - 9:00PM</Text>
-                        </View>
-                    </View>
-                    <View style={{ flexDirection: "row", flex: 1, marginTop: 5 }}>
-                        <View style={{ flex: 0.5 }}>
-                            <Text style={{ color: "green" }}>{'\u2B24'} <Text style={{ color: "black" }}> Saturday -Sunday</Text></Text>
-                        </View>
-                        <View style={{ flex: 0.5 }}>
-                            <Text style={{}}>9:00AM - 1:00PM</Text>
-                        </View>
-                    </View> */}
-
                     <View style={{ flex: 1, flexDirection: "row" }}>
                         <View style={{ flex: 6, marginTop: 20, }}>
                             <Text style={{ fontWeight: "bold" }}>Address</Text>
@@ -90,150 +77,38 @@ class About extends Component {
                         </View>
                     </View>
                     <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                        <TouchableOpacity>
+                        <View>
                             <Text style={{ marginTop: 20, fontWeight: "bold" }}>Photos</Text>
-                        </TouchableOpacity>
+                        </View>
                         <TouchableOpacity>
                             <Text style={{ marginTop: 20, fontWeight: "bold" }}>View all</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
 
-
-                <View style={{}}>
-
+                <View>
                     <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-
-                        <TouchableOpacity style={{
-                            height: 100,
-                            width: 80,
-                            justifyContent: "center",
-                            alignItems: "center",
-                            // backgroundColor: "red",
-                        }}
-                        // onPress={() => this.props.navigate.navigate('Product')}
-                        >
-                            <View style={{
-                                height: 75,
-                                width: 75,
-                                // borderRadius: 10,
-                                justifyContent: "center",
-                                alignItems: "center",
-                                backgroundColor: "white",
-                                // borderColor: "#FD6958",
-                                // borderWidth: 1.80
-
-                            }}>
-                                <Image source={require('../../../assets/tinh-khuong-RiPBG93bKBI-unsplash.png')} resizeMode="contain"
-                                    style={{
-                                        width: "90%", height: "90%",
-
-                                    }}
-                                />
-                            </View>
-                            {/* <Text style={{ marginTop: 5, fontSize: 14, color: "#8E8E93", textAlign: "right", }}>Hairstyle Name</Text> */}
-                        </TouchableOpacity>
-
-                        <TouchableOpacity style={{
-                            height: 100,
-                            width: 80,
-                            justifyContent: "center",
-                            alignItems: "center",
-                            // backgroundColor: "red",
-                        }}
-                        // onPress={() => this.props.navigate.navigate('Product')}
-                        >
-                            <View style={{
-                                height: 75,
-                                width: 75,
-                                borderRadius: 50,
-                                justifyContent: "center",
-                                alignItems: "center",
-                                backgroundColor: "white",
-
-                            }}>
-                                <Image source={require('../../../assets/tinh-khuong-RiPBG-1.png')} resizeMode="contain"
-                                    style={{ width: "90%", height: "90%", }}
-                                />
-                            </View>
-                            {/* <Text style={{ marginTop: 5, fontSize: 14, color: "#8E8E93", textAlign: "right", }}>Hairstyle Name</Text> */}
-                        </TouchableOpacity>
-
-                        <TouchableOpacity style={{
-                            height: 100,
-                            width: 80,
-                            justifyContent: "center",
-                            alignItems: "center",
-                            // backgroundColor: "red",
-                        }}
-                        // onPress={() => this.props.navigate.navigate('Product')}
-                        >
-                            <View style={{
-                                height: 75,
-                                width: 75,
-                                borderRadius: 50,
-                                justifyContent: "center",
-                                alignItems: "center",
-                                backgroundColor: "white",
-                                // borderColor: "#FD6958",
-                                // borderWidth: 1.80
-
-                            }}>
-                                <Image source={require('../../../assets/download.png')} resizeMode="contain"
-                                    style={{ width: "90%", height: "90%", }}
-                                />
-                            </View>
-                            {/* <Text style={{ marginTop: 5, fontSize: 14, color: "#8E8E93", textAlign: "right", }}>Hairstyle Name</Text> */}
-                        </TouchableOpacity>
-
-                        <TouchableOpacity style={{
-                            height: 100,
-                            width: 80,
-                            justifyContent: "center",
-                            alignItems: "center",
-                            // backgroundColor: "red",
-                        }}
-                        // onPress={() => this.props.navigate.navigate('Product')}
-                        >
-                            <View style={{
-                                height: 75,
-                                width: 75,
-                                borderRadius: 50,
-                                justifyContent: "center",
-                                alignItems: "center",
-                                backgroundColor: "white",
-
-                            }}>
-                                <Image source={require('../../../assets/tinh-khuong-RiPBG-2.png')} resizeMode="contain"
-                                    style={{ width: "90%", height: "90%", }}
-                                />
-                            </View>
-                            {/* <Text style={{ marginTop: 5, fontSize: 14, color: "#8E8E93", textAlign: "right", }}>Hairstyle Name</Text> */}
-                        </TouchableOpacity>
-                        <TouchableOpacity style={{
-                            height: 100,
-                            width: 80,
-                            justifyContent: "center",
-                            alignItems: "center",
-                            // backgroundColor: "red",
-                        }}
-                        // onPress={() => this.props.navigate.navigate('Product')}
-                        >
-                            <View style={{
-                                height: 75,
-                                width: 75,
-                                borderRadius: 50,
-                                justifyContent: "center",
-                                alignItems: "center",
-                                backgroundColor: "white",
-
-                            }}>
-                                <Image source={require('../../../assets/tinh-khuong-RiPBG-3.png')} resizeMode="contain"
-                                    style={{ width: "90%", height: "90%", }}
-                                />
-                            </View>
-                            {/* <Text style={{ marginTop: 5, fontSize: 14, color: "#8E8E93", textAlign: "right", }}>Hairstyle Name</Text> */}
-                        </TouchableOpacity>
+                        {
+                            (gallery && gallery[0].galleryImages) ? (
+                                gallery[0].galleryImages.map((key, index) => {
+                                    return (
+                                        <View key={index} style={{
+                                            height: 100, width: 80, justifyContent: "center",
+                                            alignItems: "center",
+                                        }}>
+                                            <View style={{
+                                                height: 75, width: 75, justifyContent: "center",
+                                                alignItems: "center", backgroundColor: "white",
+                                            }}>
+                                                <Image key={index} style={{ width: "90%", height: "90%", borderRadius: 15 }} resizeMode="stretch"
+                                                    source={{ uri: key }}
+                                                />
+                                            </View>
+                                        </View>
+                                    )
+                                })
+                            ) : null
+                        }
                     </ScrollView>
                 </View>
 
@@ -249,7 +124,7 @@ class About extends Component {
                     </TouchableOpacity>
                 </View>
 
-            </View>
+            </View >
         );
     }
 }
@@ -261,15 +136,10 @@ const styles = StyleSheet.create({
 
 let mapStateToProps = state => {
     return {
-        // str: state.root.str,
-        // userDetails: state.root.userDetails,
     };
 };
 function mapDispatchToProps(dispatch) {
     return ({
-        // languageSet: (lang) => {
-        //     dispatch(languageSet(lang))
-        // },
     })
 }
 export default connect(mapStateToProps, mapDispatchToProps)(About);

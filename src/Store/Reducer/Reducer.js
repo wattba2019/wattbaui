@@ -1,9 +1,8 @@
 const INITIAL_STATE = {
-  bseUrl: "https://fathomless-citadel-43321.herokuapp.com",
-  // bseUrl: "http://192.168.8.100:3002",
+  // bseUrl: "https://fathomless-citadel-43321.herokuapp.com",
+  bseUrl: "http://192.168.100.156:3002",
   userProfile: {},
   currentLocation: null,
-
 };
 
 export default (state = INITIAL_STATE, action) => {

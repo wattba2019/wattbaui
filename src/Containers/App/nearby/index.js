@@ -1,15 +1,12 @@
 import React, { Component } from "react";
 import {
     View, Image, ActivityIndicator, StyleSheet,
-    ImageBackground, StatusBar, TouchableOpacity,
+    TouchableOpacity,
     Text, TextInput, ScrollView
-
 } from 'react-native';
 import { connect } from "react-redux";
 import { Actions } from 'react-native-router-flux';
-// import ShopsCards from '../../../Components/shopscards';
 import IconFontAwesome from 'react-native-vector-icons/FontAwesome';
-
 import MapDirection from '../../../Components/maps'
 
 //icons import
@@ -35,7 +32,7 @@ class Nearby extends Component {
             url: urlM,
         })
             .then(result => {
-                console.log(result.data.data, "DATA_FROM_API")
+                // console.log(result.data.data, "DATA_FROM_API")
                 let shops = result.data.data
                 this.setState({
                     shops: shops,
@@ -82,7 +79,6 @@ class Nearby extends Component {
                         </TouchableOpacity>
                     </View>
 
-
                     <View style={{ width: "105%", top: -5, justifyContent: "center", alignItems: "center", flex: 1, flexDirection: "row" }}>
                         <View style={{
                             flex: 8, flexDirection: "row", justifyContent: "center", alignItems: "center",
@@ -122,7 +118,6 @@ class Nearby extends Component {
                             backgroundColor: "#E8E6E7",
                         }}
                     >
-
                         <View
                             style={{ width: "5%", borderColor: 'gray', backgroundColor: "#E8E6E7", justifyContent: "center", alignItems: "center", }}
                         >
@@ -133,24 +128,20 @@ class Nearby extends Component {
                             style={{ width: "80%", borderColor: 'gray', backgroundColor: "#E8E6E7", justifyContent: "center", alignItems: "center", }}
                         >
                             <TextInput
-                                // keyboardType={"numeric"}
                                 style={{ width: "90%", }}
                                 // onChangeText={text => onChangeText(text)}
                                 value={this.state.email}
                                 placeholder={"Search"}
                             />
                         </View>
-
                     </View>
                 </View>
-
 
                 <View style={{
                     flex: 8,
                     width: "100%",
                     justifyContent: "center",
                     alignItems: "center",
-                    // backgroundColor: "red",
                 }}>
                     <View
                         style={{
@@ -165,7 +156,6 @@ class Nearby extends Component {
                     </View>
 
                     <View style={{ position: "absolute", zIndex: 1, bottom: 20, flexDirection: "row", flex: 1, }}>
-
                         <View style={{ flexDirection: "row", height: 180 }}>
                             <ScrollView horizontal={true} style={{ flexDirection: "row", zIndex: 1 }}>
                                 {
@@ -184,17 +174,20 @@ class Nearby extends Component {
                                                     <View style={{ width: 250, }}>
                                                         <View style={{
                                                             flex: 2,
-                                                            // backgroundColor: "yellow"
                                                         }}>
-                                                            <Image style={{
-                                                                width: "100%", height: "100%",
-                                                                borderTopLeftRadius: 6,
-                                                                borderTopRightRadius: 6,
-                                                            }}
-                                                                resizeMode="cover"
-                                                                source={{ uri: "https://static4.fashionbeans.com/wp-content/uploads/2017/02/badbarber3.jpg" }}
-                                                            // source={{ uri: key.coverImage }}
-                                                            />
+                                                            {(key.coverImage != null) ? (
+                                                                <Image style={{
+                                                                    width: "100%", height: "100%",
+                                                                    borderTopLeftRadius: 6,
+                                                                    borderTopRightRadius: 6,
+                                                                }}
+                                                                    resizeMode="cover"
+                                                                    source={{ uri: key.coverImage }}
+                                                                />
+                                                            ) : <Image source={require('../../../../assets/nophoto.jpg')} resizeMode="contain"
+                                                                style={{ width: "100%", height: "100%", borderTopLeftRadius: 6, borderTopRightRadius: 6, }}
+                                                                />
+                                                            }
                                                         </View>
                                                         <View style={{
                                                             top: -10,
@@ -230,104 +223,8 @@ class Nearby extends Component {
                                                 </TouchableOpacity>
                                             )
                                         })
-
                                     ) : null
                                 }
-
-
-
-                                {/* <TouchableOpacity style={{
-                                    margin: 10,
-                                    flexDirection: "row",
-                                    marginBottom: 20,
-                                    height: 170
-                                }}
-                                // onPress={() => this.props.navigate.navigate('Product')}
-                                >
-
-                                    <View>
-                                        <ImageBackground source={require('../../../../assets/joshua.png')} style={styles.card} >
-                                        </ImageBackground>
-                                        <View style={{
-                                            top: -10,
-                                            height: 50,
-                                            borderBottomRightRadius: 6,
-                                            borderBottomLeftRadius: 6,
-                                            padding: "2%",
-                                            borderColor: "#E8E6E7",
-                                            borderWidth: 1,
-                                            flex: 1,
-                                            flexDirection: "row",
-                                            backgroundColor: "white",
-                                        }}>
-                                            <View style={{
-                                                flex: 1,
-                                                // backgroundColor: "green",
-                                            }}>
-                                                <Text style={styles.card_text}>Sun in Sky Hair Salon</Text>
-                                                <Text style={{ color: "#7F7F7F" }}>Crescent Town, London</Text>
-                                            </View>
-                                            <View style={{
-                                                flex: 2,
-                                                flexDirection: "row",
-                                                justifyContent: "center",
-                                                alignItems: "center"
-                                                // backgroundColor: "yellow",
-                                            }}>
-                                                <Image source={require('../../../../assets/Path.png')} resizeMode="contain"
-                                                    style={{ width: "30%", }}
-                                                />
-                                                <Text style={{ color: "#7F7F7F" }}>4.0</Text>
-                                            </View>
-                                        </View>
-                                    </View>
-                                </TouchableOpacity> */}
-                                {/* <TouchableOpacity style={{
-                                    margin: 10,
-                                    flexDirection: "row",
-                                    marginBottom: 20,
-                                    height: 170
-                                }}
-                                // onPress={() => this.props.navigate.navigate('Product')}
-                                >
-
-                                    <View>
-                                        <ImageBackground source={require('../../../../assets/joshua.png')} style={styles.card} >
-                                        </ImageBackground>
-                                        <View style={{
-                                            top: -10,
-                                            height: 50,
-                                            borderBottomRightRadius: 6,
-                                            borderBottomLeftRadius: 6,
-                                            padding: "2%",
-                                            borderColor: "#E8E6E7",
-                                            borderWidth: 1,
-                                            flex: 1,
-                                            flexDirection: "row",
-                                            backgroundColor: "white",
-                                        }}>
-                                            <View style={{
-                                                flex: 1,
-                                                // backgroundColor: "green",
-                                            }}>
-                                                <Text style={styles.card_text}>Sun in Sky Hair Salon</Text>
-                                                <Text style={{ color: "#7F7F7F" }}>Crescent Town, London</Text>
-                                            </View>
-                                            <View style={{
-                                                flex: 2,
-                                                flexDirection: "row",
-                                                justifyContent: "center",
-                                                alignItems: "center"
-                                                // backgroundColor: "yellow",
-                                            }}>
-                                                <Image source={require('../../../../assets/Path.png')} resizeMode="contain"
-                                                    style={{ width: "30%", }}
-                                                />
-                                                <Text style={{ color: "#7F7F7F" }}>4.0</Text>
-                                            </View>
-                                        </View>
-                                    </View>
-                                </TouchableOpacity> */}
                             </ScrollView>
                         </View>
                     </View>
@@ -336,6 +233,7 @@ class Nearby extends Component {
         );
     }
 }
+
 let mapStateToProps = state => {
     return {
         userProfile: state.root.userProfile,
@@ -348,7 +246,6 @@ function mapDispatchToProps(dispatch) {
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Nearby);
 
-
 const styles = StyleSheet.create({
     contentContainer: {
         flex: 1,
@@ -358,17 +255,8 @@ const styles = StyleSheet.create({
     },
     card: {
         width: 250, height: 115,
-        // margin: 15,
         justifyContent: 'flex-end',
         padding: 10,
-        // shadowColor: "#000",
-        // shadowOffset: {
-        //     width: 0,
-        //     height: 2,
-        // },
-        // shadowOpacity: 0.25,
-        // shadowRadius: 3.84,
-        // elevation: 5,
         backgroundColor: 'white',
         borderRadius: 6, overflow: 'hidden'
 
@@ -381,5 +269,4 @@ const styles = StyleSheet.create({
     iconsStyle: {
         width: "22%", height: "42%", justifyContent: "center", alignItems: "center", margin: 5,
     },
-
 });

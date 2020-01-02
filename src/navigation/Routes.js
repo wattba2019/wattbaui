@@ -36,7 +36,7 @@ class Route extends Component {
         <Scene>
           <Scene key='SplashScreen' component={SplashScreen} hideNavBar={true} />
           <Scene key='Walkthrough' component={Walkthrough} hideNavBar={true} />
-          <Scene key='Signin' component={Signin} hideNavBar={true} initial />
+          <Scene key='Signin' component={Signin} hideNavBar={true} />
           <Scene key='Forgotyourpassword' component={Forgotyourpassword} hideNavBar={true} />
           <Scene key='VerifyCode' component={VerifyCode} hideNavBar={true} />
           <Scene key='VerifyCodeEmail' component={VerifyCodeEmail} hideNavBar={true} />
@@ -52,7 +52,7 @@ class Route extends Component {
           <Scene key='ServiceDetaild' component={ServiceDetaild} hideNavBar={true} />
           <Scene key='OfferDetails' component={OfferDetails} hideNavBar={true} />
           <Scene key='BarberDetails' component={BarberDetails} hideNavBar={true} />
-          <Scene key='ChooseService' component={ChooseService} hideNavBar={true} />
+          <Scene key='ChooseService' component={ChooseService} hideNavBar={true} initial />
           <Scene key='Bookappointment' component={Bookappointment} hideNavBar={true} />
           <Scene key='Checkout' component={Checkout} hideNavBar={true} />
           <Scene key='Submited' component={Submited} hideNavBar={true} />

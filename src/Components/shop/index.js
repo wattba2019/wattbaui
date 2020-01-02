@@ -1,33 +1,20 @@
 import React, { Component } from 'react';
 import {
-    View, Text, StyleSheet, TouchableOpacity, StatusBar,
-    ScrollView, Picker, Image, SafeAreaView, ActivityIndicator,
-    images, Dimensions, ImageBackground
+    View, Text, StyleSheet, TouchableOpacity,
+    ScrollView, Image, SafeAreaView,
+
 } from 'react-native';
 import { connect } from "react-redux";
-import { Icon, Tabs, Tab, TabHeading } from 'native-base';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import { Tabs, Tab, TabHeading } from 'native-base';
 import About from '../shop/about';
 import Services from '../shop/services';
 import Gallery from '../shop/gallery';
 import Review from '../shop/Review';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Entypo from 'react-native-vector-icons/Entypo';
-import Zocial from 'react-native-vector-icons/Zocial';
-import AntDesign from 'react-native-vector-icons/AntDesign';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import ImageSlider from 'react-native-image-slider';
-import shopImage from '../../../assets/Group55346.png';
 import { Actions } from 'react-native-router-flux';
 import axios from 'axios';
 
-let img = require("../../../assets/Group55346.png")
-const imagesUri = [
-    'https://placeimg.com/640/640/nature',
-    'https://placeimg.com/640/640/people',
-    'https://placeimg.com/640/640/animals',
-    'https://placeimg.com/640/640/beer',
-];
 class shop extends Component {
     constructor(props) {
         super(props)
@@ -35,9 +22,8 @@ class shop extends Component {
             activeColor: "about"
         }
     }
-    componentWillMount() {
-        console.log(this.props.shop._id, "USER_ID")
-        // getting all products
+
+    componentDidMount() {
         let urlMgetworkinghours = `${this.props.bseUrl}/workinghour/getworkinghours/${this.props.shop._id}`
         axios({
             method: 'get',
@@ -45,33 +31,109 @@ class shop extends Component {
         })
             .then(result => {
                 let data = result.data.data[0].workingHours
-                console.log(data, "DATA_FROM_API")
-
+                let day = result.data.day
+                // console.log(data, day, "DATA_FROM_API")
+                let workingtime;
+                if (data && data.length != 0) {
+                    // Current day sorting
+                    var resultCurrentDay = data.filter(function (obj) {
+                        return obj.day === day;
+                    })
+                    if (resultCurrentDay[0].openTime < new Date().toLocaleTimeString('en-GB') && resultCurrentDay[0].closeTime > new Date().toLocaleTimeString('en-GB')) {
+                        // console.log("STATUS_OPEN")
+                        workingtime = true
+                    }
+                    else {
+                        workingtime = false
+                        // console.log("STATUS_CLOSE")
+                    }
+                }
                 this.setState({
+                    workingtime: workingtime,
                     workingHours: data,
                     isloader: false
                 })
             })
             .catch(err => {
-                console.log(err, "ERROR_ON_GET_WORKING_HOURS")
+                if (err.response.status === 409) {
+                    console.log(err.response.data.message, "ERROR_ON_GET_WORKING_HOURS")
+                }
+                else{
+                    alert(err.response.data.message)
+                }
             })
 
         let urlMservicesget = `${this.props.bseUrl}/servicesget/${this.props.shop._id}`
-        console.log(urlMservicesget, "SERVICE")
         axios({
             method: 'get',
             url: urlMservicesget,
         })
             .then(result => {
                 let data = result.data.data
-                console.log(data, "DATA_FROM_API")
+                // console.log(data, "DATA_FROM_API")
+                if (data && data.length != 0) {
+                    // Hair styles sorting
+                    var resultHairStyles = data.filter(function (obj) {
+                        return obj.serviceCatogery === "Hair Styles";
+                    })
+                }
                 this.setState({
                     services: data,
+                    hairStyles: resultHairStyles,
                     isloader: false
                 })
             })
             .catch(err => {
-                console.log(err, "ERROR_ON_GET_SERVICES")
+                if (err.response.status === 409) {
+                    console.log(err.response.data.message, "ERROR_ON_GET_SERVICES")
+                }
+                else {
+                    alert(err.response.data.message)
+                }
+            })
+
+        let urlMpackagesget = `${this.props.bseUrl}/packagesandoffersget/${this.props.shop._id}`
+        axios({
+            method: 'get',
+            url: urlMpackagesget,
+        })
+            .then(result => {
+                let data = result.data.data
+                // console.log(data, "DATA_FROM_API")
+                this.setState({
+                    packages: data,
+                    isloader: false
+                })
+            })
+            .catch(err => {
+                if (err.response.status === 409) {
+                    console.log(err.response.data.message, "ERROR_ON_GET_PACKAGES")
+                }
+                else {
+                    alert(err.response.data.message)
+                }
+            })
+
+        let urlMgalleryget = `${this.props.bseUrl}/galleryget/${this.props.shop._id}`
+        axios({
+            method: 'get',
+            url: urlMgalleryget,
+        })
+            .then(result => {
+                let data = result.data.data
+                // console.log(data, "DATA_FROM_API")
+                this.setState({
+                    gallery: data,
+                    isloader: false
+                })
+            })
+            .catch(err => {
+                if (err.response.status === 409) {
+                    console.log(err.response.data.message, "ERROR_ON_GET_GALLERY")
+                }
+                else {
+                    alert(err.response.data.message)
+                }
             })
     }
 
@@ -96,17 +158,21 @@ class shop extends Component {
                 activeColor: "review"
             })
         }
-
     }
+
     render() {
-        const { activeColor, workingHours, services } = this.state
+        const { activeColor, workingtime, workingHours, services, packages, hairStyles, gallery } = this.state
         let { shop } = this.props
         return (
             <View style={{ flex: 1 }}>
                 <SafeAreaView style={styles.container} >
-                    <Image
-                        source={require("../../../assets/Group55346.png")} resizeMode="cover" style={{ width: "100%", height: 250 }}
-                    />
+                    {
+                        (shop.coverImage != null) ? (
+                            <Image source={{ uri: shop.coverImage }} resizeMode="cover"
+                                style={{ width: "100%", height: 250 }} />
+                        ) : <Image source={require('../../../assets/nophoto.jpg')} resizeMode="cover"
+                            style={{ width: "100%", height: 250 }} />
+                    }
 
                     <TouchableOpacity onPress={() => Actions.pop()}
                         style={{ width: 25, position: 'absolute', top: 0, left: 30, right: 0, bottom: 130, justifyContent: "center" }}>
@@ -116,11 +182,8 @@ class shop extends Component {
                     <View style={{ width: 230, position: 'absolute', top: "35%", left: 30, right: 0, bottom: 0, justifyContent: "center", }}>
                         <Text style={{ color: "#fff", fontSize: 18 }}>{shop.businessName}</Text>
                         <Text style={{ color: "#fff", fontSize: 14 }}>{shop.addressLine1}</Text>
-
                     </View>
-                    {/* <View style={{ width: 230, position: 'absolute', top: "53%", left: 30, right: 0, marginTop: 5, bottom: 0, justifyContent: "center", }}>
-                        <Text style={{ color: "#fff", fontSize: 14 }}>{shop.addressLine1}</Text>
-                    </View> */}
+
                     <View style={{ position: 'absolute', top: "80%", left: 30, bottom: 0, marginTop: 5, justifyContent: "center", flexDirection: "row" }}>
                         <Entypo name="star" style={{ color: "#EBAC43", fontWeight: 'bold', fontSize: 16 }} />
                         <Entypo name="star" style={{ color: "#EBAC43", fontWeight: 'bold', fontSize: 16 }} />
@@ -128,16 +191,21 @@ class shop extends Component {
                         <Entypo name="star" style={{ color: "#EBAC43", fontWeight: 'bold', fontSize: 16 }} />
                         <Entypo name="star" style={{ color: "#fff", fontWeight: 'bold', fontSize: 16 }} />
                     </View>
-                    <TouchableOpacity style={{ borderColor: "#16BE4E", borderWidth: 1, borderRadius: 4, justifyContent: "center", alignItems: "center", position: 'absolute', right: 20, bottom: 20, height: 30, width: 65, justifyContent: "center" }}>
-                        <Text style={{ color: "#16BE4E", fontSize: 14 }}>Open</Text>
-                    </TouchableOpacity>
 
+                    {
+                        (workingtime === true) ? (
+                            <View style={{ borderColor: "#16BE4E", borderWidth: 1, borderRadius: 4, justifyContent: "center", alignItems: "center", position: 'absolute', right: 20, bottom: 20, height: 30, width: 65, justifyContent: "center" }}>
+                                <Text style={{ color: "#16BE4E", fontSize: 14 }}>Open</Text>
+                            </View>
+                        ) : <View style={{ borderColor: "red", borderWidth: 1, borderRadius: 4, justifyContent: "center", alignItems: "center", position: 'absolute', right: 20, bottom: 20, height: 30, width: 65, justifyContent: "center" }}>
+                                <Text style={{ color: "red", fontSize: 14 }}>Close</Text>
+                            </View>
+                    }
 
                 </SafeAreaView>
 
                 <View style={{ flex: 0.65, backgroundColor: "#fff" }}>
-                    <ScrollView contentContainerStyle={styles.contentContainer}
-                    >
+                    <ScrollView contentContainerStyle={styles.contentContainer}>
 
                         <View style={{ flexDirection: "row", justifyContent: "space-between", paddingHorizontal: "10%", paddingVertical: "5%" }}>
                             <View>
@@ -162,127 +230,56 @@ class shop extends Component {
                                 />
                             </View>
                         </View>
+                        {
+                            (hairStyles) ? (
+                                <View style={{
+                                    paddingHorizontal: 35
+                                }}>
+                                    <View>
+                                        <Text style={{ color: "black", fontWeight: "bold", fontSize: 16 }}>Stylist</Text>
+                                    </View>
+                                </View>
+                            ) : null
+                        }
 
-                        <View style={{
-                            paddingHorizontal: 35
-                            // backgroundColor: "green"
-                        }}>
-                            <View style={{}}>
-                                <Text style={{ color: "black", fontWeight: "bold", fontSize: 16 }}>Stylist</Text>
-                            </View>
-
-                        </View>
                         <ScrollView horizontal style={{ marginVertical: 15 }} showsHorizontalScrollIndicator={false}>
+                            {
+                                (hairStyles) ? (
+                                    hairStyles.map((key, index) => {
+                                        return (
+                                            <TouchableOpacity key={index} style={{
+                                                height: 110,
+                                                width: 110,
+                                                justifyContent: "center",
+                                                alignItems: "center",
+                                            }}>
+                                                <View style={{
+                                                    height: 75,
+                                                    width: 75,
+                                                    borderRadius: 50,
+                                                    justifyContent: "center",
+                                                    alignItems: "center",
+                                                    backgroundColor: "white",
+                                                    borderColor: "#FD6958",
+                                                    borderWidth: 1.80,
+                                                    overflow: "hidden"
 
-                            <TouchableOpacity style={{
-                                height: 110,
-                                width: 110,
-                                justifyContent: "center",
-                                alignItems: "center",
-                                // backgroundColor: "red",
-                            }}
-                            // onPress={() => this.props.navigate.navigate('Product')}
-                            >
-                                <View style={{
-                                    height: 75,
-                                    width: 75,
-                                    borderRadius: 50,
-                                    justifyContent: "center",
-                                    alignItems: "center",
-                                    backgroundColor: "white",
-                                    borderColor: "#FD6958",
-                                    borderWidth: 1.80
-
-                                }}>
-                                    <Image source={require('../../../assets/Ellipse-1.png')} resizeMode="contain"
-                                        style={{ width: "90%", height: "90%", }}
-                                    />
-                                </View>
-                                <Text style={{ marginTop: 5, fontSize: 14, color: "#8E8E93", textAlign: "right", }}>Hairstyle Name</Text>
-                            </TouchableOpacity>
-
-                            <TouchableOpacity style={{
-                                height: 110,
-                                width: 110,
-                                justifyContent: "center",
-                                alignItems: "center",
-                                // backgroundColor: "red",
-                            }}
-                            // onPress={() => this.props.navigate.navigate('Product')}
-                            >
-                                <View style={{
-                                    height: 75,
-                                    width: 75,
-                                    borderRadius: 50,
-                                    justifyContent: "center",
-                                    alignItems: "center",
-                                    backgroundColor: "white",
-                                    borderColor: "#FD6958",
-                                    borderWidth: 1.80
-
-                                }}>
-                                    <Image source={require('../../../assets/Ellipse2s.png')} resizeMode="contain"
-                                        style={{ width: "90%", height: "90%", }}
-                                    />
-                                </View>
-                                <Text style={{ marginTop: 5, fontSize: 14, color: "#8E8E93", textAlign: "right", }}>Hairstyle Name</Text>
-                            </TouchableOpacity>
-
-                            <TouchableOpacity style={{
-                                height: 110,
-                                width: 110,
-                                justifyContent: "center",
-                                alignItems: "center",
-                                // backgroundColor: "red",
-                            }}
-                            // onPress={() => this.props.navigate.navigate('Product')}
-                            >
-                                <View style={{
-                                    height: 75,
-                                    width: 75,
-                                    borderRadius: 50,
-                                    justifyContent: "center",
-                                    alignItems: "center",
-                                    backgroundColor: "white",
-                                    borderColor: "#FD6958",
-                                    borderWidth: 1.80
-
-                                }}>
-                                    <Image source={require('../../../assets/Ellipse-2.png')} resizeMode="contain"
-                                        style={{ width: "90%", height: "90%", }}
-                                    />
-                                </View>
-                                <Text style={{ marginTop: 5, fontSize: 14, color: "#8E8E93", textAlign: "right", }}>Hairstyle Name</Text>
-                            </TouchableOpacity>
-
-                            <TouchableOpacity style={{
-                                height: 110,
-                                width: 110,
-                                justifyContent: "center",
-                                alignItems: "center",
-                                // backgroundColor: "red",
-                            }}
-                            // onPress={() => this.props.navigate.navigate('Product')}
-                            >
-                                <View style={{
-                                    height: 75,
-                                    width: 75,
-                                    borderRadius: 50,
-                                    justifyContent: "center",
-                                    alignItems: "center",
-                                    backgroundColor: "white",
-                                    borderColor: "#FD6958",
-                                    borderWidth: 1.80
-
-                                }}>
-                                    <Image source={require('../../../assets/Ellipse-3.png')} resizeMode="contain"
-                                        style={{ width: "90%", height: "90%", }}
-                                    />
-                                </View>
-                                <Text style={{ marginTop: 5, fontSize: 14, color: "#8E8E93", textAlign: "right", }}>Hairstyle Name</Text>
-                            </TouchableOpacity>
+                                                }}>
+                                                    {(key.serviceImage != null) ? (
+                                                        <Image source={{ uri: key.serviceImage }} resizeMode="cover"
+                                                            style={{ width: "90%", height: "90%", borderRadius: 100 }}
+                                                        />
+                                                    ) : <Image source={require('../../../assets/nophoto.jpg')} resizeMode="cover"
+                                                        style={{ width: "90%", height: "90%", borderRadius: 100 }}
+                                                        />}
+                                                </View>
+                                                <Text style={{ marginTop: 5, fontSize: 10, color: "#8E8E93", textAlign: "right", }}>{key.serviceName}</Text>
+                                            </TouchableOpacity>
+                                        )
+                                    })
+                                ) : null
+                            }
                         </ScrollView>
-
 
                         <Tabs
                             onChangeTab={(key) => this.activeColor(key)}
@@ -298,7 +295,7 @@ class shop extends Component {
                                         <Text style={{ color: activeColor === "about" ? "#FD6958" : "black" }}>About</Text>
                                     </TabHeading>}
                             >
-                                <About shop={shop} workingHours={workingHours} />
+                                <About shop={shop} workingHours={workingHours} gallery={gallery} />
                             </Tab>
 
                             {/* //Services// */}
@@ -312,7 +309,7 @@ class shop extends Component {
                                 }
                             >
                                 <View>
-                                    <Services shop={shop} services={services} />
+                                    <Services shop={shop} services={services} packages={packages} />
                                 </View>
                             </Tab>
 
@@ -327,7 +324,7 @@ class shop extends Component {
                                 }
                             >
                                 <View>
-                                    <Gallery shop={shop} />
+                                    <Gallery shop={shop} gallery={gallery} />
                                 </View>
                             </Tab>
 
@@ -343,39 +340,11 @@ class shop extends Component {
                             >
                                 <View>
                                     <Review shop={shop} />
-
                                 </View>
                             </Tab>
-
                         </Tabs>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                     </ScrollView>
                 </View>
-
-
-
-
             </View>
         );
     }
@@ -448,9 +417,6 @@ let mapStateToProps = state => {
 };
 function mapDispatchToProps(dispatch) {
     return ({
-        // languageSet: (lang) => {
-        //     dispatch(languageSet(lang))
-        // },
     })
 }
 export default connect(mapStateToProps, mapDispatchToProps)(shop);

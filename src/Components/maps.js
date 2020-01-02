@@ -43,7 +43,7 @@ class MapDirection extends React.Component {
             },
             (error) => {
                 // See error code charts below.
-                console.log(error.code, error.message, "66666");
+                console.log(error.code, error.message, "ERROR_ON_GETTING_YOUR_LOCATION");
             },
             { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000, }
         );

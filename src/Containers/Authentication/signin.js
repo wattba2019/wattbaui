@@ -35,7 +35,6 @@ class Signin extends Component {
             email,
             password
         }
-        console.log(cloneSignUpData, "cloneSignUpData")
         var options = {
             method: 'POST',
             url: `${this.props.bseUrl}/signin`,
@@ -55,7 +54,6 @@ class Signin extends Component {
                 this.props.setUserCredentials(data.data)
             }).catch((err) => {
                 console.log(err.response.data.message, "ERROR_ON_SIGN_IN")
-                // console.log(err, "ERROR_ON_SIGN_IN")
                 alert(err.response.data.message)
                 this.setState({
                     loader: !this.state.loader,
@@ -79,12 +77,12 @@ class Signin extends Component {
         return (
             <ImageBackground source={require('../../../assets/background.png')}
                 style={{
-                    // backgroundColor: '#fd902a',
                     flex: 1,
                     justifyContent: 'center',
                     alignItems: 'center',
                     width: "100%"
                 }}>
+
                 <StatusBar backgroundColor="#F86078" barStyle="dark-content" />
 
                 <View
@@ -106,14 +104,10 @@ class Signin extends Component {
                 <ScrollView
                     style={{
                         height: "30%",
-                        // flex: 1,
                         backgroundColor: "white",
                         width: "100%",
                         borderTopLeftRadius: 20,
                         borderTopRightRadius: 20,
-                        // justifyContent: "center",
-                        // alignItems: "center",
-
                     }}
                 >
                     <View style={{
@@ -165,6 +159,7 @@ class Signin extends Component {
                                 </ImageBackground>
                             </TouchableOpacity>
                         </View>
+
                         {
                             activateAccount ?
                                 <TouchableOpacity
@@ -180,6 +175,7 @@ class Signin extends Component {
                         >
                             <Text style={{ textAlign: "center", fontSize: 15, marginTop: activateAccount ? 5 : 20, color: "black" }}>Forgot your password?</Text>
                         </TouchableOpacity>
+                        
                         <TouchableOpacity
                             style={{ flexDirection: "row", marginTop: 10, }}
                             onPress={() => Actions.Signup()}
@@ -187,6 +183,7 @@ class Signin extends Component {
                             <Text style={{ textAlign: "center", fontSize: 15, color: "#B7B7C0" }}>Don't have an account? </Text>
                             <Text style={{ textAlign: "center", fontSize: 15, color: "#F28602" }}>Sign up</Text>
                         </TouchableOpacity>
+
                     </View>
                 </ScrollView>
             </ImageBackground>

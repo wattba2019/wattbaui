@@ -1,16 +1,8 @@
 import React, { Component } from 'react';
 import {
-    View, Text, StyleSheet, TouchableOpacity, StatusBar,
-    ScrollView, Picker, Image, SafeAreaView, ActivityIndicator,
-    images, Dimensions, FlatList
+    View, Text, StyleSheet, TouchableOpacity, Image, FlatList
 } from 'react-native';
 import { connect } from "react-redux";
-import { Icon, Tabs, Tab, TabHeading } from 'native-base';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import Entypo from 'react-native-vector-icons/Entypo';
-import Zocial from 'react-native-vector-icons/Zocial';
-import AntDesign from 'react-native-vector-icons/AntDesign';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import womenHairstyling from '../../../assets/women-hairstyling.png';
 import surface1 from '../../../assets/surface1.png';
 import surface from '../../../assets/surface-1.png';
@@ -143,7 +135,6 @@ class ServiceChild1 extends Component {
                 type: EyeMackup.length,
             },
         ];
-        // console.log(HairStyles, Shaving, Hairdryer, HairCut, HairColoring, FacialMakeup, EyeMackup, "Services_in_Seprate_Array")
         return (
             <View style={{ paddingVertical: 5, paddingHorizontal: 15, width: "90%", marginHorizontal: "5%" }}>
                 <FlatList
@@ -169,7 +160,6 @@ class ServiceChild1 extends Component {
                         </TouchableOpacity>
                     )}
                 />
-
             </View>
         );
     }

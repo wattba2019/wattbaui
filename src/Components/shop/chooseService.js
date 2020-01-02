@@ -1,78 +1,182 @@
 import React, { Component } from "react";
 import {
-    View, Image, ActivityIndicator, StyleSheet,
-    ImageBackground, StatusBar, TouchableOpacity,
-    Text, TextInput, ScrollView, Picker
+    View, StyleSheet,
+    StatusBar, TouchableOpacity,
+    Text, ScrollView, Picker, Alert
 
 } from 'react-native';
-import { Icon, Tabs, Tab, TabHeading } from 'native-base';
 import { connect } from "react-redux";
 import { Actions } from 'react-native-router-flux';
-// import ShopsCards from '../../../Components/shopscards';
-import BasicInfo from '../shop/basicInfo';
 import RadioForm, { RadioButton, RadioButtonInput, RadioButtonLabel } from 'react-native-simple-radio-button';
 import Entypo from 'react-native-vector-icons/Entypo';
-
-
+import axios from 'axios';
 
 class ChooseService extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            activeColor: "basicinfo",
-            genderValue: "male",
+            totalCost: 0,
             types3: [{ label: 'Male', value: "male" }, { label: 'Female', value: "female" },],
-            value3: 0,
+            value3: "male",
             value3Index: 0,
-
+            selectedHairStyles: {},
+            HairStyles: [],
+            selectedShaving: {},
+            Shaving: [],
+            selectedHairdryer: {},
+            Hairdryer: [],
+            selectedHairCut: {},
+            HairCut: [],
+            selectedHairColoring: {},
+            HairColoring: [],
+            selectedFacialMakeup: {},
+            FacialMakeup: [],
+            selectedEyeMackup: {},
+            EyeMackup: [],
+            selectedServices: []
         };
     }
 
-    activeColor(key) {
-        console.log(key.ref.key)
-        if (key.ref.key == ".0") {
+    componentDidMount() {
+        // let urlMservicesget = `${this.props.bseUrl}/servicesget/${this.props.shop._id}`
+        let urlMservicesget = `${this.props.bseUrl}/servicesget/${"5dfb488f662af31be47f3254"}`
+        axios({
+            method: 'get',
+            url: urlMservicesget,
+        })
+            .then(result => {
+                let services = result.data.data
+                // console.log(services, "DATA_FROM_API")
+                if (services) {
+                    // Hair styles
+                    var resultHairStyles = services.filter(function (obj) {
+                        return obj.serviceCatogery === "Hair Styles";
+                    })
+                    // console.log(resultHairStyles, "SERVICES_Hair_Styles")
+
+                    // Shaving
+                    var resultShaving = services.filter(function (obj) {
+                        return obj.serviceCatogery === "Shaving";
+                    })
+                    // console.log(resultShaving, "SERVICES_Shaving")
+
+                    // Hairdryer
+                    var resultHairdryer = services.filter(function (obj) {
+                        return obj.serviceCatogery === "Hairdryer";
+                    })
+                    // console.log(resultHairdryer, "SERVICES_Hairdryer")
+
+                    // Haircut
+                    var resultHairCut = services.filter(function (obj) {
+                        return obj.serviceCatogery === "HairCut";
+                    })
+                    // console.log(resultHairCut, "SERVICES_HairCut")
+
+                    // Hair Coloring
+                    var resultHairColoring = services.filter(function (obj) {
+                        return obj.serviceCatogery === "Hair Coloring";
+                    })
+                    // console.log(resultHairColoring, "SERVICES_Hair_Coloring")
+
+                    // Facial Mackup
+                    var resultFacialMakeup = services.filter(function (obj) {
+                        return obj.serviceCatogery === "Facial Mackup";
+                    })
+                    // console.log(resultFacialMakeup, "SERVICES_Facial_Makeup")
+
+                    // Eye Mackup
+                    var resultEyeMackup = services.filter(function (obj) {
+                        return obj.serviceCatogery === "Eye Mackup";
+                    })
+                    // console.log(resultEyeMackup, "SERVICES_Eye_Mackup")
+
+                    this.setState({
+                        HairStyles: resultHairStyles,
+                        Shaving: resultShaving,
+                        Hairdryer: resultHairdryer,
+                        HairCut: resultHairCut,
+                        HairColoring: resultHairColoring,
+                        FacialMakeup: resultFacialMakeup,
+                        EyeMackup: resultEyeMackup,
+                    })
+                }
+                this.setState({
+                    services: services,
+                    isloader: false
+                })
+            })
+            .catch(err => {
+                if (err.response.status === 409) {
+                    console.log(err.response.data.message, "ERROR_ON_GET_SERVICES")
+                }
+                else {
+                    alert(err.response.data.message)
+                }
+            })
+    }
+
+    chooseYourService = (type, serviceArr, itemValue, index) => {
+        console.log(type, serviceArr, itemValue, index, "PARAMS_IN_CHOOSE_YOUR_SERVICE")
+        if (itemValue, index) {
+            let price = 0
+            let service = this.state[serviceArr]
+            let cloneSelectedServices = this.state.selectedServices
+
+            // selected data sorting
+            var chosenItem = service.filter(function (obj) {
+                return obj._id === itemValue;
+            })
+
+            // data push after checking already exist
+            for (var i = 0; i < cloneSelectedServices.length; i++) {
+                if (cloneSelectedServices[i].serviceCatogery === chosenItem[0].serviceCatogery) {
+                    cloneSelectedServices.splice(i, 1)
+                }
+            }
+            cloneSelectedServices.push(chosenItem[0])
+
+            //price makeing
+            for (var i = 0; i < cloneSelectedServices.length; i++) {
+                price = price + Number(cloneSelectedServices[i].price)
+            }
             this.setState({
-                activeColor: "basicinfo"
+                totalCost: price,       //total cost
+                [`${type}`]: chosenItem[0],     //single array selected items
+                selectedServices: cloneSelectedServices     //all selected items
             })
         }
-        if (key.ref.key == ".1") {
-            this.setState({
-                activeColor: "review"
-            })
+    }
+
+    next = () => {
+        let { selectedServices, value3, totalCost } = this.state
+        if (selectedServices.length != 0) {
+            Actions.Bookappointment({ chosenItems: selectedServices, gendre: value3, totalCost: totalCost })
         }
-
-
+        else {
+            Alert.alert("Please choose service")
+        }
     }
 
     render() {
-        const { activeColor } = this.state
-
-
-
-        var radio_props = [
-            { label: 'Male', value: "male" },
-            { label: 'Female', value: "female" }
-        ];
-
+        const {
+            selectedHairStyles, HairStyles, selectedShaving, Shaving,
+            selectedHairdryer, Hairdryer, selectedHairCut, HairCut,
+            selectedHairColoring, HairColoring, selectedFacialMakeup, FacialMakeup,
+            selectedEyeMackup, EyeMackup, totalCost,
+        } = this.state
         return (
             <View style={{
                 flex: 1,
                 width: "100%",
-                // alignItems: "center",
                 backgroundColor: "white",
                 paddingHorizontal: 10,
             }}>
                 <StatusBar backgroundColor="white" barStyle="dark-content" />
-
                 <View style={{
                     flex: 0.7,
                     flexDirection: "row",
                     borderBottomWidth: 0.5,
                     borderBottomColor: 'grey',
-                    // height:30
-                    // justifyContent: "center", 
-                    // alignItems: "center", 
-                    // backgroundColor: 'red'
                 }}>
 
                     <View style={{ position: "absolute" }}>
@@ -88,9 +192,7 @@ class ChooseService extends Component {
                     }}>
                         <Text style={{ alignItems: "center", fontSize: 16 }}>Book Appointment</Text>
                     </View>
-
                 </View>
-
 
                 <View style={{
                     flex: 8,
@@ -104,17 +206,10 @@ class ChooseService extends Component {
                         contentContainerStyle={styles.contentContainer}
                         showsHorizontalScrollIndicator={false}
                         showsVerticalScrollIndicator={false}
-
-                        style={{
-                            width: "90%",
-                            // backgroundColor: "grey"
-                        }}>
+                        style={{ width: "90%", }}
+                    >
                         <Text style={{ fontSize: 20, fontWeight: "normal" }}>Gender</Text>
-
-                        <View style={{
-                            width: "100%",
-                            marginTop: 10
-                        }}>
+                        <View style={{ width: "100%", marginTop: 10 }}>
                             <RadioForm formHorizontal={true} animation={true} >
                                 {this.state.types3.map((obj, i) => {
                                     var onPress = (value, index) => {
@@ -153,180 +248,219 @@ class ChooseService extends Component {
 
                             <Text style={{ fontSize: 20, fontWeight: "normal", marginTop: 20 }}>Choose your service</Text>
 
-
-                            {/* Picker */}
-
-                            <View style={{ flex: 1, marginTop: 10, flexDirection: "row", justifyContent: "center", alignItems: "center", }}>
-
-                                <View style={{ flex: 0.5, justifyContent: "center", }}>
-                                    <Text style={{ fontWeight: "normal", fontSize: 18 }}>Haircut</Text>
-                                </View>
-
-                                <View style={{ flex: 0.8, justifyContent: "center", alignItems: "flex-end", backgroundColor: "#F0F0F0" }}>
-                                    <Picker
-                                        style={{ width: "90%", color: "#8E8E93", }}
-                                    // selectedValue={this.state.language}
-                                    // onValueChange={(itemValue, itemIndex) =>
-                                    //     this.setState({ language: itemValue })
-                                    // }
-                                    >
-                                        <Picker.Item label="Relexed Bob ($15)" value="Relexed Bob ($15)" />
-                                        <Picker.Item label="Select Type" value="Select Type" />
-                                    </Picker>
-                                </View>
-
-                            </View>
-
+                            {/* Picker Hair Styles */}
 
                             <View style={{ flex: 1, marginTop: 10, flexDirection: "row", justifyContent: "center", alignItems: "center", }}>
-
                                 <View style={{ flex: 0.5, justifyContent: "center", }}>
                                     <Text style={{ fontWeight: "normal", fontSize: 18 }}>Hair Styles</Text>
                                 </View>
-
                                 <View style={{ flex: 0.8, justifyContent: "center", alignItems: "flex-end", backgroundColor: "#F0F0F0" }}>
                                     <Picker
                                         style={{ width: "90%", color: "#8E8E93", }}
-                                    // selectedValue={this.state.language}
-                                    // onValueChange={(itemValue, itemIndex) =>
-                                    //     this.setState({ language: itemValue })
-                                    // }
+                                        selectedValue={selectedHairStyles._id}
+                                        onValueChange={(itemValue, itemIndex) =>
+                                            this.chooseYourService("selectedHairStyles", "HairStyles", itemValue, itemIndex)
+                                        }
                                     >
                                         <Picker.Item label="Select Type" value="Select Type" />
-                                        <Picker.Item label="Relexed Bob ($15)" value="Relexed Bob ($15)" />
+                                        {
+                                            (HairStyles) ? (
+                                                HairStyles.map((key, index) => {
+                                                    return (
+                                                        <Picker.Item key={index} label={key.serviceName + " ($" + key.price + ")"} value={key._id} />
+                                                    )
+                                                })
+                                            ) : null
+                                        }
                                     </Picker>
                                 </View>
-
                             </View>
 
-                            <View style={{ flex: 1, marginTop: 10, flexDirection: "row", justifyContent: "center", alignItems: "center", }}>
+                            {/* Picker Shaving */}
 
+                            <View style={{ flex: 1, marginTop: 10, flexDirection: "row", justifyContent: "center", alignItems: "center", }}>
                                 <View style={{ flex: 0.5, justifyContent: "center", }}>
                                     <Text style={{ fontWeight: "normal", fontSize: 18 }}>Shaving</Text>
                                 </View>
-
                                 <View style={{ flex: 0.8, justifyContent: "center", alignItems: "flex-end", backgroundColor: "#F0F0F0" }}>
                                     <Picker
                                         style={{ width: "90%", color: "#8E8E93", }}
-                                    // selectedValue={this.state.language}
-                                    // onValueChange={(itemValue, itemIndex) =>
-                                    //     this.setState({ language: itemValue })
-                                    // }
+                                        selectedValue={selectedShaving._id}
+                                        onValueChange={(itemValue, itemIndex) =>
+                                            this.chooseYourService("selectedShaving", "Shaving", itemValue, itemIndex)
+                                        }
                                     >
                                         <Picker.Item label="Select Type" value="Select Type" />
-                                        <Picker.Item label="Relexed Bob ($15)" value="Relexed Bob ($15)" />
+                                        {
+                                            (Shaving) ? (
+                                                Shaving.map((key, index) => {
+                                                    return (
+                                                        <Picker.Item key={index} label={key.serviceName + " ($" + key.price + ")"} value={key._id} />
+                                                    )
+                                                })
+                                            ) : null
+                                        }
                                     </Picker>
                                 </View>
-
                             </View>
 
-                            <View style={{ flex: 1, marginTop: 10, flexDirection: "row", justifyContent: "center", alignItems: "center", }}>
+                            {/* Picker Shaving */}
 
+                            <View style={{ flex: 1, marginTop: 10, flexDirection: "row", justifyContent: "center", alignItems: "center", }}>
                                 <View style={{ flex: 0.5, justifyContent: "center", }}>
                                     <Text style={{ fontWeight: "normal", fontSize: 18 }}>Hairdryer</Text>
                                 </View>
-
                                 <View style={{ flex: 0.8, justifyContent: "center", alignItems: "flex-end", backgroundColor: "#F0F0F0" }}>
                                     <Picker
                                         style={{ width: "90%", color: "#8E8E93", }}
-                                    // selectedValue={this.state.language}
-                                    // onValueChange={(itemValue, itemIndex) =>
-                                    //     this.setState({ language: itemValue })
-                                    // }
+                                        selectedValue={selectedHairdryer._id}
+                                        onValueChange={(itemValue, itemIndex) =>
+                                            this.chooseYourService("selectedHairdryer", "Hairdryer", itemValue, itemIndex)
+                                        }
                                     >
                                         <Picker.Item label="Select Type" value="Select Type" />
-                                        <Picker.Item label="Relexed Bob ($15)" value="Relexed Bob ($15)" />
+                                        {
+                                            (Hairdryer) ? (
+                                                Hairdryer.map((key, index) => {
+                                                    return (
+                                                        <Picker.Item key={index} label={key.serviceName + " ($" + key.price + ")"} value={key._id} />
+                                                    )
+                                                })
+                                            ) : null
+                                        }
                                     </Picker>
                                 </View>
-
                             </View>
 
-                            <View style={{ flex: 1, marginTop: 10, flexDirection: "row", justifyContent: "center", alignItems: "center", }}>
+                            {/* Picker Haircut */}
 
+                            <View style={{ flex: 1, marginTop: 10, flexDirection: "row", justifyContent: "center", alignItems: "center", }}>
+                                <View style={{ flex: 0.5, justifyContent: "center", }}>
+                                    <Text style={{ fontWeight: "normal", fontSize: 18 }}>Haircut</Text>
+                                </View>
+                                <View style={{ flex: 0.8, justifyContent: "center", alignItems: "flex-end", backgroundColor: "#F0F0F0" }}>
+                                    <Picker
+                                        style={{ width: "90%", color: "#8E8E93", }}
+                                        selectedValue={selectedHairCut._id}
+                                        onValueChange={(itemValue, itemIndex) =>
+                                            this.chooseYourService("selectedHairCut", "HairCut", itemValue, itemIndex)
+                                        }
+                                    >
+                                        <Picker.Item label="Select Type" value="Select Type" />
+                                        {
+                                            (HairCut) ? (
+                                                HairCut.map((key, index) => {
+                                                    return (
+                                                        <Picker.Item key={index} label={key.serviceName + " ($" + key.price + ")"} value={key._id} />
+                                                    )
+                                                })
+                                            ) : null
+                                        }
+                                    </Picker>
+                                </View>
+                            </View>
+
+                            {/* Picker Hair Coloring */}
+
+                            <View style={{ flex: 1, marginTop: 10, flexDirection: "row", justifyContent: "center", alignItems: "center", }}>
                                 <View style={{ flex: 0.5, justifyContent: "center", }}>
                                     <Text style={{ fontWeight: "normal", fontSize: 18 }}>Hair Coloring</Text>
                                 </View>
-
                                 <View style={{ flex: 0.8, justifyContent: "center", alignItems: "flex-end", backgroundColor: "#F0F0F0" }}>
                                     <Picker
                                         style={{ width: "90%", color: "#8E8E93", }}
-                                    // selectedValue={this.state.language}
-                                    // onValueChange={(itemValue, itemIndex) =>
-                                    //     this.setState({ language: itemValue })
-                                    // }
+                                        selectedValue={selectedHairColoring._id}
+                                        onValueChange={(itemValue, itemIndex) =>
+                                            this.chooseYourService("selectedHairColoring", "HairColoring", itemValue, itemIndex)
+                                        }
                                     >
                                         <Picker.Item label="Select Type" value="Select Type" />
-                                        <Picker.Item label="Relexed Bob ($15)" value="Relexed Bob ($15)" />
+                                        {
+                                            (HairColoring) ? (
+                                                HairColoring.map((key, index) => {
+                                                    return (
+                                                        <Picker.Item key={index} label={key.serviceName + " ($" + key.price + ")"} value={key._id} />
+                                                    )
+                                                })
+                                            ) : null
+                                        }
                                     </Picker>
                                 </View>
-
                             </View>
 
-                            <View style={{ flex: 1, marginTop: 10, flexDirection: "row", justifyContent: "center", alignItems: "center", }}>
+                            {/* Picker Facial Makeup */}
 
+                            <View style={{ flex: 1, marginTop: 10, flexDirection: "row", justifyContent: "center", alignItems: "center", }}>
                                 <View style={{ flex: 0.5, justifyContent: "center", }}>
                                     <Text style={{ fontWeight: "normal", fontSize: 18 }}>Facial Makeup</Text>
                                 </View>
-
                                 <View style={{ flex: 0.8, justifyContent: "center", alignItems: "flex-end", backgroundColor: "#F0F0F0" }}>
                                     <Picker
                                         style={{ width: "90%", color: "#8E8E93", }}
-                                    // selectedValue={this.state.language}
-                                    // onValueChange={(itemValue, itemIndex) =>
-                                    //     this.setState({ language: itemValue })
-                                    // }
+                                        selectedValue={selectedFacialMakeup._id}
+                                        onValueChange={(itemValue, itemIndex) =>
+                                            this.chooseYourService("selectedFacialMakeup", "FacialMakeup", itemValue, itemIndex)
+                                        }
                                     >
                                         <Picker.Item label="Select Type" value="Select Type" />
-                                        <Picker.Item label="Relexed Bob ($15)" value="Relexed Bob ($15)" />
+                                        {
+                                            (FacialMakeup) ? (
+                                                FacialMakeup.map((key, index) => {
+                                                    return (
+                                                        <Picker.Item key={index} label={key.serviceName + " ($" + key.price + ")"} value={key._id} />
+                                                    )
+                                                })
+                                            ) : null
+                                        }
                                     </Picker>
                                 </View>
-
                             </View>
 
-                            <View style={{ flex: 1, marginTop: 10, flexDirection: "row", justifyContent: "center", alignItems: "center", }}>
+                            {/* Picker Eye Makeup */}
 
+                            <View style={{ flex: 1, marginTop: 10, flexDirection: "row", justifyContent: "center", alignItems: "center", }}>
                                 <View style={{ flex: 0.5, justifyContent: "center", }}>
                                     <Text style={{ fontWeight: "normal", fontSize: 18 }}>Eye Makeup</Text>
                                 </View>
-
                                 <View style={{ flex: 0.8, justifyContent: "center", alignItems: "flex-end", backgroundColor: "#F0F0F0" }}>
                                     <Picker
                                         style={{ width: "90%", color: "#8E8E93", }}
-                                    // selectedValue={this.state.language}
-                                    // onValueChange={(itemValue, itemIndex) =>
-                                    //     this.setState({ language: itemValue })
-                                    // }
+                                        selectedValue={selectedEyeMackup._id}
+                                        onValueChange={(itemValue, itemIndex) =>
+                                            this.chooseYourService("selectedEyeMackup", "EyeMackup", itemValue, itemIndex)
+                                        }
                                     >
                                         <Picker.Item label="Select Type" value="Select Type" />
-                                        <Picker.Item label="Relexed Bob ($15)" value="Relexed Bob ($15)" />
+                                        {
+                                            (EyeMackup) ? (
+                                                EyeMackup.map((key, index) => {
+                                                    return (
+                                                        <Picker.Item key={index} label={key.serviceName + " ($" + key.price + ")"} value={key._id} />
+                                                    )
+                                                })
+                                            ) : null
+                                        }
                                     </Picker>
                                 </View>
-
                             </View>
-
                         </View>
-
                     </ScrollView>
-
-
                 </View>
 
                 <View style={{
                     flex: 1, flexDirection: "row", justifyContent: "center", alignItems: "center", width: "100%", borderTopColor: "grey", borderTopWidth: 0.5,
-                    // backgroundColor: "green"
                 }}>
-
                     <View style={{
                         flex: 1, flexDirection: "row", justifyContent: "center", alignItems: "center", width: "90%", marginHorizontal: "5%",
-                        // backgroundColor: "red"
                     }}>
                         <View style={{ flex: 1, justifyContent: "center", alignItems: "flex-start", }}>
                             <Text style={{ fontWeight: "normal", }}>Total Cost</Text>
-                            <Text style={{ fontWeight: "bold", fontSize: 18 }}>$15</Text>
+                            <Text style={{ fontWeight: "bold", fontSize: 18 }}>${totalCost}</Text>
                         </View>
                         <View style={{ flex: 1, justifyContent: "center", alignItems: "flex-end", }}>
                             <TouchableOpacity
-                                onPress={() => Actions.Bookappointment()}
+                                // onPress={() => Actions.Bookappointment()}
+                                onPress={() => this.next()}
                                 style={{ width: "70%", height: 42, justifyContent: "center", alignItems: "center", backgroundColor: "#FD6958", borderRadius: 8 }}>
                                 <Text style={{ fontWeight: "bold", fontSize: 18, color: "#ffffff" }}>Next</Text>
                             </TouchableOpacity>
@@ -338,9 +472,10 @@ class ChooseService extends Component {
         );
     }
 }
+
 let mapStateToProps = state => {
     return {
-
+        bseUrl: state.root.bseUrl,
     };
 };
 function mapDispatchToProps(dispatch) {
@@ -349,12 +484,8 @@ function mapDispatchToProps(dispatch) {
 }
 export default connect(mapStateToProps, mapDispatchToProps)(ChooseService);
 
-
 const styles = StyleSheet.create({
     contentContainer: {
-        // flex: 1,
         paddingBottom: 30,
-        // backgroundColor: "green",
-
     },
 });

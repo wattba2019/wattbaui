@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import {
-    View, Image, ActivityIndicator, StyleSheet,
+    View, Image, StyleSheet,
     ImageBackground, StatusBar, TouchableOpacity,
-    Text, TextInput, ScrollView
+    Text, ScrollView
 
 } from 'react-native';
 import { connect } from "react-redux";
@@ -29,14 +29,13 @@ class Allowaccesslocation extends Component {
             },
             (error) => {
                 // See error code charts below.
-                console.log(error.code, error.message, "66666");
+                console.log(error.code, error.message, "ERROR_ON_GETTING_YOUR_LOCATION");
             },
             { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000, }
         );
     }
 
     render() {
-
         return (
             <ScrollView
                 contentContainerStyle={styles.contentContainer}
@@ -94,7 +93,6 @@ class Allowaccesslocation extends Component {
 
 let mapStateToProps = state => {
     return {
-
     };
 };
 function mapDispatchToProps(dispatch) {
@@ -111,7 +109,5 @@ const styles = StyleSheet.create({
         flex: 1,
         paddingBottom: 0,
         backgroundColor: "white",
-
     },
-
 });
