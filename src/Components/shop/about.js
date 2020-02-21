@@ -20,9 +20,14 @@ class About extends Component {
         })
     }
 
+    UNSAFE_componentWillMount() {
+    }
+
     render() {
         let { shop, workingHours, gallery } = this.props
         let { readmore } = this.state
+
+        console.log(workingHours, "WORKINGHOURS")
         return (
             <View>
                 <View style={{ paddingHorizontal: 25, paddingVertical: 10, }} >
@@ -47,11 +52,14 @@ class About extends Component {
                             workingHours.map((key, index) => {
                                 return (
                                     <View style={{ flexDirection: "row", flex: 1 }} key={index}>
-                                        <View style={{ flex: 0.5 }}>
+                                        <View style={{ flex: 1 }}>
                                             <Text style={{ color: "green" }}>{'\u2B24'} <Text style={{ color: "black" }}> {key.day}</Text></Text>
                                         </View>
                                         <View style={{ flex: 0.5 }}>
-                                            <Text>{key.openTime} - {key.closeTime}</Text>
+                                            <Text>{key.openTimings}</Text>
+                                        </View>
+                                        <View style={{ flex: 0.5 }}>
+                                            <Text>{key.closingTime}</Text>
                                         </View>
                                     </View>
                                 )

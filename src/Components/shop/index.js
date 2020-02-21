@@ -14,6 +14,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import { Actions } from 'react-native-router-flux';
 import axios from 'axios';
+import moment from 'moment';
 
 class shop extends Component {
     constructor(props) {
@@ -31,29 +32,53 @@ class shop extends Component {
             url: urlMgetworkinghours,
         })
             .then(result => {
-                let data = result.data.data[0].workingHours
-                let day = result.data.day
-                console.log(data, day, "DATA_FROM_API")
-                let workingtime;
-                if (data && data.length != 0) {
-                    // Current day sorting
-                    var resultCurrentDay = data.filter(function (obj) {
-                        return obj.day === day;
-                    })
-                    if (resultCurrentDay[0].openTime < new Date().toLocaleTimeString('en-GB') && resultCurrentDay[0].closeTime > new Date().toLocaleTimeString('en-GB')) {
-                        // console.log("STATUS_OPEN")
-                        workingtime = true
-                    }
-                    else {
-                        workingtime = false
-                        // console.log("STATUS_CLOSE")
-                    }
-                }
+                let data = result.data.workingHours
+                var d = new Date();
+                var weekday = new Array(7);
+                weekday[0] = "sunday";
+                weekday[1] = "monday";
+                weekday[2] = "tuesday";
+                weekday[3] = "wednesday";
+                weekday[4] = "thursday";
+                weekday[5] = "friday";
+                weekday[6] = "saturday";
+                let day = weekday[d.getDay()];
+
+                let shopOpenTime = data[day].openTimings;
+                let shopCloseTime = data[day].closingTime;
+
+                // var time = new Date().getHours();
+                var time = new Date().toLocaleString('en-GB', { hour: 'numeric', minute: 'numeric', hour12: true });
+                console.log(shopOpenTime, time, shopCloseTime, time, "Data")
+                console.log(shopOpenTime > time, shopCloseTime > time, "Check_time")
+
+                // let workingtime;
+                // if (data[day].openTimings < new Date().toLocaleTimeString('en') && data[day].closingTime > new Date().toLocaleTimeString('en')) {
+                //     console.log("STATUS_OPEN")
+                //     workingtime = true
+                // }
+                // else {
+                //     console.log("STATUS_CLOSE")
+                //     workingtime = false
+                // }
+
+                // console.log(workingtime, "STATUS")
+
+                let workingHoursArr = []
+                workingHoursArr.push(data.monday)
+                workingHoursArr.push(data.tuesday)
+                workingHoursArr.push(data.wednesday)
+                workingHoursArr.push(data.thursday)
+                workingHoursArr.push(data.friday)
+                workingHoursArr.push(data.saturday)
+                workingHoursArr.push(data.sunday)
+
                 this.setState({
-                    workingtime: workingtime,
-                    workingHours: data,
+                    // workingtime: workingtime,
+                    workingHours: workingHoursArr,
                     isloader: false
                 })
+
             })
             .catch(err => {
                 if (err.response.status === 409) {
@@ -165,8 +190,9 @@ class shop extends Component {
     }
 
     render() {
-        const { activeColor, workingtime, workingHours, services, packages, hairStyles, gallery } = this.state
+        const { activeColor, workingtime, workingHours, services, packages, hairStyles, gallery, } = this.state
         let { shop } = this.props
+        // console.log(workingtime, "FLAG")
         return (
             <View style={{ flex: 1 }}>
                 <SafeAreaView style={styles.container} >

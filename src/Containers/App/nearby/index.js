@@ -184,7 +184,7 @@ class Nearby extends Component {
                                                                     resizeMode="cover"
                                                                     source={{ uri: key.coverImage }}
                                                                 />
-                                                            ) : <Image source={require('../../../../assets/nophoto.jpg')} resizeMode="contain"
+                                                            ) : <Image source={require('../../../../assets/nophoto.jpg')} resizeMode="cover"
                                                                 style={{ width: "100%", height: "100%", borderTopLeftRadius: 6, borderTopRightRadius: 6, }}
                                                                 />
                                                             }
