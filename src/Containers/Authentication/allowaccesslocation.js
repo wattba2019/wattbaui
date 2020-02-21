@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import {
     View, Image, StyleSheet,
     ImageBackground, StatusBar, TouchableOpacity,
-    Text, ScrollView
+    Text, ScrollView, ActivityIndicator
 
 } from 'react-native';
 import { connect } from "react-redux";
@@ -14,28 +14,40 @@ class Allowaccesslocation extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            allowLocation: false
+            allowLocation: false,
+            loader: false
         };
     }
 
     allowLocation = () => {
+        this.setState({
+            loader: true
+        })
         // Instead of navigator.geolocation, just use Geolocation.
         Geolocation.getCurrentPosition(
             (position) => {
                 if (position) {
-                    console.log(position, "USER_CURRENT_LOCATION")
+                    console.log(position, "USER_CURRENT_LOCATION_AllowAcces")
                     this.props.setUserCurrentLocation(position)
+                    this.setState({
+                        loader: false
+                    })
                 }
             },
             (error) => {
                 // See error code charts below.
-                console.log(error.code, error.message, "ERROR_ON_GETTING_YOUR_LOCATION");
+                console.log(error.code, error.message, "ERROR_ON_GETTING_YOUR_LOCATION_AllowAcces");
+                this.setState({
+                    loader: false,
+                    err: error.message
+                })
             },
             { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000, }
         );
     }
 
     render() {
+        const { loader, err } = this.state
         return (
             <ScrollView
                 contentContainerStyle={styles.contentContainer}
@@ -67,7 +79,11 @@ class Allowaccesslocation extends Component {
                             <ImageBackground source={require('../../../assets/buttonBackground.png')} resizeMode="contain"
                                 style={{ height: "100%", width: "100%", justifyContent: "center", }}
                             >
-                                <Text style={{ textAlign: "center", fontSize: 15, margin: 12, color: "white" }}>Yes, allow</Text>
+                                {
+                                    (loader != true) ? (
+                                        <Text style={{ textAlign: "center", fontSize: 15, margin: 12, color: "white" }}>Yes, allow</Text>
+                                    ) : <ActivityIndicator style={{ color: "orange" }} />
+                                }
                             </ImageBackground>
                         </TouchableOpacity>
 
@@ -83,8 +99,13 @@ class Allowaccesslocation extends Component {
                             style={{ textAlign: "center", fontSize: 15, marginTop: 12, }}
                         >
                             Don't allow
-                            </Text>
+                        </Text>
                     </TouchableOpacity>
+
+                    {
+                        err ? <Text style={{ textAlign: "center", fontSize: 15, marginTop: 12, color: "red" }}>{err}</Text> : null
+                    }
+
                 </View>
             </ScrollView>
         );

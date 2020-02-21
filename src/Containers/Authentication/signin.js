@@ -18,10 +18,10 @@ class Signin extends Component {
             activateAccount: false,
             // email: "",
             // password: ""
-            // email: "mynameisabdullahv1@gmail.com",
-            // password: "12345678"
-            email: "abddullahshah@gmail.com",
-            password: "123456789"
+            email: "mynameisabdullahv1@gmail.com",
+            password: "12345678"
+            // email: "abddullahshah@gmail.com",
+            // password: "123456789"
         };
     }
 

@@ -26,7 +26,7 @@ class Veryfiyournumber extends Component {
         };
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         this.setState({
             cca2: this.props.cca2,
             countryCode: this.props.countryCode,

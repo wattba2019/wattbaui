@@ -24,7 +24,8 @@ class shop extends Component {
     }
 
     componentDidMount() {
-        let urlMgetworkinghours = `${this.props.bseUrl}/workinghour/getworkinghours/${this.props.shop._id}`
+        let urlMgetworkinghours = `${this.props.bseUrl}/workinghours/${this.props.shop._id}`
+        console.log(urlMgetworkinghours, "WORKINGHOURS")
         axios({
             method: 'get',
             url: urlMgetworkinghours,
@@ -32,7 +33,7 @@ class shop extends Component {
             .then(result => {
                 let data = result.data.data[0].workingHours
                 let day = result.data.day
-                // console.log(data, day, "DATA_FROM_API")
+                console.log(data, day, "DATA_FROM_API")
                 let workingtime;
                 if (data && data.length != 0) {
                     // Current day sorting
@@ -58,61 +59,11 @@ class shop extends Component {
                 if (err.response.status === 409) {
                     console.log(err.response.data.message, "ERROR_ON_GET_WORKING_HOURS")
                 }
-                else{
-                    alert(err.response.data.message)
-                }
-            })
-
-        let urlMservicesget = `${this.props.bseUrl}/servicesget/${this.props.shop._id}`
-        axios({
-            method: 'get',
-            url: urlMservicesget,
-        })
-            .then(result => {
-                let data = result.data.data
-                // console.log(data, "DATA_FROM_API")
-                if (data && data.length != 0) {
-                    // Hair styles sorting
-                    var resultHairStyles = data.filter(function (obj) {
-                        return obj.serviceCatogery === "Hair Styles";
-                    })
-                }
-                this.setState({
-                    services: data,
-                    hairStyles: resultHairStyles,
-                    isloader: false
-                })
-            })
-            .catch(err => {
-                if (err.response.status === 409) {
-                    console.log(err.response.data.message, "ERROR_ON_GET_SERVICES")
-                }
                 else {
                     alert(err.response.data.message)
                 }
             })
 
-        let urlMpackagesget = `${this.props.bseUrl}/packagesandoffersget/${this.props.shop._id}`
-        axios({
-            method: 'get',
-            url: urlMpackagesget,
-        })
-            .then(result => {
-                let data = result.data.data
-                // console.log(data, "DATA_FROM_API")
-                this.setState({
-                    packages: data,
-                    isloader: false
-                })
-            })
-            .catch(err => {
-                if (err.response.status === 409) {
-                    console.log(err.response.data.message, "ERROR_ON_GET_PACKAGES")
-                }
-                else {
-                    alert(err.response.data.message)
-                }
-            })
 
         let urlMgalleryget = `${this.props.bseUrl}/galleryget/${this.props.shop._id}`
         axios({
@@ -135,6 +86,59 @@ class shop extends Component {
                     alert(err.response.data.message)
                 }
             })
+
+        // let urlMservicesget = `${this.props.bseUrl}/servicesget/${this.props.shop._id}`
+        // axios({
+        //     method: 'get',
+        //     url: urlMservicesget,
+        // })
+        //     .then(result => {
+        //         let data = result.data.data
+        //         // console.log(data, "DATA_FROM_API")
+        //         if (data && data.length != 0) {
+        //             // Hair styles sorting
+        //             var resultHairStyles = data.filter(function (obj) {
+        //                 return obj.serviceCatogery === "Hair Styles";
+        //             })
+        //         }
+        //         this.setState({
+        //             services: data,
+        //             hairStyles: resultHairStyles,
+        //             isloader: false
+        //         })
+        //     })
+        //     .catch(err => {
+        //         if (err.response.status === 409) {
+        //             console.log(err.response.data.message, "ERROR_ON_GET_SERVICES")
+        //         }
+        //         else {
+        //             alert(err.response.data.message)
+        //         }
+        //     })
+
+        // let urlMpackagesget = `${this.props.bseUrl}/packagesandoffersget/${this.props.shop._id}`
+        // axios({
+        //     method: 'get',
+        //     url: urlMpackagesget,
+        // })
+        //     .then(result => {
+        //         let data = result.data.data
+        //         // console.log(data, "DATA_FROM_API")
+        //         this.setState({
+        //             packages: data,
+        //             isloader: false
+        //         })
+        //     })
+        //     .catch(err => {
+        //         if (err.response.status === 409) {
+        //             console.log(err.response.data.message, "ERROR_ON_GET_PACKAGES")
+        //         }
+        //         else {
+        //             alert(err.response.data.message)
+        //         }
+        //     })
+
+
     }
 
     activeColor(key) {

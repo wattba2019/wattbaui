@@ -18,7 +18,7 @@ class UpdatePassword extends Component {
             updateLoader: true,
         }
     }
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         var { height, width } = Dimensions.get('window');
         this.setState({
             screenHeight: height,

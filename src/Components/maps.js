@@ -20,47 +20,49 @@ class MapDirection extends React.Component {
         }
     }
 
-    componentWillMount() {
-        if (this.props.sendLocation) {
-            console.log(this.props.sendLocation, "sendLocation")
-            this.setState({ location: this.props.sendLocation });
+    UNSAFE_componentWillMount() {
+        if (this.props.currentLocation) {
+            this.setState({
+                coords: this.props.currentLocation.coords
+            })
         }
-        else {
-            this.allowLocation()
+        // else {
+        //     this.allowLocation()
+        // }
+    }
+
+
+    UNSAFE_componentWillReceiveProps(nextProps) {
+        if (nextProps.currentLocation) {
+            this.setState({
+                coords: nextProps.currentLocation.coords
+            })
         }
     }
 
-    allowLocation = async () => {
-        // Instead of navigator.geolocation, just use Geolocation.
-        await Geolocation.getCurrentPosition(
-            (position) => {
-                if (position) {
-                    console.log(position, "USER_CURRENT_LOCATION")
-                    this.setState({
-                        coords: position.coords
-                    })
-                }
-            },
-            (error) => {
-                // See error code charts below.
-                console.log(error.code, error.message, "ERROR_ON_GETTING_YOUR_LOCATION");
-            },
-            { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000, }
-        );
-    }
+    // allowLocation = async () => {
+    //     // Instead of navigator.geolocation, just use Geolocation.
+    //     await Geolocation.getCurrentPosition(
+    //         (position) => {
+    //             if (position) {
+    //                 console.log(position, "USER_CURRENT_LOCATION")
+    //                 this.setState({
+    //                     coords: position.coords
+    //                 })
+    //             }
+    //         },
+    //         (error) => {
+    //             // See error code charts below.
+    //             console.log(error.code, error.message, "ERROR_ON_GETTING_YOUR_LOCATION");
+    //         },
+    //         { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000, }
+    //     );
+    // }
 
-    // region={{
-    //     latitude: 37.78825,
-    //     longitude: -122.4324,
-    //     latitudeDelta: 0.015,
-    //     longitudeDelta: 0.0121,
-    // }}
+    
 
     render() {
         let { coords } = this.state
-        if (coords) {
-            console.log(coords)
-        }
         return (
             <View >
                 {
@@ -88,7 +90,7 @@ class MapDirection extends React.Component {
                             >
                                 {/* <View style={{ width: 70, height: 70, backgroundColor: "orange" }}>
                                 </View> */}
-                                    <Image source={require('../../assets/mapIcon.png')} style={{ height: 35, width: 35 }} />
+                                <Image source={require('../../assets/mapIcon.png')} style={{ height: 35, width: 35 }} />
                             </Marker>
                         </MapView> : <MapView style={{ width: "99%", height: 500 }}
                             provider={PROVIDER_GOOGLE}
@@ -124,7 +126,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => {
     return {
-        // isLoader: state.root.isLoader,
+        currentLocation: state.root.currentLocation,
     };
 };
 

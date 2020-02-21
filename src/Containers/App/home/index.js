@@ -22,7 +22,7 @@ class Home extends Component {
         };
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         console.log(this.props, "USER_CURRENT_LOCATION")
     }
 

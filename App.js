@@ -121,7 +121,7 @@ import store from './src/Store';
 import Route from './src/navigation/Routes';
 
 export default class App extends React.Component {
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     console.disableYellowBox = true
   }
   render() {

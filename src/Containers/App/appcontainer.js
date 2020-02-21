@@ -15,7 +15,7 @@ class AppContainer extends Component {
         }
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         if (this.props.rout) {
             this.setState({
                 rout: this.props.rout

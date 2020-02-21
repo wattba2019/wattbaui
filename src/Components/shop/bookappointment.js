@@ -18,6 +18,7 @@ class BookAppointment extends Component {
     }
 
     render() {
+        let { chosenItems, gendre, totalCost } = this.props
         return (
             <View style={{ paddingHorizontal: 10, flex: 1, backgroundColor: "#fff" }}>
                 <StatusBar backgroundColor="white" barStyle="dark-content" />
@@ -130,7 +131,6 @@ class BookAppointment extends Component {
                                     <Text style={{ color: "#4B534F" }}>16:00 AM</Text>
                                 </View>
                             </View>
-
                         </View>
 
                         <View style={{ paddingVertical: "5%" }}>
@@ -153,7 +153,6 @@ class BookAppointment extends Component {
                                     backgroundColor: "white",
                                     borderColor: "#FD6958",
                                     borderWidth: 1.80
-
                                 }}>
                                     <Image source={require('../../../assets/Ellipse-1.png')} resizeMode="contain"
                                         style={{ width: "90%", height: "90%", }}
@@ -237,13 +236,12 @@ class BookAppointment extends Component {
                 <View style={{
                     flex: 1, flexDirection: "row", justifyContent: "center", alignItems: "center", width: "100%", borderTopColor: "grey", borderTopWidth: 0.5,
                 }}>
-
                     <View style={{
                         flex: 1, flexDirection: "row", justifyContent: "center", alignItems: "center", width: "90%", marginHorizontal: "5%",
                     }}>
                         <View style={{ flex: 1, justifyContent: "center", alignItems: "flex-start", }}>
                             <Text style={{ fontWeight: "normal", }}>Total Cost</Text>
-                            <Text style={{ fontWeight: "bold", fontSize: 18 }}>$15</Text>
+                            <Text style={{ fontWeight: "bold", fontSize: 18 }}>${totalCost}</Text>
                         </View>
                         <View style={{ flex: 1, justifyContent: "center", alignItems: "flex-end", }}>
                             <TouchableOpacity
