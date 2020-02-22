@@ -15,6 +15,7 @@ class Services extends Component {
     }
     render() {
         let { shop, services, packages } = this.props
+        console.log(services);
         return (
             <View>
                 <View style={{ alignItems: "center" }}>

@@ -25,14 +25,68 @@ class shop extends Component {
     }
 
     componentDidMount() {
+        this.getWorkingHours()
+        this.getGallery()
+        this.getStylists()
+        this.getServices()
+    }
+
+    getStylists() {
+        let urlm = `${this.props.bseUrl}/stylist/${this.props.shop._id}`
+        axios({
+            method: 'get',
+            url: urlm,
+        })
+            .then(result => {
+                let data = result.data.data
+                console.log(data, "DATA_FROM_API_STYLISTS")
+                this.setState({
+                    stylists: data
+                })
+            })
+            .catch(err => {
+                if (err.response.status === 409) {
+                    console.log(err.response.data.message, "ERROR_ON_GET_GALLERY")
+                }
+                else {
+                    alert(err.response.data.message)
+                }
+            })
+
+    }
+
+    getGallery() {
+        let urlMgalleryget = `${this.props.bseUrl}/galleryget/${this.props.shop._id}`
+        axios({
+            method: 'get',
+            url: urlMgalleryget,
+        })
+            .then(result => {
+                let data = result.data.data
+                console.log(data, "DATA_FROM_API_GALLERY")
+                this.setState({
+                    gallery: data,
+                })
+            })
+            .catch(err => {
+                if (err.response.status === 409) {
+                    console.log(err.response.data.message, "ERROR_ON_GET_GALLERY")
+                }
+                else {
+                    alert(err.response.data.message)
+                }
+            })
+    }
+
+    getWorkingHours() {
         let urlMgetworkinghours = `${this.props.bseUrl}/workinghours/${this.props.shop._id}`
-        console.log(urlMgetworkinghours, "WORKINGHOURS")
         axios({
             method: 'get',
             url: urlMgetworkinghours,
         })
             .then(result => {
                 let data = result.data.workingHours
+                console.log(data, "DATA_FROM_API_WORKING_HOURS")
                 var d = new Date();
                 var weekday = new Array(7);
                 weekday[0] = "sunday";
@@ -49,8 +103,8 @@ class shop extends Component {
 
                 // var time = new Date().getHours();
                 var time = new Date().toLocaleString('en-GB', { hour: 'numeric', minute: 'numeric', hour12: true });
-                console.log(shopOpenTime, time, shopCloseTime, time, "Data")
-                console.log(shopOpenTime > time, shopCloseTime > time, "Check_time")
+                // console.log(shopOpenTime, time, shopCloseTime, time, "Data")
+                // console.log(shopOpenTime > time, shopCloseTime > time, "Check_time")
 
                 // let workingtime;
                 // if (data[day].openTimings < new Date().toLocaleTimeString('en') && data[day].closingTime > new Date().toLocaleTimeString('en')) {
@@ -76,7 +130,6 @@ class shop extends Component {
                 this.setState({
                     // workingtime: workingtime,
                     workingHours: workingHoursArr,
-                    isloader: false
                 })
 
             })
@@ -89,57 +142,29 @@ class shop extends Component {
                 }
             })
 
+    }
 
-        let urlMgalleryget = `${this.props.bseUrl}/galleryget/${this.props.shop._id}`
+    getServices() {
+        let urlm = `${this.props.bseUrl}/servicesget/${this.props.shop._id}`
         axios({
             method: 'get',
-            url: urlMgalleryget,
+            url: urlm,
         })
             .then(result => {
                 let data = result.data.data
-                // console.log(data, "DATA_FROM_API")
+                console.log(data, "DATA_FROM_API_SERVICES")
                 this.setState({
-                    gallery: data,
-                    isloader: false
+                    services: data,
                 })
             })
             .catch(err => {
                 if (err.response.status === 409) {
-                    console.log(err.response.data.message, "ERROR_ON_GET_GALLERY")
+                    console.log(err.response.data.message, "ERROR_ON_GET_SERVICES")
                 }
                 else {
                     alert(err.response.data.message)
                 }
             })
-
-        // let urlMservicesget = `${this.props.bseUrl}/servicesget/${this.props.shop._id}`
-        // axios({
-        //     method: 'get',
-        //     url: urlMservicesget,
-        // })
-        //     .then(result => {
-        //         let data = result.data.data
-        //         // console.log(data, "DATA_FROM_API")
-        //         if (data && data.length != 0) {
-        //             // Hair styles sorting
-        //             var resultHairStyles = data.filter(function (obj) {
-        //                 return obj.serviceCatogery === "Hair Styles";
-        //             })
-        //         }
-        //         this.setState({
-        //             services: data,
-        //             hairStyles: resultHairStyles,
-        //             isloader: false
-        //         })
-        //     })
-        //     .catch(err => {
-        //         if (err.response.status === 409) {
-        //             console.log(err.response.data.message, "ERROR_ON_GET_SERVICES")
-        //         }
-        //         else {
-        //             alert(err.response.data.message)
-        //         }
-        //     })
 
         // let urlMpackagesget = `${this.props.bseUrl}/packagesandoffersget/${this.props.shop._id}`
         // axios({
@@ -151,7 +176,6 @@ class shop extends Component {
         //         // console.log(data, "DATA_FROM_API")
         //         this.setState({
         //             packages: data,
-        //             isloader: false
         //         })
         //     })
         //     .catch(err => {
@@ -162,8 +186,6 @@ class shop extends Component {
         //             alert(err.response.data.message)
         //         }
         //     })
-
-
     }
 
     activeColor(key) {
@@ -189,10 +211,10 @@ class shop extends Component {
         }
     }
 
+
     render() {
-        const { activeColor, workingtime, workingHours, services, packages, hairStyles, gallery, } = this.state
+        const { activeColor, workingtime, workingHours, services, packages, stylists, gallery, } = this.state
         let { shop } = this.props
-        // console.log(workingtime, "FLAG")
         return (
             <View style={{ flex: 1 }}>
                 <SafeAreaView style={styles.container} >
@@ -261,7 +283,7 @@ class shop extends Component {
                             </View>
                         </View>
                         {
-                            (hairStyles) ? (
+                            (stylists) ? (
                                 <View style={{
                                     paddingHorizontal: 35
                                 }}>
@@ -274,8 +296,8 @@ class shop extends Component {
 
                         <ScrollView horizontal style={{ marginVertical: 15 }} showsHorizontalScrollIndicator={false}>
                             {
-                                (hairStyles) ? (
-                                    hairStyles.map((key, index) => {
+                                (stylists) ? (
+                                    stylists.map((key, index) => {
                                         return (
                                             <TouchableOpacity key={index} style={{
                                                 height: 110,
@@ -293,7 +315,6 @@ class shop extends Component {
                                                     borderColor: "#FD6958",
                                                     borderWidth: 1.80,
                                                     overflow: "hidden"
-
                                                 }}>
                                                     {(key.serviceImage != null) ? (
                                                         <Image source={{ uri: key.serviceImage }} resizeMode="cover"
@@ -303,7 +324,7 @@ class shop extends Component {
                                                         style={{ width: "90%", height: "90%", borderRadius: 100 }}
                                                         />}
                                                 </View>
-                                                <Text style={{ marginTop: 5, fontSize: 10, color: "#8E8E93", textAlign: "right", }}>{key.serviceName}</Text>
+                                                <Text style={{ marginTop: 5, fontSize: 10, color: "#8E8E93", textAlign: "right", }}>{key.fullname}</Text>
                                             </TouchableOpacity>
                                         )
                                     })

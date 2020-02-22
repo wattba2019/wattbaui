@@ -9,19 +9,15 @@ import { connect } from "react-redux";
 import { Actions } from 'react-native-router-flux';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-
 class ServiceDetaild extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            email: "",
-            password: ""
         };
     }
 
     render() {
-        let { serviceDetails, serviceName } = this.props
-        console.log(serviceDetails, serviceName, "SERVICE_DETAILS")
+        let { serviceDetails, } = this.props
         return (
             <View style={{
                 flex: 1,
@@ -58,19 +54,20 @@ class ServiceDetaild extends Component {
                         alignItems: "center"
                     }}>
                         {
-                            (serviceName) ? (
+                            (serviceDetails) ? (
                                 <View style={{
                                     width: "90%", flexDirection: "row", marginTop: 15
                                 }}>
                                     <Text style={{
                                         color: "black",
                                         fontSize: 18,
-                                    }}>{serviceName}</Text>
+                                    }}>{serviceDetails.serviceName}</Text>
                                 </View>
                             ) : null
                         }
                         {
-                            (serviceDetails) ? (serviceDetails.map((key, index) => {
+                            (serviceDetails) ? (serviceDetails.extraServices.map((key, index) => {
+                                // console.log(key, index, "INSIDE_MAP")
                                 return (
                                     <View key={index} style={{
                                         width: "90%", marginTop: 15, flexDirection: "row", justifyContent: "space-between"
@@ -94,7 +91,6 @@ class ServiceDetaild extends Component {
                                     <Text style={{ textAlign: "center", fontSize: 15, margin: 12, color: "white" }}>Book</Text>
                                 </ImageBackground>
                             </TouchableOpacity>
-
                         </View>
                     </View>
                 </ScrollView>
@@ -102,6 +98,7 @@ class ServiceDetaild extends Component {
         );
     }
 }
+
 let mapStateToProps = state => {
     return {
     };

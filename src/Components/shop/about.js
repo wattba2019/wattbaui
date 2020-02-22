@@ -26,8 +26,6 @@ class About extends Component {
     render() {
         let { shop, workingHours, gallery } = this.props
         let { readmore } = this.state
-
-        console.log(workingHours, "WORKINGHOURS")
         return (
             <View>
                 <View style={{ paddingHorizontal: 25, paddingVertical: 10, }} >
