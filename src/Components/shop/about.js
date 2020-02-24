@@ -20,9 +20,6 @@ class About extends Component {
         })
     }
 
-    UNSAFE_componentWillMount() {
-    }
-
     render() {
         let { shop, workingHours, gallery } = this.props
         let { readmore } = this.state

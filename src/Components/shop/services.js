@@ -15,7 +15,6 @@ class Services extends Component {
     }
     render() {
         let { shop, services, packages } = this.props
-        console.log(services);
         return (
             <View>
                 <View style={{ alignItems: "center" }}>
@@ -74,10 +73,6 @@ class Services extends Component {
         );
     }
 }
-
-
-const styles = StyleSheet.create({
-});
 
 let mapStateToProps = state => {
     return {

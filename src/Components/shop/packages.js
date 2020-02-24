@@ -14,6 +14,7 @@ class ServiceChild1 extends Component {
 
     render() {
         let { packages } = this.props
+        // console.log(packages, "PACKAGES_INSIDE_COMPONENT")
         return (
             <View style={{ paddingHorizontal: 15, padding: 15 }}>
                 {
@@ -24,10 +25,10 @@ class ServiceChild1 extends Component {
                                     onPress={() => Actions.OfferDetails({ offerDetails: key })}
                                 >
                                     {(key.packageImage != null) ? (
-                                        <Image source={{ uri: key.packageImage }} resizeMode="contain"
+                                        <Image source={{ uri: key.packageImage }} resizeMode="cover"
                                             style={{ width: "100%", height: 200, borderRadius: 10, marginTop: 5 }}
                                         />
-                                    ) : <Image source={require('../../../assets/nophoto.jpg')} resizeMode="contain"
+                                    ) : <Image source={require('../../../assets/nophoto.jpg')} resizeMode="cover"
                                         style={{ width: "100%", height: 200, borderRadius: 10, marginTop: 5 }}
                                         />}
 
@@ -56,10 +57,6 @@ class ServiceChild1 extends Component {
         );
     }
 }
-
-
-const styles = StyleSheet.create({
-});
 
 let mapStateToProps = state => {
     return {

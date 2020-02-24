@@ -14,13 +14,14 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import { Actions } from 'react-native-router-flux';
 import axios from 'axios';
-import moment from 'moment';
+// import moment from 'moment';
 
 class shop extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            activeColor: "about"
+            activeColor: "about",
+            workingtime: true
         }
     }
 
@@ -29,6 +30,7 @@ class shop extends Component {
         this.getGallery()
         this.getStylists()
         this.getServices()
+        this.getSpecialPack()
     }
 
     getStylists() {
@@ -39,7 +41,7 @@ class shop extends Component {
         })
             .then(result => {
                 let data = result.data.data
-                console.log(data, "DATA_FROM_API_STYLISTS")
+                // console.log(data, "DATA_FROM_API_STYLISTS")
                 this.setState({
                     stylists: data
                 })
@@ -63,7 +65,7 @@ class shop extends Component {
         })
             .then(result => {
                 let data = result.data.data
-                console.log(data, "DATA_FROM_API_GALLERY")
+                // console.log(data, "DATA_FROM_API_GALLERY")
                 this.setState({
                     gallery: data,
                 })
@@ -86,7 +88,7 @@ class shop extends Component {
         })
             .then(result => {
                 let data = result.data.workingHours
-                console.log(data, "DATA_FROM_API_WORKING_HOURS")
+                // console.log(data, "DATA_FROM_API_WORKING_HOURS")
                 var d = new Date();
                 var weekday = new Array(7);
                 weekday[0] = "sunday";
@@ -152,7 +154,7 @@ class shop extends Component {
         })
             .then(result => {
                 let data = result.data.data
-                console.log(data, "DATA_FROM_API_SERVICES")
+                // console.log(data, "DATA_FROM_API_SERVICES")
                 this.setState({
                     services: data,
                 })
@@ -165,27 +167,29 @@ class shop extends Component {
                     alert(err.response.data.message)
                 }
             })
+    }
 
-        // let urlMpackagesget = `${this.props.bseUrl}/packagesandoffersget/${this.props.shop._id}`
-        // axios({
-        //     method: 'get',
-        //     url: urlMpackagesget,
-        // })
-        //     .then(result => {
-        //         let data = result.data.data
-        //         // console.log(data, "DATA_FROM_API")
-        //         this.setState({
-        //             packages: data,
-        //         })
-        //     })
-        //     .catch(err => {
-        //         if (err.response.status === 409) {
-        //             console.log(err.response.data.message, "ERROR_ON_GET_PACKAGES")
-        //         }
-        //         else {
-        //             alert(err.response.data.message)
-        //         }
-        //     })
+    getSpecialPack() {
+        let urlMpackagesget = `${this.props.bseUrl}/packagesandoffersget/${this.props.shop._id}`
+        axios({
+            method: 'get',
+            url: urlMpackagesget,
+        })
+            .then(result => {
+                let data = result.data.data
+                // console.log(data, "DATA_FROM_API_SPECIAL_PACK")
+                this.setState({
+                    packages: data,
+                })
+            })
+            .catch(err => {
+                if (err.response.status === 409) {
+                    console.log(err.response.data.message, "ERROR_ON_GET_PACKAGES")
+                }
+                else {
+                    alert(err.response.data.message)
+                }
+            })
     }
 
     activeColor(key) {
@@ -210,7 +214,6 @@ class shop extends Component {
             })
         }
     }
-
 
     render() {
         const { activeColor, workingtime, workingHours, services, packages, stylists, gallery, } = this.state
@@ -294,17 +297,34 @@ class shop extends Component {
                             ) : null
                         }
 
-                        <ScrollView horizontal style={{ marginVertical: 15 }} showsHorizontalScrollIndicator={false}>
-                            {
+                        <ScrollView horizontal
+                            style={{
+                                marginVertical: 15, width: "100%",
+                                backgroundColor: "orange"
+                            }}
+                            showsHorizontalScrollIndicator={false}>
+                            <TouchableOpacity style={{
+                                height: 120,
+                                width: "100%",
+                                justifyContent: "center",
+                                alignItems: "center",
+                                backgroundColor: "red"
+                            }}
+                            >
+                                <Text style={{ marginTop: 5, fontSize: 10, color: "#000000", textAlign: "right", }}>Loading...</Text>
+                            </TouchableOpacity>
+                            {/* {
                                 (stylists) ? (
                                     stylists.map((key, index) => {
                                         return (
                                             <TouchableOpacity key={index} style={{
-                                                height: 110,
+                                                height: 120,
                                                 width: 110,
                                                 justifyContent: "center",
                                                 alignItems: "center",
-                                            }}>
+                                            }}
+                                                onPress={() => Actions.BarberDetails({ barberDetails: key, shop: shop })}
+                                            >
                                                 <View style={{
                                                     height: 75,
                                                     width: 75,
@@ -324,12 +344,23 @@ class shop extends Component {
                                                         style={{ width: "90%", height: "90%", borderRadius: 100 }}
                                                         />}
                                                 </View>
-                                                <Text style={{ marginTop: 5, fontSize: 10, color: "#8E8E93", textAlign: "right", }}>{key.fullname}</Text>
+                                                <Text style={{ marginTop: 5, fontSize: 10, color: "#000000", textAlign: "right", }}>{key.fullname}</Text>
+                                                <Text style={{ marginTop: 0, fontSize: 10, color: "#8E8E93", textAlign: "right", }}>{key.designation}</Text>
                                             </TouchableOpacity>
                                         )
                                     })
-                                ) : null
-                            }
+                                ) :
+                                    <TouchableOpacity style={{
+                                        height: 120,
+                                        width: "100%",
+                                        justifyContent: "center",
+                                        alignItems: "center",
+                                        backgroundColor: "red"
+                                    }}
+                                    >
+                                        <Text style={{ marginTop: 5, fontSize: 10, color: "#000000", textAlign: "right", }}>Loading...</Text>
+                                    </TouchableOpacity>
+                            } */}
                         </ScrollView>
 
                         <Tabs
@@ -396,17 +427,13 @@ class shop extends Component {
                         </Tabs>
                     </ScrollView>
                 </View>
-            </View>
+            </View >
         );
     }
 }
 
 
 const styles = StyleSheet.create({
-    holder: {
-        flex: 0.25,
-        justifyContent: 'center',
-    },
     contentContainer: {
         paddingBottom: 60,
         backgroundColor: "white",
@@ -416,47 +443,51 @@ const styles = StyleSheet.create({
         flex: 0.35,
         backgroundColor: "black"
     },
-    containerForModal: {
-        // flex: 1,
-        padding: 30,
-        justifyContent: 'center',
-        alignItems: 'center',
-        // width:"100%"
-    },
-    textareaContainer: {
-        height: "30%",
-        width: "95%",
-        padding: 5,
-        // backgroundColor: '#F8F8F8',
-    },
-    textarea: {
-        textAlignVertical: 'top',  // hack android
-        height: 100,
-        fontSize: 14,
-        // color: '#333',
-    },
-    customSlide: {
-        backgroundColor: 'white',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    customImage: {
-        width: "100%",
-        height: "100%",
-    },
-    listView: {
-        width: "100%", height: 40, marginTop: 15,
-        borderBottomWidth: 0.5, borderBottomColor: "#BEBCBC",
-        flexDirection: "row",
-        justifyContent: "space-between",
-    },
-    listTextOption: {
-        marginLeft: 10, color: "#000", fontWeight: "bold", fontSize: 12
-    },
-    listTextOptionValue: {
-        marginLeft: 10, color: "#6a6a6a", textAlign: "right",
-    },
-    input: { justifyContent: 'center', alignItems: 'center', width: '95%', },
+    // holder: {
+    //     flex: 0.25,
+    //     justifyContent: 'center',
+    // },
+    // containerForModal: {
+    //     // flex: 1,
+    //     padding: 30,
+    //     justifyContent: 'center',
+    //     alignItems: 'center',
+    //     // width:"100%"
+    // },
+    // textareaContainer: {
+    //     height: "30%",
+    //     width: "95%",
+    //     padding: 5,
+    //     // backgroundColor: '#F8F8F8',
+    // },
+    // textarea: {
+    //     textAlignVertical: 'top',  // hack android
+    //     height: 100,
+    //     fontSize: 14,
+    //     // color: '#333',
+    // },
+    // customSlide: {
+    //     backgroundColor: 'white',
+    //     alignItems: 'center',
+    //     justifyContent: 'center',
+    // },
+    // customImage: {
+    //     width: "100%",
+    //     height: "100%",
+    // },
+    // listView: {
+    //     width: "100%", height: 40, marginTop: 15,
+    //     borderBottomWidth: 0.5, borderBottomColor: "#BEBCBC",
+    //     flexDirection: "row",
+    //     justifyContent: "space-between",
+    // },
+    // listTextOption: {
+    //     marginLeft: 10, color: "#000", fontWeight: "bold", fontSize: 12
+    // },
+    // listTextOptionValue: {
+    //     marginLeft: 10, color: "#6a6a6a", textAlign: "right",
+    // },
+    // input: { justifyContent: 'center', alignItems: 'center', width: '95%', },
 });
 
 
