@@ -6,8 +6,8 @@ import { connect } from "react-redux";
 import { Actions } from 'react-native-router-flux';
 //7 icons import//
 import womenHairstyling from '../../../assets/women-hairstyling.png';
-import surface1 from '../../../assets/surface1.png';
 import surface from '../../../assets/surface-1.png';
+// import surface1 from '../../../assets/surface1.png';
 import surface2 from '../../../assets/surface-2.png';
 import dye from '../../../assets/dye.png';
 import makeup from '../../../assets/makeup.png';
@@ -19,14 +19,9 @@ class ServiceChild1 extends Component {
         this.state = {
         }
     }
-
-    serviceDetails = (item) => {
-        console.log("Work", item)
-        // Actions.ServiceDetaild({ serviceDetails: item, })
-    }
-
     render() {
         let { services } = this.props
+        let images = [womenHairstyling, surface, surface2, dye, makeup, mascara]
         return (
             <View style={{ paddingVertical: 5, paddingHorizontal: 15, width: "90%", marginHorizontal: "5%" }}>
                 {
@@ -42,7 +37,8 @@ class ServiceChild1 extends Component {
                                         <Image
                                             resizeMode="contain"
                                             style={{ width: 35, height: 35 }}
-                                            source={surface2}
+                                            // source={surface2}
+                                            source={images[Math.floor(Math.random() * 6)]}
                                         />
                                     </View>
                                     <View style={{ flex: 7 }}>
