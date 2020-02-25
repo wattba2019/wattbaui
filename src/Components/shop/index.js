@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {
     View, Text, StyleSheet, TouchableOpacity,
-    ScrollView, Image, SafeAreaView,
+    ScrollView, Image, SafeAreaView, ActivityIndicator
 
 } from 'react-native';
 import { connect } from "react-redux";
@@ -298,22 +298,15 @@ class shop extends Component {
                         }
 
                         <ScrollView horizontal
+                            contentContainerStyle={{ flexGrow: 1 }}
+                            showsHorizontalScrollIndicator={false}
                             style={{
-                                marginVertical: 15, width: "100%",
-                                backgroundColor: "orange"
-                            }}
-                            showsHorizontalScrollIndicator={false}>
-                            <TouchableOpacity style={{
-                                height: 120,
+                                marginVertical: 15,
                                 width: "100%",
-                                justifyContent: "center",
-                                alignItems: "center",
-                                backgroundColor: "red"
-                            }}
-                            >
-                                <Text style={{ marginTop: 5, fontSize: 10, color: "#000000", textAlign: "right", }}>Loading...</Text>
-                            </TouchableOpacity>
-                            {/* {
+                                // backgroundColor: "orange"
+                            }}>
+
+                            {
                                 (stylists) ? (
                                     stylists.map((key, index) => {
                                         return (
@@ -355,12 +348,13 @@ class shop extends Component {
                                         width: "100%",
                                         justifyContent: "center",
                                         alignItems: "center",
-                                        backgroundColor: "red"
+                                        // backgroundColor: "red"
                                     }}
                                     >
+                                        <ActivityIndicator size="large" color="#FD6958" />
                                         <Text style={{ marginTop: 5, fontSize: 10, color: "#000000", textAlign: "right", }}>Loading...</Text>
                                     </TouchableOpacity>
-                            } */}
+                            }
                         </ScrollView>
 
                         <Tabs
