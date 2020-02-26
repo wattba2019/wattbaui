@@ -14,6 +14,36 @@ export function setUserCurrentLocation(location, ) {
     }
 }
 
+export function setShopServices(services) {
+    return dispatch => {
+        dispatch({ type: "SET_SERVICES", payload: services })
+    }
+}
+
+export function setStylists(stylists) {
+    return dispatch => {
+        dispatch({ type: "SET_STYLISTS", payload: stylists })
+    }
+}
+
+export function setWorkingHour(workingHour) {
+    return dispatch => {
+        dispatch({ type: "SET_WORKINGHOURS", payload: workingHour })
+    }
+}
+
+export function setGallery(gallery) {
+    return dispatch => {
+        dispatch({ type: "SET_GALLERY", payload: gallery })
+    }
+}
+
+export function setSpecialPack(SpecialPack) {
+    return dispatch => {
+        dispatch({ type: "SET_SPECIAL_PACK", payload: SpecialPack })
+    }
+}
+
 
 
 

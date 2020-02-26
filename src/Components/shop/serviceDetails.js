@@ -83,7 +83,7 @@ class ServiceDetaild extends Component {
                             style={{ width: "85%", height: 50, marginTop: 30, }}
                         >
                             <TouchableOpacity
-                                onPress={() => Actions.ChooseService()}
+                                onPress={() => Actions.ChooseService({ serviceDetails: serviceDetails })}
                             >
                                 <ImageBackground source={require('../../../assets/buttonBackground.png')} resizeMode="contain"
                                     style={{ height: "100%", width: "100%", justifyContent: "center", }}

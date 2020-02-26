@@ -18,7 +18,8 @@ class BookAppointment extends Component {
     }
 
     render() {
-        let { chosenItems, gendre, totalCost } = this.props
+        let { chosenItems, gendre, totalCost, stylists } = this.props
+        console.log(chosenItems, gendre, totalCost, stylists, "PROPS_FROM_CHOOSE_SERVICE")
         return (
             <View style={{ paddingHorizontal: 10, flex: 1, backgroundColor: "#fff" }}>
                 <StatusBar backgroundColor="white" barStyle="dark-content" />
@@ -138,97 +139,56 @@ class BookAppointment extends Component {
                         </View>
 
                         <ScrollView horizontal style={{ marginVertical: 15, marginTop: -15, }} showsHorizontalScrollIndicator={false}>
-                            <TouchableOpacity style={{
-                                height: 110,
-                                width: 110,
-                                justifyContent: "center",
-                                alignItems: "center",
-                            }}>
-                                <View style={{
-                                    height: 75,
-                                    width: 75,
-                                    borderRadius: 50,
-                                    justifyContent: "center",
-                                    alignItems: "center",
-                                    backgroundColor: "white",
-                                    borderColor: "#FD6958",
-                                    borderWidth: 1.80
-                                }}>
-                                    <Image source={require('../../../assets/Ellipse-1.png')} resizeMode="contain"
-                                        style={{ width: "90%", height: "90%", }}
-                                    />
-                                </View>
-                                <Text style={{ marginTop: 5, fontSize: 14, color: "#8E8E93", textAlign: "right", }}>Hairstyle Name</Text>
-                            </TouchableOpacity>
-
-                            <TouchableOpacity style={{
-                                height: 110,
-                                width: 110,
-                                justifyContent: "center",
-                                alignItems: "center",
-                            }}>
-                                <View style={{
-                                    height: 75,
-                                    width: 75,
-                                    borderRadius: 50,
-                                    justifyContent: "center",
-                                    alignItems: "center",
-                                    backgroundColor: "white",
-                                    borderColor: "#FD6958",
-                                    borderWidth: 1.80
-                                }}>
-                                    <Image source={require('../../../assets/Ellipse2s.png')} resizeMode="contain"
-                                        style={{ width: "90%", height: "90%", }}
-                                    />
-                                </View>
-                                <Text style={{ marginTop: 5, fontSize: 14, color: "#8E8E93", textAlign: "right", }}>Hairstyle Name</Text>
-                            </TouchableOpacity>
-
-                            <TouchableOpacity style={{
-                                height: 110,
-                                width: 110,
-                                justifyContent: "center",
-                                alignItems: "center",
-                            }}>
-                                <View style={{
-                                    height: 75,
-                                    width: 75,
-                                    borderRadius: 50,
-                                    justifyContent: "center",
-                                    alignItems: "center",
-                                    backgroundColor: "white",
-                                    borderColor: "#FD6958",
-                                    borderWidth: 1.80
-                                }}>
-                                    <Image source={require('../../../assets/Ellipse-2.png')} resizeMode="contain"
-                                        style={{ width: "90%", height: "90%", }}
-                                    />
-                                </View>
-                                <Text style={{ marginTop: 5, fontSize: 14, color: "#8E8E93", textAlign: "right", }}>Hairstyle Name</Text>
-                            </TouchableOpacity>
-
-                            <TouchableOpacity style={{
-                                height: 110,
-                                width: 110,
-                                justifyContent: "center",
-                                alignItems: "center",
-                            }}>
-                                <View style={{
-                                    height: 75,
-                                    width: 75,
-                                    borderRadius: 50,
-                                    justifyContent: "center",
-                                    alignItems: "center",
-                                    backgroundColor: "white",
-                                    borderColor: "#FD6958",
-                                    borderWidth: 1.80
-                                }}>
-                                    <Image source={require('../../../assets/Ellipse-3.png')} resizeMode="contain"
-                                        style={{ width: "90%", height: "90%", }}
-                                    />
-                                </View>
-                                <Text style={{ marginTop: 5, fontSize: 14, color: "#8E8E93", textAlign: "right", }}>Hairstyle Name</Text>
-                            </TouchableOpacity>
+                            {
+                                (stylists) ? (
+                                    stylists.map((key, index) => {
+                                        return (
+                                            <TouchableOpacity key={index} style={{
+                                                height: 120,
+                                                width: 110,
+                                                justifyContent: "center",
+                                                alignItems: "center",
+                                            }}
+                                                onPress={() => Actions.BarberDetails({ barberDetails: key, shop: shop })}
+                                            >
+                                                <View style={{
+                                                    height: 75,
+                                                    width: 75,
+                                                    borderRadius: 50,
+                                                    justifyContent: "center",
+                                                    alignItems: "center",
+                                                    backgroundColor: "white",
+                                                    borderColor: "#FD6958",
+                                                    borderWidth: 1.80,
+                                                    overflow: "hidden"
+                                                }}>
+                                                    {(key.serviceImage != null) ? (
+                                                        <Image source={{ uri: key.serviceImage }} resizeMode="cover"
+                                                            style={{ width: "90%", height: "90%", borderRadius: 100 }}
+                                                        />
+                                                    ) : <Image source={require('../../../assets/nophoto.jpg')} resizeMode="cover"
+                                                        style={{ width: "90%", height: "90%", borderRadius: 100 }}
+                                                        />}
+                                                </View>
+                                                <Text style={{ marginTop: 5, fontSize: 10, color: "#000000", textAlign: "right", }}>{key.fullname}</Text>
+                                                <Text style={{ marginTop: 0, fontSize: 10, color: "#8E8E93", textAlign: "right", }}>{key.designation}</Text>
+                                            </TouchableOpacity>
+                                        )
+                                    })
+                                ) :
+                                    <TouchableOpacity style={{
+                                        height: 120,
+                                        width: "100%",
+                                        justifyContent: "center",
+                                        alignItems: "center",
+                                        // backgroundColor: "red"
+                                    }}
+                                    >
+                                        <ActivityIndicator size="large" color="#FD6958" />
+                                        <Text style={{ marginTop: 5, fontSize: 10, color: "#000000", textAlign: "right", }}>Loading...</Text>
+                                    </TouchableOpacity>
+                            }
+                          
                         </ScrollView>
                     </ScrollView>
                 </View>
@@ -265,6 +225,7 @@ const styles = StyleSheet.create({
 
 let mapStateToProps = state => {
     return {
+        stylists: state.root.stylists,
     };
 };
 function mapDispatchToProps(dispatch) {

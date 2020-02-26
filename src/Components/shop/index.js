@@ -13,6 +13,7 @@ import Review from '../shop/Review';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import { Actions } from 'react-native-router-flux';
+import { setShopServices, setStylists, setWorkingHour, setGallery, setSpecialPack } from '../../Store/Action/action';
 import axios from 'axios';
 // import moment from 'moment';
 
@@ -45,6 +46,7 @@ class shop extends Component {
                 this.setState({
                     stylists: data
                 })
+                this.props.setStylists(data)
             })
             .catch(err => {
                 if (err.response.status === 409) {
@@ -69,6 +71,7 @@ class shop extends Component {
                 this.setState({
                     gallery: data,
                 })
+                this.props.setGallery(data)
             })
             .catch(err => {
                 if (err.response.status === 409) {
@@ -133,6 +136,7 @@ class shop extends Component {
                     // workingtime: workingtime,
                     workingHours: workingHoursArr,
                 })
+                this.props.setWorkingHour(workingHoursArr)
 
             })
             .catch(err => {
@@ -158,6 +162,7 @@ class shop extends Component {
                 this.setState({
                     services: data,
                 })
+                this.props.setShopServices(data)
             })
             .catch(err => {
                 if (err.response.status === 409) {
@@ -181,6 +186,7 @@ class shop extends Component {
                 this.setState({
                     packages: data,
                 })
+                this.props.setSpecialPack(data)
             })
             .catch(err => {
                 if (err.response.status === 409) {
@@ -493,6 +499,21 @@ let mapStateToProps = state => {
 };
 function mapDispatchToProps(dispatch) {
     return ({
+        setShopServices: (services) => {
+            dispatch(setShopServices(services))
+        },
+        setStylists: (stylist) => {
+            dispatch(setStylists(stylist))
+        },
+        setWorkingHour: (workingHours) => {
+            dispatch(setWorkingHour(workingHours))
+        },
+        setGallery: (gallery) => {
+            dispatch(setGallery(gallery))
+        },
+        setSpecialPack: (SpecialPack) => {
+            dispatch(setSpecialPack(SpecialPack))
+        },
     })
 }
 export default connect(mapStateToProps, mapDispatchToProps)(shop);
