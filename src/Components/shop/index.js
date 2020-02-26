@@ -47,7 +47,9 @@ class shop extends Component {
                     stylists: data
                 })
                 this.props.setStylists(data)
+                Actions.Bookappointment({ totalCost: 786 })
             })
+
             .catch(err => {
                 if (err.response.status === 409) {
                     console.log(err.response.data.message, "ERROR_ON_GET_GALLERY")
@@ -322,7 +324,7 @@ class shop extends Component {
                                                 justifyContent: "center",
                                                 alignItems: "center",
                                             }}
-                                                onPress={() => Actions.BarberDetails({ barberDetails: key, shop: shop })}
+                                                onPress={() => Actions.BarberDetails({ barberDetails: key, shop: shop, workingHours: workingHours })}
                                             >
                                                 <View style={{
                                                     height: 75,

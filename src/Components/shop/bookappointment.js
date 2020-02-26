@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {
     View, Text, StyleSheet, TouchableOpacity, StatusBar,
-    ScrollView, Image,
+    ScrollView, Image, ActivityIndicator
 } from 'react-native';
 import { connect } from "react-redux";
 import Fontisto from 'react-native-vector-icons/Fontisto'
@@ -17,9 +17,31 @@ class BookAppointment extends Component {
         }
     }
 
+    componentDidMount() {
+        let { stylists } = this.props
+        this.setState({
+            stylists: stylists
+        })
+
+    }
+
+    chooseBarber(key, index) {
+        let { stylists } = this.state
+        let selectedBarber = stylists[index]
+        for (var i = 0; i < stylists.length; i++) {
+            stylists[i].active = false
+        }
+        selectedBarber.active = true
+        this.setState({
+            stylists: stylists
+        })
+
+    }
+
     render() {
-        let { chosenItems, gendre, totalCost, stylists } = this.props
-        console.log(chosenItems, gendre, totalCost, stylists, "PROPS_FROM_CHOOSE_SERVICE")
+        let { chosenItems, gendre, totalCost, } = this.props
+        let { stylists } = this.state
+        console.log(stylists, "PROPS_FROM_CHOOSE_SERVICE")
         return (
             <View style={{ paddingHorizontal: 10, flex: 1, backgroundColor: "#fff" }}>
                 <StatusBar backgroundColor="white" barStyle="dark-content" />
@@ -138,7 +160,11 @@ class BookAppointment extends Component {
                             <Text style={{ fontSize: 22, color: "#4B534F" }}>Choose Barber</Text>
                         </View>
 
-                        <ScrollView horizontal style={{ marginVertical: 15, marginTop: -15, }} showsHorizontalScrollIndicator={false}>
+                        <ScrollView
+                            contentContainerStyle={{ flexGrow: 1 }}
+                            showsHorizontalScrollIndicator={false}
+                            horizontal style={{ marginVertical: 15, marginTop: -15, }}
+                        >
                             {
                                 (stylists) ? (
                                     stylists.map((key, index) => {
@@ -149,7 +175,7 @@ class BookAppointment extends Component {
                                                 justifyContent: "center",
                                                 alignItems: "center",
                                             }}
-                                                onPress={() => Actions.BarberDetails({ barberDetails: key, shop: shop })}
+                                                onPress={() => this.chooseBarber(key, index)}
                                             >
                                                 <View style={{
                                                     height: 75,
@@ -158,7 +184,8 @@ class BookAppointment extends Component {
                                                     justifyContent: "center",
                                                     alignItems: "center",
                                                     backgroundColor: "white",
-                                                    borderColor: "#FD6958",
+                                                    // borderColor: "#FD6958",
+                                                    borderColor: key.active == true ? "#FD6958" : "#E6E6E6",
                                                     borderWidth: 1.80,
                                                     overflow: "hidden"
                                                 }}>
@@ -188,7 +215,7 @@ class BookAppointment extends Component {
                                         <Text style={{ marginTop: 5, fontSize: 10, color: "#000000", textAlign: "right", }}>Loading...</Text>
                                     </TouchableOpacity>
                             }
-                          
+
                         </ScrollView>
                     </ScrollView>
                 </View>
