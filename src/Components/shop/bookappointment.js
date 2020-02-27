@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {
     View, Text, StyleSheet, TouchableOpacity, StatusBar,
-    ScrollView, Image, ActivityIndicator
+    ScrollView, Image, ActivityIndicator, Alert
 } from 'react-native';
 import { connect } from "react-redux";
 import Fontisto from 'react-native-vector-icons/Fontisto'
@@ -16,14 +16,22 @@ class BookAppointment extends Component {
         this.state = {
             date: "",
             slots: [],
-            selectedSlotTime: ""
+            selectedSlotTime: "",
+            selectedBarber: false,
         }
     }
 
     componentDidMount() {
         let { stylists, workinghours } = this.props
+        let { date } = this.state
 
-        var d = new Date();
+        var d;
+        if (date != "") {
+            d = new Date(date);
+        }
+        else {
+            d = new Date();
+        }
         var weekday = new Array(7);
         weekday[0] = "sunday";
         weekday[1] = "monday";
@@ -34,18 +42,24 @@ class BookAppointment extends Component {
         weekday[6] = "saturday";
         let day = weekday[d.getDay()];
         let currentDayShopOpen = workinghours[day].open;
-
         if (currentDayShopOpen === true) {
             let start = workinghours[day].openTimings;
             let end = workinghours[day].closingTime;
             let returnValue = this.getTimeStops(start, end);
             this.setState({
-                slots: returnValue
+                slots: returnValue,
+                stylists: stylists,
+                day: day,
             })
         }
-        this.setState({
-            stylists: stylists,
-        })
+        else {
+            this.setState({
+                day: day,
+                slots: [],
+                stylists: stylists,
+            })
+        }
+
     }
 
     getTimeStops(start, end) {
@@ -76,14 +90,42 @@ class BookAppointment extends Component {
         }
         selectedBarber.active = true
         this.setState({
-            stylists: stylists
+            stylists: stylists,
+            selectedBarber: true,
         })
     }
 
-    render() {
+    setDate(date) {
+        this.setState({
+            date: date
+        })
+        this.componentDidMount(date)
+    }
+
+
+    Checkout() {
         let { chosenItems, gendre, totalCost, } = this.props
-        let { stylists, slots, selectedSlotTime } = this.state
-        console.log(selectedSlotTime, "PROPS_FROM_CHOOSE_SERVICE")
+        let { date, selectedSlotTime, selectedBarber } = this.state
+        // alert("work")
+        if (date === "") {
+            Alert.alert("Please select date")
+        }
+        else if (selectedSlotTime === "") {
+            Alert.alert("Please select slot")
+
+        }
+        else if (selectedBarber === false) {
+            Alert.alert("Please select barber")
+        }
+        else {
+            Actions.Checkout()
+        }
+
+    }
+
+    render() {
+        let { totalCost, } = this.props
+        let { stylists, slots, selectedSlotTime, day } = this.state
 
         return (
             <View style={{ paddingHorizontal: 10, flex: 1, backgroundColor: "#fff" }}>
@@ -142,20 +184,22 @@ class BookAppointment extends Component {
                                     cancelBtnText="Cancel"
                                     customStyles={{
                                         placeholderText: {
-                                            marginRight: 180, color: "#9b9b9b"
+                                            marginRight: "40%", color: "#9b9b9b"
                                         },
                                         dateInput: {
                                             height: 52,
                                             borderLeftWidth: 0,
                                             borderRightWidth: 0,
                                             borderTopWidth: 0,
-                                            borderBottomWidth: 0
-                                        }
+                                            borderBottomWidth: 0,
+                                            marginRight: "40%"
+                                        },
                                         // ... You can check the source to find the other keys.
                                     }}
-                                    onDateChange={(date) => { this.setState({ date: date }) }}
+                                    // onDateChange={(date) => { this.setState({ date: date }) }}
+                                    onDateChange={(date) => this.setDate(date)}
                                 />
-                                <Fontisto style={{ marginRight: 15, color: "#4B534F" }} size={16} name={"date"} />
+                                <Fontisto style={{ marginRight: "10%", color: "#4B534F" }} size={16} name={"date"} />
                             </View>
 
                             <View style={{ paddingVertical: "5%" }}>
@@ -170,7 +214,7 @@ class BookAppointment extends Component {
                                 {
                                     (slots.length != 0) ? (
                                         slots.map((key, index) => {
-                                            console.log(key, index, "INSIDE_MAP")
+                                            // console.log(key, index, "INSIDE_MAP")
                                             return (
                                                 <TouchableOpacity
                                                     onPress={() => this.slotSelect(key, index)}
@@ -189,46 +233,10 @@ class BookAppointment extends Component {
                                                 </TouchableOpacity>
                                             )
                                         })
-                                    ) : null
+                                    ) : <Text style={{ color: "red" }}>{'Shop close on ' + day}</Text>
 
                                 }
                             </View>
-
-                            {/* <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                                <View style={{ backgroundColor: "#F3E7E3", height: 45, width: "30%", justifyContent: "center", alignItems: "center" }}>
-                                    <Text style={{ color: "#4B534F" }}>08:00 AM</Text>
-                                </View>
-                                <View style={{ backgroundColor: "#F3E7E3", height: 45, width: "30%", justifyContent: "center", alignItems: "center" }}>
-                                    <Text style={{ color: "#4B534F" }}>09:00 AM</Text>
-                                </View>
-                                <View style={{ backgroundColor: "#F3E7E3", height: 45, width: "30%", justifyContent: "center", alignItems: "center" }}>
-                                    <Text style={{ color: "#4B534F" }}>10:00 AM</Text>
-                                </View>
-                            </View>
-
-                            <View style={{ flexDirection: "row", justifyContent: "space-between", marginTop: "5%" }}>
-                                <View style={{ backgroundColor: "#FD6958", height: 45, width: "30%", justifyContent: "center", alignItems: "center" }}>
-                                    <Text style={{ color: "#fff" }}>11:00 AM</Text>
-                                </View>
-                                <View style={{ backgroundColor: "#F3E7E3", height: 45, width: "30%", justifyContent: "center", alignItems: "center" }}>
-                                    <Text style={{ color: "#4B534F" }}>12:00 AM</Text>
-                                </View>
-                                <View style={{ backgroundColor: "#F3E7E3", height: 45, width: "30%", justifyContent: "center", alignItems: "center" }}>
-                                    <Text style={{ color: "#4B534F" }}>13:00 AM</Text>
-                                </View>
-                            </View>
-
-                            <View style={{ flexDirection: "row", justifyContent: "space-between", marginTop: "5%" }}>
-                                <View style={{ backgroundColor: "#F3E7E3", height: 45, width: "30%", justifyContent: "center", alignItems: "center" }}>
-                                    <Text style={{ color: "#4B534F" }}>14:00 AM</Text>
-                                </View>
-                                <View style={{ backgroundColor: "#F3E7E3", height: 45, width: "30%", justifyContent: "center", alignItems: "center" }}>
-                                    <Text style={{ color: "#4B534F" }}>15:00 AM</Text>
-                                </View>
-                                <View style={{ backgroundColor: "#F3E7E3", height: 45, width: "30%", justifyContent: "center", alignItems: "center" }}>
-                                    <Text style={{ color: "#4B534F" }}>16:00 AM</Text>
-                                </View>
-                            </View> */}
 
                         </View>
 
@@ -308,7 +316,7 @@ class BookAppointment extends Component {
                         </View>
                         <View style={{ flex: 1, justifyContent: "center", alignItems: "flex-end", }}>
                             <TouchableOpacity
-                                onPress={() => Actions.Checkout()}
+                                onPress={() => this.Checkout()}
                                 style={{ width: "70%", height: 42, justifyContent: "center", alignItems: "center", backgroundColor: "#FD6958", borderRadius: 8 }}>
                                 <Text style={{ fontWeight: "bold", fontSize: 18, color: "#ffffff" }}>Book</Text>
                             </TouchableOpacity>
