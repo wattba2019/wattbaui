@@ -15,7 +15,8 @@ class BookAppointment extends Component {
         super(props)
         this.state = {
             date: "",
-            slots: []
+            slots: [],
+            selectedSlotTime: ""
         }
     }
 
@@ -61,6 +62,12 @@ class BookAppointment extends Component {
         return timeStops;
     }
 
+    slotSelect(key, index) {
+        this.setState({
+            selectedSlotTime: key
+        })
+    }
+
     chooseBarber(key, index) {
         let { stylists } = this.state
         let selectedBarber = stylists[index]
@@ -75,8 +82,9 @@ class BookAppointment extends Component {
 
     render() {
         let { chosenItems, gendre, totalCost, } = this.props
-        let { stylists, slots } = this.state
-        console.log(slots, "PROPS_FROM_CHOOSE_SERVICE")
+        let { stylists, slots, selectedSlotTime } = this.state
+        console.log(selectedSlotTime, "PROPS_FROM_CHOOSE_SERVICE")
+
         return (
             <View style={{ paddingHorizontal: 10, flex: 1, backgroundColor: "#fff" }}>
                 <StatusBar backgroundColor="white" barStyle="dark-content" />
@@ -153,10 +161,38 @@ class BookAppointment extends Component {
                             <View style={{ paddingVertical: "5%" }}>
                                 <Text style={{ fontSize: 22, color: "#4B534F" }}>Availble Slots</Text>
                             </View>
+                            <View style={{
+                                flexWrap: "wrap",
+                                flexDirection: "row",
+                                justifyContent: "flex-start",
+                                // backgroundColor: "red"
+                            }}>
+                                {
+                                    (slots.length != 0) ? (
+                                        slots.map((key, index) => {
+                                            console.log(key, index, "INSIDE_MAP")
+                                            return (
+                                                <TouchableOpacity
+                                                    onPress={() => this.slotSelect(key, index)}
+                                                    key={index}
+                                                    style={{
+                                                        // backgroundColor: "#F3E7E3",
+                                                        backgroundColor: selectedSlotTime === key ? "#FD6958" : "#F3E7E3",
+                                                        margin: "1.5%", height: 45, width: "30%",
+                                                        justifyContent: "center",
+                                                        alignItems: "center"
+                                                    }}>
+                                                    <Text style={{
+                                                        color: selectedSlotTime === key ? "#ffffff" : "#4B534F",
+                                                        fontWeight: selectedSlotTime === key ? "bold" : "normal"
+                                                    }}>{key}</Text>
+                                                </TouchableOpacity>
+                                            )
+                                        })
+                                    ) : null
 
-                            {
-                                
-                            }
+                                }
+                            </View>
 
                             {/* <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
                                 <View style={{ backgroundColor: "#F3E7E3", height: 45, width: "30%", justifyContent: "center", alignItems: "center" }}>
