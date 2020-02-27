@@ -8,21 +8,57 @@ import Fontisto from 'react-native-vector-icons/Fontisto'
 import DatePicker from 'react-native-datepicker'
 import Entypo from 'react-native-vector-icons/Entypo';
 import { Actions } from 'react-native-router-flux';
+import moment from 'moment';
 
 class BookAppointment extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            date: ""
+            date: "",
+            slots: []
         }
     }
 
     componentDidMount() {
-        let { stylists } = this.props
-        this.setState({
-            stylists: stylists
-        })
+        let { stylists, workinghours } = this.props
 
+        var d = new Date();
+        var weekday = new Array(7);
+        weekday[0] = "sunday";
+        weekday[1] = "monday";
+        weekday[2] = "tuesday";
+        weekday[3] = "wednesday";
+        weekday[4] = "thursday";
+        weekday[5] = "friday";
+        weekday[6] = "saturday";
+        let day = weekday[d.getDay()];
+        let currentDayShopOpen = workinghours[day].open;
+
+        if (currentDayShopOpen === true) {
+            let start = workinghours[day].openTimings;
+            let end = workinghours[day].closingTime;
+            let returnValue = this.getTimeStops(start, end);
+            this.setState({
+                slots: returnValue
+            })
+        }
+        this.setState({
+            stylists: stylists,
+        })
+    }
+
+    getTimeStops(start, end) {
+        var startTime = moment(start, 'h:mm a');
+        var endTime = moment(end, 'h:mm a');
+        if (endTime.isBefore(startTime)) {
+            endTime.add(1, 'day');
+        }
+        var timeStops = [];
+        while (startTime <= endTime) {
+            timeStops.push(new moment(startTime).format('h:mm a'));
+            startTime.add(60, 'minutes');
+        }
+        return timeStops;
     }
 
     chooseBarber(key, index) {
@@ -35,13 +71,12 @@ class BookAppointment extends Component {
         this.setState({
             stylists: stylists
         })
-
     }
 
     render() {
         let { chosenItems, gendre, totalCost, } = this.props
-        let { stylists } = this.state
-        console.log(stylists, "PROPS_FROM_CHOOSE_SERVICE")
+        let { stylists, slots } = this.state
+        console.log(slots, "PROPS_FROM_CHOOSE_SERVICE")
         return (
             <View style={{ paddingHorizontal: 10, flex: 1, backgroundColor: "#fff" }}>
                 <StatusBar backgroundColor="white" barStyle="dark-content" />
@@ -119,7 +154,11 @@ class BookAppointment extends Component {
                                 <Text style={{ fontSize: 22, color: "#4B534F" }}>Availble Slots</Text>
                             </View>
 
-                            <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+                            {
+                                
+                            }
+
+                            {/* <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
                                 <View style={{ backgroundColor: "#F3E7E3", height: 45, width: "30%", justifyContent: "center", alignItems: "center" }}>
                                     <Text style={{ color: "#4B534F" }}>08:00 AM</Text>
                                 </View>
@@ -153,7 +192,8 @@ class BookAppointment extends Component {
                                 <View style={{ backgroundColor: "#F3E7E3", height: 45, width: "30%", justifyContent: "center", alignItems: "center" }}>
                                     <Text style={{ color: "#4B534F" }}>16:00 AM</Text>
                                 </View>
-                            </View>
+                            </View> */}
+
                         </View>
 
                         <View style={{ paddingVertical: "5%" }}>
@@ -253,6 +293,7 @@ const styles = StyleSheet.create({
 let mapStateToProps = state => {
     return {
         stylists: state.root.stylists,
+        workinghours: state.root.workinghours,
     };
 };
 function mapDispatchToProps(dispatch) {

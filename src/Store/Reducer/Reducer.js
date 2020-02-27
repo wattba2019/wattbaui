@@ -11,6 +11,7 @@ const INITIAL_STATE = {
   workinghours: null,
   gallery: null,
   specialPack: null,
+  shop: null
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -51,6 +52,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         specialPack: action.payload,
+      };
+    case "SET_CURRENT_SHOP":
+      return {
+        ...state,
+        shop: action.payload,
       };
     default:
       return state;

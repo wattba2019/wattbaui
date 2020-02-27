@@ -32,7 +32,7 @@ class About extends Component {
                             <Text style={{ color: "grey" }}>{shop.about}</Text>
                         ) : <>
                                 <Text style={{ color: "grey" }}>{shop.about.substring(0, 80)}</Text>
-                                <TouchableOpacity style={{ width: "20%" }}
+                                <TouchableOpacity style={{ width: "25%", }}
                                     onPress={() => {
                                         this.readmore(true)
                                     }}

@@ -13,7 +13,7 @@ import Review from '../shop/Review';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import { Actions } from 'react-native-router-flux';
-import { setShopServices, setStylists, setWorkingHour, setGallery, setSpecialPack } from '../../Store/Action/action';
+import { setShopServices, setStylists, setWorkingHour, setGallery, setSpecialPack, setShop } from '../../Store/Action/action';
 import axios from 'axios';
 // import moment from 'moment';
 
@@ -32,6 +32,7 @@ class shop extends Component {
         this.getStylists()
         this.getServices()
         this.getSpecialPack()
+        this.props.setShop(this.props.shop)
     }
 
     getStylists() {
@@ -47,7 +48,6 @@ class shop extends Component {
                     stylists: data
                 })
                 this.props.setStylists(data)
-                Actions.Bookappointment({ totalCost: 786 })
             })
 
             .catch(err => {
@@ -138,7 +138,8 @@ class shop extends Component {
                     // workingtime: workingtime,
                     workingHours: workingHoursArr,
                 })
-                this.props.setWorkingHour(workingHoursArr)
+                this.props.setWorkingHour(data)
+                Actions.Bookappointment({ totalCost: 786 })
 
             })
             .catch(err => {
@@ -445,51 +446,6 @@ const styles = StyleSheet.create({
         flex: 0.35,
         backgroundColor: "black"
     },
-    // holder: {
-    //     flex: 0.25,
-    //     justifyContent: 'center',
-    // },
-    // containerForModal: {
-    //     // flex: 1,
-    //     padding: 30,
-    //     justifyContent: 'center',
-    //     alignItems: 'center',
-    //     // width:"100%"
-    // },
-    // textareaContainer: {
-    //     height: "30%",
-    //     width: "95%",
-    //     padding: 5,
-    //     // backgroundColor: '#F8F8F8',
-    // },
-    // textarea: {
-    //     textAlignVertical: 'top',  // hack android
-    //     height: 100,
-    //     fontSize: 14,
-    //     // color: '#333',
-    // },
-    // customSlide: {
-    //     backgroundColor: 'white',
-    //     alignItems: 'center',
-    //     justifyContent: 'center',
-    // },
-    // customImage: {
-    //     width: "100%",
-    //     height: "100%",
-    // },
-    // listView: {
-    //     width: "100%", height: 40, marginTop: 15,
-    //     borderBottomWidth: 0.5, borderBottomColor: "#BEBCBC",
-    //     flexDirection: "row",
-    //     justifyContent: "space-between",
-    // },
-    // listTextOption: {
-    //     marginLeft: 10, color: "#000", fontWeight: "bold", fontSize: 12
-    // },
-    // listTextOptionValue: {
-    //     marginLeft: 10, color: "#6a6a6a", textAlign: "right",
-    // },
-    // input: { justifyContent: 'center', alignItems: 'center', width: '95%', },
 });
 
 
@@ -513,8 +469,11 @@ function mapDispatchToProps(dispatch) {
         setGallery: (gallery) => {
             dispatch(setGallery(gallery))
         },
-        setSpecialPack: (SpecialPack) => {
-            dispatch(setSpecialPack(SpecialPack))
+        setSpecialPack: (specialPack) => {
+            dispatch(setSpecialPack(specialPack))
+        },
+        setShop: (shop) => {
+            dispatch(setShop(shop))
         },
     })
 }
