@@ -16,13 +16,17 @@ class OfferDetails extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            email: "",
-            password: ""
         };
+    }
+
+    next = () => {
+        let { offerDetails } = this.props
+        Actions.Bookappointment({ chosenItems: offerDetails, totalCost: offerDetails.price })
     }
 
     render() {
         let { offerDetails } = this.props
+        // console.log(offerDetails, "OFFER_DETAILS")
         return (
             <View style={{
                 flex: 1,
@@ -114,7 +118,7 @@ class OfferDetails extends Component {
                             style={{ width: "85%", height: 50, marginTop: 30, }}
                         >
                             <TouchableOpacity
-                            // onPress={() => Actions.Allowaccesslocation()}
+                                onPress={() => this.next()}
                             >
                                 <ImageBackground source={require('../../../assets/buttonBackground.png')} resizeMode="contain"
                                     style={{ height: "100%", width: "100%", justifyContent: "center", }}

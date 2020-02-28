@@ -17,7 +17,7 @@ class BookAppointment extends Component {
             date: "",
             slots: [],
             selectedSlotTime: "",
-            selectedBarber: false,
+            selectedBarberBolean: false,
         }
     }
 
@@ -91,7 +91,8 @@ class BookAppointment extends Component {
         selectedBarber.active = true
         this.setState({
             stylists: stylists,
-            selectedBarber: true,
+            selectedBarberBolean: true,
+            selectedBarber: selectedBarber
         })
     }
 
@@ -105,8 +106,8 @@ class BookAppointment extends Component {
 
     Checkout() {
         let { chosenItems, gendre, totalCost, } = this.props
-        let { date, selectedSlotTime, selectedBarber } = this.state
-        // alert("work")
+        let { date, selectedSlotTime, selectedBarber, selectedBarberBolean } = this.state
+
         if (date === "") {
             Alert.alert("Please select date")
         }
@@ -114,13 +115,20 @@ class BookAppointment extends Component {
             Alert.alert("Please select slot")
 
         }
-        else if (selectedBarber === false) {
+        else if (selectedBarberBolean === false) {
             Alert.alert("Please select barber")
         }
         else {
-            Actions.Checkout()
+            let cloneObj = {
+                chosenItems: chosenItems,
+                gendre: gendre,
+                cost: totalCost,
+                selectedSlotTime: selectedSlotTime,
+                selectedBarber: selectedBarber,
+                bookingDate: date
+            }
+            Actions.Checkout({ booking: cloneObj })
         }
-
     }
 
     render() {

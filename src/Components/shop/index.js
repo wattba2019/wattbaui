@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import {
-    View, Text, StyleSheet, TouchableOpacity,
+    View, Text, StyleSheet, TouchableOpacity, Linking,
     ScrollView, Image, SafeAreaView, ActivityIndicator
-
 } from 'react-native';
 import { connect } from "react-redux";
 import { Tabs, Tab, TabHeading } from 'native-base';
@@ -139,7 +138,7 @@ class shop extends Component {
                     workingHours: workingHoursArr,
                 })
                 this.props.setWorkingHour(data)
-                Actions.Bookappointment({ totalCost: 786 })
+                // Actions.Bookappointment({ totalCost: 786 })
 
             })
             .catch(err => {
@@ -227,6 +226,7 @@ class shop extends Component {
     render() {
         const { activeColor, workingtime, workingHours, services, packages, stylists, gallery, } = this.state
         let { shop } = this.props
+        console.log(shop.websiteUrl, "WEBURL")
         return (
             <View style={{ flex: 1 }}>
                 <SafeAreaView style={styles.container} >
@@ -272,13 +272,16 @@ class shop extends Component {
                     <ScrollView contentContainerStyle={styles.contentContainer}>
 
                         <View style={{ flexDirection: "row", justifyContent: "space-between", paddingHorizontal: "10%", paddingVertical: "5%" }}>
-                            <View>
+                            <TouchableOpacity
+                                onPress={() => Linking.openURL(shop.websiteUrl)}
+                                // onPress={() => Linking.openURL('https://reactnativecode.com')}
+                            >
                                 <Image
                                     resizeMode="contain"
                                     source={require("../../../assets/Group55286.png")}
                                     style={{ width: 45, height: 45 }}
                                 />
-                            </View>
+                            </TouchableOpacity>
                             <View>
                                 <Image
                                     resizeMode="contain"
