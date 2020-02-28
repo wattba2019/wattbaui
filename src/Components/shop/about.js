@@ -22,6 +22,7 @@ class About extends Component {
 
     render() {
         let { shop, workingHours, gallery } = this.props
+        console.log(workingHours, "WORKINGHOURS")
         let { readmore } = this.state
         return (
             <View>
@@ -66,7 +67,6 @@ class About extends Component {
                             <Text style={{ fontWeight: "bold" }}>Address</Text>
                             <Text style={{ color: "grey" }}>{shop.addressLine1}</Text>
                             <TouchableOpacity style={{ flexDirection: "row", marginTop: 5 }}>
-
                                 <Entypo name="direction" style={{ color: "#FD6958", fontWeight: 'bold', fontSize: 20 }} />
                                 <Text style={{ color: "#FD6958" }}> Get directions</Text>
                             </TouchableOpacity>

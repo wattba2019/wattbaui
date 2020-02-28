@@ -226,7 +226,6 @@ class shop extends Component {
     render() {
         const { activeColor, workingtime, workingHours, services, packages, stylists, gallery, } = this.state
         let { shop } = this.props
-        console.log(shop.websiteUrl, "WEBURL")
         return (
             <View style={{ flex: 1 }}>
                 <SafeAreaView style={styles.container} >
@@ -274,7 +273,6 @@ class shop extends Component {
                         <View style={{ flexDirection: "row", justifyContent: "space-between", paddingHorizontal: "10%", paddingVertical: "5%" }}>
                             <TouchableOpacity
                                 onPress={() => Linking.openURL(shop.websiteUrl)}
-                                // onPress={() => Linking.openURL('https://reactnativecode.com')}
                             >
                                 <Image
                                     resizeMode="contain"

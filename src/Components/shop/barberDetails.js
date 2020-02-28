@@ -12,8 +12,6 @@ import { Actions } from 'react-native-router-flux';
 import BasicInfo from '../shop/basicInfo';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-
-
 class BarberDetails extends Component {
     constructor(props) {
         super(props);
@@ -34,14 +32,12 @@ class BarberDetails extends Component {
                 activeColor: "review"
             })
         }
-
-
     }
 
     render() {
         const { activeColor } = this.state
-        const { barberDetails, shop } = this.props
-        // console.log(barberDetails, shop, "BARBERDETAILS")
+        const { barberDetails, shop, workingHours } = this.props
+        console.log(barberDetails, shop, workingHours, "BARBERDETAILS")
         return (
             <View style={{
                 flex: 1,
@@ -148,12 +144,13 @@ class BarberDetails extends Component {
                                         <Text style={{ color: activeColor === "basicinfo" ? "#FD6958" : "black", fontWeight: "bold" }}>Basic Info</Text>
                                     </TabHeading>}
                             >
-                                <BasicInfo />
+                                <BasicInfo barberDetails={barberDetails} shop={shop} workingHours={workingHours} />
 
                             </Tab>
 
                             {/* //Review// */}
-                            <Tab
+
+                            {/* <Tab
                                 heading={
                                     <TabHeading
                                         style={{ flexDirection: "column", backgroundColor: "white" }}
@@ -165,7 +162,8 @@ class BarberDetails extends Component {
                                 <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
                                     <Text>Under Development</Text>
                                 </View>
-                            </Tab>
+                            </Tab> */}
+
                         </Tabs>
                     </ScrollView>
                 </View>
