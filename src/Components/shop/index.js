@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {
     View, Text, StyleSheet, TouchableOpacity, Linking,
-    ScrollView, Image, SafeAreaView, ActivityIndicator
+    ScrollView, Image, SafeAreaView, ActivityIndicator, Alert
 } from 'react-native';
 import { connect } from "react-redux";
 import { Tabs, Tab, TabHeading } from 'native-base';
@@ -15,6 +15,7 @@ import { Actions } from 'react-native-router-flux';
 import { setShopServices, setStylists, setWorkingHour, setGallery, setSpecialPack, setShop } from '../../Store/Action/action';
 import axios from 'axios';
 import moment from 'moment';
+import handleGetDirections from '../getdirectiononmap';
 
 class shop extends Component {
     constructor(props) {
@@ -97,7 +98,6 @@ class shop extends Component {
         timeStops.push(endFormat);
         return timeStops;
     }
-
 
     getWorkingHours() {
         let urlMgetworkinghours = `${this.props.bseUrl}/workinghours/${this.props.shop._id}`
@@ -233,9 +233,10 @@ class shop extends Component {
         }
     }
 
+
     render() {
         const { activeColor, workingtime, workingHours, services, packages, stylists, gallery, } = this.state
-        let { shop } = this.props
+        let { shop, currentLocation } = this.props
         return (
             <View style={{ flex: 1 }}>
                 <SafeAreaView style={styles.container} >
@@ -290,20 +291,22 @@ class shop extends Component {
                                     style={{ width: 45, height: 45 }}
                                 />
                             </TouchableOpacity>
-                            <View>
+                            <TouchableOpacity
+                                onPress={() => handleGetDirections(shop, currentLocation)}
+                            >
                                 <Image
                                     resizeMode="contain"
                                     source={require("../../../assets/Group55287.png")}
                                     style={{ width: 45, height: 45 }}
                                 />
-                            </View>
-                            <View>
+                            </TouchableOpacity>
+                            <TouchableOpacity>
                                 <Image
                                     resizeMode="contain"
                                     source={require("../../../assets/Group55288.png")}
                                     style={{ width: 45, height: 45 }}
                                 />
-                            </View>
+                            </TouchableOpacity>
                         </View>
                         {
                             (stylists) ? (
@@ -464,6 +467,7 @@ const styles = StyleSheet.create({
 let mapStateToProps = state => {
     return {
         bseUrl: state.root.bseUrl,
+        currentLocation: state.root.currentLocation,
     };
 };
 function mapDispatchToProps(dispatch) {

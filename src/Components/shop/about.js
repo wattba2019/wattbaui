@@ -6,6 +6,7 @@ import {
 import { connect } from "react-redux";
 import Entypo from 'react-native-vector-icons/Entypo';
 import { Actions } from 'react-native-router-flux';
+import handleGetDirections from '../getdirectiononmap';
 
 class About extends Component {
     constructor(props) {
@@ -21,7 +22,7 @@ class About extends Component {
     }
 
     render() {
-        let { shop, workingHours, gallery } = this.props
+        let { shop, workingHours, gallery, currentLocation } = this.props
         let { readmore } = this.state
         return (
             <View>
@@ -65,7 +66,9 @@ class About extends Component {
                         <View style={{ flex: 6, marginTop: 20, }}>
                             <Text style={{ fontWeight: "bold" }}>Address</Text>
                             <Text style={{ color: "grey" }}>{shop.addressLine1}</Text>
-                            <TouchableOpacity style={{ flexDirection: "row", marginTop: 5 }}>
+                            <TouchableOpacity style={{ flexDirection: "row", marginTop: 5 }}
+                                onPress={() => handleGetDirections(shop, currentLocation)}
+                            >
                                 <Entypo name="direction" style={{ color: "#FD6958", fontWeight: 'bold', fontSize: 20 }} />
                                 <Text style={{ color: "#FD6958" }}> Get directions</Text>
                             </TouchableOpacity>
@@ -131,13 +134,9 @@ class About extends Component {
     }
 }
 
-
-const styles = StyleSheet.create({
-
-});
-
 let mapStateToProps = state => {
     return {
+        currentLocation: state.root.currentLocation,
     };
 };
 function mapDispatchToProps(dispatch) {
