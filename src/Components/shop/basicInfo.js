@@ -5,13 +5,7 @@ import {
     images, Dimensions, ImageBackground
 } from 'react-native';
 import { connect } from "react-redux";
-// import { Icon, Tabs, Tab, TabHeading } from 'native-base';
-// import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Entypo from 'react-native-vector-icons/Entypo';
-// import Zocial from 'react-native-vector-icons/Zocial';
-// import AntDesign from 'react-native-vector-icons/AntDesign';
-// import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-// import ImageSlider from 'react-native-image-slider';
 
 class BasicInfo extends Component {
     constructor(props) {
@@ -22,7 +16,6 @@ class BasicInfo extends Component {
 
     render() {
         const { barberDetails, shop, workingHours } = this.props
-        console.log(barberDetails, shop, workingHours, "BARBER_DETAILS_AND_SHOPS")
         return (
             <View>
                 <View style={{ paddingHorizontal: 25, paddingVertical: 10 }} >
@@ -50,13 +43,11 @@ class BasicInfo extends Component {
                     <View style={{ flex: 1, flexDirection: "row" }}>
                         <View style={{ flex: 6, marginTop: 20, }}>
                             <Text style={{ fontWeight: "bold" }}>Address</Text>
-                            {/* <Text style={{ color: "grey" }}>47B R-Block Morden, London, Greater London, United Kingdom</Text> */}
                             <Text style={{ color: "grey" }}>{shop.addressLine1}</Text>
                             <TouchableOpacity style={{ flexDirection: "row", marginTop: 5 }}>
                                 <Entypo name="direction" style={{ color: "#FD6958", fontWeight: 'bold', fontSize: 20 }} />
                                 <Text style={{ color: "#FD6958" }}> Get directions</Text>
                             </TouchableOpacity>
-
                         </View>
 
                         <View style={{ flex: 4, marginTop: 20, justifyContent: "center", alignItems: "center" }}>
@@ -68,30 +59,17 @@ class BasicInfo extends Component {
                         </View>
                     </View>
                 </View>
-
-
-
-
             </View>
         );
     }
 }
 
-
-const styles = StyleSheet.create({
-
-});
-
 let mapStateToProps = state => {
     return {
-        // workinghours: state.root.workinghours,
     };
 };
 function mapDispatchToProps(dispatch) {
     return ({
-        // languageSet: (lang) => {
-        //     dispatch(languageSet(lang))
-        // },
     })
 }
 export default connect(mapStateToProps, mapDispatchToProps)(BasicInfo);

@@ -45,7 +45,6 @@ export function setSpecialPack(SpecialPack) {
 }
 
 export function setShop(shop) {
-    console.log(shop,"SET_SHOP_INSIDE_ACTION")
     return dispatch => {
         dispatch({ type: "SET_CURRENT_SHOP", payload: shop })
     }

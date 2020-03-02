@@ -37,7 +37,6 @@ class BarberDetails extends Component {
     render() {
         const { activeColor } = this.state
         const { barberDetails, shop, workingHours } = this.props
-        console.log(barberDetails, shop, workingHours, "BARBERDETAILS")
         return (
             <View style={{
                 flex: 1,

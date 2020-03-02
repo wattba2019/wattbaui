@@ -22,7 +22,6 @@ class About extends Component {
 
     render() {
         let { shop, workingHours, gallery } = this.props
-        console.log(workingHours, "WORKINGHOURS")
         let { readmore } = this.state
         return (
             <View>

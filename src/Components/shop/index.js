@@ -14,14 +14,14 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import { Actions } from 'react-native-router-flux';
 import { setShopServices, setStylists, setWorkingHour, setGallery, setSpecialPack, setShop } from '../../Store/Action/action';
 import axios from 'axios';
-// import moment from 'moment';
+import moment from 'moment';
 
 class shop extends Component {
     constructor(props) {
         super(props)
         this.state = {
             activeColor: "about",
-            workingtime: true
+            workingtime: false
         }
     }
 
@@ -84,6 +84,21 @@ class shop extends Component {
             })
     }
 
+    getTimeAccordingToRequiredFormat(start, end) {
+        var startTime = moment(start, 'HH:mm a');
+        var endTime = moment(end, 'HH:mm a');
+
+        var timeStops = [];
+        var startFormat = new moment(startTime).format('HH:mm a')
+        startFormat = startFormat.substring(0, startFormat.length - 3)
+        var endFormat = new moment(endTime).format('HH:mm a')
+        endFormat = endFormat.substring(0, endFormat.length - 3)
+        timeStops.push(startFormat);
+        timeStops.push(endFormat);
+        return timeStops;
+    }
+
+
     getWorkingHours() {
         let urlMgetworkinghours = `${this.props.bseUrl}/workinghours/${this.props.shop._id}`
         axios({
@@ -92,7 +107,6 @@ class shop extends Component {
         })
             .then(result => {
                 let data = result.data.workingHours
-                // console.log(data, "DATA_FROM_API_WORKING_HOURS")
                 var d = new Date();
                 var weekday = new Array(7);
                 weekday[0] = "sunday";
@@ -104,25 +118,23 @@ class shop extends Component {
                 weekday[6] = "saturday";
                 let day = weekday[d.getDay()];
 
+                let shopStatus = data[day].open;
                 let shopOpenTime = data[day].openTimings;
                 let shopCloseTime = data[day].closingTime;
+                var time = new Date().toLocaleString('en-GB', { hour: 'numeric', minute: 'numeric', hour12: false });
+                let returnValue = this.getTimeAccordingToRequiredFormat(shopOpenTime, shopCloseTime);
+                let workingtime = false;
 
-                // var time = new Date().getHours();
-                var time = new Date().toLocaleString('en-GB', { hour: 'numeric', minute: 'numeric', hour12: true });
-                // console.log(shopOpenTime, time, shopCloseTime, time, "Data")
-                // console.log(shopOpenTime > time, shopCloseTime > time, "Check_time")
-
-                // let workingtime;
-                // if (data[day].openTimings < new Date().toLocaleTimeString('en') && data[day].closingTime > new Date().toLocaleTimeString('en')) {
-                //     console.log("STATUS_OPEN")
-                //     workingtime = true
-                // }
-                // else {
-                //     console.log("STATUS_CLOSE")
-                //     workingtime = false
-                // }
-
-                // console.log(workingtime, "STATUS")
+                if (shopStatus === true) {
+                    if (returnValue[0] < time && returnValue[1] > time) {
+                        // console.log("STATUS_OPEN")
+                        workingtime = true
+                    }
+                    else {
+                        // console.log("STATUS_CLOSE")
+                        workingtime = false
+                    }
+                }
 
                 let workingHoursArr = []
                 workingHoursArr.push(data.monday)
@@ -134,12 +146,10 @@ class shop extends Component {
                 workingHoursArr.push(data.sunday)
 
                 this.setState({
-                    // workingtime: workingtime,
+                    workingtime: workingtime,
                     workingHours: workingHoursArr,
                 })
                 this.props.setWorkingHour(data)
-                // Actions.Bookappointment({ totalCost: 786 })
-
             })
             .catch(err => {
                 if (err.response.status === 409) {
