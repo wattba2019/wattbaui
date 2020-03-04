@@ -25,16 +25,29 @@ class Nearby extends Component {
         this.setState({
             isloader: true
         })
-        // getting all products
+        // getting all shops
         let urlM = `${this.props.bseUrl}/getallshops/`
         axios({
             method: 'get',
             url: urlM,
         })
             .then(result => {
-                // console.log(result.data.data, "DATA_FROM_API")
+                console.log(result.data.data, "DATA_FROM_API")
                 let shops = result.data.data
+
+                let shopLocationMarkers = []
+                for (let index = 0; index < shops.length; index++) {
+                    let location = {
+                        latitude: shops[index].location.coordinates[0],
+                        longitude: shops[index].location.coordinates[1],
+                        title: shops[index].businessName,
+                    }
+                    shopLocationMarkers.push(location)
+                }
+                console.log(shopLocationMarkers, "Markers")
+
                 this.setState({
+                    shopLocationMarkers: shopLocationMarkers,
                     shops: shops,
                     isloader: false
                 })
@@ -52,7 +65,7 @@ class Nearby extends Component {
 
     render() {
         let { fullName, } = this.props.userProfile
-        let { shops } = this.state
+        let { shops, shopLocationMarkers } = this.state
         return (
             <View style={{
                 flex: 1,
@@ -152,7 +165,7 @@ class Nearby extends Component {
                             backgroundColor: "#EDEDED",
                         }}
                     >
-                        <MapDirection />
+                        <MapDirection markers={shopLocationMarkers} />
                     </View>
 
                     <View style={{ position: "absolute", zIndex: 1, bottom: 20, flexDirection: "row", flex: 1, }}>

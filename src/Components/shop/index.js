@@ -352,8 +352,8 @@ class shop extends Component {
                                                     borderWidth: 1.80,
                                                     overflow: "hidden"
                                                 }}>
-                                                    {(key.serviceImage != null) ? (
-                                                        <Image source={{ uri: key.serviceImage }} resizeMode="cover"
+                                                    {(key.coverImage != null) ? (
+                                                        <Image source={{ uri: key.coverImage }} resizeMode="cover"
                                                             style={{ width: "90%", height: "90%", borderRadius: 100 }}
                                                         />
                                                     ) : <Image source={require('../../../assets/nophoto.jpg')} resizeMode="cover"

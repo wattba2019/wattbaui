@@ -1,10 +1,7 @@
 import React from 'react';
-import { View, ScrollView, Text, Image, StyleSheet, ActivityIndicator, Dimensions, Platform } from 'react-native';
+import { View, Image, StyleSheet, Dimensions, Text } from 'react-native';
 import { connect } from 'react-redux'
-
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
-import Geolocation from 'react-native-geolocation-service';
-
 
 const { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
@@ -17,6 +14,7 @@ class MapDirection extends React.Component {
         this.state = {
             location: null,
             errorMessage: null,
+            markers: []
         }
     }
 
@@ -26,11 +24,15 @@ class MapDirection extends React.Component {
                 coords: this.props.currentLocation.coords
             })
         }
+        if (this.props.markers) {
+            this.setState({
+                markers: this.props.markers
+            })
+        }
         // else {
         //     this.allowLocation()
         // }
     }
-
 
     UNSAFE_componentWillReceiveProps(nextProps) {
         if (nextProps.currentLocation) {
@@ -38,33 +40,19 @@ class MapDirection extends React.Component {
                 coords: nextProps.currentLocation.coords
             })
         }
+        if (nextProps.markers) {
+            this.setState({
+                markers: nextProps.markers
+            })
+        }
     }
 
-    // allowLocation = async () => {
-    //     // Instead of navigator.geolocation, just use Geolocation.
-    //     await Geolocation.getCurrentPosition(
-    //         (position) => {
-    //             if (position) {
-    //                 console.log(position, "USER_CURRENT_LOCATION")
-    //                 this.setState({
-    //                     coords: position.coords
-    //                 })
-    //             }
-    //         },
-    //         (error) => {
-    //             // See error code charts below.
-    //             console.log(error.code, error.message, "ERROR_ON_GETTING_YOUR_LOCATION");
-    //         },
-    //         { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000, }
-    //     );
-    // }
-
-    
 
     render() {
-        let { coords } = this.state
+        let { coords, markers } = this.state
+
         return (
-            <View >
+            <View>
                 {
                     (coords && coords.latitude && coords.longitude) ?
                         <MapView style={{ width: "99%", height: 500 }}
@@ -76,6 +64,35 @@ class MapDirection extends React.Component {
                                 longitudeDelta: LONGITUDE_DELTA,
                             }}
                         >
+
+                            {
+                                (markers.length != 0) ? (
+
+                                    markers.map((key, index) => {
+                                        return (
+                                            <Marker key={index} draggable={false}
+                                                coordinate={
+                                                    {
+                                                        latitude: key.latitude,
+                                                        longitude: key.longitude,
+                                                        latitudeDelta: LATITUDE_DELTA,
+                                                        longitudeDelta: LONGITUDE_DELTA,
+                                                    }
+                                                }
+                                                title={key.title}
+                                                // description={'This is your current location'}
+                                            >
+                                                <Image source={require('../../assets/Group55346(2).png')} style={{ height: 45, width: 45 }} />
+                                                {/* <Text>{key.title}</Text> */}
+                                            </Marker>
+                                        )
+                                    })
+
+                                ) : null
+                            }
+
+
+
                             <Marker draggable={false}
                                 // style={{ top: 0, bottom: 0, left: 0, right: 0, alignItems: 'center', justifyContent: 'center', backgroundColor: 'transparent' }}
                                 coordinate={
