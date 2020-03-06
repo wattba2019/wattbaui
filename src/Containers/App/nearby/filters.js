@@ -8,6 +8,7 @@ import {
 import { connect } from "react-redux";
 import { Actions } from 'react-native-router-flux';
 import RangeSlider from 'rn-range-slider';
+import Geocoder from 'react-native-geocoding';
 
 //icons import
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -16,13 +17,45 @@ class Filters extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            rangeLow: "",
             gender: "Female",
             service: "Haircut",
             sortedby: "Popular"
         };
     }
 
+    UNSAFE_componentWillMount() {
+        this.getLocationNameGeoCoader()
+    }
+
+
+    getLocationNameGeoCoader() {
+        // Initialize the module (needs to be done only once)
+        Geocoder.init("AIzaSyBQHKZTwhPJX_9IevM5jKC8kmz0NzqAaBk"); // use a valid API key
+        // With more options
+        // Geocoder.init("xxxxxxxxxxxxxxxxxxxxxxxxx", {language : "en"}); // set the language
+
+        Geocoder.from("Colosseum")
+            .then(json => {
+                var location = json.results[0].geometry.location;
+                console.log(location);
+            })
+            .catch(error => console.warn(error));
+
+        Geocoder.from(41.89, 12.49)
+            .then(json => {
+                var addressComponent = json.results[0].address_components[0];
+                console.log(addressComponent, "LOCATION_NAME");
+                alert(addressComponent)
+            })
+            .catch(error => console.warn(error));
+
+        // Works as well :
+        // ------------
+    }
+
     render() {
+        const { rangeLow } = this.state
         return (
             <ScrollView contentContainerStyle={styles.contentContainer}>
                 <StatusBar backgroundColor="white" barStyle="dark-content" />
@@ -80,7 +113,7 @@ class Filters extends Component {
                     // backgroundColor: "green"
                 }}>
                     <View style={{
-                        width: "90%", marginTop: 65, flexDirection: "row",
+                        width: "90%", marginTop: 20, flexDirection: "row",
                         // backgroundColor: "green"
                     }}>
                         <Text style={{ color: "#4A4A4A", fontSize: 16 }}>Location</Text>
@@ -101,7 +134,8 @@ class Filters extends Component {
                         <Text style={{ color: "#8E8E93", fontWeight: "bold", fontSize: 16 }}>(San Francisco)</Text>
                     </View>
 
-                    <View style={{
+                    {/* gender */}
+                    {/* <View style={{
                         width: "90%", marginTop: 10, flexDirection: "row",
                         // backgroundColor: "green"
                     }}>
@@ -154,12 +188,9 @@ class Filters extends Component {
                             >
                                 <Text style={{ color: "black", fontSize: 16 }}>Others</Text>
                             </TouchableOpacity>
-
-
-
                         </View>
 
-                    </View>
+                    </View> */}
 
                     <View style={{
                         width: "90%", marginTop: 10, flexDirection: "row", marginTop: 20
@@ -170,7 +201,7 @@ class Filters extends Component {
                         </View>
                         <View style={{ flex: 1 }}>
                             <TouchableOpacity>
-                                <Text style={{ fontSize: 16, color: "#8E8E93", textAlign: "right", }}>5.0 Km</Text>
+                                <Text style={{ fontSize: 16, color: "#8E8E93", textAlign: "right", }}>{rangeLow}.0 Km</Text>
                             </TouchableOpacity>
                         </View>
                     </View>
@@ -184,9 +215,12 @@ class Filters extends Component {
                         <RangeSlider
                             style={{ width: "90%", height: 80 }}
                             gravity={'center'}
-                            min={5}
-                            max={100}
-                            step={5}
+                            min={0}
+                            max={25}
+                            initialLowValue={5}
+                            // initialHighValue={5}
+                            step={1}
+                            rangeEnabled={false}
                             selectionColor="#FD6958"
                             blankColor="#E8E6E7"
                             thumbColor="#FD6958"

@@ -22,44 +22,97 @@ class Nearby extends Component {
     }
 
     componentDidMount() {
-        this.setState({
-            isloader: true
-        })
-        // getting all shops
-        let urlM = `${this.props.bseUrl}/getallshops/`
-        axios({
-            method: 'get',
-            url: urlM,
-        })
-            .then(result => {
-                console.log(result.data.data, "DATA_FROM_API")
-                let shops = result.data.data
+        const { currentLocation } = this.props
 
-                let shopLocationMarkers = []
-                for (let index = 0; index < shops.length; index++) {
-                    let location = {
-                        latitude: shops[index].location.coordinates[0],
-                        longitude: shops[index].location.coordinates[1],
-                        title: shops[index].businessName,
+
+        if (currentLocation != null) {
+            this.setState({
+                isloader: true
+            })
+            // getting all shops
+            //     let urlM = `${this.props.bseUrl}/getallshops/`
+            //     axios({
+            //         method: 'get',
+            //         url: urlM,
+            //     })
+            //         .then(result => {
+            //             console.log(result.data.data, "DATA_FROM_API")
+            //             let shops = result.data.data
+
+            //             let shopLocationMarkers = []
+            //             for (let index = 0; index < shops.length; index++) {
+            //                 let location = {
+            //                     latitude: shops[index].location.coordinates[0],
+            //                     longitude: shops[index].location.coordinates[1],
+            //                     title: shops[index].businessName,
+            //                 }
+            //                 shopLocationMarkers.push(location)
+            //             }
+            //             console.log(shopLocationMarkers, "Markers")
+
+            //             this.setState({
+            //                 shopLocationMarkers: shopLocationMarkers,
+            //                 shops: shops,
+            //                 isloader: false
+            //             })
+            //         })
+            //         .catch(err => {
+            //             let error = JSON.parse(JSON.stringify(err))
+            //             console.log(error, 'ERRROR', err)
+            //             this.setState({
+            //                 err: error,
+            //                 isloader: false
+            //             })
+            //         })
+
+
+            let cloneLocation = {
+                lat: currentLocation.coords.latitude,
+                long: currentLocation.coords.longitude,
+            }
+            var options = {
+                method: 'POST',
+                url: `${this.props.bseUrl}/getallshops/`,
+                headers:
+                {
+                    'cache-control': 'no-cache',
+                    "Allow-Cross-Origin": '*',
+                },
+                data: cloneLocation
+            }
+            console.log(cloneLocation, "cloneLocation")
+            axios(options)
+                .then(result => {
+                    console.log(result.data.data, "DATA_FROM_API")
+                    let shops = result.data.data
+
+                    let shopLocationMarkers = []
+                    for (let index = 0; index < shops.length; index++) {
+                        let location = {
+                            latitude: shops[index].location.coordinates[0],
+                            longitude: shops[index].location.coordinates[1],
+                            title: shops[index].businessName,
+                        }
+                        shopLocationMarkers.push(location)
                     }
-                    shopLocationMarkers.push(location)
-                }
-                console.log(shopLocationMarkers, "Markers")
+                    console.log(shopLocationMarkers, "Markers")
 
-                this.setState({
-                    shopLocationMarkers: shopLocationMarkers,
-                    shops: shops,
-                    isloader: false
+                    this.setState({
+                        shopLocationMarkers: shopLocationMarkers,
+                        shops: shops,
+                        isloader: false
+                    })
                 })
-            })
-            .catch(err => {
-                let error = JSON.parse(JSON.stringify(err))
-                console.log(error, 'ERRROR', err)
-                this.setState({
-                    err: error,
-                    isloader: false
+                .catch(err => {
+                    let error = JSON.parse(JSON.stringify(err))
+                    console.log(error, 'ERRROR', err)
+                    this.setState({
+                        err: error,
+                        isloader: false
+                    })
                 })
-            })
+
+        }
     }
 
 
@@ -250,6 +303,7 @@ class Nearby extends Component {
 let mapStateToProps = state => {
     return {
         userProfile: state.root.userProfile,
+        currentLocation: state.root.currentLocation,
         bseUrl: state.root.bseUrl,
     };
 };
