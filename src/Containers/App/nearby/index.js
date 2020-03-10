@@ -78,6 +78,65 @@ class Nearby extends Component {
         }
     }
 
+    UNSAFE_componentWillReceiveProps(nextProps) {
+
+        const { currentLocation } = nextProps
+
+        console.log(currentLocation, "currentLocation")
+
+        // if (currentLocation != null) {
+        //     this.setState({
+        //         isloader: true
+        //     })
+
+        //     let cloneLocation = {
+        //         lat: currentLocation.coords.latitude,
+        //         long: currentLocation.coords.longitude,
+        //     }
+        //     var options = {
+        //         method: 'POST',
+        //         url: `${this.props.bseUrl}/getallshops/`,
+        //         headers:
+        //         {
+        //             'cache-control': 'no-cache',
+        //             "Allow-Cross-Origin": '*',
+        //         },
+        //         data: cloneLocation
+        //     }
+        //     console.log(cloneLocation, "cloneLocation")
+        //     axios(options)
+        //         .then(result => {
+        //             console.log(result.data.data, "DATA_FROM_API")
+        //             let shops = result.data.data
+
+        //             let shopLocationMarkers = []
+        //             for (let index = 0; index < shops.length; index++) {
+        //                 let location = {
+        //                     latitude: shops[index].location.coordinates[0],
+        //                     longitude: shops[index].location.coordinates[1],
+        //                     title: shops[index].businessName,
+        //                 }
+        //                 shopLocationMarkers.push(location)
+        //             }
+        //             console.log(shopLocationMarkers, "Markers")
+
+        //             this.setState({
+        //                 shopLocationMarkers: shopLocationMarkers,
+        //                 shops: shops,
+        //                 isloader: false
+        //             })
+        //         })
+        //         .catch(err => {
+        //             let error = JSON.parse(JSON.stringify(err))
+        //             console.log(error, 'ERRROR', err)
+        //             this.setState({
+        //                 err: error,
+        //                 isloader: false
+        //             })
+        //         })
+        // }
+    }
+
 
     render() {
         let { fullName, } = this.props.userProfile
@@ -131,7 +190,9 @@ class Nearby extends Component {
                         <View style={{
                             flex: 3, justifyContent: "center", alignItems: "center", flexDirection: "row",
                         }}>
-                            <TouchableOpacity style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", }}>
+                            <TouchableOpacity style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", }}
+                                onPress={() => { Actions.Googlemapfullview({ draggable: true }) }}
+                            >
                                 <Entypo name="direction" style={{ color: "#FD6958", fontWeight: 'bold', fontSize: 20 }} />
                                 <Text style={{ color: "#FD6958" }}>CHANGE</Text>
                             </TouchableOpacity>
