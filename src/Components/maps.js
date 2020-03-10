@@ -1,7 +1,8 @@
 import React from 'react';
-import { View, Image, StyleSheet, Dimensions, Text } from 'react-native';
+import { View, Image, StyleSheet, Dimensions, Text, } from 'react-native';
 import { connect } from 'react-redux'
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
+import { setUserCurrentLocation } from "./../Store/Action/action";
 
 const { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
@@ -14,7 +15,8 @@ class MapDirection extends React.Component {
         this.state = {
             location: null,
             errorMessage: null,
-            markers: []
+            markers: [],
+            draggable: false
         }
     }
 
@@ -29,9 +31,11 @@ class MapDirection extends React.Component {
                 markers: this.props.markers
             })
         }
-        // else {
-        //     this.allowLocation()
-        // }
+        if (this.props.draggable) {
+            this.setState({
+                draggable: this.props.draggable
+            })
+        }
     }
 
     UNSAFE_componentWillReceiveProps(nextProps) {
@@ -47,15 +51,25 @@ class MapDirection extends React.Component {
         }
     }
 
+    locationSet(coords) {
+        let currentLocation = {
+            coords: coords
+        }
+        this.setState({
+            coords: coords
+        })
+        this.props.setUserCurrentLocation(currentLocation, true)
+    }
+
 
     render() {
-        let { coords, markers } = this.state
-
+        let { coords, markers, draggable } = this.state
+        // console.log(coords, "INSIDERENDER")
         return (
             <View>
                 {
                     (coords && coords.latitude && coords.longitude) ?
-                        <MapView style={{ width: "99%", height: 500 }}
+                        <MapView style={{ width: "100%", height: 500 }}
                             provider={PROVIDER_GOOGLE}
                             region={{
                                 latitude: coords.latitude,
@@ -80,7 +94,7 @@ class MapDirection extends React.Component {
                                                     }
                                                 }
                                                 title={key.title}
-                                                // description={'This is your current location'}
+                                            // description={'This is your current location'}
                                             >
                                                 <Image source={require('../../assets/Group55346(2).png')} style={{ height: 45, width: 45 }} />
                                                 {/* <Text>{key.title}</Text> */}
@@ -91,9 +105,7 @@ class MapDirection extends React.Component {
                                 ) : null
                             }
 
-
-
-                            <Marker draggable={false}
+                            <Marker draggable={draggable}
                                 // style={{ top: 0, bottom: 0, left: 0, right: 0, alignItems: 'center', justifyContent: 'center', backgroundColor: 'transparent' }}
                                 coordinate={
                                     {
@@ -103,7 +115,7 @@ class MapDirection extends React.Component {
                                         longitudeDelta: LONGITUDE_DELTA,
                                     }
                                 }
-                            // onDragEnd={!this.props.sendLocation ? (e) => this.locationSet(e.nativeEvent.coordinate) : null}
+                                onDragEnd={(e) => this.locationSet(e.nativeEvent.coordinate)}
                             >
                                 {/* <View style={{ width: 70, height: 70, backgroundColor: "orange" }}>
                                 </View> */}
@@ -150,9 +162,9 @@ const mapStateToProps = state => {
 
 function mapDispatchToProps(dispatch) {
     return ({
-        // userAuth: (Email, Password) => {
-        //     dispatch(userAction(Email, Password));
-        // }
+        setUserCurrentLocation: (position, bolean) => {
+            dispatch(setUserCurrentLocation(position, bolean));
+        },
     })
 }
 

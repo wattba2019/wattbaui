@@ -24,47 +24,10 @@ class Nearby extends Component {
     componentDidMount() {
         const { currentLocation } = this.props
 
-
         if (currentLocation != null) {
             this.setState({
                 isloader: true
             })
-            // getting all shops
-            //     let urlM = `${this.props.bseUrl}/getallshops/`
-            //     axios({
-            //         method: 'get',
-            //         url: urlM,
-            //     })
-            //         .then(result => {
-            //             console.log(result.data.data, "DATA_FROM_API")
-            //             let shops = result.data.data
-
-            //             let shopLocationMarkers = []
-            //             for (let index = 0; index < shops.length; index++) {
-            //                 let location = {
-            //                     latitude: shops[index].location.coordinates[0],
-            //                     longitude: shops[index].location.coordinates[1],
-            //                     title: shops[index].businessName,
-            //                 }
-            //                 shopLocationMarkers.push(location)
-            //             }
-            //             console.log(shopLocationMarkers, "Markers")
-
-            //             this.setState({
-            //                 shopLocationMarkers: shopLocationMarkers,
-            //                 shops: shops,
-            //                 isloader: false
-            //             })
-            //         })
-            //         .catch(err => {
-            //             let error = JSON.parse(JSON.stringify(err))
-            //             console.log(error, 'ERRROR', err)
-            //             this.setState({
-            //                 err: error,
-            //                 isloader: false
-            //             })
-            //         })
-
 
             let cloneLocation = {
                 lat: currentLocation.coords.latitude,
@@ -161,7 +124,7 @@ class Nearby extends Component {
                             <View style={{
                                 flex: 8
                             }}>
-                                <Text style={{ textAlign: "left" }}>London, Greater London</Text>
+                                <Text style={{ textAlign: "left" }}>Your Location</Text>
 
                             </View>
                         </View>
@@ -205,17 +168,20 @@ class Nearby extends Component {
 
                 <View style={{
                     flex: 8,
-                    width: "100%",
+                    width: "100%", height: "100%",
                     justifyContent: "center",
                     alignItems: "center",
                 }}>
                     <View
                         style={{
+                            // flex: 1,
                             marginTop: 10,
                             marginBottom: 0,
                             width: "100%",
+                            height: "100%",
                             marginHorizontal: "0%",
                             backgroundColor: "#EDEDED",
+                            // backgroundColor: "orange",
                         }}
                     >
                         <MapDirection markers={shopLocationMarkers} />

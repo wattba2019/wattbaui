@@ -1,14 +1,14 @@
 import React, { Component } from "react";
 import {
-    View, Image, ActivityIndicator, StyleSheet,
-    ImageBackground, StatusBar, TouchableOpacity,
-    Text, TextInput, ScrollView, KeyboardAvoidingView
-
+    View, ActivityIndicator, StyleSheet,
+    StatusBar, TouchableOpacity,
+    Text, ScrollView,
 } from 'react-native';
 import { connect } from "react-redux";
 import { Actions } from 'react-native-router-flux';
 import RangeSlider from 'rn-range-slider';
 import Geocoder from 'react-native-geocoding';
+import axios from 'axios';
 
 //icons import
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -17,15 +17,18 @@ class Filters extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            // gender: "Female",
+            // service: "Haircut",
             rangeLow: "",
-            gender: "Female",
-            service: "Haircut",
-            sortedby: "Popular"
+            sortedby: "highToLow",
+            selectedService: "",
+            allServicesNames: [],
         };
     }
 
     UNSAFE_componentWillMount() {
-        this.getLocationNameGeoCoader()
+        // this.getLocationNameGeoCoader()
+        this.getAllServices()
     }
 
 
@@ -54,8 +57,63 @@ class Filters extends Component {
         // ------------
     }
 
+
+    getAllServices() {
+        this.setState({
+            isloader: true
+        })
+        let urlM = `${this.props.bseUrl}/getallshops/getAllService`
+        axios({
+            method: 'get',
+            url: urlM,
+        })
+            .then(result => {
+                console.log(result.data.data, "DATA_FROM_API")
+                let allServices = result.data.data
+                let allServicesNames = []
+                for (let index = 0; index < allServices.length; index++) {
+                    const element = allServices[index].serviceName;
+                    allServicesNames.push(element)
+                }
+                this.setState({
+                    isloader: false,
+                    allServicesNames: allServicesNames
+                })
+            })
+            .catch(err => {
+                let error = JSON.parse(JSON.stringify(err))
+                console.log(error, 'ERRROR', err)
+                this.setState({
+                    err: error,
+                    isloader: false
+                })
+            })
+    }
+
+
+    selectService(key, index) {
+        this.setState({
+            selectedService: key
+        })
+    }
+
+
+    saveSearch() {
+        const { rangeLow, sortedby, selectedService } = this.state
+        const { currentLocation } = this.props
+        cloneSerchKeywords = {
+            km: rangeLow,
+            sortedby: sortedby,
+            serviceName: selectedService,
+            location: currentLocation.coords
+        }
+
+        console.log(cloneSerchKeywords,  "cloneSerchKeywords")
+    }
+
+
     render() {
-        const { rangeLow } = this.state
+        const { rangeLow, allServicesNames, selectedService } = this.state
         return (
             <ScrollView contentContainerStyle={styles.contentContainer}>
                 <StatusBar backgroundColor="white" barStyle="dark-content" />
@@ -97,7 +155,8 @@ class Filters extends Component {
                         // backgroundColor: "gray"
                     }}>
                         <TouchableOpacity
-                            onPress={() => Actions.SearchResults()}
+                            // onPress={() => Actions.SearchResults()}
+                            onPress={() => this.saveSearch()}
                         >
                             <Text style={{ marginTop: 10, color: "#FD6958" }}>Save</Text>
                         </TouchableOpacity>
@@ -106,10 +165,10 @@ class Filters extends Component {
                 </View>
                 <View style={{
                     flex: 8,
-                    justifyContent: "center",
+                    // justifyContent: "center",
                     alignItems: "center",
                     width: "100%",
-                    marginTop: 10,
+                    marginTop: 0,
                     // backgroundColor: "green"
                 }}>
                     <View style={{
@@ -119,7 +178,7 @@ class Filters extends Component {
                         <Text style={{ color: "#4A4A4A", fontSize: 16 }}>Location</Text>
                     </View>
 
-                    <View style={{
+                    <TouchableOpacity style={{
                         marginTop: 10,
                         width: "90%",
                         height: 45,
@@ -128,11 +187,13 @@ class Filters extends Component {
                         alignItems: "center",
                         flexDirection: "row",
                         backgroundColor: "#E8E6E7"
-                    }}>
+                    }}
+                        onPress={() => { Actions.Googlemapfullview({ draggable: true }) }}
+                    >
                         <FontAwesome name="location-arrow" style={{ marginLeft: "5%", color: '#909090', fontWeight: 'bold', fontSize: 20 }} />
-                        <Text style={{ marginLeft: "5%", color: "black", fontWeight: "bold", fontSize: 16 }}>Current location </Text>
-                        <Text style={{ color: "#8E8E93", fontWeight: "bold", fontSize: 16 }}>(San Francisco)</Text>
-                    </View>
+                        <Text style={{ marginLeft: "5%", color: "black", fontWeight: "bold", fontSize: 14 }}>Current location </Text>
+                        <Text style={{ color: "#8E8E93", fontWeight: "bold", fontSize: 14 }}>(Select Location on map)</Text>
+                    </TouchableOpacity>
 
                     {/* gender */}
                     {/* <View style={{
@@ -237,121 +298,46 @@ class Filters extends Component {
                     }}>
                         <Text style={{ color: "#4A4A4A", fontSize: 16, }}>Services</Text>
                     </View>
-
-
                     <View style={{
-                        width: "90%", flexDirection: "row", marginTop: 5, flexWrap: "wrap"
+                        // width: "90%",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        marginTop: 5, flexWrap: "wrap", flexDirection: "row",
                         // backgroundColor: "green"
                     }}>
-                        <TouchableOpacity style={{
-                            margin: 5,
-                            borderRadius: 25,
-                            borderWidth: 0.5,
-                            borderColor: "grey",
-                            backgroundColor: this.state.service === "Haircut" ? "#FD6958" : null,
-                        }}
-                            onPress={() => { this.setState({ service: "Haircut" }) }}
+                        {
 
-                        >
-                            <Text style={{
-                                color: "black", fontSize: 15,
-                                marginHorizontal: 25, marginVertical: 5,
-                                color: this.state.service === "Haircut" ? "#ffff" : null,
-                            }}>Haircut</Text>
-                        </TouchableOpacity>
+                            (allServicesNames) ? (
+                                allServicesNames.map((key, index) => {
+                                    return (
+                                        <TouchableOpacity key={index} style={{
+                                            justifyContent: "center",
+                                            alignItems: "center",
+                                            width: 150,
+                                            height: 35,
+                                            margin: 5,
+                                            borderRadius: 25,
+                                            borderWidth: 0.5,
+                                            borderColor: "grey",
+                                            backgroundColor: selectedService === key ? "#FD6958" : null,
+                                        }}
+                                            onPress={() => { this.selectService(key, index) }}
 
-                        <TouchableOpacity style={{
-                            margin: 5,
-                            borderRadius: 25,
-                            borderWidth: 0.5,
-                            borderColor: "grey",
-                            backgroundColor: this.state.service === "Styling" ? "#FD6958" : null,
+                                        >
+                                            <Text style={{
+                                                color: "black", fontSize: 12,
+                                                marginHorizontal: 25, marginVertical: 5,
+                                                color: selectedService === key ? "#ffff" : null,
+                                            }}>{key}</Text>
+                                        </TouchableOpacity>
 
-                        }}
-                            onPress={() => { this.setState({ service: "Styling" }) }}
+                                    )
+                                })
 
-                        >
-                            <Text style={{
-                                color: "black", fontSize: 15, marginHorizontal: 25, marginVertical: 5, color: this.state.service === "Styling" ? "#ffff" : null,
-                            }}>Styling</Text>
-                        </TouchableOpacity>
-
-                        <TouchableOpacity style={{
-                            margin: 5,
-                            borderRadius: 25,
-                            borderWidth: 0.5,
-                            borderColor: "grey",
-                            backgroundColor: this.state.service === "Shampoo" ? "#FD6958" : null,
-
-                        }}
-                            onPress={() => { this.setState({ service: "Shampoo" }) }}
-                        >
-                            <Text style={{
-                                color: "black", fontSize: 15, marginHorizontal: 25, marginVertical: 5, color: this.state.service === "Shampoo" ? "#ffff" : null,
-                            }}>Shampoo</Text>
-                        </TouchableOpacity>
-
-                        <TouchableOpacity style={{
-                            margin: 5,
-                            borderRadius: 25,
-                            borderWidth: 0.5,
-                            borderColor: "grey",
-                            backgroundColor: this.state.service === "Shaving" ? "#FD6958" : null,
-
-                        }}
-                            onPress={() => { this.setState({ service: "Shaving" }) }}
-
-                        >
-                            <Text style={{
-                                color: "black", fontSize: 15, marginHorizontal: 25, marginVertical: 5, color: this.state.service === "Shaving" ? "#ffff" : null,
-                            }}>Shaving</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={{
-                            margin: 5,
-                            borderRadius: 25,
-                            borderWidth: 0.5,
-                            borderColor: "grey",
-                            backgroundColor: this.state.service === "Spa" ? "#FD6958" : null,
-
-                        }}
-                            onPress={() => { this.setState({ service: "Spa" }) }}
-
-                        >
-                            <Text style={{
-                                color: "black", fontSize: 15, marginHorizontal: 25, marginVertical: 5, color: this.state.service === "Spa" ? "#ffff" : null,
-                            }}>Spa</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={{
-                            margin: 5,
-                            borderRadius: 25,
-                            borderWidth: 0.5,
-                            borderColor: "grey",
-                            backgroundColor: this.state.service === "Facial" ? "#FD6958" : null,
-
-                        }}
-                            onPress={() => { this.setState({ service: "Facial" }) }}
-                        >
-                            <Text style={{
-                                color: "black", fontSize: 15, marginHorizontal: 25, marginVertical: 5, color: this.state.service === "Facial" ? "#ffff" : null,
-                            }}>Facial Mackeup</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={{
-                            margin: 5,
-                            borderRadius: 25,
-                            borderWidth: 0.5,
-                            borderColor: "grey",
-                            backgroundColor: this.state.service === "Hairdryer" ? "#FD6958" : null,
-
-                        }}
-                            onPress={() => { this.setState({ service: "Hairdryer" }) }}
-
-                        >
-                            <Text style={{
-                                color: "black", fontSize: 15, marginHorizontal: 25, marginVertical: 5, color: this.state.service === "Hairdryer" ? "#ffff" : null,
-                            }}>Hairdryer</Text>
-                        </TouchableOpacity>
-
+                            ) : <ActivityIndicator color="#FD6958" />
+                        }
                     </View>
+
 
                     <View style={{
                         width: "90%", marginTop: 20, marginBottom: 50
@@ -359,13 +345,13 @@ class Filters extends Component {
                     }}>
                         <Text style={{ color: "#4A4A4A", fontSize: 16, }}>Sortby</Text>
 
-                        <TouchableOpacity style={{
+                        {/* <TouchableOpacity style={{
                             marginTop: 10,
                         }}
                             onPress={() => { this.setState({ sortedby: "Popular" }) }}
                         >
                             <Text style={{ color: "black", fontSize: 16, color: this.state.sortedby === "Popular" ? "#FD6958" : null, }}>Most Popular</Text>
-                        </TouchableOpacity>
+                        </TouchableOpacity> */}
 
                         <TouchableOpacity style={{
                             marginTop: 10,
@@ -392,7 +378,8 @@ class Filters extends Component {
 }
 let mapStateToProps = state => {
     return {
-
+        bseUrl: state.root.bseUrl,
+        currentLocation: state.root.currentLocation,
     };
 };
 function mapDispatchToProps(dispatch) {

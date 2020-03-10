@@ -15,42 +15,63 @@ class googlemapfullview extends Component {
         }
     }
     render() {
+        const { draggable } = this.props
         return (
             <View style={{
                 flex: 1,
                 backgroundColor: "white"
             }}>
-                <View style={{ flex: 0.8, }}>
+                <View style={{
+                    flex: 0.8,
+                    flexDirection: "row",
+                    borderBottomWidth: 0.5,
+                    borderBottomColor: "#8E8E93",
+                }}>
                     <View style={{
                         flex: 1,
                         justifyContent: "center",
-                        borderBottomColor: "grey",
-                        borderBottomWidth: 0.5
+                        // alignItems: "center",
+                        // backgroundColor: "red"
+                        // borderBottomColor: "grey",
+                        // borderBottomWidth: 0.5
                     }}>
-                        <TouchableOpacity onPress={() => Actions.pop()}
-                        >
+                        <TouchableOpacity onPress={() => Actions.pop()}>
                             <Ionicons name="ios-arrow-back" style={{ marginLeft: 25, color: "black", fontWeight: 'bold', fontSize: 28 }} />
                         </TouchableOpacity>
                     </View>
+                    <View style={{
+                        flex: 1,
+                        justifyContent: "center",
+                        alignItems: "flex-end",
+                        // backgroundColor: "gray"
+                    }}>
+                        <TouchableOpacity
+                        // onPress={() => this.saveSearch()}
+                        >
+                            <Text style={{ marginTop: 0, marginRight: 30, color: "#FD6958" }}>Your Location</Text>
+                        </TouchableOpacity>
+                    </View>
+
                 </View>
 
-                <View style={{ flex: 8, }}>
+                <View style={{ flex: 8, backgroundColor: "red" }}>
 
-                    <View style={{ flex: 1, flexDirection: "row", borderBottomWidth: 0.5, borderBottomColor: "#BEBCBC", marginTop: 10 }} >
+                    <View style={{ flex: 1, flexDirection: "row", borderBottomWidth: 0.5, borderBottomColor: "#BEBCBC", marginTop: 0, backgroundColor: "yellow" }} >
                         <View
                             style={{
                                 // marginTop: 10,
-                                marginBottom: 10,
-                                width: "90%",
-                                marginHorizontal: "5%",
-                                borderWidth: 1,
+                                // marginBottom: 10,
+                                width: "100%",
+                                // marginHorizontal: "5%",
+                                // borderWidth: 1,
                                 borderColor: "#1E90FF",
                                 borderRadius: 0,
+                                justifyContent:"center",
                                 backgroundColor: "#EDEDED",
                             }}
                         >
-                            <Text>Location on map</Text>
-                            <MapDirection />
+                            {/* <Text>Location on map</Text> */}
+                            <MapDirection draggable={draggable} />
                         </View>
 
 

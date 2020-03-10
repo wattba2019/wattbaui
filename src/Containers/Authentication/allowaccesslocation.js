@@ -118,8 +118,8 @@ let mapStateToProps = state => {
 };
 function mapDispatchToProps(dispatch) {
     return ({
-        setUserCurrentLocation: (color, drawerBolean) => {
-            dispatch(setUserCurrentLocation(color, drawerBolean));
+        setUserCurrentLocation: (position, ) => {
+            dispatch(setUserCurrentLocation(position));
         },
     })
 }

@@ -7,10 +7,11 @@ export function setUserCredentials(userCredentials, routeInsideApp) {
     }
 }
 
-export function setUserCurrentLocation(location, ) {
+export function setUserCurrentLocation(location, bolean) {
     return dispatch => {
         dispatch({ type: "USER_CURRENT_LOCATION_ACTION", payload: location })
-        Actions.AppContainer()
+        bolean != true ? Actions.AppContainer() : null
+        // Actions.AppContainer()
     }
 }
 
