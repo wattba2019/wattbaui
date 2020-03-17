@@ -8,6 +8,7 @@ import { connect } from "react-redux";
 import { Actions } from 'react-native-router-flux';
 import IconFontAwesome from 'react-native-vector-icons/FontAwesome';
 import MapDirection from '../../../Components/maps'
+import { setNearByShops } from "../../../Store/Action/action";
 
 //icons import
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -18,17 +19,15 @@ class Nearby extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            search: [],
+            shops: [],
         };
     }
 
     componentDidMount() {
+        alert("work")
         const { currentLocation } = this.props
-
         if (currentLocation != null) {
-            this.setState({
-                isloader: true
-            })
-
             let cloneLocation = {
                 lat: currentLocation.coords.latitude,
                 long: currentLocation.coords.longitude,
@@ -43,11 +42,12 @@ class Nearby extends Component {
                 },
                 data: cloneLocation
             }
-            console.log(cloneLocation, "cloneLocation")
+            // console.log(cloneLocation, "cloneLocation")
             axios(options)
                 .then(result => {
                     console.log(result.data.data, "DATA_FROM_API")
                     let shops = result.data.data
+                    this.props.setNearByShops(shops)
 
                     let shopLocationMarkers = []
                     for (let index = 0; index < shops.length; index++) {
@@ -79,68 +79,76 @@ class Nearby extends Component {
     }
 
     UNSAFE_componentWillReceiveProps(nextProps) {
-
         const { currentLocation } = nextProps
+        if (currentLocation != null) {
+            let cloneLocation = {
+                lat: currentLocation.coords.latitude,
+                long: currentLocation.coords.longitude,
+            }
+            var options = {
+                method: 'POST',
+                url: `${this.props.bseUrl}/getallshops/`,
+                headers:
+                {
+                    'cache-control': 'no-cache',
+                    "Allow-Cross-Origin": '*',
+                },
+                data: cloneLocation
+            }
+            // console.log(cloneLocation, "cloneLocation")
+            axios(options)
+                .then(result => {
+                    console.log(result.data.data, "DATA_FROM_API")
+                    let shops = result.data.data
+                    // this.props.setNearByShops(shops)
 
-        console.log(currentLocation, "currentLocation")
-
-        // if (currentLocation != null) {
-        //     this.setState({
-        //         isloader: true
-        //     })
-
-        //     let cloneLocation = {
-        //         lat: currentLocation.coords.latitude,
-        //         long: currentLocation.coords.longitude,
-        //     }
-        //     var options = {
-        //         method: 'POST',
-        //         url: `${this.props.bseUrl}/getallshops/`,
-        //         headers:
-        //         {
-        //             'cache-control': 'no-cache',
-        //             "Allow-Cross-Origin": '*',
-        //         },
-        //         data: cloneLocation
-        //     }
-        //     console.log(cloneLocation, "cloneLocation")
-        //     axios(options)
-        //         .then(result => {
-        //             console.log(result.data.data, "DATA_FROM_API")
-        //             let shops = result.data.data
-
-        //             let shopLocationMarkers = []
-        //             for (let index = 0; index < shops.length; index++) {
-        //                 let location = {
-        //                     latitude: shops[index].location.coordinates[0],
-        //                     longitude: shops[index].location.coordinates[1],
-        //                     title: shops[index].businessName,
-        //                 }
-        //                 shopLocationMarkers.push(location)
-        //             }
-        //             console.log(shopLocationMarkers, "Markers")
-
-        //             this.setState({
-        //                 shopLocationMarkers: shopLocationMarkers,
-        //                 shops: shops,
-        //                 isloader: false
-        //             })
-        //         })
-        //         .catch(err => {
-        //             let error = JSON.parse(JSON.stringify(err))
-        //             console.log(error, 'ERRROR', err)
-        //             this.setState({
-        //                 err: error,
-        //                 isloader: false
-        //             })
-        //         })
-        // }
+                    let shopLocationMarkers = []
+                    for (let index = 0; index < shops.length; index++) {
+                        let location = {
+                            latitude: shops[index].location.coordinates[0],
+                            longitude: shops[index].location.coordinates[1],
+                            title: shops[index].businessName,
+                        }
+                        shopLocationMarkers.push(location)
+                    }
+                    // console.log(shopLocationMarkers, "Markers")
+                    this.setState({
+                        shopLocationMarkers: shopLocationMarkers,
+                        shops: shops,
+                        isloader: false
+                    })
+                })
+                .catch(err => {
+                    let error = JSON.parse(JSON.stringify(err))
+                    console.log(error, 'ERRROR', err)
+                    this.setState({
+                        err: error,
+                        isloader: false
+                    })
+                })
+        }
     }
-
 
     render() {
         let { fullName, } = this.props.userProfile
-        let { shops, shopLocationMarkers } = this.state
+        let { nearByShops, } = this.props
+        let { shops, shopLocationMarkers, search } = this.state
+
+        let filterShops = [];
+        if (shops.length > 0) {
+            if (search.length) {
+                const searchPattern = new RegExp(search.map(term => `(?=.*${term})`).join(''), 'i');
+                console.log(searchPattern, 'searchPattern', search)
+
+                shops = shops.filter(data => {
+                    // console.log(stylist, 'stylist')
+                    return data.businessName.match(searchPattern)
+                });
+            } else {
+                filterShops = shops;
+            }
+        }
+
         return (
             <View style={{
                 flex: 1,
@@ -219,8 +227,9 @@ class Nearby extends Component {
                         >
                             <TextInput
                                 style={{ width: "90%", }}
-                                // onChangeText={text => onChangeText(text)}
-                                value={this.state.email}
+                                onChangeText={(e) => this.setState({ search: e.split(' ') })}
+                                // onChangeText={(e) => this.searchShops(e)}
+                                value={search[0]}
                                 placeholder={"Search"}
                             />
                         </View>
@@ -332,10 +341,14 @@ let mapStateToProps = state => {
         userProfile: state.root.userProfile,
         currentLocation: state.root.currentLocation,
         bseUrl: state.root.bseUrl,
+        nearByShops: state.root.nearByShops,
     };
 };
 function mapDispatchToProps(dispatch) {
     return ({
+        setNearByShops: (shops, ) => {
+            dispatch(setNearByShops(shops));
+        },
     })
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Nearby);

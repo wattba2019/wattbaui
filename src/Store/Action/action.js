@@ -53,6 +53,15 @@ export function setShop(shop) {
 
 
 
+export function setNearByShops(shops) {
+    console.log(shops, "INSIDEACTION")
+    return dispatch => {
+        dispatch({ type: "SET_NEARBY_SHOP", payload: shops })
+    }
+}
+
+
+
 
 
 
