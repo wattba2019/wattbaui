@@ -9,6 +9,7 @@ import { Actions } from 'react-native-router-flux';
 import RangeSlider from 'rn-range-slider';
 import Geocoder from 'react-native-geocoding';
 import axios from 'axios';
+import { setNearByShops } from "../../../Store/Action/action";
 
 //icons import
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -68,12 +69,14 @@ class Filters extends Component {
             url: urlM,
         })
             .then(result => {
-                console.log(result.data.data, "DATA_FROM_API")
+                console.log(result.data.data, "Fetch_all_services")
                 let allServices = result.data.data
                 let allServicesNames = []
                 for (let index = 0; index < allServices.length; index++) {
                     const element = allServices[index].serviceName;
-                    allServicesNames.push(element)
+                    if (allServicesNames.indexOf(element) == -1) {
+                        allServicesNames.push(element)
+                    }
                 }
                 this.setState({
                     isloader: false,
@@ -101,14 +104,105 @@ class Filters extends Component {
     saveSearch() {
         const { rangeLow, sortedby, selectedService } = this.state
         const { currentLocation } = this.props
-        cloneSerchKeywords = {
-            km: rangeLow,
-            sortedby: sortedby,
-            serviceName: selectedService,
-            location: currentLocation.coords
-        }
+        if (currentLocation != null) {
+            let cloneLocation = {
+                lat: currentLocation.coords.latitude,
+                long: currentLocation.coords.longitude,
+                km: rangeLow,
+            }
+            var options = {
+                method: 'POST',
+                url: `${this.props.bseUrl}/getallshops/`,
+                headers:
+                {
+                    'cache-control': 'no-cache',
+                    "Allow-Cross-Origin": '*',
+                },
+                data: cloneLocation
+            }
+            axios(options)
+                .then(result => {
+                    let shops = result.data.data
+                    console.log(shops, "Fetch_search_data")
+                    if (shops.length) {
+                        // alert("Available_Shops")
 
-        console.log(cloneSerchKeywords,  "cloneSerchKeywords")
+                        let nearbyShopIDs = []
+                        for (let index = 0; index < shops.length; index++) {
+                            const element = shops[index]._id;
+                            nearbyShopIDs.push(element)
+                        }
+
+                        this.getNearbyShopsServices(nearbyShopIDs, shops)
+                    }
+                    else {
+                        alert("There is no shops in " + cloneLocation.km + " kilometre")
+                    }
+                })
+                .catch(err => {
+                    let error = JSON.parse(JSON.stringify(err))
+                    console.log(error, err, "cloneSerchKeywords")
+                    this.setState({
+                        err: error,
+                    })
+                })
+
+        }
+    }
+
+    getNearbyShopsServices(nearbyShopIDs, shops) {
+        const { selectedService, sortedby } = this.state
+        let idsCloneData = { shopid: nearbyShopIDs }
+        var options = {
+            method: 'POST',
+            url: `${this.props.bseUrl}/getNearbyShopServices/NearbyAllShopServices/`,
+            headers:
+            {
+                'cache-control': 'no-cache',
+                "Allow-Cross-Origin": '*',
+            },
+            data: idsCloneData
+        }
+        axios(options)
+            .then(result => {
+                let allShopsServices = result.data.data
+                if (sortedby === "highToLow") {
+                    allShopsServices.sort((a, b) => parseFloat(b.price) - parseFloat(a.price));
+                }
+                else {
+                    allShopsServices.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
+                }
+                // console.log(allShopsServices, "Fetch_Shops_NearBy_Shops_Services")
+                if (selectedService != "") {
+                    let sortedService = []
+                    for (let index = 0; index < allShopsServices.length; index++) {
+                        const element = allShopsServices[index];
+                        if (element.serviceName === selectedService) {
+                            sortedService.push(element)
+                        }
+                    }
+                    let sortedShops = []
+                    for (let index = 0; index < sortedService.length; index++) {
+                        for (let i = 0; i < shops.length; i++) {
+                            if (sortedService[index].userId === shops[i]._id) {
+                                sortedShops.push(shops[i])
+                            }
+                        }
+                    }
+                    console.log(sortedService, sortedShops, "sortedService")
+                }
+                else {
+                    console.log(allShopsServices, shops, "withoutsoorted")
+                }
+
+            })
+            .catch(err => {
+                let error = JSON.parse(JSON.stringify(err))
+                console.log(error, 'ERRROR', err)
+                this.setState({
+                    err: error,
+                })
+            })
     }
 
 
@@ -353,21 +447,36 @@ class Filters extends Component {
                             <Text style={{ color: "black", fontSize: 16, color: this.state.sortedby === "Popular" ? "#FD6958" : null, }}>Most Popular</Text>
                         </TouchableOpacity> */}
 
-                        <TouchableOpacity style={{
-                            marginTop: 10,
-                        }}
-                            onPress={() => { this.setState({ sortedby: "lowToHigh" }) }}
-                        >
-                            <Text style={{ color: "black", fontSize: 16, color: this.state.sortedby === "lowToHigh" ? "#FD6958" : null, }}>Cost Low to High</Text>
-                        </TouchableOpacity>
+                        {
+                            (selectedService != "") ? (
+                                <>
+                                    <TouchableOpacity style={{
+                                        marginTop: 10,
+                                    }}
+                                        onPress={() => { this.setState({ sortedby: "lowToHigh" }) }}
+                                    >
+                                        <Text style={{ color: "black", fontSize: 16, color: this.state.sortedby === "lowToHigh" ? "#FD6958" : null, }}>Cost Low to High</Text>
+                                    </TouchableOpacity>
 
-                        <TouchableOpacity style={{
-                            marginTop: 10,
-                        }}
-                            onPress={() => { this.setState({ sortedby: "highToLow" }) }}
-                        >
-                            <Text style={{ color: "black", fontSize: 16, color: this.state.sortedby === "highToLow" ? "#FD6958" : null, }}>Cost High to Low</Text>
-                        </TouchableOpacity>
+                                    <TouchableOpacity style={{
+                                        marginTop: 10,
+                                    }}
+                                        onPress={() => { this.setState({ sortedby: "highToLow" }) }}
+                                    >
+                                        <Text style={{ color: "black", fontSize: 16, color: this.state.sortedby === "highToLow" ? "#FD6958" : null, }}>Cost High to Low</Text>
+                                    </TouchableOpacity>
+                                </>
+                            ) : <>
+                                    <TouchableOpacity disabled style={{ marginTop: 10, }}>
+                                        <Text style={{ color: "grey", fontSize: 16, }}>Cost Low to High</Text>
+                                    </TouchableOpacity>
+
+                                    <TouchableOpacity disabled style={{ marginTop: 10, }}>
+                                        <Text style={{ color: "grey", fontSize: 16, }}>Cost High to Low</Text>
+                                    </TouchableOpacity>
+                                </>
+                        }
+
                     </View>
 
 
@@ -384,6 +493,9 @@ let mapStateToProps = state => {
 };
 function mapDispatchToProps(dispatch) {
     return ({
+        setNearByShops: (shops, ) => {
+            dispatch(setNearByShops(shops));
+        },
     })
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Filters);

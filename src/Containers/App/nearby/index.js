@@ -25,12 +25,12 @@ class Nearby extends Component {
     }
 
     componentDidMount() {
-        alert("work")
         const { currentLocation } = this.props
         if (currentLocation != null) {
             let cloneLocation = {
                 lat: currentLocation.coords.latitude,
                 long: currentLocation.coords.longitude,
+                km: 5,
             }
             var options = {
                 method: 'POST',
@@ -42,26 +42,14 @@ class Nearby extends Component {
                 },
                 data: cloneLocation
             }
-            // console.log(cloneLocation, "cloneLocation")
             axios(options)
                 .then(result => {
-                    console.log(result.data.data, "DATA_FROM_API")
                     let shops = result.data.data
+                    console.log(shops, "Fetch_Shops_NearBy")
                     this.props.setNearByShops(shops)
-
-                    let shopLocationMarkers = []
-                    for (let index = 0; index < shops.length; index++) {
-                        let location = {
-                            latitude: shops[index].location.coordinates[0],
-                            longitude: shops[index].location.coordinates[1],
-                            title: shops[index].businessName,
-                        }
-                        shopLocationMarkers.push(location)
-                    }
-                    console.log(shopLocationMarkers, "Markers")
-
+                    this.createShopLocationMarkers(shops)
+                    Actions.Filters()
                     this.setState({
-                        shopLocationMarkers: shopLocationMarkers,
                         shops: shops,
                         isloader: false
                     })
@@ -84,6 +72,7 @@ class Nearby extends Component {
             let cloneLocation = {
                 lat: currentLocation.coords.latitude,
                 long: currentLocation.coords.longitude,
+                km: 5,
             }
             var options = {
                 method: 'POST',
@@ -95,25 +84,13 @@ class Nearby extends Component {
                 },
                 data: cloneLocation
             }
-            // console.log(cloneLocation, "cloneLocation")
             axios(options)
                 .then(result => {
-                    console.log(result.data.data, "DATA_FROM_API")
                     let shops = result.data.data
+                    console.log(shops, "Fetch_Shops_NearBy_RECEIVE_PROPS")
                     // this.props.setNearByShops(shops)
-
-                    let shopLocationMarkers = []
-                    for (let index = 0; index < shops.length; index++) {
-                        let location = {
-                            latitude: shops[index].location.coordinates[0],
-                            longitude: shops[index].location.coordinates[1],
-                            title: shops[index].businessName,
-                        }
-                        shopLocationMarkers.push(location)
-                    }
-                    // console.log(shopLocationMarkers, "Markers")
+                    this.createShopLocationMarkers(shops)
                     this.setState({
-                        shopLocationMarkers: shopLocationMarkers,
                         shops: shops,
                         isloader: false
                     })
@@ -129,6 +106,23 @@ class Nearby extends Component {
         }
     }
 
+    createShopLocationMarkers(shops) {
+        let shopLocationMarkers = []
+        for (let index = 0; index < shops.length; index++) {
+            let location = {
+                latitude: shops[index].location.coordinates[0],
+                longitude: shops[index].location.coordinates[1],
+                title: shops[index].businessName,
+            }
+            shopLocationMarkers.push(location)
+        }
+        // console.log(shopLocationMarkers, "Markers")
+        this.setState({
+            shopLocationMarkers: shopLocationMarkers,
+        })
+    }
+
+
     render() {
         let { fullName, } = this.props.userProfile
         let { nearByShops, } = this.props
@@ -138,10 +132,7 @@ class Nearby extends Component {
         if (shops.length > 0) {
             if (search.length) {
                 const searchPattern = new RegExp(search.map(term => `(?=.*${term})`).join(''), 'i');
-                console.log(searchPattern, 'searchPattern', search)
-
                 shops = shops.filter(data => {
-                    // console.log(stylist, 'stylist')
                     return data.businessName.match(searchPattern)
                 });
             } else {

@@ -124,8 +124,10 @@ class MapDirection extends React.Component {
                         </MapView> : <MapView style={{ width: "99%", height: 500 }}
                             provider={PROVIDER_GOOGLE}
                             region={{
-                                latitude: 37.78825,
-                                longitude: -122.4324,
+                                latitude: 24.8607,
+                                longitude: 67.0011,
+                                // latitude: 37.78825,
+                                // longitude: -122.4324,
                                 latitudeDelta: LATITUDE_DELTA,
                                 longitudeDelta: LONGITUDE_DELTA,
                             }}

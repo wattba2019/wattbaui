@@ -3,7 +3,8 @@ import { Actions } from 'react-native-router-flux';
 export function setUserCredentials(userCredentials, routeInsideApp) {
     return dispatch => {
         dispatch({ type: "SAVE_USER", payload: userCredentials })
-        routeInsideApp != true ? Actions.Allowaccesslocation() : null
+        // routeInsideApp != true ? Actions.Allowaccesslocation() : null
+        routeInsideApp != true ? Actions.AppContainer() : null
     }
 }
 
@@ -51,10 +52,8 @@ export function setShop(shop) {
     }
 }
 
-
-
 export function setNearByShops(shops) {
-    console.log(shops, "INSIDEACTION")
+    // console.log(shops, "INSIDEACTION")
     return dispatch => {
         dispatch({ type: "SET_NEARBY_SHOP", payload: shops })
     }
