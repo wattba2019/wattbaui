@@ -45,7 +45,9 @@ class ServiceChild1 extends Component {
                                         <Text>{key.serviceName}</Text>
                                         <Text style={{ fontSize: 11, color: "grey" }}>{key.extraServices.length} Types</Text>
                                     </View>
-                                    <TouchableOpacity style={{ flex: 1 }}>
+                                    <TouchableOpacity style={{ flex: 1 }}
+                                        onPress={() => Actions.ServiceDetaild({ serviceDetails: key, })}
+                                    >
                                         <Text style={{ fontSize: 11, color: "#FD6958" }}>View</Text>
                                     </TouchableOpacity>
                                 </TouchableOpacity>

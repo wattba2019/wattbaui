@@ -3,8 +3,8 @@ import { Actions } from 'react-native-router-flux';
 export function setUserCredentials(userCredentials, routeInsideApp) {
     return dispatch => {
         dispatch({ type: "SAVE_USER", payload: userCredentials })
-        // routeInsideApp != true ? Actions.Allowaccesslocation() : null
-        routeInsideApp != true ? Actions.AppContainer() : null
+        routeInsideApp != true ? Actions.Allowaccesslocation() : null
+        // routeInsideApp != true ? Actions.AppContainer() : null
     }
 }
 

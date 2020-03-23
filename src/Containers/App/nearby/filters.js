@@ -24,6 +24,8 @@ class Filters extends Component {
             sortedby: "highToLow",
             selectedService: "",
             allServicesNames: [],
+            isloader: false,
+            err: ""
         };
     }
 
@@ -60,9 +62,6 @@ class Filters extends Component {
 
 
     getAllServices() {
-        this.setState({
-            isloader: true
-        })
         let urlM = `${this.props.bseUrl}/getallshops/getAllService`
         axios({
             method: 'get',
@@ -79,7 +78,6 @@ class Filters extends Component {
                     }
                 }
                 this.setState({
-                    isloader: false,
                     allServicesNames: allServicesNames
                 })
             })
@@ -88,7 +86,6 @@ class Filters extends Component {
                 console.log(error, 'ERRROR', err)
                 this.setState({
                     err: error,
-                    isloader: false
                 })
             })
     }
@@ -104,6 +101,9 @@ class Filters extends Component {
     saveSearch() {
         const { rangeLow, sortedby, selectedService } = this.state
         const { currentLocation } = this.props
+        this.setState({
+            isloader: true
+        })
         if (currentLocation != null) {
             let cloneLocation = {
                 lat: currentLocation.coords.latitude,
@@ -126,17 +126,26 @@ class Filters extends Component {
                     console.log(shops, "Fetch_search_data")
                     if (shops.length) {
                         // alert("Available_Shops")
-
                         let nearbyShopIDs = []
                         for (let index = 0; index < shops.length; index++) {
                             const element = shops[index]._id;
                             nearbyShopIDs.push(element)
                         }
-
                         this.getNearbyShopsServices(nearbyShopIDs, shops)
                     }
                     else {
-                        alert("There is no shops in " + cloneLocation.km + " kilometre")
+                        // alert("There is no shops in " + cloneLocation.km + " kilometre")
+                        this.setState({
+                            err: "There is no shops in " + cloneLocation.km + " kilometre",
+                            isloader: false
+                        }, () => {
+                            setTimeout(() => {
+                                this.setState({
+                                    err: ""
+                                })
+                            }, 10000)
+
+                        })
                     }
                 })
                 .catch(err => {
@@ -144,13 +153,21 @@ class Filters extends Component {
                     console.log(error, err, "cloneSerchKeywords")
                     this.setState({
                         err: error,
+                        isloader: false
+                    }, () => {
+                        setTimeout(() => {
+                            this.setState({
+                                err: ""
+                            })
+                        }, 10000)
+
                     })
                 })
 
         }
     }
 
-    getNearbyShopsServices(nearbyShopIDs, shops) {
+    getNearbyShopsServices(nearbyShopIDs, shops, ) {
         const { selectedService, sortedby } = this.state
         let idsCloneData = { shopid: nearbyShopIDs }
         var options = {
@@ -189,10 +206,18 @@ class Filters extends Component {
                             }
                         }
                     }
-                    console.log(sortedService, sortedShops, "sortedService")
+                    Actions.SearchResults({ shops: sortedShops })
+                    // console.log(sortedService, sortedShops, "sortedService")
+                    this.setState({
+                        isloader: false
+                    })
                 }
                 else {
-                    console.log(allShopsServices, shops, "withoutsoorted")
+                    Actions.SearchResults({ shops: shops })
+                    // console.log(allShopsServices, shops, "withoutsoorted")
+                    this.setState({
+                        isloader: false
+                    })
                 }
 
             })
@@ -201,13 +226,21 @@ class Filters extends Component {
                 console.log(error, 'ERRROR', err)
                 this.setState({
                     err: error,
+                    isloader: false
+                }, () => {
+                    setTimeout(() => {
+                        this.setState({
+                            err: ""
+                        })
+                    }, 10000)
+
                 })
             })
     }
 
 
     render() {
-        const { rangeLow, allServicesNames, selectedService } = this.state
+        const { rangeLow, allServicesNames, selectedService, isloader, err } = this.state
         return (
             <ScrollView contentContainerStyle={styles.contentContainer}>
                 <StatusBar backgroundColor="white" barStyle="dark-content" />
@@ -248,12 +281,20 @@ class Filters extends Component {
                         alignItems: "center",
                         // backgroundColor: "gray"
                     }}>
-                        <TouchableOpacity
-                            // onPress={() => Actions.SearchResults()}
-                            onPress={() => this.saveSearch()}
-                        >
-                            <Text style={{ marginTop: 10, color: "#FD6958" }}>Save</Text>
-                        </TouchableOpacity>
+
+                        {
+                            isloader === false ?
+                                <TouchableOpacity
+                                    // onPress={() => Actions.SearchResults()}
+                                    onPress={() => this.saveSearch()}
+                                >
+                                    <Text style={{ marginTop: 10, color: "#FD6958" }}>Save</Text>
+                                </TouchableOpacity>
+                                :
+                                <ActivityIndicator color="#FD6958" />
+                        }
+
+
                     </View>
 
                 </View>
@@ -401,7 +442,7 @@ class Filters extends Component {
                     }}>
                         {
 
-                            (allServicesNames) ? (
+                            (allServicesNames.length != 0) ? (
                                 allServicesNames.map((key, index) => {
                                     return (
                                         <TouchableOpacity key={index} style={{
@@ -428,7 +469,7 @@ class Filters extends Component {
                                     )
                                 })
 
-                            ) : <ActivityIndicator color="#FD6958" />
+                            ) : <ActivityIndicator color="#FD6958" size={"large"} />
                         }
                     </View>
 
@@ -476,9 +517,13 @@ class Filters extends Component {
                                     </TouchableOpacity>
                                 </>
                         }
-
                     </View>
 
+                    <View style={{ width: "90%", justifyContent: "center", alignItems: "center", }}>
+                        {
+                            err != "" ? <Text style={{ marginTop: 10, color: "red" }}>{err}</Text> : null
+                        }
+                    </View>
 
                 </View>
             </ScrollView>

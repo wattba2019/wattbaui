@@ -30,7 +30,7 @@ class Nearby extends Component {
             let cloneLocation = {
                 lat: currentLocation.coords.latitude,
                 long: currentLocation.coords.longitude,
-                km: 5,
+                km: 15,
             }
             var options = {
                 method: 'POST',
@@ -48,7 +48,7 @@ class Nearby extends Component {
                     console.log(shops, "Fetch_Shops_NearBy")
                     this.props.setNearByShops(shops)
                     this.createShopLocationMarkers(shops)
-                    Actions.Filters()
+                    // Actions.Filters()
                     this.setState({
                         shops: shops,
                         isloader: false
@@ -72,7 +72,7 @@ class Nearby extends Component {
             let cloneLocation = {
                 lat: currentLocation.coords.latitude,
                 long: currentLocation.coords.longitude,
-                km: 5,
+                km: 15,
             }
             var options = {
                 method: 'POST',

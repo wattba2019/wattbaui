@@ -279,7 +279,9 @@ class shop extends Component {
                 </SafeAreaView>
 
                 <View style={{ flex: 0.65, backgroundColor: "#fff" }}>
+
                     <ScrollView contentContainerStyle={styles.contentContainer}>
+                        {/* <View > */}
 
                         <View style={{ flexDirection: "row", justifyContent: "space-between", paddingHorizontal: "10%", paddingVertical: "5%" }}>
                             <TouchableOpacity
@@ -381,6 +383,7 @@ class shop extends Component {
                         </ScrollView>
 
                         <Tabs
+                            tabContainerStyle={{ height: 60 }}
                             onChangeTab={(key) => this.activeColor(key)}
                             locked={true}
                             tabBarUnderlineStyle={{ backgroundColor: '#FD6958' }}
@@ -442,7 +445,13 @@ class shop extends Component {
                                 </View>
                             </Tab>
                         </Tabs>
+
+
+
                     </ScrollView>
+
+
+
                 </View>
             </View >
         );

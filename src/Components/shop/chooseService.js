@@ -5,6 +5,7 @@ import {
     Text, ScrollView, Picker, Alert
 
 } from 'react-native';
+import { CheckBox, Body } from 'native-base';
 import { connect } from "react-redux";
 import { Actions } from 'react-native-router-flux';
 import RadioForm, { RadioButton, RadioButtonInput, RadioButtonLabel } from 'react-native-simple-radio-button';
@@ -22,49 +23,52 @@ class ChooseService extends Component {
         };
     }
 
-    // UNSAFE_componentWillMount() {
-    //     let { shopServices, } = this.props
-    //     this.setState({
-    //         shopServices: shopServices
-    //     })
-    // }
-
-    chooseYourService = (itemValue, itemIndex, index) => {
+    UNSAFE_componentWillMount() {
         let { shopServices, } = this.props
+        this.setState({
+            shopServices: shopServices
+        })
+    }
 
-        if (itemValue && itemIndex) {
-            let price = 0
-            let allServices = [...shopServices]
-            let selectedShopService = allServices[index]
-            let selectedExtraService = selectedShopService.extraServices[itemIndex - 1];
-            let serviceName = selectedShopService.serviceName;
-            let allItems = this.state.allItems.slice(0);
-
-            for (var i = 0; i < allItems.length; i++) {
-                if (allItems[i].serviceName === selectedShopService.serviceName) {
-                    allItems.splice(i, 1)
-                }
-            }
-
-            selectedShopService.extraServices = [selectedExtraService]
-            allItems.push(selectedShopService)
-
-            console.log(shopServices, "SHOP_ALL_SERVICES")
-            console.log(selectedShopService, "SELECTED_SERVICES")
-            console.log(selectedExtraService, "SELECTED_EXTRA_SERVICES")
-            console.log(allItems, itemIndex, index, "DATA")
-
-            //Cost Add
-            for (var i = 0; i < allItems.length; i++) {
-                price = price + Number(allItems[i].extraServices[0].price)
-            }
-
-            this.setState({
-                totalCost: price,
-                [`${serviceName}`]: selectedExtraService,
-                allItems: allItems
-            })
+    chooseYourService = (key, index, ) => {
+        let { shopServices, totalCost } = this.state
+        let price = totalCost
+        let cloneAllServices = shopServices
+        let selectedService = shopServices[index]
+        if (selectedService.selected != true) {
+            selectedService.selected = true
+            price = price + Number(selectedService.price)
         }
+        else {
+            selectedService.selected = false
+            price = price - Number(selectedService.price)
+        }
+        cloneAllServices.splice(index, 1, selectedService)
+        this.setState({
+            shopServices: cloneAllServices,
+            totalCost: price
+        })
+    }
+
+
+    chooseYourExtraService = (key, index, serviceIndex) => {
+        let { shopServices, totalCost } = this.state
+        let price = totalCost
+        let cloneAllServices = shopServices
+        let selectedService = cloneAllServices[serviceIndex].extraServices[index]
+        if (selectedService.selected != true) {
+            selectedService.selected = true
+            price = price + Number(selectedService.price)
+        }
+        else {
+            selectedService.selected = false
+            price = price - Number(selectedService.price)
+
+        }
+        this.setState({
+            shopServices: cloneAllServices,
+            totalCost: price
+        })
     }
 
     next = () => {
@@ -78,9 +82,8 @@ class ChooseService extends Component {
     }
 
     render() {
-        const { totalCost, } = this.state
-        const { shopServices, } = this.props
-        // console.log(shopServices, "SERVICES_DETAILS")
+        const { totalCost, shopServices } = this.state
+        console.log(shopServices, "SERVICES_DETAILS")
         return (
             <View style={{
                 flex: 1,
@@ -168,32 +171,52 @@ class ChooseService extends Component {
                             {
                                 (shopServices) ? (
                                     shopServices.map((key, index) => {
-                                        let selectedData = this.state[`${key.serviceName}`] && this.state[`${key.serviceName}`].serviceName
                                         return (
-                                            <View key={index} style={{ flex: 1, marginTop: 10, flexDirection: "row", justifyContent: "center", alignItems: "center", }}>
-                                                <View style={{ flex: 0.5, justifyContent: "center", }}>
-                                                    <Text style={{ fontWeight: "normal", fontSize: 18 }}>{key.serviceName}</Text>
-                                                </View>
-                                                <View style={{ flex: 0.8, justifyContent: "center", alignItems: "flex-end", backgroundColor: "#F0F0F0" }}>
-                                                    <Picker
-                                                        style={{ width: "90%", color: "#8E8E93", }}
-                                                        selectedValue={selectedData}
-                                                        onValueChange={(itemValue, itemIndex, ) =>
-                                                            this.chooseYourService(itemValue, itemIndex, index)
-                                                        }
-                                                    >
-                                                        <Picker.Item label="Select Type" value="Select Type" />
-                                                        {
-                                                            (key.extraServices.length != 0) ? (
-                                                                key.extraServices.map((extraService, count) => {
-                                                                    return (
-                                                                        <Picker.Item key={count} label={extraService.serviceName + " (" + extraService.price + " $)"} value={extraService.serviceName} />
-                                                                    )
-                                                                })
-                                                            ) : null
-                                                        }
-                                                    </Picker>
-                                                </View>
+                                            <View key={index} style={{ flex: 1, marginTop: 10, }}>
+
+                                                <TouchableOpacity onPress={() => this.chooseYourService(key, index)}
+                                                    style={{ flex: 1, flexDirection: "row", borderBottomColor: "#E6E6EE", borderBottomWidth: key.selected ? 1.5 : 0.5, padding: 5, height: 40 }}>
+                                                    <View style={{ flex: 0.4, alignItems: "center", flexDirection: "row", }}>
+                                                        <CheckBox onPress={() => this.chooseYourService(key, index)} color="#FD6958" checked={key.selected} />
+                                                    </View>
+                                                    <View style={{ flex: 1.7, alignItems: "center", flexDirection: "row", }}>
+                                                        <Text style={{ fontWeight: "normal", fontSize: 15 }}>{key.serviceName}</Text>
+                                                    </View>
+                                                    <View style={{ flex: 0.5, alignItems: "center", justifyContent: "flex-end", flexDirection: "row", }}>
+                                                        <Text style={{ fontWeight: "normal", fontSize: 15 }}>{key.price}</Text>
+                                                    </View>
+                                                </TouchableOpacity>
+                                                {
+                                                    (key.selected) ? (
+                                                        <Text style={{ fontWeight: "bold", marginTop: 10, marginLeft: "5%", textDecorationLine: 'underline', }}>{"Extra Services"}</Text>
+                                                    ) : null
+                                                }
+                                                {
+                                                    (key.selected) ? (
+                                                        key.extraServices.map((item, indexing) => {
+                                                            return (
+                                                                <View key={indexing}>
+                                                                    <TouchableOpacity onPress={() => this.chooseYourExtraService(item, indexing, index)}
+                                                                        style={{ flex: 1, flexDirection: "row", borderBottomColor: "#E6E6EE", borderBottomWidth: 0.5, padding: 15 }}>
+                                                                        <View style={{ flex: 0.4, alignItems: "center", flexDirection: "row", }}>
+                                                                            <CheckBox onPress={() => this.chooseYourExtraService(item, indexing, index)} color="#FD6958" checked={item.selected} />
+                                                                        </View>
+                                                                        <View style={{ flex: 1.7, flexDirection: "row", }}>
+                                                                            <Text style={{ fontWeight: "normal", fontSize: 14, color: "#8E8E93" }}>{item.serviceName}</Text>
+                                                                        </View>
+                                                                        <View style={{ flex: 0.5, justifyContent: "flex-end", flexDirection: "row", }}>
+                                                                            <Text style={{ fontWeight: "normal", fontSize: 14, color: "#8E8E93" }}>{item.price}</Text>
+                                                                        </View>
+                                                                    </TouchableOpacity>
+                                                                </View>
+                                                            )
+                                                        })
+
+                                                    ) : null
+                                                }
+
+
+
                                             </View>
                                         )
                                     })

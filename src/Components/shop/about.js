@@ -119,7 +119,7 @@ class About extends Component {
 
                 <View style={{ width: "85%", height: 50, marginTop: 0, marginHorizontal: "7%" }}>
                     <TouchableOpacity
-                        onPress={() => Actions.BarberDetails()}
+                        // onPress={() => Actions.BarberDetails()}
                     >
                         <ImageBackground source={require('../../../assets/buttonBackground.png')} resizeMode="contain"
                             style={{ height: "100%", width: "100%", justifyContent: "center", }}

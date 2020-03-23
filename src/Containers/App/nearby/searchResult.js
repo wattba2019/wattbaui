@@ -1,16 +1,8 @@
 import React, { Component } from "react";
-import {
-    View, Image, ActivityIndicator, StyleSheet,
-    ImageBackground, StatusBar, TouchableOpacity,
-    Text, TextInput, ScrollView
-
-} from 'react-native';
+import { View, Image, StatusBar, TouchableOpacity, Text, ScrollView } from 'react-native';
 import { connect } from "react-redux";
 import { Actions } from 'react-native-router-flux';
-// import ShopsCards from '../../../Components/shopscards';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-
-
 
 class SearchResults extends Component {
     constructor(props) {
@@ -19,369 +11,112 @@ class SearchResults extends Component {
         };
     }
 
+    distance(lat1, lon1, lat2, lon2) {
+        var R = 6371; // km (change this constant to get miles)
+        var dLat = (lat2 - lat1) * Math.PI / 180;
+        var dLon = (lon2 - lon1) * Math.PI / 180;
+        var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+            Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+            Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        var d = R * c;
+        if (d > 1) return Math.round(d) + " km";
+        else if (d <= 1) return Math.round(d * 1000) + "m";
+        return d;
+    }
+
     render() {
+        const { shops } = this.props
+        const { currentLocation } = this.props
+        // console.log(shops, currentLocation.coords.latitude, currentLocation.coords.longitude, 24.8825, 67.0694, "SHOPS")
         return (
             <View style={{
                 flex: 1,
                 width: "100%",
-                // alignItems: "center",
                 backgroundColor: "white",
             }}>
                 <StatusBar backgroundColor="white" barStyle="dark-content" />
 
-                <View style={{
-                    flex: 0.7,
-                    flexDirection: "row",
-                    borderBottomWidth: 0.5,
-                    borderBottomColor: 'grey',
-                    // height:30
-                    // justifyContent: "center", 
-                    // alignItems: "center", 
-                    // backgroundColor: 'red'
-                }}>
-                    <View style={{
-                        flex: 1,
-                        justifyContent: "center",
-                        // alignItems: "center",
-                        // backgroundColor: "red"
-                    }}>
-                        {/* <TouchableOpacity
-                            onPress={() => Actions.pop()}
-                        >
-                            <Image source={require('../../../../assets/ArrowLeft.png')} resizeMode="contain"
-                                style={{ height: 20, width: 20, marginLeft: 25 }}
-                            />
-                        </TouchableOpacity> */}
-
-
-                        <TouchableOpacity onPress={() => Actions.pop()}
-                        >
+                <View style={{ flex: 0.7, flexDirection: "row", borderBottomWidth: 0.5, borderBottomColor: 'grey', }}>
+                    <View style={{ flex: 1, justifyContent: "center", }}>
+                        <TouchableOpacity onPress={() => Actions.pop()}>
                             <Ionicons name="ios-arrow-back" style={{ marginLeft: 25, color: "black", fontWeight: 'bold', fontSize: 28 }} />
                         </TouchableOpacity>
                     </View>
-
-                    <View style={{
-                        flex: 1,
-                        justifyContent: "center", alignItems: "center",
-                        // backgroundColor: "green"
-                    }}>
+                    <View style={{ flex: 1, justifyContent: "center", alignItems: "center", }}>
                         <Text style={{ alignItems: "center", }}>Search Results</Text>
                     </View>
-
-                    <View style={{
-                        flex: 1,
-                        // backgroundColor: "red"
-                    }}>
-
+                    <View style={{ flex: 1, }}>
                     </View>
-                    {/* <TouchableOpacity>
-                        <Image source={require('../../../../assets/ArrowLeft.png')} resizeMode="contain"
-                            style={{ height: 20, width: 20, marginTop: 30, marginLeft: 20 }}
-                        />
-                    </TouchableOpacity>
-                    <Text style={{ alignItems: "center", marginTop: 30, marginLeft: 90, }}>Search Results</Text> */}
-
                 </View>
 
-
-                <View style={{
-                    flex: 8,
-
-                    // backgroundColor: 'green'
-                }}>
-
+                <View style={{ flex: 8, }}>
                     <ScrollView>
-                        <TouchableOpacity
-                            onPress={() => Actions.Shop()}
+                        {
+                            (shops && shops != 0) ? (
+                                shops.map((key, index) => {
+                                    return (
+                                        <TouchableOpacity key={index}
+                                            onPress={() => Actions.Shop({ shop: key })}
+                                            style={{ flexDirection: "row", height: 100, marginTop: 10, marginLeft: 10, borderBottomWidth: 0.5, borderBottomColor: 'grey' }}>
+                                            <View style={{ flex: 3, }}>
+                                                {
+                                                    (key.coverImage != null) ? (
+                                                        <Image source={{ uri: key.coverImage }} resizeMode="cover"
+                                                            style={{ width: "100%", height: 85 }} />
+                                                    ) : <Image source={require('../../../../assets/nophoto.jpg')} resizeMode="cover"
+                                                        style={{ width: "100%", height: 85 }} />
+                                                }
+                                            </View>
+                                            <View style={{ flex: 7, marginLeft: 20, padding: 5, }}>
+                                                <Text style={{ fontWeight: "bold", }}>{key.businessName}</Text>
+                                                <Text style={{ color: "grey", fontSize: 14 }}>{key.addressLine1}</Text>
+                                                <View style={{ flex: 1, flexDirection: "row", }}>
+                                                    <View style={{ flex: 3, }}>
+                                                        <View style={{
+                                                            flexDirection: "row",
+                                                            // backgroundColor: "red"
+                                                        }}>
+                                                            <Image source={require('../../../../assets/Path.png')} resizeMode="contain"
+                                                                style={{ height: 15, width: 15, }}
+                                                            />
+                                                            <Text style={{ color: "grey", marginLeft: 7, fontSize: 13, }}>4.0</Text>
 
-                            style={{
-                                flexDirection: "row",
-                                height: 100,
-                                marginTop: 10,
-                                marginLeft: 10,
-                                borderBottomWidth: 0.5,
-                                borderBottomColor: 'grey'
-                                // backgroundColor: 'red'
-                            }}>
+                                                            <Image source={require('../../../../assets/Group.png')} resizeMode="contain"
+                                                                style={{ height: 14, width: 14, marginTop: 2, marginLeft: 5 }}
+                                                            />
+                                                            <Text style={{ marginLeft: 7, fontSize: 13 }}>{this.distance(currentLocation.coords.latitude, currentLocation.coords.longitude, key.location.coordinates[0], key.location.coordinates[1])} </Text>
+                                                        </View>
+                                                        {/* <Text style={{ color: "grey", fontSize: 12, color: "#ff4500" }}>8:30 am - 8:00 pm</Text> */}
+                                                        <Text style={{ color: "grey", fontSize: 12, color: "#ff4500" }}>{key.telePhone}</Text>
+                                                    </View>
 
-                            <View style={{
-                                flex: 3,
-                                // backgroundColor: 'red'
-                            }}>
-                                <Image source={require('../../../../assets/Rectangle.png')} resizeMode="contain"
-                                    style={{ height: 90, width: 110, }}
-                                />
-                            </View>
-
-                            <View style={{
-                                flex: 7,
-                                marginLeft: 20,
-                                padding: 5,
-                                // backgroundColor: 'green'
-                            }}>
-                                <Text style={{ fontWeight: "bold", }}>Ranya Barbershop</Text>
-                                <Text style={{ color: "grey", fontSize: 14 }}>47B R-Block Morden, Londen</Text>
-
-
-                                {/* <View> */}
-
-                                <View style={{
-                                    flex: 1,
-                                    flexDirection: "row",
-
-                                    //  backgroundColor: 'grey'
-                                }}>
-
-                                    <View style={{
-                                        flex: 3,
-
-                                        //  flexDirection: "row", 
-                                        //  backgroundColor: 'blue'
-                                    }}>
-
-                                        <View style={{
-                                            flexDirection: "row",
-
-                                            //  backgroundColor: 'red'
-                                        }}>
-                                            <Image source={require('../../../../assets/Path.png')} resizeMode="contain"
-                                                style={{ height: 15, width: 15, }}
-                                            />
-                                            <Text style={{ color: "grey", marginLeft: 7, fontSize: 13, }}>4.0</Text>
-
-                                            <Image source={require('../../../../assets/Group.png')} resizeMode="contain"
-                                                style={{ height: 14, width: 14, marginLeft: 5 }}
-                                            />
-                                            <Text style={{ marginLeft: 7, fontSize: 11 }}>1.2 km </Text>
-                                        </View>
-
-                                        <Text style={{ color: "grey", fontSize: 12, color: "#ff4500" }}>8:30 am - 8:00 pm</Text>
-
-                                    </View>
-
-                                    <View style={{
-                                        flex: 2,
-                                        flexDirection: "row",
-                                        justifyContent: "center",
-                                        alignItems: "center",
-                                        //  backgroundColor: 'grey'
-                                    }}>
-
-                                        <TouchableOpacity>
-                                            <Image source={require('../../../../assets/book.png')} resizeMode="contain"
-                                                style={{ height: 30, width: 80, }}
-                                            />
+                                                    <View style={{ flex: 2, flexDirection: "row", justifyContent: "center", alignItems: "center", }}>
+                                                        <TouchableOpacity style={{ backgroundColor: "#FD6958", width: '80%', height: 35, borderRadius: 25, justifyContent: "center", alignItems: "center" }}
+                                                            onPress={() => Actions.Shop({ shop: key })}
+                                                        >
+                                                            <Text style={{ color: "#ffffff", fontSize: 12, }}>View</Text>
+                                                            {/* <Image source={require('../../../../assets/book.png')} resizeMode="contain"
+                                                                style={{ height: 30, width: 80, }}
+                                                            /> */}
+                                                        </TouchableOpacity>
+                                                    </View>
+                                                </View>
+                                            </View>
                                         </TouchableOpacity>
-
-
-                                    </View>
-                                </View>
-
-
-
-                            </View>
-
-                        </TouchableOpacity>
-
-                        <TouchableOpacity
-                            onPress={() => Actions.Shop()}
-                            style={{
-                                flexDirection: "row",
-                                height: 100,
-                                marginTop: 10,
-                                marginLeft: 10,
-                                borderBottomWidth: 0.5,
-                                borderBottomColor: 'grey'
-                                // backgroundColor: 'red'
-                            }}>
-
-                            <View style={{
-                                flex: 3,
-                                // backgroundColor: 'red'
-                            }}>
-                                <Image source={require('../../../../assets/hair.png')} resizeMode="contain"
-                                    style={{ height: 90, width: 110, }}
-                                />
-                            </View>
-
-                            <View style={{
-                                flex: 7,
-                                marginLeft: 20,
-                                padding: 5,
-                                // backgroundColor: 'green'
-                            }}>
-                                <Text style={{ fontWeight: "bold", }}>Sun in Sky Hair Salon</Text>
-                                <Text style={{ color: "grey", fontSize: 14 }}>Crescent Town, Londen</Text>
-
-
-                                {/* <View> */}
-
-                                <View style={{
-                                    flex: 1,
-                                    flexDirection: "row",
-
-                                    //  backgroundColor: 'grey'
-                                }}>
-
-                                    <View style={{
-                                        flex: 3,
-
-                                        //  flexDirection: "row", 
-                                        //  backgroundColor: 'blue'
-                                    }}>
-
-                                        <View style={{
-                                            flexDirection: "row",
-
-                                            //  backgroundColor: 'red'
-                                        }}>
-                                            <Image source={require('../../../../assets/Path.png')} resizeMode="contain"
-                                                style={{ height: 15, width: 15, }}
-                                            />
-                                            <Text style={{ color: "grey", marginLeft: 7, fontSize: 13, }}>4.0</Text>
-
-                                            <Image source={require('../../../../assets/Group.png')} resizeMode="contain"
-                                                style={{ height: 14, width: 14, marginLeft: 5 }}
-                                            />
-                                            <Text style={{ marginLeft: 7, fontSize: 11 }}>1.2 km </Text>
-                                        </View>
-
-                                        <Text style={{ color: "grey", fontSize: 12, color: "#ff4500" }}>8:30 am - 8:00 pm</Text>
-
-                                    </View>
-
-                                    <View style={{
-                                        flex: 2,
-                                        flexDirection: "row",
-                                        justifyContent: "center",
-                                        alignItems: "center",
-                                        //  backgroundColor: 'grey'
-                                    }}>
-
-                                        <TouchableOpacity>
-                                            <Image source={require('../../../../assets/book.png')} resizeMode="contain"
-                                                style={{ height: 30, width: 80, }}
-                                            />
-                                        </TouchableOpacity>
-
-
-                                    </View>
-                                </View>
-
-
-
-                            </View>
-
-                        </TouchableOpacity>
-
-                        <TouchableOpacity
-                            onPress={() => Actions.Shop()}
-                            style={{
-                                flexDirection: "row",
-                                height: 100,
-                                marginTop: 10,
-                                marginLeft: 10,
-                                borderBottomWidth: 0.5,
-                                borderBottomColor: 'grey'
-                                // backgroundColor: 'red'
-                            }}>
-
-                            <View style={{
-                                flex: 3,
-                                // backgroundColor: 'red'
-                            }}>
-                                <Image source={require('../../../../assets/photo.png')} resizeMode="contain"
-                                    style={{ height: 90, width: 110, }}
-                                />
-                            </View>
-
-                            <View style={{
-                                flex: 7,
-                                marginLeft: 20,
-                                padding: 5,
-                                // backgroundColor: 'green'
-                            }}>
-                                <Text style={{ fontWeight: "bold", }}>Horizaon JD Barber</Text>
-                                <Text style={{ color: "grey", fontSize: 14 }}>Crescent Town, Londen</Text>
-
-
-                                {/* <View> */}
-
-                                <View style={{
-                                    flex: 1,
-                                    flexDirection: "row",
-
-                                    //  backgroundColor: 'grey'
-                                }}>
-
-                                    <View style={{
-                                        flex: 3,
-
-                                        //  flexDirection: "row", 
-                                        //  backgroundColor: 'blue'
-                                    }}>
-
-                                        <View style={{
-                                            flexDirection: "row",
-
-                                            //  backgroundColor: 'red'
-                                        }}>
-                                            <Image source={require('../../../../assets/Path.png')} resizeMode="contain"
-                                                style={{ height: 15, width: 15, }}
-                                            />
-                                            <Text style={{ color: "grey", marginLeft: 7, fontSize: 13, }}>4.0</Text>
-
-                                            <Image source={require('../../../../assets/Group.png')} resizeMode="contain"
-                                                style={{ height: 14, width: 14, marginLeft: 5 }}
-                                            />
-                                            <Text style={{ marginLeft: 7, fontSize: 11 }}>1.2 km </Text>
-                                        </View>
-
-                                        <Text style={{ color: "grey", fontSize: 12, color: "#ff4500" }}>8:30 am - 8:00 pm</Text>
-
-                                    </View>
-
-                                    <View style={{
-                                        flex: 2,
-                                        flexDirection: "row",
-                                        justifyContent: "center",
-                                        alignItems: "center",
-                                        //  backgroundColor: 'grey'
-                                    }}>
-
-                                        <TouchableOpacity>
-                                            <Image source={require('../../../../assets/book.png')} resizeMode="contain"
-                                                style={{ height: 30, width: 80, }}
-                                            />
-                                        </TouchableOpacity>
-
-
-                                    </View>
-                                </View>
-
-
-
-                            </View>
-                        </TouchableOpacity>
-
-
-
+                                    )
+                                })
+                            ) : null
+                        }
                     </ScrollView>
-
                 </View>
-
-
-
-
-
-
             </View>
         );
     }
 }
 let mapStateToProps = state => {
     return {
-
+        currentLocation: state.root.currentLocation,
     };
 };
 function mapDispatchToProps(dispatch) {
@@ -389,13 +124,3 @@ function mapDispatchToProps(dispatch) {
     })
 }
 export default connect(mapStateToProps, mapDispatchToProps)(SearchResults);
-
-
-const styles = StyleSheet.create({
-    contentContainer: {
-        flex: 1,
-        paddingBottom: 150,
-        backgroundColor: "green",
-
-    },
-});

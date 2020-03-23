@@ -2,16 +2,16 @@ const INITIAL_STATE = {
   //API's URL
   // bseUrl: "https://fathomless-citadel-43321.herokuapp.com",
   // bseUrl: "http://192.168.40.56:3002",
-  bseUrl: "http://192.168.10.10:3002",
+  bseUrl: "http://192.168.8.100:3002",
   //user details
   userProfile: {},
-  // currentLocation: null,
-  currentLocation: {
-    coords: {
-      latitude: 24.9819378,
-      longitude: 67.0545162,
-    }
-  },
+  currentLocation: null,
+  // currentLocation: {
+  //   coords: {
+  //     latitude: 24.9819378,
+  //     longitude: 67.0545162,
+  //   }
+  // },
   //shop details
   shopServices: null,
   stylists: null,
