@@ -30,7 +30,7 @@ class Nearby extends Component {
             let cloneLocation = {
                 lat: currentLocation.coords.latitude,
                 long: currentLocation.coords.longitude,
-                km: 15,
+                km: 5,
             }
             var options = {
                 method: 'POST',
@@ -72,7 +72,7 @@ class Nearby extends Component {
             let cloneLocation = {
                 lat: currentLocation.coords.latitude,
                 long: currentLocation.coords.longitude,
-                km: 15,
+                km: 5,
             }
             var options = {
                 method: 'POST',

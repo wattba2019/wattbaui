@@ -8,6 +8,7 @@ import {
 import { connect } from "react-redux";
 import { Actions } from 'react-native-router-flux';
 import axios from 'axios';
+import OTPInputView from '@twotalltotems/react-native-otp-input'
 
 class Phoneverification extends Component {
     constructor(props) {
@@ -18,11 +19,11 @@ class Phoneverification extends Component {
     }
 
     verify = () => {
-        let { input1, input2, input3, input4, input5, input6, } = this.state
+        let { input1, input2, input3, input4, input5, input6, code } = this.state
 
-        let sixDigitCode = input1 + input2 + input3 + input4 + input5 + input6
-
-        if (sixDigitCode.length == 6) {
+        // let sixDigitCode = input1 + input2 + input3 + input4 + input5 + input6
+        let sixDigitCodes = code
+        if (sixDigitCode && sixDigitCode.length == 6) {
             this.setState({
                 loader: true
             })
@@ -111,7 +112,23 @@ class Phoneverification extends Component {
                 }}>
                     <Text style={{ fontSize: 30, fontWeight: "bold" }}>Phone Verification</Text>
                     <Text style={{}}>Enter your OTP code here</Text>
-                    <View style={{
+
+
+                    <View style={styles.mainContainer}>
+                        <OTPInputView
+                            style={{ width: '80%', height: 200 }}
+                            pinCount={6}
+                            // code={this.state.code} //You can supply this prop or not. The component will be used as a controlled / uncontrolled component respectively.
+                            onCodeChanged={code => { this.setState({ code }) }}
+                            autoFocusOnLoad
+                            codeInputFieldStyle={styles.underlineStyleBase}
+                            codeInputHighlightStyle={styles.underlineStyleHighLighted}
+                            onCodeFilled={(code => { console.log(`Code is ${code}, you are good to go!`) })}
+                        />
+                    </View>
+
+
+                    {/* <View style={{
                         marginTop: 40,
                         flexDirection: "row",
                         height: "18%",
@@ -176,7 +193,11 @@ class Phoneverification extends Component {
                                 value={this.state.input6}
                             />
                         </View>
-                    </View>
+                    </View> */}
+
+
+
+
 
                     <View style={{ marginTop: "25%" }}>
                         <Text style={{ textAlign: "center", fontSize: 15, color: "#B7B7C0" }}>Didn't receive a code?</Text>
@@ -228,5 +249,32 @@ const styles = StyleSheet.create({
     contentContainer: {
         paddingBottom: 250,
         backgroundColor: "white",
+    },
+    mainContainer: {
+        marginTop: "5%",
+        justifyContent: "center",
+        alignItems: "center",
+        width: "100%",
+    },
+    borderStyleBase: {
+        width: 30,
+        height: 45,
+    },
+    borderStyleHighLighted: {
+        borderColor: "#FD6958",
+        color: "#FD6958"
+    },
+    underlineStyleBase: {
+        width: 30,
+        height: 45,
+        borderWidth: 0,
+        borderBottomWidth: 3,
+        color: "#FD6958",
+        // backgroundColor: "red",
+
+    },
+    underlineStyleHighLighted: {
+        borderColor: "#FD6958",
+        color: "#000000"
     },
 });

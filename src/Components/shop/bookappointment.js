@@ -22,8 +22,22 @@ class BookAppointment extends Component {
     }
 
     componentDidMount() {
-        let { stylists, workinghours } = this.props
+        let { stylists, workinghours, gendre } = this.props
         let { date } = this.state
+
+        let barberList = []
+        if (gendre) {
+            for (let index = 0; index < stylists.length; index++) {
+                const element = stylists[index];
+                const elementGender = stylists[index].gender.toLowerCase();
+                if (elementGender === gendre) {
+                    barberList.push(element)
+                }
+            }
+        }
+        else {
+            barberList = stylists
+        }
 
         var d;
         if (date != "") {
@@ -48,7 +62,7 @@ class BookAppointment extends Component {
             let returnValue = this.getTimeStops(start, end);
             this.setState({
                 slots: returnValue,
-                stylists: stylists,
+                stylists: barberList,
                 day: day,
             })
         }
@@ -56,7 +70,7 @@ class BookAppointment extends Component {
             this.setState({
                 day: day,
                 slots: [],
-                stylists: stylists,
+                stylists: barberList,
             })
         }
 
@@ -104,10 +118,12 @@ class BookAppointment extends Component {
     }
 
 
-    Checkout() {
-        let { chosenItems, gendre, totalCost, } = this.props
-        let { date, selectedSlotTime, selectedBarber, selectedBarberBolean } = this.state
 
+    Checkout() {
+        let { chosenItems, extraServicesSelected, gendre, totalCost, pack } = this.props
+        let { date, selectedSlotTime, selectedBarber, selectedBarberBolean } = this.state
+        var dt = moment(selectedSlotTime, ["h:mm A"]).format("HH");
+        var dateMiliSecond = moment(date).format("x");
         if (date === "") {
             Alert.alert("Please select date")
         }
@@ -121,18 +137,31 @@ class BookAppointment extends Component {
         else {
             let cloneObj = {
                 chosenItems: chosenItems,
+                extraServicesSelected: extraServicesSelected,
                 gendre: gendre,
                 cost: totalCost,
+                bookingHour: dt,
                 selectedSlotTime: selectedSlotTime,
-                selectedBarber: selectedBarber,
-                bookingDate: date
+                selectedBarber: selectedBarber._id,
+                bookingDateTime: dateMiliSecond,
+                bookingDate: date,
+                bookerId: this.props.bookerId,
+                shopId: this.props.shopId,
+                package: pack,
+            }
+
+            if (pack === true) {
+                cloneObj.package = true
+            }
+            else {
+                cloneObj.package = false
             }
             Actions.Checkout({ booking: cloneObj })
         }
     }
 
     render() {
-        let { totalCost, } = this.props
+        let { totalCost, gendre } = this.props
         let { stylists, slots, selectedSlotTime, day } = this.state
 
         return (
@@ -246,11 +275,11 @@ class BookAppointment extends Component {
                                 }
                             </View>
 
+                            <View style={{ paddingVertical: "5%" }}>
+                                <Text style={{ fontSize: 22, color: "#4B534F" }}>Choose Stylists</Text>
+                            </View>
                         </View>
 
-                        <View style={{ paddingVertical: "5%" }}>
-                            <Text style={{ fontSize: 22, color: "#4B534F" }}>Choose Barber</Text>
-                        </View>
 
                         <ScrollView
                             contentContainerStyle={{ flexGrow: 1 }}
@@ -281,8 +310,8 @@ class BookAppointment extends Component {
                                                     borderWidth: 1.80,
                                                     overflow: "hidden"
                                                 }}>
-                                                    {(key.serviceImage != null) ? (
-                                                        <Image source={{ uri: key.serviceImage }} resizeMode="cover"
+                                                    {(key.coverImage != null) ? (
+                                                        <Image source={{ uri: key.coverImage }} resizeMode="cover"
                                                             style={{ width: "90%", height: "90%", borderRadius: 100 }}
                                                         />
                                                     ) : <Image source={require('../../../assets/nophoto.jpg')} resizeMode="cover"
@@ -307,7 +336,19 @@ class BookAppointment extends Component {
                                         <Text style={{ marginTop: 5, fontSize: 10, color: "#000000", textAlign: "right", }}>Loading...</Text>
                                     </TouchableOpacity>
                             }
-
+                            {
+                                (stylists && stylists.length === 0) ? (
+                                    <TouchableOpacity style={{
+                                        height: 30,
+                                        width: "100%",
+                                        justifyContent: "center",
+                                        alignItems: "center",
+                                        // backgroundColor: "red"
+                                    }}>
+                                        <Text style={{ marginTop: 5, fontSize: 10, color: "red", textAlign: "right", }}>There is no {gendre} stylists</Text>
+                                    </TouchableOpacity>
+                                ) : null
+                            }
                         </ScrollView>
                     </ScrollView>
                 </View>
@@ -346,6 +387,8 @@ let mapStateToProps = state => {
     return {
         stylists: state.root.stylists,
         workinghours: state.root.workinghours,
+        shopId: state.root.shop._id,
+        bookerId: state.root.userProfile._id,
     };
 };
 function mapDispatchToProps(dispatch) {

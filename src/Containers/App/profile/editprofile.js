@@ -114,7 +114,7 @@ class EditProfile extends Component {
                 })
                 this.closeModal()
                 Actions.VerifyCodeEmail({ email: this.props.userProfile.email })
-                console.log(data.data, "SEND_EMAIL_VERIFICATION_CODE")
+                console.log(data.data, cloneData, "SEND_EMAIL_VERIFICATION_CODE")
                 // alert(data.data.message)
             }).catch((err) => {
                 this.setState({

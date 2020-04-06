@@ -21,7 +21,9 @@ class OfferDetails extends Component {
 
     next = () => {
         let { offerDetails } = this.props
-        Actions.Bookappointment({ chosenItems: offerDetails, totalCost: offerDetails.price })
+        console.log(offerDetails, "OFFERDETAILS")
+        let packId = [offerDetails._id]
+        Actions.Bookappointment({ chosenItems: packId, totalCost: offerDetails.price, pack: true })
     }
 
     render() {

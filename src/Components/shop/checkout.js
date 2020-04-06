@@ -13,6 +13,7 @@ import { Actions } from 'react-native-router-flux';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons'
 import Textarea from 'react-native-textarea';
 // import DatePicker1 from 'react-native-date-ranges';
+import axios from 'axios';
 
 class Checkout extends Component {
     constructor(props) {
@@ -20,13 +21,57 @@ class Checkout extends Component {
         this.state = {
             date: "",
             Message: "",
+            loader: false,
         }
     }
 
+    submitBooking = () => {
+        const { booking, } = this.props
+        this.setState({
+            loader: !this.state.loader
+        })
+        let cloneBookingData = {
+            shopId: booking.shopId,
+            bookerId: booking.bookerId,
+            stylistId: booking.selectedBarber,
+            bookingDateTime: booking.bookingDateTime,
+            bookingHour: booking.bookingHour,
+            requiredServiceId: booking.chosenItems,
+            requiredExtraServices: booking.extraServicesSelected,
+            package: booking.package,
+            instruction: this.state.Message,
+        }
+        console.log(cloneBookingData, "cloneSignUpData")
+        var options = {
+            method: 'POST',
+            url: `${this.props.bseUrl}/bookings/addBooking`,
+            headers:
+            {
+                'cache-control': 'no-cache',
+                "Allow-Cross-Origin": '*',
+            },
+            data: cloneBookingData
+        };
+        axios(options)
+            .then((data) => {
+                console.log(data, "BOOKING_CREATE_SUCCESSFULLY")
+                this.setState({
+                    loader: !this.state.loader
+                })
+                Actions.Submited()
+            }).catch((err) => {
+                console.log(err.response.data, "ERROR_ON_SIGN_UP")
+                // console.log(err.response.data.message, "ERROR_ON_SIGN_UP")
+                alert(err.response.data.message)
+                this.setState({
+                    loader: !this.state.loader
+                })
+            })
+    }
+
     render() {
-        const { Message } = this.state
+        const { Message, loader } = this.state
         const { booking, shop, userProfile } = this.props
-        console.log(booking, shop, userProfile, "BOOKINGS")
 
         return (
             <View style={{ flex: 1, backgroundColor: "#fff" }}>
@@ -180,7 +225,7 @@ class Checkout extends Component {
 
                                         <View style={{ flexDirection: "row", height: 45, justifyContent: "space-between", marginTop: 10, borderColor: "#D4D4E0", borderWidth: 0.5, borderRadius: 5 }}>
                                             <View style={{ flex: 1, borderTopRightRadius: 5, borderBottomRightRadius: 5, marginLeft: 15, justifyContent: "center", alignItems: "flex-start" }}>
-                                                <Text style={{ alignItems: "center",  fontSize: 12, }}>{booking.bookingDate}</Text>
+                                                <Text style={{ alignItems: "center", fontSize: 12, }}>{booking.bookingDate}</Text>
                                             </View>
 
                                             <View style={{ flex: 0.2, borderColor: "#D4D4E0", borderWidth: 0.5, justifyContent: "center", alignItems: "center" }}>
@@ -190,7 +235,7 @@ class Checkout extends Component {
 
                                         <View style={{ flexDirection: "row", marginBottom: 20, height: 45, justifyContent: "space-between", marginTop: 10, borderColor: "#D4D4E0", borderWidth: 0.5, borderRadius: 5 }}>
                                             <View style={{ flex: 1, borderTopRightRadius: 5, borderBottomRightRadius: 5, marginLeft: 15, justifyContent: "center", alignItems: "flex-start" }}>
-                                                <Text style={{ alignItems: "center",  fontSize: 12, }}>{booking.selectedSlotTime}</Text>
+                                                <Text style={{ alignItems: "center", fontSize: 12, }}>{booking.selectedSlotTime}</Text>
                                             </View>
 
                                             <View style={{ flex: 0.2, borderColor: "#D4D4E0", borderWidth: 0.5, justifyContent: "center", alignItems: "center" }}>
@@ -245,7 +290,7 @@ class Checkout extends Component {
                                         <View style={{ width: "90%", marginHorizontal: "5%" }}></View>
                                         <View style={{ flexDirection: "row", marginBottom: 20, height: 45, justifyContent: "space-between", marginTop: 0, borderColor: "#D4D4E0", borderWidth: 0.5, borderRadius: 5 }}>
                                             <View style={{ flex: 1, borderTopRightRadius: 5, borderBottomRightRadius: 5, marginLeft: 15, justifyContent: "center", alignItems: "flex-start" }}>
-                                                <Text style={{ alignItems: "center", fontSize: 12, }}>{booking.selectedSlotTime}</Text>
+                                                <Text style={{ alignItems: "center", fontSize: 12, }}>{userProfile.phoneNumber}</Text>
                                             </View>
                                             <View style={{ flex: 0.2, borderColor: "#D4D4E0", borderWidth: 0.5, justifyContent: "center", alignItems: "center" }}>
                                                 <MaterialCommunityIcons style={{ color: "#6E7990" }} size={28} name={"cellphone"} />
@@ -413,10 +458,16 @@ class Checkout extends Component {
                             }}>
                                 <View style={{ flex: 1, width: "100%", justifyContent: "center", alignItems: "flex-end", }}>
                                     <TouchableOpacity
-                                        // onPress={() => alert("Under Development")}
-                                        onPress={() => Actions.Submited()}
+                                        onPress={() => this.submitBooking()}
+                                        // onPress={() => Actions.Submited()}
                                         style={{ width: "100%", height: 42, justifyContent: "center", alignItems: "center", backgroundColor: "#FD6958", borderRadius: 0 }}>
-                                        <Text style={{ fontWeight: "bold", fontSize: 18, color: "#ffffff" }}>Pay Now</Text>
+                                        {
+                                            (loader != true) ? (
+                                                <Text style={{ fontWeight: "bold", fontSize: 18, color: "#ffffff" }}>Pay Now</Text>
+                                            ) : <ActivityIndicator color="#ffffff" />
+                                        }
+                                        {/* <Text style={{ fontWeight: "bold", fontSize: 18, color: "#ffffff" }}>Pay Now</Text> */}
+
                                     </TouchableOpacity>
                                 </View>
                             </View>
@@ -465,6 +516,8 @@ let mapStateToProps = state => {
     return {
         shop: state.root.shop,
         userProfile: state.root.userProfile,
+        bseUrl: state.root.bseUrl,
+
     };
 };
 function mapDispatchToProps(dispatch) {

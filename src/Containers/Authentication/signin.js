@@ -16,12 +16,12 @@ class Signin extends Component {
         this.state = {
             loader: false,
             activateAccount: false,
-            // email: "",
-            // password: ""
+            email: "",
+            password: "",
             email: "mynameisabdullahv1@gmail.com",
             password: "12345678"
             // email: "abddullahshah@gmail.com",
-            // password: "123456789"
+            // password: "abcd@123456"
         };
     }
 
@@ -175,7 +175,7 @@ class Signin extends Component {
                         >
                             <Text style={{ textAlign: "center", fontSize: 15, marginTop: activateAccount ? 5 : 20, color: "black" }}>Forgot your password?</Text>
                         </TouchableOpacity>
-                        
+
                         <TouchableOpacity
                             style={{ flexDirection: "row", marginTop: 10, }}
                             onPress={() => Actions.Signup()}

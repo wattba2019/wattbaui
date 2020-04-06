@@ -72,9 +72,26 @@ class ChooseService extends Component {
     }
 
     next = () => {
-        let { allItems, value3, totalCost } = this.state
+        let { value3, totalCost, shopServices } = this.state
+        let allItems = []
+        let extraServicesSelected = []
+        for (let index = 0; index < shopServices.length; index++) {
+            const extraServices = shopServices[index].extraServices;
+            const _id = shopServices[index]._id;
+            const selectedBolean = shopServices[index].selected;
+            if (selectedBolean && selectedBolean === true) {
+                for (let j = 0; j < extraServices.length; j++) {
+                    const extraServiceElement = extraServices[j];
+                    if (extraServiceElement.selected && extraServiceElement.selected === true) {
+                        extraServicesSelected.push(extraServiceElement)
+                    }
+                }
+                allItems.push(_id)
+            }
+        }
+
         if (allItems.length != 0) {
-            Actions.Bookappointment({ chosenItems: allItems, gendre: value3, totalCost: totalCost })
+            Actions.Bookappointment({ chosenItems: allItems, extraServicesSelected: extraServicesSelected, gendre: value3, totalCost: totalCost, pack: false })
         }
         else {
             Alert.alert("Please choose service")
@@ -83,7 +100,7 @@ class ChooseService extends Component {
 
     render() {
         const { totalCost, shopServices } = this.state
-        console.log(shopServices, "SERVICES_DETAILS")
+        // console.log(shopServices, "SERVICES_DETAILS")
         return (
             <View style={{
                 flex: 1,
@@ -140,7 +157,6 @@ class ChooseService extends Component {
                                     }
                                     return (
                                         <RadioButton labelHorizontal={true} key={i} >
-                                            {/*  You can set RadioButtonLabel before RadioButtonInput */}
                                             <RadioButtonInput
                                                 animation={true}
                                                 obj={obj}
