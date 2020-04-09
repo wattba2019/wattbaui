@@ -1,18 +1,8 @@
 import React, { Component } from 'react';
-import {
-    View, Text, StyleSheet, TouchableOpacity, StatusBar,
-    ScrollView, Picker, Image, SafeAreaView, ActivityIndicator,
-    images, Dimensions, ImageBackground
-} from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image, } from 'react-native';
 import { connect } from "react-redux";
-import { Icon, Tabs, Tab, TabHeading } from 'native-base';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import Entypo from 'react-native-vector-icons/Entypo';
-import Zocial from 'react-native-vector-icons/Zocial';
-import AntDesign from 'react-native-vector-icons/AntDesign';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import ImageSlider from 'react-native-image-slider';
 import { Actions } from 'react-native-router-flux';
+import moment from 'moment';
 
 class AppointmentCard extends Component {
     constructor(props) {
@@ -22,143 +12,81 @@ class AppointmentCard extends Component {
     }
 
     render() {
-        const { activeColor } = this.state
+        const { appointments } = this.props
         return (
             <ScrollView contentContainerStyle={styles.contentContainer}
             >
-                <TouchableOpacity
-                    onPress={() => Actions.AppointmentDetails()}
-                >
-                    <View style={{
-                        flex: 1, justifyContent: "center", alignItems: "center", marginTop: 10,
-                        backgroundColor: "#F7F7F7"
-                    }} >
-                        <View style={{ flex: 1, width: "90%", flexDirection: "row", height: 80 }}>
-                            <Image
-                                resizeMode="contain"
-                                style={{ width: 80, height: 80 }}
-                                source={require("../../assets/cline1.png")}
-                            />
-                            <View style={{ marginLeft: 20, justifyContent: "center", }}>
-                                <Text style={{ fontSize: 20 }}>Feve snes</Text>
-                                <Text style={{ fontSize: 15 }}>Ranya Barbershop</Text>
-                            </View>
-                        </View>
-                    </View>
+                {
+                    (appointments && appointments.length != 0) ? (
+                        appointments.map((key, index) => {
+                            return (
+                                <TouchableOpacity key={index}
+                                    onPress={() => Actions.AppointmentDetails({ service: key })}
+                                >
+                                    <View style={{
+                                        flex: 1, justifyContent: "center", alignItems: "center", marginTop: 10,
+                                        backgroundColor: "#F7F7F7"
+                                    }} >
+                                        <View style={{ flex: 1, width: "90%", flexDirection: "row", height: 80 }}>
+                                            {
+                                                (key.stylistId.coverImage != null) ? (
+                                                    <Image source={{ uri: key.stylistId.coverImage }} resizeMode="cover"
+                                                        style={{ width: 80, height: 80, borderRadius: 20 }}
+                                                    />
+                                                ) : <Image source={require('../../assets/nophoto.jpg')} resizeMode="cover"
+                                                    style={{ width: 80, height: 80, borderRadius: 20 }}
+                                                    />
+                                            }
+                                            <View style={{ marginLeft: 20, justifyContent: "center", }}>
+                                                <Text style={{ fontSize: 20 }}>{key.stylistId.fullname}</Text>
+                                                <Text style={{ fontSize: 15 }}>{key.shopId.businessName}</Text>
+                                            </View>
+                                        </View>
+                                    </View>
 
-                    <View style={{
-                        flex: 1, justifyContent: "center", alignItems: "center", marginTop: 0, width: "100%",
-                        backgroundColor: "white"
-                    }} >
-                        <View style={{ flex: 1, width: "90%", flexDirection: "row", height: 80, borderBottomColor: "#EFEFF4", borderBottomWidth: 0.5 }}>
-                            <View style={{ justifyContent: "center", }}>
-                                <Text style={{ color: "grey" }}>Date</Text>
-                                <Text style={{}}>Sun, 17 Apr 08:00</Text>
-                            </View>
-                        </View>
-                    </View>
+                                    <View style={{
+                                        flex: 1, justifyContent: "center", alignItems: "center", marginTop: 0, width: "100%",
+                                        backgroundColor: "white"
+                                    }} >
+                                        <View style={{ flex: 1, width: "90%", flexDirection: "row", height: 80, borderBottomColor: "#EFEFF4", borderBottomWidth: 0.5 }}>
+                                            <View style={{ justifyContent: "center", }}>
+                                                <Text style={{ color: "grey" }}>Date</Text>
+                                                <Text >{moment(key.bookingDateTime).format("dddd, MMMM Do YYYY")}</Text>
+                                                <Text style={{ fontWeight: "bold" }}>{moment(key.bookingHour, ["h:mm A"]).format("h:mm A")}</Text>
+                                            </View>
+                                        </View>
+                                    </View>
 
-                    <View style={{
-                        flex: 1, justifyContent: "center", alignItems: "center", marginTop: 0, width: "100%",
-                        backgroundColor: "white"
-                    }} >
-                        <View style={{ flex: 1, width: "90%", flexDirection: "row", height: 80, borderBottomColor: "#EFEFF4", borderBottomWidth: 0.5 }}>
-                            <View style={{ justifyContent: "center", }}>
-                                <Text style={{ color: "grey" }}>Location</Text>
-                                <Text style={{}}>47B R-Block Morden, London</Text>
-                            </View>
+                                    <View style={{
+                                        flex: 1, justifyContent: "center", alignItems: "center", marginTop: 0, width: "100%",
+                                        backgroundColor: "white"
+                                    }} >
+                                        <View style={{ flex: 1, width: "90%", flexDirection: "row", height: 80, borderBottomColor: "#EFEFF4", borderBottomWidth: 0.5 }}>
+                                            <View style={{ justifyContent: "center", }}>
+                                                <Text style={{ color: "grey" }}>Location</Text>
+                                                <Text >{key.shopId.addressLine1}</Text>
+                                            </View>
+                                        </View>
+                                    </View>
+                                </TouchableOpacity>
+                            )
+                        })
+                    ) :
+                        <View
+                            style={{
+                                flex: 1,
+                                height: 300,
+                                justifyContent: "center",
+                                alignItems: "center",
+                                // backgroundColor: "red"
+                            }}
+                        >
+                            <Text style={{ color: "grey" }}>There is no data</Text>
                         </View>
-                    </View>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    onPress={() => Actions.AppointmentDetails()}
-                >
-                    <View style={{
-                        flex: 1, justifyContent: "center", alignItems: "center", marginTop: 10,
-                        backgroundColor: "#F7F7F7"
-                    }} >
-                        <View style={{ flex: 1, width: "90%", flexDirection: "row", height: 80 }}>
-                            <Image
-                                resizeMode="contain"
-                                style={{ width: 80, height: 80 }}
-                                source={require("../../assets/cline2.png")}
-                            />
-                            <View style={{ marginLeft: 20, justifyContent: "center", }}>
-                                <Text style={{ fontSize: 20 }}>Stev bURK</Text>
-                                <Text style={{ fontSize: 15 }}>Horizon Barbershop</Text>
-                            </View>
-                        </View>
-                    </View>
+                }
 
-                    <View style={{
-                        flex: 1, justifyContent: "center", alignItems: "center", marginTop: 0, width: "100%",
-                        backgroundColor: "white"
-                    }} >
-                        <View style={{ flex: 1, width: "90%", flexDirection: "row", height: 80, borderBottomColor: "#EFEFF4", borderBottomWidth: 0.5 }}>
-                            <View style={{ justifyContent: "center", }}>
-                                <Text style={{ color: "grey" }}>Date</Text>
-                                <Text style={{}}>Sun, 17 Apr 08:00</Text>
-                            </View>
-                        </View>
-                    </View>
 
-                    <View style={{
-                        flex: 1, justifyContent: "center", alignItems: "center", marginTop: 0, width: "100%",
-                        backgroundColor: "white"
-                    }} >
-                        <View style={{ flex: 1, width: "90%", flexDirection: "row", height: 80, borderBottomColor: "#EFEFF4", borderBottomWidth: 0.5 }}>
-                            <View style={{ justifyContent: "center", }}>
-                                <Text style={{ color: "grey" }}>Location</Text>
-                                <Text style={{}}>47B R-Block Morden, London</Text>
-                            </View>
-                        </View>
-                    </View>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    onPress={() => Actions.AppointmentDetails()}
-                >
-                    <View style={{
-                        flex: 1, justifyContent: "center", alignItems: "center", marginTop: 10,
-                        backgroundColor: "#F7F7F7"
-                    }} >
-                        <View style={{ flex: 1, width: "90%", flexDirection: "row", height: 80 }}>
-                            <Image
-                                resizeMode="contain"
-                                style={{ width: 80, height: 80 }}
-                                source={require("../../assets/cline2.png")}
-                            />
-                            <View style={{ marginLeft: 20, justifyContent: "center", }}>
-                                <Text style={{ fontSize: 20 }}>Stev bURK</Text>
-                                <Text style={{ fontSize: 15 }}>Horizon Barbershop</Text>
-                            </View>
-                        </View>
-                    </View>
-
-                    <View style={{
-                        flex: 1, justifyContent: "center", alignItems: "center", marginTop: 0, width: "100%",
-                        backgroundColor: "white"
-                    }} >
-                        <View style={{ flex: 1, width: "90%", flexDirection: "row", height: 80, borderBottomColor: "#EFEFF4", borderBottomWidth: 0.5 }}>
-                            <View style={{ justifyContent: "center", }}>
-                                <Text style={{ color: "grey" }}>Date</Text>
-                                <Text style={{}}>Sun, 17 Apr 08:00</Text>
-                            </View>
-                        </View>
-                    </View>
-
-                    <View style={{
-                        flex: 1, justifyContent: "center", alignItems: "center", marginTop: 0, width: "100%",
-                        backgroundColor: "white"
-                    }} >
-                        <View style={{ flex: 1, width: "90%", flexDirection: "row", height: 80, borderBottomColor: "#EFEFF4", borderBottomWidth: 0.5 }}>
-                            <View style={{ justifyContent: "center", }}>
-                                <Text style={{ color: "grey" }}>Location</Text>
-                                <Text style={{}}>47B R-Block Morden, London</Text>
-                            </View>
-                        </View>
-                    </View>
-                </TouchableOpacity>
-            </ScrollView>
+            </ScrollView >
 
 
         );

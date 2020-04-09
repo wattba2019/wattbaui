@@ -52,11 +52,16 @@ class Appointments extends Component {
             .then((data) => {
                 let result = data.data
                 console.log(result, "FETCHING_MY_APPOINTMENTS")
+
+                const pending = result.pending.sort((a, b) => b.bookingDateTime - a.bookingDateTime)
+                const approved = result.approved.sort((a, b) => b.bookingDateTime - a.bookingDateTime)
+                const cancled = result.cancled.sort((a, b) => b.bookingDateTime - a.bookingDateTime)
+
                 this.setState({
                     loader: !this.state.loader,
-                    upcoming: result.pending,
-                    approved: result.approved,
-                    declined: result.cancled,
+                    upcoming: pending,
+                    approved: approved,
+                    declined: cancled,
                 })
             }).catch((err) => {
                 console.log(err.response.data, "ERROR")
@@ -92,8 +97,7 @@ class Appointments extends Component {
 
     render() {
         const { activeColor, loader, upcoming, approved, declined } = this.state
-        console.log(upcoming, approved, declined, "LOADER")
-
+        // console.log(upcoming, approved, declined, "LOADER")
         return (
             <View style={{
                 flex: 1,

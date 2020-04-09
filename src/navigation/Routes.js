@@ -10,6 +10,7 @@ import ActivateAccount from '../Containers/Authentication/activateyouraccount'
 import Phoneverification from '../Containers/Authentication/phoneveryfication'
 import Veryfiyournumber from '../Containers/Authentication/verifyyournumber'
 import Allowaccesslocation from '../Containers/Authentication/allowaccesslocation'
+import CountryLists from '../Containers/Authentication/countryLists'
 import AppContainer from '../Containers/App/appcontainer'
 import Filters from '../Containers/App/nearby/filters'
 import Shop from '../Components/shop/index'
@@ -34,9 +35,9 @@ class Route extends Component {
         titleStyle={{ color: "white" }}
         tintColor="white">
         <Scene>
-          <Scene key='SplashScreen' component={SplashScreen} hideNavBar={true} initial />
+          <Scene key='SplashScreen' component={SplashScreen} hideNavBar={true} />
           <Scene key='Walkthrough' component={Walkthrough} hideNavBar={true} />
-          <Scene key='Signin' component={Signin} hideNavBar={true} />
+          <Scene key='Signin' component={Signin} hideNavBar={true} initial />
           <Scene key='Forgotyourpassword' component={Forgotyourpassword} hideNavBar={true} />
           <Scene key='VerifyCode' component={VerifyCode} hideNavBar={true} />
           <Scene key='VerifyCodeEmail' component={VerifyCodeEmail} hideNavBar={true} />
@@ -44,6 +45,7 @@ class Route extends Component {
           <Scene key='ActivateAccount' component={ActivateAccount} hideNavBar={true} />
           <Scene key='Veryfiyournumber' component={Veryfiyournumber} hideNavBar={true} />
           <Scene key='Phoneverification' component={Phoneverification} hideNavBar={true} />
+          <Scene key='CountryLists' component={CountryLists} hideNavBar={true} />
           <Scene key='Allowaccesslocation' component={Allowaccesslocation} hideNavBar={true} />
           <Scene key='AppContainer' component={AppContainer} hideNavBar={true} />
           <Scene key='Shop' component={Shop} hideNavBar={true} />

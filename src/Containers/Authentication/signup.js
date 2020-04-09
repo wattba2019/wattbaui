@@ -16,30 +16,44 @@ class Signup extends Component {
         super(props);
         this.state = {
             loader: false,
-            // fullName: "Abdullah Shah",
-            // email: "abddullahshah5@gmail.com",
-            // phoneNumber: "+923452153709",
-            // password: "12345678",
-            cca2: 'GB',
-            countryCode: "44",
-            phoneNumber: "",
-            // phoneNumber: "7480824585",
-            // cca2: 'PK',
-            // countryCode: "92",
-            // phoneNumber: "3368990498",
+            fullName: "Abdullah Shah",
+            email: "abddullahshah@gmail.com",
+            password: "12345678",
+            // phoneNumber: "3368990497",
+            phoneNumber: "3450558623",
+
+            dialCode: "1",
+            imgPath: require(`../../services/resources/flags/images/us.png`),
+            // fullName: "",
+            // email: "",
+            // phoneNumber: "",
+            // password: "",
         };
     }
 
-    selectCountry(country) {
-        this.setState({
-            cca2: country.cca2,
-            countryName: country.name,
-            countryCode: country.callingCode[0]
-        })
+
+    UNSAFE_componentWillMount() {
+        const { fullName, email, phoneNumber, password, selectedCountry, imgPath } = this.props
+
+        if (selectedCountry != undefined && imgPath != undefined) {
+            console.log(selectedCountry, imgPath, "ITEM")
+            this.setState({
+                dialCode: selectedCountry.dialCode,
+                imgPath: imgPath
+            })
+        }
+        if (fullName || email || phoneNumber || password) {
+            this.setState({
+                fullName, email, phoneNumber, password,
+            })
+        }
+
     }
 
-    openModal() {
-        this.countryPicker.open();
+
+    changePhoneCode() {
+        const { fullName, email, phoneNumber, password, } = this.state
+        Actions.CountryLists({ route: "signup", fullName, email, phoneNumber, password, })
     }
 
     clearNumber = () => {
@@ -49,8 +63,8 @@ class Signup extends Component {
     }
 
     signup = () => {
-        let { fullName, email, phoneNumber, password, countryCode, cca2 } = this.state;
-        let phoneNumberWithCode = "+" + countryCode + phoneNumber
+        let { fullName, email, phoneNumber, password, dialCode, imgPath } = this.state;
+        let phoneNumberWithCode = "+" + dialCode + phoneNumber
         if (fullName && email && phoneNumber && password) {
             let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
             if (reg.test(email) === false) {
@@ -89,7 +103,7 @@ class Signup extends Component {
                                 loader: !this.state.loader
                             })
                             // Actions.Signin({ email: email })
-                            Actions.Veryfiyournumber({ email: email, countryCode: countryCode, phoneNumber: phoneNumber, cca2: cca2, phoneNumberWithCode: phoneNumberWithCode })
+                            Actions.Veryfiyournumber({ email: email, dialCode: dialCode, imgPath, phoneNumber: phoneNumber, phoneNumberWithCode: phoneNumberWithCode, route: "signup" })
                         }).catch((err) => {
                             console.log(err.response.data, "ERROR_ON_SIGN_UP")
                             // console.log(err.response.data.message, "ERROR_ON_SIGN_UP")
@@ -107,7 +121,7 @@ class Signup extends Component {
     }
 
     render() {
-        let { fullName, email, phoneNumber, password, countryCode, loader } = this.state;
+        let { fullName, email, password, loader, dialCode, phoneNumber, imgPath, } = this.state;
 
         return (
             <ScrollView contentContainerStyle={styles.contentContainer}>
@@ -175,30 +189,26 @@ class Signup extends Component {
                         {/* picker container */}
 
                         <View style={{ borderRightColor: "grey", borderRightWidth: 0.5, flex: 2.2, flexDirection: "row", }}>
-                            <View style={{ flex: 1.5, justifyContent: "center", alignItems: "center", }}>
-                                <View style={{ marginLeft: 20 }}>
-                                    <CountryPicker
-                                        filterable={true}
-                                        closeable={true}
-                                        filterPlaceholder={'Search'}
-                                        autoFocusFilter={true}
-                                        ref={(ref) => {
-                                            this.countryPicker = ref;
-                                        }}
-                                        onSelect={value => this.selectCountry(value)}
-                                        translation="eng"
-                                        countryCode={this.state.cca2}
-                                    >
-                                    </CountryPicker>
+                            <TouchableOpacity style={{ borderRightColor: "grey", borderRightWidth: 0.5, flex: 2.5, flexDirection: "row", }}
+                                onPress={() => {
+                                    this.changePhoneCode()
+                                }}>
+                                <View style={{ flex: 1.5, justifyContent: "center", alignItems: "center", }}>
+                                    <View style={{ marginLeft: 30 }}>
+                                        <Image
+                                            source={imgPath}
+                                            style={{ height: 20, width: 30, }}
+                                        />
+                                    </View>
                                 </View>
-                            </View>
-                            <View style={{ flex: 3, flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
-                                <View
-                                    style={{ flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
-                                    <Text style={{ fontWeight: "bold" }}>{"+" + countryCode}</Text>
-                                    <AntDesign name="caretdown" style={{ marginLeft: "15%", color: '#909090', fontWeight: 'bold', fontSize: 15 }} />
+                                <View style={{ flex: 3, flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
+                                    <View
+                                        style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginLeft: 5 }}>
+                                        <Text style={{ fontWeight: "bold" }}>{"+" + dialCode}</Text>
+                                        <AntDesign name="caretdown" style={{ marginLeft: 5, color: '#909090', fontWeight: 'bold', fontSize: 15 }} />
+                                    </View>
                                 </View>
-                            </View>
+                            </TouchableOpacity>
                         </View>
 
                         {/* input phone container */}

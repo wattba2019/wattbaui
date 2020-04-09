@@ -29,7 +29,7 @@ class AppContainer extends Component {
                 <StatusBar backgroundColor="white" barStyle="dark-content" />
 
                 {/* //body// */}
-                <ScrollView style={{ flex: 6 }}>
+                <ScrollView style={{ flex: 6, backgroundColor: "white" }}>
                     {
                         (this.state.rout === "Home") ? (<Home />) : null
                     }

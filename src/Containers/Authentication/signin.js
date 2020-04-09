@@ -154,7 +154,7 @@ class Signin extends Component {
                                     {
                                         (loader != true) ? (
                                             <Text style={{ textAlign: "center", fontSize: 15, margin: 12, color: "white" }}>Login</Text>
-                                        ) : <ActivityIndicator style={{ color: "orange" }} />
+                                        ) : <ActivityIndicator color="white" />
                                     }
                                 </ImageBackground>
                             </TouchableOpacity>

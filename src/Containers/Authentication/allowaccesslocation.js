@@ -82,13 +82,12 @@ class Allowaccesslocation extends Component {
                                 {
                                     (loader != true) ? (
                                         <Text style={{ textAlign: "center", fontSize: 15, margin: 12, color: "white" }}>Yes, allow</Text>
-                                    ) : <ActivityIndicator style={{ color: "orange" }} />
+                                    ) : <ActivityIndicator color="white" />
                                 }
                             </ImageBackground>
                         </TouchableOpacity>
-
-
                     </View>
+                    
                     <TouchableOpacity style={{
                         width: "100%"
                     }}

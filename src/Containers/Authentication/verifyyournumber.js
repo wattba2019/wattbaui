@@ -19,31 +19,32 @@ class Veryfiyournumber extends Component {
         super(props);
         this.state = {
             loader: false,
-            countryCode: "",
-            cca2: '',
             phoneNumber: "",
+            dialCode: "1",
+            imgPath: require(`../../services/resources/flags/images/us.png`),
             // phoneNumber: "7480824582"
         };
     }
 
+
     UNSAFE_componentWillMount() {
-        this.setState({
-            cca2: this.props.cca2,
-            countryCode: this.props.countryCode,
-            phoneNumber: this.props.phoneNumber,
-        })
-    }
+        if (this.props.selectedCountry != undefined && this.props.imgPath != undefined) {
+            console.log(this.props.selectedCountry, this.props.imgPath, "ITEM")
+            this.setState({
+                dialCode: this.props.selectedCountry.dialCode,
+                imgPath: this.props.imgPath
+            })
+        }
 
-    selectCountry(country) {
-        this.setState({
-            cca2: country.cca2,
-            countryName: country.name,
-            countryCode: country.callingCode[0]
-        })
-    }
+        if (this.props.route === "signup") {
+            this.setState({
+                dialCode: this.props.dialCode,
+                phoneNumber: this.props.phoneNumber,
+                imgPath: this.props.imgPath
+            })
+        }
 
-    openModal() {
-        this.countryPicker.open();
+
     }
 
     clearNumber = () => {
@@ -52,9 +53,13 @@ class Veryfiyournumber extends Component {
         })
     }
 
+    changePhoneCode() {
+        Actions.CountryLists({ route: "verify" })
+    }
+
     sendCode = () => {
-        let { countryCode, phoneNumber, } = this.state
-        let newNumber = "+" + countryCode + phoneNumber;
+        let { dialCode, phoneNumber, } = this.state
+        let newNumber = "+" + dialCode + phoneNumber;
         let oldNumber = this.props.phoneNumberWithCode
         console.log(newNumber, oldNumber, "PHONE_NUMBER")
         this.setState({
@@ -105,21 +110,23 @@ class Veryfiyournumber extends Component {
     }
 
     render() {
-        let { countryCode, phoneNumber, loader } = this.state
+        let { dialCode, phoneNumber, imgPath, loader } = this.state
         return (
-            <ScrollView
-                contentContainerStyle={styles.contentContainer}
-            >
-                <StatusBar backgroundColor="white" barStyle="dark-content" />
+            <View style={{ flex: 1, backgroundColor: "white" }}>
 
-                <View style={{ flex: 1, width: "100%", backgroundColor: "red" }}>
-                </View>
+                <StatusBar backgroundColor="white" barStyle="dark-content" />
 
                 {/* //header// */}
 
-                <View style={{ height: "15%", flexDirection: "row", width: "100%", }}>
+                <View style={{
+                    flex: 0.8, flexDirection: "row", width: "100%",
+                    // backgroundColor: "red"
+                }}>
                     <TouchableOpacity
-                        style={{ flex: 1.5, }}
+                        style={{
+                            flex: 0.2,
+                            // backgroundColor: "orange"
+                        }}
                         onPress={() => Actions.pop()}
                     >
                         <View style={{ flex: 2, justifyContent: "center", alignItems: "center", }}>
@@ -129,57 +136,55 @@ class Veryfiyournumber extends Component {
                         </View>
                     </TouchableOpacity>
 
-                    <View style={{ flex: 8, }}>
-                    </View>
                 </View>
 
                 {/* //body// */}
 
                 <View style={{
+                    flex: 8,
                     width: "100%",
-                    justifyContent: "center",
+                    // justifyContent: "center",
                     alignItems: "center",
+                    // backgroundColor: "red",
                 }}>
-                    <Text style={{ fontSize: 30, fontWeight: "bold", textAlign: "center" }}>Verify your {"\n"} phone number</Text>
-                    <Text style={{ marginTop: 40, textAlign: "center" }}>We have sent you an SMS with a code to{"\n"} number {"+" + countryCode + " " + phoneNumber} </Text>
+                    <Text style={{ fontSize: 30, fontWeight: "bold", textAlign: "center", marginTop: 50 }}>Verify your {"\n"} phone number</Text>
+                    <Text style={{ marginTop: 40, textAlign: "center" }}>We have sent you an SMS with a code to{"\n"} number {"+" + dialCode + " " + phoneNumber} </Text>
 
                     {/* main container */}
 
                     <View
-                        style={{ flex: 1, flexDirection: "row", width: "85%", height: 50, marginTop: 40, backgroundColor: "#E8E6E7", borderRadius: 50 }}
+                        style={{
+                            flexDirection: "row", width: "85%", height: 50, marginTop: 40, borderRadius: 50,
+                            backgroundColor: "#E8E6E7",
+                            // backgroundColor: "red",
+                        }}
                     >
                         {/* picker container */}
 
-                        <View style={{ borderRightColor: "grey", borderRightWidth: 0.5, flex: 2.2, flexDirection: "row", }}>
+                        <TouchableOpacity style={{ borderRightColor: "grey", borderRightWidth: 0.5, flex: 2.5, flexDirection: "row", }}
+                            onPress={() => {
+                                this.changePhoneCode()
+                            }}>
                             <View style={{ flex: 1.5, justifyContent: "center", alignItems: "center", }}>
-                                <View style={{ marginLeft: 20 }}>
-                                    <CountryPicker
-                                        filterable={true}
-                                        closeable={true}
-                                        filterPlaceholder={'Search'}
-                                        autoFocusFilter={true}
-                                        ref={(ref) => {
-                                            this.countryPicker = ref;
-                                        }}
-                                        onSelect={value => this.selectCountry(value)}
-                                        translation="eng"
-                                        countryCode={this.state.cca2}
-                                    >
-                                    </CountryPicker>
+                                <View style={{ marginLeft: 30 }}>
+                                    <Image
+                                        source={imgPath}
+                                        style={{ height: 20, width: 30, }}
+                                    />
                                 </View>
                             </View>
                             <View style={{ flex: 3, flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
                                 <View
-                                    style={{ flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
-                                    <Text style={{ fontWeight: "bold" }}>{"+" + countryCode}</Text>
-                                    <AntDesign name="caretdown" style={{ marginLeft: "15%", color: '#909090', fontWeight: 'bold', fontSize: 15 }} />
+                                    style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginLeft: 5 }}>
+                                    <Text style={{ fontWeight: "bold" }}>{"+" + dialCode}</Text>
+                                    <AntDesign name="caretdown" style={{ marginLeft: 5, color: '#909090', fontWeight: 'bold', fontSize: 15 }} />
                                 </View>
                             </View>
-                        </View>
+                        </TouchableOpacity>
 
                         {/* input phone container */}
 
-                        <View style={{ backgroundColor: "yellow", flex: 3, }}>
+                        <View style={{ backgroundColor: "yellow", flex: 2.8, }}>
                             <View
                                 style={{ borderColor: 'gray', backgroundColor: "#E8E6E7", justifyContent: "center", alignItems: "center" }}
                             >
@@ -226,7 +231,8 @@ class Veryfiyournumber extends Component {
                         </TouchableOpacity>
                     </View>
                 </View>
-            </ScrollView>
+            </View>
+
         );
     }
 }

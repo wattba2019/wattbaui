@@ -20,14 +20,13 @@ class Phoneverification extends Component {
 
     verify = () => {
         let { input1, input2, input3, input4, input5, input6, code } = this.state
-
         // let sixDigitCode = input1 + input2 + input3 + input4 + input5 + input6
-        let sixDigitCodes = code
+        let sixDigitCode = code
         if (sixDigitCode && sixDigitCode.length == 6) {
             this.setState({
                 loader: true
             })
-            console.log(sixDigitCode, "6_Digit_Code")
+            console.log(sixDigitCode, confirmResult, "6_Digit_Code")
             this.props.confirmResult.confirm(sixDigitCode)
                 .then(user => {
                     console.log(user)
@@ -89,12 +88,12 @@ class Phoneverification extends Component {
 
                 <View style={{ height: "13%", flexDirection: "row", width: "100%", }}>
                     <TouchableOpacity
-                        style={{ flex: 1.5, }}
+                        style={{ flex: 2, }}
                         onPress={() => Actions.pop()}
                     >
-                        <View style={{ flex: 2, justifyContent: "center", alignItems: "center", }}>
+                        <View style={{ flex: 1, justifyContent: "center", alignItems: "center", }}>
                             <Image source={require('../../../assets/ArrowLeft.png')}
-                                style={{ height: "40%", width: "40%", }}
+                                style={{ height: "35%", width: "38%", }}
                             />
                         </View>
                     </TouchableOpacity>
