@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import {
     View, Image, StyleSheet,
     ImageBackground, StatusBar, TouchableOpacity,
-    Text, ScrollView, ActivityIndicator
+    Text, ScrollView, ActivityIndicator, Platform, PermissionsAndroid
 
 } from 'react-native';
 import { connect } from "react-redux";
@@ -19,7 +19,23 @@ class Allowaccesslocation extends Component {
         };
     }
 
+    async requestPermissions() {
+        if (Platform.OS === 'ios') {
+            Geolocation.requestAuthorization();
+            Geolocation.setRNConfiguration({
+                skipPermissionRequests: false,
+                authorizationLevel: 'whenInUse',
+            });
+        }
+        if (Platform.OS === 'android') {
+            await PermissionsAndroid.request(
+                PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+            );
+        }
+    }
+
     allowLocation = () => {
+        this.requestPermissions()
         this.setState({
             loader: true
         })
@@ -87,7 +103,7 @@ class Allowaccesslocation extends Component {
                             </ImageBackground>
                         </TouchableOpacity>
                     </View>
-                    
+
                     <TouchableOpacity style={{
                         width: "100%"
                     }}

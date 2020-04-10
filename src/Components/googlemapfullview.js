@@ -66,7 +66,7 @@ class googlemapfullview extends Component {
                                 // borderWidth: 1,
                                 borderColor: "#1E90FF",
                                 borderRadius: 0,
-                                justifyContent:"center",
+                                justifyContent: "center",
                                 backgroundColor: "#EDEDED",
                             }}
                         >

@@ -1,13 +1,15 @@
 import React from 'react';
-import { View, Image, StyleSheet, Dimensions, Text, } from 'react-native';
+import { View, Image, StyleSheet, Dimensions, Text, TouchableOpacity, ImageBackground } from 'react-native';
 import { connect } from 'react-redux'
-import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
+import MapView, { PROVIDER_GOOGLE, Marker, } from 'react-native-maps';
 import { setUserCurrentLocation } from "./../Store/Action/action";
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
 const LATITUDE_DELTA = 0.0922;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
+import Enablelocation from '../../src/Components/enableLocation';
 
 class MapDirection extends React.Component {
     constructor() {
@@ -16,10 +18,16 @@ class MapDirection extends React.Component {
             location: null,
             errorMessage: null,
             markers: [],
-            draggable: false
+            draggable: false,
+            tracksViewChanges: true,
+
         }
     }
-
+    stopTrackingViewChanges = () => {
+        this.setState(() => ({
+            tracksViewChanges: false,
+        }));
+    }
     UNSAFE_componentWillMount() {
         if (this.props.currentLocation) {
             this.setState({
@@ -63,8 +71,8 @@ class MapDirection extends React.Component {
 
 
     render() {
-        let { coords, markers, draggable } = this.state
-        // console.log(coords, "INSIDERENDER")
+        let { coords, markers, draggable, tracksViewChanges } = this.state
+        console.log(coords, markers, draggable, "INSIDERENDER")
         return (
             <View>
                 {
@@ -78,10 +86,8 @@ class MapDirection extends React.Component {
                                 longitudeDelta: LONGITUDE_DELTA,
                             }}
                         >
-
                             {
-                                (markers.length != 0) ? (
-
+                                (markers.length != 0 && !draggable) ? (
                                     markers.map((key, index) => {
                                         return (
                                             <Marker key={index} draggable={false}
@@ -94,19 +100,18 @@ class MapDirection extends React.Component {
                                                     }
                                                 }
                                                 title={key.title}
-                                            // description={'This is your current location'}
                                             >
-                                                <Image source={require('../../assets/Group55346(2).png')} style={{ height: 45, width: 45 }} />
-                                                {/* <Text>{key.title}</Text> */}
+                                                {/* <Image
+                                                    onLoad={this.stopTrackingViewChanges}
+                                                    source={require('../../assets/Group55346(2).png')} style={{ height: 45, width: 45 }}
+                                                /> */}
                                             </Marker>
                                         )
                                     })
-
                                 ) : null
                             }
 
                             <Marker draggable={draggable}
-                                // style={{ top: 0, bottom: 0, left: 0, right: 0, alignItems: 'center', justifyContent: 'center', backgroundColor: 'transparent' }}
                                 coordinate={
                                     {
                                         latitude: coords.latitude,
@@ -117,22 +122,33 @@ class MapDirection extends React.Component {
                                 }
                                 onDragEnd={(e) => this.locationSet(e.nativeEvent.coordinate)}
                             >
-                                {/* <View style={{ width: 70, height: 70, backgroundColor: "orange" }}>
-                                </View> */}
-                                <Image source={require('../../assets/mapIcon.png')} style={{ height: 35, width: 35 }} />
+                                <TouchableOpacity>
+                                    <Ionicons name="ios-navigate" style={{ color: '#FD6958', fontWeight: 'bold', fontSize: 35 }} />
+                                </TouchableOpacity>
+
+                                {/* <Image
+                                    onLoad={this.stopTrackingViewChanges}
+                                    source={require('../../assets/mapIcon.png')} style={{ height: 35, width: 35 }}
+                                /> */}
                             </Marker>
-                        </MapView> : <MapView style={{ width: "99%", height: 500 }}
-                            provider={PROVIDER_GOOGLE}
-                            region={{
-                                // latitude: 24.8607,
-                                // longitude: 67.0011,
-                                latitude: 37.78825,
-                                longitude: -122.4324,
-                                latitudeDelta: LATITUDE_DELTA,
-                                longitudeDelta: LONGITUDE_DELTA,
-                            }}
-                        >
-                        </MapView>
+                        </MapView> :
+
+                        <View style={{ width: "99%", height: 500, justifyContent: "center", alignItems: "center" }} >
+                            <Enablelocation />
+                        </View>
+
+                    // <MapView style={{ width: "99%", height: 500 }}
+                    //     provider={PROVIDER_GOOGLE}
+                    //     region={{
+                    //         // latitude: 24.8607,
+                    //         // longitude: 67.0011,
+                    //         latitude: 37.78825,
+                    //         longitude: -122.4324,
+                    //         latitudeDelta: LATITUDE_DELTA,
+                    //         longitudeDelta: LONGITUDE_DELTA,
+                    //     }}
+                    // >
+                    // </MapView>
                 }
 
             </View>
@@ -141,6 +157,7 @@ class MapDirection extends React.Component {
 
 }
 const styles = StyleSheet.create({
+
     container: {
         ...StyleSheet.absoluteFillObject,
         height: 500,

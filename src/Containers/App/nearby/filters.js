@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import {
     View, ActivityIndicator, StyleSheet,
     StatusBar, TouchableOpacity,
-    Text, ScrollView,
+    Text, ScrollView, Alert,
 } from 'react-native';
 import { connect } from "react-redux";
 import { Actions } from 'react-native-router-flux';
@@ -164,6 +164,12 @@ class Filters extends Component {
                     })
                 })
 
+        }
+        else {
+            Alert.alert("Please open your location")
+            this.setState({
+                isloader: true
+            })
         }
     }
 

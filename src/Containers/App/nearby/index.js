@@ -30,7 +30,7 @@ class Nearby extends Component {
             let cloneLocation = {
                 lat: currentLocation.coords.latitude,
                 long: currentLocation.coords.longitude,
-                km: 5,
+                km: 15,
             }
             var options = {
                 method: 'POST',
@@ -72,7 +72,7 @@ class Nearby extends Component {
             let cloneLocation = {
                 lat: currentLocation.coords.latitude,
                 long: currentLocation.coords.longitude,
-                km: 5,
+                km: 15,
             }
             var options = {
                 method: 'POST',
@@ -125,7 +125,7 @@ class Nearby extends Component {
 
     render() {
         let { fullName, } = this.props.userProfile
-        let { nearByShops, } = this.props
+        let { nearByShops, currentLocation } = this.props
         let { shops, shopLocationMarkers, search } = this.state
 
         let filterShops = [];
@@ -139,6 +139,8 @@ class Nearby extends Component {
                 filterShops = shops;
             }
         }
+
+        console.log(currentLocation, "currentLocation")
 
         return (
             <View style={{
