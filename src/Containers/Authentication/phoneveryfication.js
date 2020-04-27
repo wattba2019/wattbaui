@@ -26,7 +26,7 @@ class Phoneverification extends Component {
             this.setState({
                 loader: true
             })
-            console.log(sixDigitCode, confirmResult, "6_Digit_Code")
+            console.log(sixDigitCode, this.props.confirmResult, "6_Digit_Code")
             this.props.confirmResult.confirm(sixDigitCode)
                 .then(user => {
                     console.log(user)

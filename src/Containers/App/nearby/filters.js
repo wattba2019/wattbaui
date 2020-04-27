@@ -212,14 +212,14 @@ class Filters extends Component {
                             }
                         }
                     }
-                    Actions.SearchResults({ shops: sortedShops })
+                    Actions.SearchResults({ shops: sortedShops, headerTitle: "Search Result" })
                     // console.log(sortedService, sortedShops, "sortedService")
                     this.setState({
                         isloader: false
                     })
                 }
                 else {
-                    Actions.SearchResults({ shops: shops })
+                    Actions.SearchResults({ shops: shops, headerTitle: "Search Result" })
                     // console.log(allShopsServices, shops, "withoutsoorted")
                     this.setState({
                         isloader: false
@@ -251,7 +251,8 @@ class Filters extends Component {
             <ScrollView contentContainerStyle={styles.contentContainer}>
                 <StatusBar backgroundColor="white" barStyle="dark-content" />
                 <View style={{
-                    flex: 0.8,
+                    // flex: 2,
+                    height: 60,
                     flexDirection: "row",
                     borderBottomWidth: 0.5,
                     borderBottomColor: "#8E8E93",
@@ -527,7 +528,7 @@ class Filters extends Component {
 
                     <View style={{ width: "90%", justifyContent: "center", alignItems: "center", }}>
                         {
-                            err != "" ? <Text style={{ marginTop: 10, color: "red" }}>{err}</Text> : null
+                            err != "" ? <Text style={{ top: -10, color: "red" }}>{err}</Text> : null
                         }
                     </View>
 
@@ -554,8 +555,8 @@ export default connect(mapStateToProps, mapDispatchToProps)(Filters);
 
 const styles = StyleSheet.create({
     contentContainer: {
-        flex: 1,
-        paddingBottom: 0,
+        // flex: 1,
+        paddingBottom: 70,
         backgroundColor: "white",
 
     },

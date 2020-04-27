@@ -59,6 +59,13 @@ export function setNearByShops(shops) {
     }
 }
 
+export function setFavShops(shops) {
+    // console.log(shops, "INSIDEACTION")
+    return dispatch => {
+        dispatch({ type: "SET_FAV_SHOPS", payload: shops })
+    }
+}
+
 
 
 

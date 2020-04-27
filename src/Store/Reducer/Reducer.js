@@ -1,8 +1,8 @@
 const INITIAL_STATE = {
   //API's URL
-  bseUrl: "https://fathomless-citadel-43321.herokuapp.com",
-  // bseUrl: "http://192.168.0.109:3002",
-  // bseUrl: "http://192.168.43.206:3002",
+  // bseUrl: "https://fathomless-citadel-43321.herokuapp.com",
+  // bseUrl: "http://192.168.0.110:3002",
+  bseUrl: "http://192.168.10.13:3002",
   //user details
   userProfile: {},
   currentLocation: null,
@@ -19,7 +19,8 @@ const INITIAL_STATE = {
   gallery: null,
   specialPack: null,
   shop: null,
-  nearByShops: null
+  nearByShops: null,
+  favShops: []
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -70,6 +71,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         nearByShops: action.payload,
+      };
+    case "SET_FAV_SHOPS":
+      return {
+        ...state,
+        favShops: action.payload,
       };
     default:
       return state;

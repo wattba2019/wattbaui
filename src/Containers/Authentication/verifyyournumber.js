@@ -26,7 +26,6 @@ class Veryfiyournumber extends Component {
         };
     }
 
-
     UNSAFE_componentWillMount() {
         if (this.props.selectedCountry != undefined && this.props.imgPath != undefined) {
             console.log(this.props.selectedCountry, this.props.imgPath, "ITEM")
@@ -43,8 +42,6 @@ class Veryfiyournumber extends Component {
                 imgPath: this.props.imgPath
             })
         }
-
-
     }
 
     clearNumber = () => {
@@ -54,7 +51,7 @@ class Veryfiyournumber extends Component {
     }
 
     changePhoneCode() {
-        Actions.CountryLists({ route: "verify" })
+        Actions.CountryLists({ route: "verify", phoneNumberWithCode: this.props.phoneNumberWithCode })
     }
 
     sendCode = () => {

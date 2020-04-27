@@ -16,6 +16,7 @@ import Filters from '../Containers/App/nearby/filters'
 import Shop from '../Components/shop/index'
 import Bookappointment from '../Components/shop/bookappointment'
 import SearchResults from '../Containers/App/nearby/searchResult'
+import FavouritesShops from '../Containers/App/profile/favourites'
 import ServiceDetaild from '../Components/shop/serviceDetails'
 import OfferDetails from '../Components/shop/offerDetails'
 import BarberDetails from '../Components/shop/barberDetails'
@@ -27,6 +28,10 @@ import AppointmentDetails from '../Containers/App/appointments/appointmentsDetai
 import Profile from '../Containers/App/profile/index'
 import Googlemapfullview from '../Components/googlemapfullview'
 import VerifyCodeEmail from '../Containers/App/profile/6digitCode'
+import ServiceListing from '../Components/servicsListing'
+import MypaymentCard from '../Components/paymentcard/mypaymentsCard'
+import AddPaymenCard from '../Components/paymentcard/addpaymentcard'
+import CardVerification from '../Components/paymentcard/cardverification'
 
 class Route extends Component {
   render() {
@@ -51,6 +56,7 @@ class Route extends Component {
           <Scene key='Shop' component={Shop} hideNavBar={true} />
           <Scene key='Filters' component={Filters} hideNavBar={true} />
           <Scene key='SearchResults' component={SearchResults} hideNavBar={true} />
+          <Scene key='FavouritesShops' component={FavouritesShops} hideNavBar={true} />
           <Scene key='ServiceDetaild' component={ServiceDetaild} hideNavBar={true} />
           <Scene key='OfferDetails' component={OfferDetails} hideNavBar={true} />
           <Scene key='BarberDetails' component={BarberDetails} hideNavBar={true} />
@@ -62,6 +68,10 @@ class Route extends Component {
           <Scene key='AppointmentDetails' component={AppointmentDetails} hideNavBar={true} />
           <Scene key='Profile' component={Profile} hideNavBar={true} />
           <Scene key='Googlemapfullview' component={Googlemapfullview} hideNavBar={true} />
+          <Scene key='ServiceListing' component={ServiceListing} hideNavBar={true} />
+          <Scene key='MypaymentCard' component={MypaymentCard} hideNavBar={true} />
+          <Scene key='AddPaymenCard' component={AddPaymenCard} hideNavBar={true} />
+          <Scene key='CardVerification' component={CardVerification} hideNavBar={true} />
         </Scene>
       </Router>
     )

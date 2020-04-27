@@ -16,18 +16,19 @@ class Signup extends Component {
         super(props);
         this.state = {
             loader: false,
-            fullName: "Abdullah Shah",
-            email: "abddullahshah@gmail.com",
-            password: "12345678",
+            // fullName: "Abdullah Shah",
+            // email: "abddullahshah11@gmail.com",
+            // password: "12345678",
             // phoneNumber: "3368990497",
-            phoneNumber: "3450558623",
+            // phoneNumber: "3450558623",
+            // phoneNumber: "3452153709",
 
             dialCode: "1",
             imgPath: require(`../../services/resources/flags/images/us.png`),
-            // fullName: "",
-            // email: "",
-            // phoneNumber: "",
-            // password: "",
+            fullName: "",
+            email: "",
+            password: "",
+            phoneNumber: "",
         };
     }
 
@@ -103,6 +104,7 @@ class Signup extends Component {
                                 loader: !this.state.loader
                             })
                             // Actions.Signin({ email: email })
+                            console.log(phoneNumberWithCode, "phoneNumberWithCode")
                             Actions.Veryfiyournumber({ email: email, dialCode: dialCode, imgPath, phoneNumber: phoneNumber, phoneNumberWithCode: phoneNumberWithCode, route: "signup" })
                         }).catch((err) => {
                             console.log(err.response.data, "ERROR_ON_SIGN_UP")

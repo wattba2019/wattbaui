@@ -21,7 +21,8 @@ class CountryLists extends Component {
             Actions.ActivateAccount({ selectedCountry: item, imgPath: path })
         }
         if (this.props.route === "verify") {
-            Actions.Veryfiyournumber({ selectedCountry: item, imgPath: path })
+            const { phoneNumberWithCode, } = this.props
+            Actions.Veryfiyournumber({ selectedCountry: item, imgPath: path, phoneNumberWithCode: phoneNumberWithCode })
         }
         if (this.props.route === "signup") {
             const { fullName, email, phoneNumber, password, } = this.props

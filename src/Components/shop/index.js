@@ -12,7 +12,7 @@ import Review from '../shop/Review';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import { Actions } from 'react-native-router-flux';
-import { setShopServices, setStylists, setWorkingHour, setGallery, setSpecialPack, setShop } from '../../Store/Action/action';
+import { setShopServices, setStylists, setWorkingHour, setGallery, setSpecialPack, setShop, setFavShops } from '../../Store/Action/action';
 import axios from 'axios';
 import moment from 'moment';
 import handleGetDirections from '../getdirectiononmap';
@@ -22,7 +22,10 @@ class shop extends Component {
         super(props)
         this.state = {
             activeColor: "about",
-            workingtime: false
+            workingtime: false,
+            favroiteShops: [],
+            favroite: false,
+            favroiteLoader: true
         }
     }
 
@@ -32,8 +35,128 @@ class shop extends Component {
         this.getStylists()
         this.getServices()
         this.getSpecialPack()
+        this.getFavShops()
         this.props.setShop(this.props.shop)
     }
+
+    getMultipleShopWithId(shopid) {
+
+        cloneData = {
+            shopid: shopid
+        }
+        var options = {
+            method: 'POST',
+            url: `${this.props.bseUrl}/getallshops/getMultipleShopWithId/`,
+            headers:
+            {
+                'cache-control': 'no-cache',
+                "Allow-Cross-Origin": '*',
+            },
+            data: cloneData
+        }
+        axios(options)
+            .then(result => {
+                let shops = result.data.data
+                console.log(shops, "Fetch_multiple_shops_withID_inside_profile")
+                Actions.FavouritesShops({ shops: shops, headerTitle: "Favourites" })
+
+            })
+            .catch(err => {
+                let error = JSON.parse(JSON.stringify(err))
+                console.log(error, 'ERRROR', err)
+                Actions.AppContainer()
+                this.setState({
+                    err: error,
+                })
+            })
+
+    }
+    getFavShops(update) {
+        let urlm = `${this.props.bseUrl}/favorites/${this.props.userProfile._id}`
+        axios({
+            method: 'get',
+            url: urlm,
+        })
+            .then(result => {
+                let data = result.data.data[0].favrouiteIds
+                this.props.setFavShops(data)
+                this.setState({ favroiteShops: data })
+                console.log(data, "DATA_FROM_API_FAVORITES")
+                for (let index = 0; index < data.length; index++) {
+                    const element = data[index];
+                    if (element === this.props.shop._id) {
+                        this.setState({ favroite: true, favroiteLoader: false })
+                        console.log(element, "Current_Shope")
+                    }
+                    else {
+                        this.setState({ favroiteLoader: false })
+                    }
+                }
+                this.setState({ favroiteLoader: false })
+                if (this.props.route === "favroites" && update) {
+                    console.log(data, "data")
+                    this.getMultipleShopWithId(data)
+                }
+            })
+            .catch(err => {
+                this.setState({ favroiteLoader: false })
+                if (err.response.status === 409) {
+                    console.log(err.response.data.message, "ERROR_ON_GET_Fav")
+                }
+                else {
+                    alert(err.response.data.message)
+                }
+            })
+
+    }
+
+    favroiteAdd() {
+        const { favroite, favroiteShops } = this.state
+        let clonefavshop = favroiteShops
+
+        if (clonefavshop.indexOf(this.props.shop._id) == -1) {
+            clonefavshop.push(this.props.shop._id)
+            this.setState({ favroiteShops: clonefavshop })
+        }
+        else {
+            var indexNumber = clonefavshop.indexOf(this.props.shop._id);
+            console.log(indexNumber, "INDEX")
+            clonefavshop.splice(indexNumber, 1);
+            this.setState({ favroiteShops: clonefavshop })
+        }
+        this.setState({ favroite: !favroite })
+        let favData = {
+            favrouiteIds: clonefavshop,
+            userId: this.props.userProfile._id,
+        }
+        console.log(favData, "CLONEDATA")
+        var options = {
+            method: 'POST',
+            url: `${this.props.bseUrl}/favorites/addFavroite`,
+            headers:
+            {
+                'cache-control': 'no-cache',
+                "Allow-Cross-Origin": '*',
+            },
+            data: favData
+        };
+        axios(options)
+            .then(result => {
+                let data = result.data
+                console.log(data, "save_favrouites")
+                this.getFavShops("add")
+            })
+            .catch(err => {
+                if (err.response.status === 409) {
+                    console.log(err.response.data.message, "ERROR_ON_SAVE_FAV")
+                }
+                else {
+                    alert(err.response.data.message)
+                }
+            })
+
+    }
+
 
     getStylists() {
         let urlm = `${this.props.bseUrl}/stylist/${this.props.shop._id}`
@@ -233,10 +356,10 @@ class shop extends Component {
         }
     }
 
-
     render() {
-        const { activeColor, workingtime, workingHours, services, packages, stylists, gallery, } = this.state
+        const { activeColor, workingtime, workingHours, services, packages, stylists, gallery, favroite, favroiteLoader } = this.state
         let { shop, currentLocation } = this.props
+
         return (
             <View style={{ flex: 1 }}>
                 <SafeAreaView style={styles.container} >
@@ -266,6 +389,35 @@ class shop extends Component {
                         <Entypo name="star" style={{ color: "#fff", fontWeight: 'bold', fontSize: 16 }} />
                     </View>
 
+
+
+                    <TouchableOpacity
+                        onPress={
+                            () => {
+                                this.favroiteAdd()
+
+                            }
+                        }
+
+                        style={{
+                            borderColor: "#FD6958",
+                            borderWidth: 1,
+                            borderRadius: 4,
+                            justifyContent: "center",
+                            alignItems: "center", position: 'absolute', right: 20, bottom: 20, height: 30, width: 65, justifyContent: "center", bottom: "25%"
+                        }}
+                    >
+                        {
+                            (favroiteLoader === false) ? (
+                                (favroite) ?
+                                    (<Ionicons name="ios-heart" style={{ color: "#FD6958", fontWeight: 'bold', fontSize: 28 }} />) :
+                                    <Ionicons name="ios-heart-empty" style={{ color: "#FD6958", fontWeight: 'bold', fontSize: 28 }} />
+                            ) : <ActivityIndicator color="#FD6958" />
+                        }
+
+                    </TouchableOpacity>
+
+
                     {
                         (workingtime === true) ? (
                             <View style={{ borderColor: "#16BE4E", borderWidth: 1, borderRadius: 4, justifyContent: "center", alignItems: "center", position: 'absolute', right: 20, bottom: 20, height: 30, width: 65, justifyContent: "center" }}>
@@ -283,7 +435,13 @@ class shop extends Component {
                     <ScrollView contentContainerStyle={styles.contentContainer}>
                         {/* <View > */}
 
-                        <View style={{ flexDirection: "row", justifyContent: "space-between", paddingHorizontal: "10%", paddingVertical: "5%" }}>
+                        <View style={{
+                            flexDirection: "row",
+                            justifyContent: "space-between",
+                            paddingHorizontal: "10%",
+                            paddingVertical: "5%",
+                            // backgroundColor: "red"
+                        }}>
                             <TouchableOpacity
                                 onPress={() => Linking.openURL(shop.websiteUrl)}
                             >
@@ -309,6 +467,13 @@ class shop extends Component {
                                     style={{ width: 45, height: 45 }}
                                 />
                             </TouchableOpacity>
+
+                            {/* <TouchableOpacity
+                                style={{ justifyContent: "center", alignItems: "center", marginTop: 20 }}
+                            >
+                                <Ionicons name="ios-heart" style={{ color: "#FD6958", fontWeight: 'bold', fontSize: 28 }} />
+                                <Text style={{ color: "#707070", fontSize: 12 }}>Favorite</Text>
+                            </TouchableOpacity> */}
                         </View>
                         {
                             (stylists) ? (
@@ -476,6 +641,7 @@ const styles = StyleSheet.create({
 let mapStateToProps = state => {
     return {
         bseUrl: state.root.bseUrl,
+        userProfile: state.root.userProfile,
         currentLocation: state.root.currentLocation,
     };
 };
@@ -498,6 +664,9 @@ function mapDispatchToProps(dispatch) {
         },
         setShop: (shop) => {
             dispatch(setShop(shop))
+        },
+        setFavShops: (shop) => {
+            dispatch(setFavShops(shop))
         },
     })
 }

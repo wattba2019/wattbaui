@@ -3,12 +3,57 @@ import { View, Image, StatusBar, TouchableOpacity, Text, ScrollView } from 'reac
 import { connect } from "react-redux";
 import { Actions } from 'react-native-router-flux';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import axios from 'axios';
 
-class SearchResults extends Component {
+class FavouritesShops extends Component {
     constructor(props) {
         super(props);
         this.state = {
         };
+    }
+
+    UNSAFE_componentWillMount() {
+        if (this.props.favShops.length && this.props.route === "favroites") {
+            console.log(this.props.favShops, "this.props.favShops")
+            this.getMultipleShopWithId(this.props.favShops)
+        }
+    }
+
+    getMultipleShopWithId(shopid) {
+        alert("on time call")
+        if (shopid.length) {
+            cloneData = {
+                shopid: shopid
+            }
+            var options = {
+                method: 'POST',
+                url: `${this.props.bseUrl}/getallshops/getMultipleShopWithId/`,
+                headers:
+                {
+                    'cache-control': 'no-cache',
+                    "Allow-Cross-Origin": '*',
+                },
+                data: cloneData
+            }
+            axios(options)
+                .then(result => {
+                    let shops = result.data.data
+                    console.log(shops, "Fetch_multiple_shops_withID_inside_profile")
+                    Actions.FavouritesShops({ shops: shops, headerTitle: "Favourites" })
+
+                })
+                .catch(err => {
+                    let error = JSON.parse(JSON.stringify(err))
+                    console.log(error, 'ERRROR', err)
+                    this.setState({
+                        err: error,
+                    })
+                })
+        }
+        else {
+            Alert.alert("There is no data")
+        }
+
     }
 
     distance(lat1, lon1, lat2, lon2) {
@@ -56,7 +101,7 @@ class SearchResults extends Component {
                                 shops.map((key, index) => {
                                     return (
                                         <TouchableOpacity key={index}
-                                            onPress={() => Actions.Shop({ shop: key })}
+                                            onPress={() => Actions.Shop({ shop: key, route: "favroites" })}
                                             style={{ flexDirection: "row", height: 100, marginTop: 10, marginLeft: 10, borderBottomWidth: 0.5, borderBottomColor: 'grey' }}>
                                             <View style={{ flex: 3, }}>
                                                 {
@@ -97,14 +142,12 @@ class SearchResults extends Component {
                                                     </View>
 
                                                     <View style={{ flex: 2, flexDirection: "row", justifyContent: "center", alignItems: "center", }}>
-                                                        <TouchableOpacity style={{ backgroundColor: "#FD6958", width: '80%', height: 35, borderRadius: 25, justifyContent: "center", alignItems: "center" }}
+                                                        {/* <TouchableOpacity style={{ backgroundColor: "#FD6958", width: '80%', height: 35, borderRadius: 25, justifyContent: "center", alignItems: "center" }}
                                                             onPress={() => Actions.Shop({ shop: key })}
                                                         >
                                                             <Text style={{ color: "#ffffff", fontSize: 12, }}>View</Text>
-                                                            {/* <Image source={require('../../../../assets/book.png')} resizeMode="contain"
-                                                                style={{ height: 30, width: 80, }}
-                                                            /> */}
-                                                        </TouchableOpacity>
+
+                                                        </TouchableOpacity> */}
                                                     </View>
                                                 </View>
                                             </View>
@@ -122,10 +165,13 @@ class SearchResults extends Component {
 let mapStateToProps = state => {
     return {
         currentLocation: state.root.currentLocation,
+        userProfile: state.root.userProfile,
+        favShops: state.root.favShops,
+        bseUrl: state.root.bseUrl,
     };
 };
 function mapDispatchToProps(dispatch) {
     return ({
     })
 }
-export default connect(mapStateToProps, mapDispatchToProps)(SearchResults);
+export default connect(mapStateToProps, mapDispatchToProps)(FavouritesShops);
