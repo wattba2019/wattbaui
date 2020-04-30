@@ -1,10 +1,12 @@
 import React, { Component } from "react";
-import { View, Image, StatusBar, TouchableOpacity, Text, ScrollView, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, Image, StatusBar, TouchableOpacity, Text, ScrollView, StyleSheet, ActivityIndicator, ImageBackground } from 'react-native';
 import { connect } from "react-redux";
 import { Actions } from 'react-native-router-flux';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import moment from 'moment';
 import axios from 'axios';
+import Textarea from 'react-native-textarea';
 
 class AppointmentDetails extends Component {
     constructor(props) {
@@ -12,7 +14,10 @@ class AppointmentDetails extends Component {
         this.state = {
             selectedService: [],
             loader: false,
-            totalCost: 0
+            totalCost: 0,
+            yellowStars: [1, 2, 3, 4],
+            greyStars: [1],
+            Message: "",
         };
     }
 
@@ -150,11 +155,17 @@ class AppointmentDetails extends Component {
         }
     }
 
-    render() {
-        const { service } = this.props
-        const { selectedService, totalCost, loader } = this.state
+    starsSet() {
+        alert("work")
+    }
 
+    render() {
+        const { service, approved } = this.props
+        const { selectedService, totalCost, loader, yellowStars, greyStars, Message } = this.state
+
+        console.log(approved, "approved")
         console.log(service, totalCost, "DELETEBOOKING")
+
         return (
             <View style={{
                 flex: 1,
@@ -335,8 +346,6 @@ class AppointmentDetails extends Component {
                                                                     </View>
                                                                 ) : null
                                                             }
-
-
                                                         </>
                                                         : <View style={{ flex: 1, width: "90%", flexDirection: "row", borderBottomColor: "#EFEFF4", borderBottomWidth: 0.5, padding: 8 }}>
                                                             <View style={{ justifyContent: "center", alignItems: "center", flexDirection: "row" }}>
@@ -354,8 +363,60 @@ class AppointmentDetails extends Component {
                                 ) : <ActivityIndicator color="orange" />
                             }
 
+                            <Text style={{ marginTop: 20 }}>Review</Text>
+
+                            <View
+                                style={{
+                                    flex: 1, justifyContent: "center", alignItems: "center", marginTop: 20, width: "100%", height: 200,
+                                    backgroundColor: "white"
+                                }}
+                            >
+                                <View style={{ flex: 1, width: "90%", justifyContent: "center", alignItems: "center", height: 80, borderBottomColor: "#EFEFF4", borderBottomWidth: 0.5 }}>
+                                    <View style={{ justifyContent: "center", alignItems: "center", flexDirection: "row" }}>
+
+                                        {
+                                            yellowStars.map((key, index) => {
+                                                return (
+                                                    <TouchableOpacity onPress={() => { this.starsSet() }} key={index}>
+                                                        <FontAwesome name="star" style={{ margin: 8, color: "#FFA601", fontSize: 25 }} />
+                                                    </TouchableOpacity>
+                                                )
+                                            })
+                                        }
+
+                                        {
+                                            greyStars.map((key, index) => {
+                                                return (
+                                                    <TouchableOpacity
+                                                        onPress={() => { this.starsSet() }}
+                                                        key={index}>
+                                                        <FontAwesome name="star" style={{ margin: 8, color: "#707070", fontSize: 25 }} />
+                                                    </TouchableOpacity>
+                                                )
+                                            })
+                                        }
+
+                                    </View>
+                                    <View style={{ flexDirection: "row", marginBottom: 10, height: 120, justifyContent: "space-between", marginTop: 10, borderColor: "#D4D4E0", borderWidth: 0.5, borderRadius: 5 }}>
+                                        <View style={{ flex: 1, borderTopRightRadius: 5, borderBottomRightRadius: 5, justifyContent: "center", }}>
+                                            <View style={styles.container}>
+                                                <Textarea
+                                                    containerStyle={styles.textareaContainer}
+                                                    style={styles.textarea}
+                                                    onChangeText={(Message) => this.setState({ Message })}
+                                                    defaultValue={Message}
+                                                    maxLength={100}
+                                                    placeholder={'Write Review'}
+                                                    underlineColorAndroid={'transparent'}
+                                                />
+                                            </View>
+                                        </View>
+                                    </View>
+                                </View>
+                            </View>
+
                             {
-                                loader != true ?
+                                !approved && loader != true ?
                                     <TouchableOpacity
                                         onPress={() => {
                                             this.deleteBooking(service._id)
@@ -369,17 +430,36 @@ class AppointmentDetails extends Component {
                                         }}>
                                         <Text style={{ color: "white", fontWeight: "bold" }}>Delete Booking</Text>
                                     </TouchableOpacity> :
-                                    <View
-                                        style={{
-                                            backgroundColor: "red",
-                                            height: 35, marginTop: 20,
+
+                                    (!approved) ? (
+                                        <View
+                                            style={{
+                                                backgroundColor: "red",
+                                                height: 35, marginTop: 20,
+                                                justifyContent: "center",
+                                                alignItems: "center",
+                                                borderRadius: 35
+                                            }}>
+                                            <ActivityIndicator color="white" />
+                                        </View>
+                                    ) :
+                                        <TouchableOpacity style={{
+                                            marginTop: 10,
+                                            // backgroundColor: "red",
                                             justifyContent: "center",
-                                            alignItems: "center",
-                                            borderRadius: 35
-                                        }}>
-                                        <ActivityIndicator color="white" />
-                                    </View>
+                                            alignItems: "center"
+                                        }}
+                                        // onPress={() => this.signin()}
+                                        >
+                                            <ImageBackground source={require('../../../../assets/buttonBackground.png')} resizeMode="contain"
+                                                style={{ height: 50, width: 350, justifyContent: "center", alignItems: "center" }}
+                                            >
+                                                <Text style={{ textAlign: "center", fontSize: 15, margin: 12, color: "white" }}>Write Review</Text>
+                                            </ImageBackground>
+                                        </TouchableOpacity>
+
                             }
+
 
 
                         </View>
@@ -409,5 +489,16 @@ const styles = StyleSheet.create({
         // backgroundColor: "white",
         backgroundColor: "#F6F6F6"
 
+    },
+    textareaContainer: {
+        height: 100,
+        padding: 5,
+        // backgroundColor: 'rgba(52, 52, 52, .1)',
+    },
+    textarea: {
+        textAlignVertical: 'top',  // hack android
+        height: 170,
+        fontSize: 14,
+        color: 'black',
     },
 });

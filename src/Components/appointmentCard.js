@@ -12,7 +12,8 @@ class AppointmentCard extends Component {
     }
 
     render() {
-        const { appointments } = this.props
+        const { appointments, approved } = this.props
+
         return (
             <ScrollView contentContainerStyle={styles.contentContainer}
             >
@@ -21,7 +22,7 @@ class AppointmentCard extends Component {
                         appointments.map((key, index) => {
                             return (
                                 <TouchableOpacity key={index}
-                                    onPress={() => Actions.AppointmentDetails({ service: key })}
+                                    onPress={() => Actions.AppointmentDetails({ service: key, approved: approved ? approved : null })}
                                 >
                                     <View style={{
                                         flex: 1, justifyContent: "center", alignItems: "center", marginTop: 10,

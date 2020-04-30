@@ -177,7 +177,7 @@ class Appointments extends Component {
                                             </TabHeading>
                                         }
                                     >
-                                        <AppointmentCard appointments={approved} />
+                                        <AppointmentCard appointments={approved} approved={true} />
                                     </Tab>
 
                                     {/* //Declined// */}
