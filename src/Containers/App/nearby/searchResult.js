@@ -79,18 +79,16 @@ class SearchResults extends Component {
                                                             <Image source={require('../../../../assets/Path.png')} resizeMode="contain"
                                                                 style={{ height: 15, width: 15, }}
                                                             />
-                                                            <Text style={{ color: "grey", marginLeft: 7, fontSize: 13, }}>4.0</Text>
+                                                            <Text style={{ color: "grey", marginLeft: 7, fontSize: 13, }}>{key.review}</Text>
 
                                                             <Image source={require('../../../../assets/Group.png')} resizeMode="contain"
                                                                 style={{ height: 14, width: 14, marginTop: 2, marginLeft: 5 }}
                                                             />
-
                                                             {
                                                                 currentLocation && key.location ?
                                                                     <Text style={{ marginLeft: 7, fontSize: 13 }}>{this.distance(currentLocation.coords.latitude, currentLocation.coords.longitude, key.location.coordinates[0], key.location.coordinates[1])} </Text> :
                                                                     null
                                                             }
-
                                                         </View>
                                                         {/* <Text style={{ color: "grey", fontSize: 12, color: "#ff4500" }}>8:30 am - 8:00 pm</Text> */}
                                                         <Text style={{ color: "grey", fontSize: 12, color: "#ff4500" }}>{key.telePhone}</Text>

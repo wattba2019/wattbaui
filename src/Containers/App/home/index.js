@@ -1,22 +1,12 @@
 import React, { Component } from "react";
-import { View, Image, StyleSheet, ImageBackground, TouchableOpacity, Text, TextInput, ScrollView, Alert, } from 'react-native';
+import { View, Image, StyleSheet, TouchableOpacity, Text, TextInput, ScrollView, Alert, } from 'react-native';
 import { connect } from "react-redux";
 import { Actions } from 'react-native-router-flux';
-import { setNearByShops, setFavShops } from "../../../Store/Action/action";
+import { setNearByShops, } from "../../../Store/Action/action";
 import axios from 'axios';
 //icons import
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
-
-// import icon1 from '../../../../assets/services/haircut.png';
-// import icon2 from '../../../../assets/services/coloring.png';
-// import icon3 from '../../../../assets/services/styling.png';
-// import icon4 from '../../../../assets/services/hairdryer.png';
-// import icon5 from '../../../../assets/services/hairspa.png';
-// import icon6 from '../../../../assets/services/shampo.png';
-// import icon7 from '../../../../assets/services/shaving.png';
-// import icon8 from '../../../../assets/services/more.png';
-
 
 class Home extends Component {
     constructor(props) {
@@ -38,32 +28,7 @@ class Home extends Component {
         this.getPackages()
         // this.getHairStyles()
         this.getAllServices()
-        // this.getMultipleShopWithId()
-        // this.getFavShops()
     }
-
-    // getFavShops() {
-    //     let urlm = `${this.props.bseUrl}/favorites/${this.props.userProfile._id}`
-    //     axios({
-    //         method: 'get',
-    //         url: urlm,
-    //     })
-    //         .then(result => {
-    //             let data = result.data.data[0].favrouiteIds
-    //             console.log(data, "FAV_ON_HOME")
-    //             this.props.setFavShops(data)
-    //         })
-    //         .catch(err => {
-    //             if (err.response.status === 409) {
-    //                 console.log(err.response.data.message, "ERROR_ON_GET_Fav")
-    //             }
-    //             else {
-    //                 alert(err.response.data.message)
-    //             }
-    //         })
-
-    // }
-
 
     getNeabyShops() {
         const { currentLocation } = this.props
@@ -102,7 +67,6 @@ class Home extends Component {
 
         }
     }
-
     getBestBarbershops() {
         var options = {
             method: 'GET',
@@ -117,8 +81,9 @@ class Home extends Component {
             .then(result => {
                 let bestBarberShops = result.data.data
                 // console.log(bestBarberShops, "Fetch_Best_Shops")
+                const fiveStarRatingShops = bestBarberShops.filter(bestBarberShops => bestBarberShops.review === "5");
                 this.setState({
-                    bestBarberShops: bestBarberShops,
+                    bestBarberShops: fiveStarRatingShops,
                 })
             })
             .catch(err => {
@@ -130,7 +95,6 @@ class Home extends Component {
             })
 
     }
-
     getPackages() {
         var options = {
             method: 'GET',
@@ -158,7 +122,6 @@ class Home extends Component {
             })
 
     }
-
     // getHairStyles() {
     //     var options = {
     //         method: 'GET',
@@ -187,8 +150,6 @@ class Home extends Component {
     //             })
     //         })
     // }
-
-
     getShopWithId(_id) {
         console.log(_id, "USERID")
         var options = {
@@ -216,8 +177,6 @@ class Home extends Component {
             })
 
     }
-
-
     getMultipleShopWithId(shopid) {
         if (shopid.length) {
             cloneData = {
@@ -236,9 +195,9 @@ class Home extends Component {
             axios(options)
                 .then(result => {
                     let shops = result.data.data
-                    console.log(shops, "Fetch_multiple_shops_withID")
+                    // const fiveStarRatingShops = shops.filter(shops => shops.review === "5");
                     Actions.SearchResults({ shops: shops, headerTitle: "Top Services" })
-
+                    // console.log(shops, "Fetch_multiple_shops_withID")
                 })
                 .catch(err => {
                     let error = JSON.parse(JSON.stringify(err))
@@ -253,8 +212,6 @@ class Home extends Component {
         }
 
     }
-
-
     getAllServices() {
         let urlM = `${this.props.bseUrl}/getallshops/getAllService`
         axios({
@@ -310,21 +267,10 @@ class Home extends Component {
                         }
                     }
                     else {
+                        // console.log(service, "MORE_DATA")
                         More.push(service)
                     }
                 }
-
-                // console.log(
-                //     Haircut,
-                //     Coloring,
-                //     Styling,
-                //     Hairdryer,
-                //     Hairspa,
-                //     Shampoo,
-                //     Shaving,
-                //     More, "Fetch_services_after_soorting"
-                // )
-
                 this.setState({
                     Haircut,
                     Coloring,
@@ -334,7 +280,6 @@ class Home extends Component {
                     Shampoo,
                     Shaving,
                     More,
-
                 })
             })
             .catch(err => {
@@ -344,6 +289,9 @@ class Home extends Component {
                     err: error,
                 })
             })
+    }
+    onFocusSearch() {
+        Actions.AppContainer({ rout: "Nearby", openInput: true })
     }
 
     render() {
@@ -358,7 +306,6 @@ class Home extends Component {
             Shaving,
             More,
         } = this.state
-        // let images = [icon1, icon2, icon3, icon4, icon5, icon6, icon7, icon8]
 
         return (
             <View style={{
@@ -424,7 +371,6 @@ class Home extends Component {
                             backgroundColor: "#E8E6E7",
                         }}
                     >
-
                         <View
                             style={{ width: "5%", borderColor: 'gray', backgroundColor: "#E8E6E7", justifyContent: "center", alignItems: "center", }}
                         >
@@ -435,14 +381,13 @@ class Home extends Component {
                             style={{ width: "80%", borderColor: 'gray', backgroundColor: "#E8E6E7", justifyContent: "center", alignItems: "center", }}
                         >
                             <TextInput
-                                // keyboardType={"numeric"}
                                 style={{ width: "90%", }}
-                                // onChangeText={text => onChangeText(text)}
                                 value={this.state.email}
                                 placeholder={"Search"}
+                                // onChangeText={text => onChangeText(text)}
+                                onFocus={() => this.onFocusSearch()}
                             />
                         </View>
-
                     </View>
                 </View>
 
@@ -472,44 +417,6 @@ class Home extends Component {
                             justifyContent: "center", alignItems: "center",
                             // backgroundColor: "yellow"
                         }}>
-                            {/* 
-                            {
-                                (allServicesNames.length = !0) ? (
-                                    allServicesNames.map((key, index) => {
-                                        return (
-                                            <TouchableOpacity key={index} style={styles.iconsStyle}>
-                                                <Image
-                                                    // source={images[Math.floor(Math.random() * allServicesNames.length)]}
-                                                    source={images[0]}
-                                                    resizeMode="contain"
-                                                    style={{ width: 40, height: 40, }}
-                                                />
-                                            </TouchableOpacity>
-                                        )
-                                    })
-                                ) : null
-
-                            } */}
-
-
-
-                            {/* {
-                                (allServicesNames.length = !0) ? (
-                                    [0, 1, 2, 3, 4, 5, 6, 7,].map((key, index) => {
-                                        return (
-                                            <TouchableOpacity key={index} style={styles.iconsStyle}>
-                                                <Image
-                                                    // source={images[Math.floor(Math.random() * allServicesNames.length)]}
-                                                    source={images[0]}
-                                                    resizeMode="contain"
-                                                    style={{ width: "100%", height: "100%", }}
-                                                />
-                                            </TouchableOpacity>
-                                        )
-                                    })
-                                ) : null
-
-                            } */}
 
                             <TouchableOpacity style={styles.iconsStyle}
                                 onPress={() => { this.getMultipleShopWithId(Haircut) }}
@@ -535,7 +442,6 @@ class Home extends Component {
                                 />
                             </TouchableOpacity>
 
-
                             <TouchableOpacity style={styles.iconsStyle}
                                 onPress={() => { this.getMultipleShopWithId(Hairdryer) }}
                             >
@@ -560,7 +466,6 @@ class Home extends Component {
                                 />
                             </TouchableOpacity>
 
-
                             <TouchableOpacity style={styles.iconsStyle}
                                 onPress={() => { this.getMultipleShopWithId(Shaving) }}
                             >
@@ -579,24 +484,13 @@ class Home extends Component {
                         </View>
                         {
                             (nearByShops && nearByShops != 0) ? (
-                                <View style={{
-                                    width: "95%", marginTop: 10, flex: 1, flexDirection: "row",
-                                    // backgroundColor: "green"
-                                }}>
-                                    <TouchableOpacity style={{ flex: 1 }}
-                                    // onPress={() => Actions.SearchResults()}
-                                    >
+                                <View style={{ width: "95%", marginTop: 10, flex: 1, flexDirection: "row", }}>
+                                    <TouchableOpacity style={{ flex: 1 }}>
                                         <Text style={{ color: "black", fontWeight: "bold", fontSize: 16 }}>Nearby Barbershops</Text>
                                     </TouchableOpacity>
-                                    <View style={{ flex: 1 }}>
-                                        {/* <TouchableOpacity>
-                                            <Text style={{ fontSize: 16, color: "#8E8E93", textAlign: "right", }}>View All</Text>
-                                        </TouchableOpacity> */}
-                                    </View>
                                 </View>
                             ) : null
                         }
-
                         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                             {
                                 (nearByShops && nearByShops != 0) ? (
@@ -654,9 +548,9 @@ class Home extends Component {
                                                             alignItems: "center"
                                                         }}>
                                                             <Image source={require('../../../../assets/Path.png')} resizeMode="contain"
-                                                                style={{ width: "30%", }}
+                                                                style={{ width: "30%", left: -5 }}
                                                             />
-                                                            <Text style={{ color: "#7F7F7F" }}>4.0</Text>
+                                                            <Text style={{ color: "#7F7F7F", marginRight: 10 }}>{key.review}</Text>
                                                         </View>
                                                     </View>
                                                 </View>
@@ -668,142 +562,12 @@ class Home extends Component {
 
                         </ScrollView>
 
-
-                        {/* <View style={{
-                            width: "95%", marginTop: 10, flex: 1, flexDirection: "row",
-                        }}>
-                            <View style={{ flex: 1.5 }}>
-                                <Text style={{ color: "black", fontWeight: "bold", fontSize: 16 }}>Trending Hairstyles 2019</Text>
-                            </View>
-                            <View style={{ flex: 1 }}>
-                                <TouchableOpacity>
-                                    <Text style={{ fontSize: 16, color: "#8E8E93", textAlign: "right", }}>View All</Text>
-                                </TouchableOpacity>
-                            </View>
-                        </View>
-
-                        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                            <TouchableOpacity style={{
-                                height: 120,
-                                width: 120,
-                                justifyContent: "center",
-                                alignItems: "center",
-                            }}
-                            // onPress={() => this.props.navigate.navigate('Product')}
-                            >
-                                <View style={{
-                                    height: 85,
-                                    width: 85,
-                                    borderRadius: 50,
-                                    justifyContent: "center",
-                                    alignItems: "center",
-                                    backgroundColor: "white",
-                                    borderColor: "#FD6958",
-                                    borderWidth: 1.80
-
-                                }}>
-                                    <Image source={require('../../../../assets/Ellipse.png')} resizeMode="contain"
-                                        style={{ width: "90%", height: "90%", }}
-                                    />
-                                </View>
-                                <Text style={{ marginTop: 5, fontSize: 14, color: "#8E8E93", textAlign: "right", }}>Hairstyle Name</Text>
-                            </TouchableOpacity>
-
-                            <TouchableOpacity style={{
-                                height: 120,
-                                width: 120,
-                                justifyContent: "center",
-                                alignItems: "center",
-                            }}
-                            // onPress={() => this.props.navigate.navigate('Product')}
-                            >
-                                <View style={{
-                                    height: 85,
-                                    width: 85,
-                                    borderRadius: 50,
-                                    justifyContent: "center",
-                                    alignItems: "center",
-                                    backgroundColor: "white",
-                                    borderColor: "#FD6958",
-                                    borderWidth: 1.80
-
-                                }}>
-                                    <Image source={require('../../../../assets/Ellipse2.png')} resizeMode="contain"
-                                        style={{ width: "90%", height: "90%", }}
-                                    />
-                                </View>
-                                <Text style={{ marginTop: 5, fontSize: 14, color: "#8E8E93", textAlign: "right", }}>Hairstyle Name</Text>
-                            </TouchableOpacity>
-
-                            <TouchableOpacity style={{
-                                height: 120,
-                                width: 120,
-                                justifyContent: "center",
-                                alignItems: "center",
-                            }}
-                            // onPress={() => this.props.navigate.navigate('Produ-ct')}
-                            >
-                                <View style={{
-                                    height: 85,
-                                    width: 85,
-                                    borderRadius: 50,
-                                    justifyContent: "center",
-                                    alignItems: "center",
-                                    backgroundColor: "white",
-                                    borderColor: "#FD6958",
-                                    borderWidth: 1.80
-
-                                }}>
-                                    <Image source={require('../../../../assets/Ellipse3.png')} resizeMode="contain"
-                                        style={{ width: "90%", height: "90%", }}
-                                    />
-                                </View>
-                                <Text style={{ marginTop: 5, fontSize: 14, color: "#8E8E93", textAlign: "right", }}>Hairstyle Name</Text>
-                            </TouchableOpacity>
-
-                            <TouchableOpacity style={{
-                                height: 120,
-                                width: 120,
-                                justifyContent: "center",
-                                alignItems: "center",
-                            }}
-                            // onPress={() => this.props.navigate.navigate('Product')}
-                            >
-                                <View style={{
-                                    height: 85,
-                                    width: 85,
-                                    borderRadius: 50,
-                                    justifyContent: "center",
-                                    alignItems: "center",
-                                    backgroundColor: "white",
-                                    borderColor: "#FD6958",
-                                    borderWidth: 1.80
-
-                                }}>
-                                    <Image source={require('../../../../assets/Ellipse4.png')} resizeMode="contain"
-                                        style={{ width: "90%", height: "90%", }}
-                                    />
-                                </View>
-                                <Text style={{ marginTop: 5, fontSize: 14, color: "#8E8E93", textAlign: "right", }}>Hairstyle Name</Text>
-                            </TouchableOpacity>
-                        </ScrollView> */}
-
-
                         {
                             (bestBarberShops && bestBarberShops != 0) ? (
-                                <View style={{
-                                    width: "95%", marginTop: 10, flex: 1, flexDirection: "row",
-                                }}>
-                                    <TouchableOpacity style={{ flex: 1 }}
-                                        onPress={() => Actions.SearchResults()}
-                                    >
+                                <View style={{ width: "95%", marginTop: 10, flex: 1, flexDirection: "row", }}>
+                                    <TouchableOpacity style={{ flex: 1 }}>
                                         <Text style={{ color: "black", fontWeight: "bold", fontSize: 16 }}>Best Barbershops</Text>
                                     </TouchableOpacity>
-                                    <View style={{ flex: 1 }}>
-                                        {/* <TouchableOpacity>
-                                            <Text style={{ fontSize: 16, color: "#8E8E93", textAlign: "right", }}>View All</Text>
-                                        </TouchableOpacity> */}
-                                    </View>
                                 </View>
                             ) : null
                         }
@@ -865,9 +629,9 @@ class Home extends Component {
                                                             alignItems: "center"
                                                         }}>
                                                             <Image source={require('../../../../assets/Path.png')} resizeMode="contain"
-                                                                style={{ width: "30%", }}
+                                                                style={{ width: "30%", left: -5 }}
                                                             />
-                                                            <Text style={{ color: "#7F7F7F" }}>4.0</Text>
+                                                            <Text style={{ color: "#7F7F7F", marginRight: 10 }}>{key.review}</Text>
                                                         </View>
                                                     </View>
                                                 </View>
@@ -876,47 +640,35 @@ class Home extends Component {
                                     })
                                 ) : null
                             }
-
                         </ScrollView>
 
                         {
                             (packages && packages != 0) ? (
-                                <View style={{
-                                    width: "95%", marginTop: 10, flex: 1, flexDirection: "row",
-                                    // backgroundColor: "green"
-                                }}>
+                                <View style={{ width: "95%", marginTop: 10, flex: 1, flexDirection: "row", }}>
                                     <View style={{ flex: 1.5 }}>
                                         <Text style={{ color: "black", fontWeight: "bold", fontSize: 16 }}>Special Packages & Offers</Text>
-                                    </View>
-                                    <View style={{ flex: 1 }}>
-                                        {/* <TouchableOpacity>
-                                            <Text style={{ fontSize: 16, color: "#8E8E93", textAlign: "right", }}>View All</Text>
-                                        </TouchableOpacity> */}
                                     </View>
                                 </View>
                             ) : null
                         }
 
                         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-
                             {
                                 (packages && packages != 0) ? (
                                     packages.map((key, index) => {
                                         return (
-                                            <TouchableOpacity key={index} style={{
-                                                margin: 10,
-                                                flexDirection: "row",
-                                                marginBottom: 20,
-                                                height: 170,
-                                                width: 250,
-                                            }} key={index}
+                                            <TouchableOpacity key={index}
+                                                style={{
+                                                    margin: 10,
+                                                    flexDirection: "row",
+                                                    marginBottom: 20,
+                                                    height: 170,
+                                                    width: 250,
+                                                }}
                                                 onPress={() => this.getShopWithId(key.userId)}
                                             >
                                                 <View style={{ width: 250, }}>
-
-                                                    <View style={{
-                                                        flex: 2,
-                                                    }}>
+                                                    <View style={{ flex: 2, }}>
                                                         {(key.packageImage != null) ? (
                                                             <Image style={{
                                                                 width: "100%", height: "100%",
@@ -956,10 +708,6 @@ class Home extends Component {
                                                             justifyContent: "center",
                                                             alignItems: "center"
                                                         }}>
-                                                            <Image source={require('../../../../assets/Path.png')} resizeMode="contain"
-                                                                style={{ width: "30%", }}
-                                                            />
-                                                            <Text style={{ color: "#7F7F7F" }}>4.0</Text>
                                                         </View>
                                                     </View>
                                                 </View>
@@ -968,143 +716,6 @@ class Home extends Component {
                                     })
                                 ) : null
                             }
-
-
-
-
-                            {/* {
-                                (packages) ? (
-                                    packages.map((key, index) => {
-                                        return (
-                                            <TouchableOpacity key={index} style={{ width: "90%", marginHorizontal: "5%", borderBottomColor: "#EEEEEE", borderBottomWidth: 1, margin: 5 }}
-                                                onPress={() => Actions.OfferDetails({ offerDetails: key })}
-                                            >
-                                                {(key.packageImage != null) ? (
-                                                    <Image source={{ uri: key.packageImage }} resizeMode="cover"
-                                                        style={{ width: "100%", height: 200, borderRadius: 10, marginTop: 5 }}
-                                                    />
-                                                ) : <Image source={require('../../../../assets/nophoto.jpg')} resizeMode="cover"
-                                                    style={{ width: "100%", height: 200, borderRadius: 10, marginTop: 5 }}
-                                                    />}
-
-                                                <View style={{ flexDirection: "row", justifyContent: "space-between", marginTop: 10, }}>
-                                                    <View>
-                                                        <Text>{key.packageName}</Text>
-                                                    </View>
-                                                    <View>
-                                                        <Text style={{ color: "#FD6958" }}>Book Now</Text>
-                                                    </View>
-                                                </View>
-                                                <View style={{ flexDirection: "row", justifyContent: "space-between", marginTop: 2, marginBottom: 10 }}>
-                                                    <View>
-                                                        <Text style={{ color: "grey", fontSize: 11 }}>{key.offerTillAvailability}</Text>
-                                                    </View>
-                                                    <View>
-                                                        <Text>${key.price}</Text>
-                                                    </View>
-                                                </View>
-                                            </TouchableOpacity>
-                                        )
-                                    })
-                                ) : null
-                            } */}
-
-
-
-                            {/* <TouchableOpacity style={{
-                                margin: 10,
-                                // backgroundColor: "red",
-                            }}
-                            // onPress={() => Actions.Shop()}
-                            // onPress={() => this.props.navigate.navigate('Product')}
-                            >
-                                <View style={{
-                                    height: 170,
-                                    // backgroundColor: "red",
-                                }}>
-                                    <ImageBackground source={require('../../../../assets/Rectangle.png')} style={styles.card} >
-                                    </ImageBackground>
-                                    <View style={{
-                                        top: -10,
-                                        height: 50,
-                                        borderBottomRightRadius: 6,
-                                        borderBottomLeftRadius: 6,
-                                        padding: "2%",
-                                        borderColor: "#E8E6E7",
-                                        borderWidth: 1,
-                                        flex: 1,
-                                        flexDirection: "row",
-                                        backgroundColor: "white",
-                                    }}>
-                                        <View style={{
-                                            flex: 1,
-                                            // backgroundColor: "green",
-                                        }}>
-                                            <Text style={styles.card_text}>Haircut & Hiarstyle</Text>
-                                            <Text style={{ color: "#7F7F7F", fontSize: 10 }}>Luxary Package offer till Sep 22,2019</Text>
-                                        </View>
-                                        <View style={{
-                                            flex: 2,
-                                            // flexDirection: "row",
-                                            justifyContent: "center",
-                                            alignItems: "center",
-                                            // backgroundColor: "yellow",
-                                        }}>
-
-                                            <Text style={{ color: "#FD6958" }}>Book Now</Text>
-                                            <Text style={{ color: "#7F7F7F" }}>$100.00</Text>
-                                        </View>
-                                    </View>
-                                </View>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={{
-                                margin: 10,
-                                // backgroundColor: "red",
-                            }}
-                            // onPress={() => Actions.Shop()}
-                            // onPress={() => this.props.navigate.navigate('Product')}
-                            >
-                                <View style={{
-                                    height: 170,
-                                    // backgroundColor: "red",
-                                }}>
-                                    <ImageBackground source={require('../../../../assets/Rectangle.png')} style={styles.card} >
-                                    </ImageBackground>
-                                    <View style={{
-                                        top: -10,
-                                        height: 50,
-                                        borderBottomRightRadius: 6,
-                                        borderBottomLeftRadius: 6,
-                                        padding: "2%",
-                                        borderColor: "#E8E6E7",
-                                        borderWidth: 1,
-                                        flex: 1,
-                                        flexDirection: "row",
-                                        backgroundColor: "white",
-                                    }}>
-                                        <View style={{
-                                            flex: 1,
-                                            // backgroundColor: "green",
-                                        }}>
-                                            <Text style={styles.card_text}>Haircut & Hiarstyle</Text>
-                                            <Text style={{ color: "#7F7F7F", fontSize: 10 }}>Luxary Package offer till Sep 22,2019</Text>
-                                        </View>
-                                        <View style={{
-                                            flex: 2,
-                                            // flexDirection: "row",
-                                            justifyContent: "center",
-                                            alignItems: "center",
-                                            // backgroundColor: "yellow",
-                                        }}>
-
-                                            <Text style={{ color: "#FD6958" }}>Book Now</Text>
-                                            <Text style={{ color: "#7F7F7F" }}>$100.00</Text>
-                                        </View>
-                                    </View>
-                                </View>
-                            </TouchableOpacity> */}
-
-
 
                         </ScrollView>
                     </ScrollView>
@@ -1126,13 +737,9 @@ function mapDispatchToProps(dispatch) {
         setNearByShops: (shops, ) => {
             dispatch(setNearByShops(shops));
         },
-        // setFavShops: (shops) => {
-        //     dispatch(setFavShops(shops));
-        // },
     })
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Home);
-
 
 const styles = StyleSheet.create({
     contentContainer: {
@@ -1143,20 +750,10 @@ const styles = StyleSheet.create({
     },
     card: {
         width: 250, height: 120,
-        // margin: 15,
         justifyContent: 'flex-end',
         padding: 10,
-        // shadowColor: "#000",
-        // shadowOffset: {
-        //     width: 0,
-        //     height: 2,
-        // },
-        // shadowOpacity: 0.25,
-        // shadowRadius: 3.84,
-        // elevation: 5,
         backgroundColor: 'white',
         borderRadius: 6, overflow: 'hidden'
-
     },
     card_text: {
         color: 'black',

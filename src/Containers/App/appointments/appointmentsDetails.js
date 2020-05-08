@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Image, StatusBar, TouchableOpacity, Text, ScrollView, StyleSheet, ActivityIndicator, ImageBackground } from 'react-native';
+import { View, Image, StatusBar, TouchableOpacity, Text, ScrollView, StyleSheet, ActivityIndicator, ImageBackground, Alert } from 'react-native';
 import { connect } from "react-redux";
 import { Actions } from 'react-native-router-flux';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -15,9 +15,9 @@ class AppointmentDetails extends Component {
             selectedService: [],
             loader: false,
             totalCost: 0,
-            yellowStars: [1, 2, 3, 4],
-            greyStars: [1],
-            Message: "",
+            star: 4,
+            Message: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum ",
+            review: false
         };
     }
 
@@ -29,7 +29,63 @@ class AppointmentDetails extends Component {
         }
         else {
             this.getBookedService(service.requiredServiceId)
+
         }
+        this.checkAlreadyRewiew(service._id)
+
+    }
+
+    checkAlreadyRewiew(bookingId) {
+        console.log(bookingId, "bookingId")
+
+        let { service } = this.props
+        let idsCloneData = { bookingId }
+        var options = {
+            method: 'POST',
+            url: `${this.props.bseUrl}/review/checkUserBeforeSubmitReview/`,
+            headers:
+            {
+                'cache-control': 'no-cache',
+                "Allow-Cross-Origin": '*',
+            },
+            data: idsCloneData
+        }
+        axios(options)
+            .then(result => {
+                let sumbitReview = result.data.submit
+                console.log(sumbitReview, result.data, "sumbitReview_console")
+                if (sumbitReview) {
+                    let onHoursMiliSeconds = 3600000
+
+                    let bookingHour = Number(service.bookingHour)
+
+                    let bookingDate = service.bookingDateTime - 100000
+
+                    let totalHours = bookingHour * onHoursMiliSeconds
+
+                    let dateAndTimeAfter1hours = totalHours + bookingDate + 3600000
+
+                    var currentTimeInMiliSeconds = new Date().getTime();
+
+                    if (currentTimeInMiliSeconds > dateAndTimeAfter1hours) {
+                        this.setState({ review: sumbitReview })
+                    }
+                    else {
+                        this.setState({ review: false })
+                    }
+                    // console.log(bookingDate, dateAndTimeAfter1hours, bookingHour, totalHours, "TIME")
+                }
+
+            })
+            .catch(err => {
+                let error = JSON.parse(JSON.stringify(err))
+                console.log(error, 'ERRROR', err)
+            })
+
+
+
+
+
     }
 
     getBookedService(serviceId) {
@@ -105,7 +161,7 @@ class AppointmentDetails extends Component {
                 .then(result => {
                     let bookedPackage = result.data.data
                     let price = totalCost
-                    console.log(bookedPackage, "Fetch_Booked_Package")
+                    // console.log(bookedPackage, "Fetch_Booked_Package")
                     price = price + Number(bookedPackage[0].price)
                     this.setState({
                         selectedService: bookedPackage,
@@ -155,29 +211,96 @@ class AppointmentDetails extends Component {
         }
     }
 
-    starsSet() {
-        alert("work")
+
+    submitReview() {
+        const { Message, star } = this.state
+        const { service, userProfile } = this.props
+        if (Message != "") {
+            this.setState({
+                loader: !this.state.loader
+            })
+            let idsCloneData = {
+                userId: userProfile._id,
+                serviceId: service.requiredServiceId,
+                shopId: service.shopId._id,
+                bookingId: service._id,
+                rating: star,
+                comment: Message,
+            }
+            var options = {
+                method: 'POST',
+                url: `${this.props.bseUrl}/review/addReview/`,
+                headers:
+                {
+                    'cache-control': 'no-cache',
+                    "Allow-Cross-Origin": '*',
+                },
+                data: idsCloneData
+            }
+            axios(options)
+                .then(result => {
+                    let submitReview = result.data
+                    console.log(submitReview, "Submit_rewiew")
+                    this.updateReviewInShops(service.shopId._id)
+                })
+                .catch(err => {
+                    this.setState({
+                        loader: !this.state.loader
+                    })
+                    let error = JSON.parse(JSON.stringify(err))
+                    console.log(error, 'ERRROR', err)
+                })
+        }
+        else {
+            Alert.alert("Please type review")
+        }
     }
+
+    updateReviewInShops(shopId) {
+        console.log(shopId, "shopId")
+        let urlm = `${this.props.bseUrl}/review/getAllReviewsAndUpdateInShop/${shopId}`
+        axios({
+            method: 'get',
+            url: urlm,
+        })
+            .then(result => {
+                let data = result.data.result
+                console.log(data, "DATA_FROM_API_REVIEW")
+                Alert.alert("Review Submited")
+                this.setState({ loader: !this.state.loader })
+                Actions.AppContainer({ rout: "Appointments" })
+            })
+            .catch(err => {
+                this.setState({ loader: !this.state.loader })
+                if (err.response.status === 409) {
+                    console.log(err.response.data.message, "ERROR_ON_GET_REVIEW")
+                }
+                else {
+                    alert(err.response.data.message)
+                }
+
+            })
+    }
+
+
+
 
     render() {
         const { service, approved } = this.props
-        const { selectedService, totalCost, loader, yellowStars, greyStars, Message } = this.state
-
-        console.log(approved, "approved")
-        console.log(service, totalCost, "DELETEBOOKING")
-
+        const { selectedService, totalCost, loader, star, Message, review } = this.state
+        // console.log(review, service, "review")
         return (
             <View style={{
                 flex: 1,
                 width: "100%",
                 // alignItems: "center",
                 backgroundColor: "white",
-            }}>
+            }} >
                 <StatusBar backgroundColor="white" barStyle="dark-content" />
 
                 {/* header */}
 
-                <View style={{
+                < View style={{
                     flex: 0.6,
                     flexDirection: "row",
                     width: "100%",
@@ -198,7 +321,7 @@ class AppointmentDetails extends Component {
                         <Text style={{ alignItems: "center", color: "#000000", fontSize: 18 }}>Appointment Details</Text>
                     </View>
 
-                </View>
+                </View >
 
 
                 <View style={{
@@ -362,59 +485,52 @@ class AppointmentDetails extends Component {
                                     })
                                 ) : <ActivityIndicator color="orange" />
                             }
+                            {
+                                approved && review && <>
+                                    <Text style={{ marginTop: 20 }}>Review</Text>
+                                    <View
+                                        style={{
+                                            flex: 1, justifyContent: "center", alignItems: "center", marginTop: 20, width: "100%", height: 200,
+                                            backgroundColor: "white"
+                                        }}
+                                    >
+                                        <View style={{ flex: 1, width: "90%", justifyContent: "center", alignItems: "center", height: 80, borderBottomColor: "#EFEFF4", borderBottomWidth: 0.5 }}>
 
-                            <Text style={{ marginTop: 20 }}>Review</Text>
+                                            <View style={{ justifyContent: "center", alignItems: "center", flexDirection: "row" }}>
+                                                {[1, 2, 3, 4, 5].map((v, i) => {
+                                                    return (
+                                                        <TouchableOpacity
+                                                            onPress={() => this.setState({ star: i + 1 })}
+                                                            key={i}>
+                                                            <AntDesign
+                                                                name={star > i ? "star" : "staro"}
+                                                                size={25}
+                                                                style={{ margin: 8, color: "#FFA601", fontSize: 25 }} />
+                                                        </TouchableOpacity>
+                                                    )
+                                                })}
+                                            </View>
 
-                            <View
-                                style={{
-                                    flex: 1, justifyContent: "center", alignItems: "center", marginTop: 20, width: "100%", height: 200,
-                                    backgroundColor: "white"
-                                }}
-                            >
-                                <View style={{ flex: 1, width: "90%", justifyContent: "center", alignItems: "center", height: 80, borderBottomColor: "#EFEFF4", borderBottomWidth: 0.5 }}>
-                                    <View style={{ justifyContent: "center", alignItems: "center", flexDirection: "row" }}>
 
-                                        {
-                                            yellowStars.map((key, index) => {
-                                                return (
-                                                    <TouchableOpacity onPress={() => { this.starsSet() }} key={index}>
-                                                        <FontAwesome name="star" style={{ margin: 8, color: "#FFA601", fontSize: 25 }} />
-                                                    </TouchableOpacity>
-                                                )
-                                            })
-                                        }
-
-                                        {
-                                            greyStars.map((key, index) => {
-                                                return (
-                                                    <TouchableOpacity
-                                                        onPress={() => { this.starsSet() }}
-                                                        key={index}>
-                                                        <FontAwesome name="star" style={{ margin: 8, color: "#707070", fontSize: 25 }} />
-                                                    </TouchableOpacity>
-                                                )
-                                            })
-                                        }
-
-                                    </View>
-                                    <View style={{ flexDirection: "row", marginBottom: 10, height: 120, justifyContent: "space-between", marginTop: 10, borderColor: "#D4D4E0", borderWidth: 0.5, borderRadius: 5 }}>
-                                        <View style={{ flex: 1, borderTopRightRadius: 5, borderBottomRightRadius: 5, justifyContent: "center", }}>
-                                            <View style={styles.container}>
-                                                <Textarea
-                                                    containerStyle={styles.textareaContainer}
-                                                    style={styles.textarea}
-                                                    onChangeText={(Message) => this.setState({ Message })}
-                                                    defaultValue={Message}
-                                                    maxLength={100}
-                                                    placeholder={'Write Review'}
-                                                    underlineColorAndroid={'transparent'}
-                                                />
+                                            <View style={{ flexDirection: "row", marginBottom: 10, height: 120, justifyContent: "space-between", marginTop: 10, borderColor: "#D4D4E0", borderWidth: 0.5, borderRadius: 5 }}>
+                                                <View style={{ flex: 1, borderTopRightRadius: 5, borderBottomRightRadius: 5, justifyContent: "center", }}>
+                                                    <View style={styles.container}>
+                                                        <Textarea
+                                                            containerStyle={styles.textareaContainer}
+                                                            style={styles.textarea}
+                                                            onChangeText={(Message) => this.setState({ Message })}
+                                                            defaultValue={Message}
+                                                            maxLength={100}
+                                                            placeholder={'Write Review'}
+                                                            underlineColorAndroid={'transparent'}
+                                                        />
+                                                    </View>
+                                                </View>
                                             </View>
                                         </View>
                                     </View>
-                                </View>
-                            </View>
-
+                                </>
+                            }
                             {
                                 !approved && loader != true ?
                                     <TouchableOpacity
@@ -423,7 +539,7 @@ class AppointmentDetails extends Component {
                                         }}
                                         style={{
                                             backgroundColor: "red",
-                                            height: 35, marginTop: 20,
+                                            height: 40, marginTop: 20,
                                             justifyContent: "center",
                                             alignItems: "center",
                                             borderRadius: 35
@@ -443,18 +559,23 @@ class AppointmentDetails extends Component {
                                             <ActivityIndicator color="white" />
                                         </View>
                                     ) :
-                                        <TouchableOpacity style={{
+
+                                        review && <TouchableOpacity style={{
                                             marginTop: 10,
                                             // backgroundColor: "red",
                                             justifyContent: "center",
                                             alignItems: "center"
                                         }}
-                                        // onPress={() => this.signin()}
+                                            onPress={() => this.submitReview()}
                                         >
                                             <ImageBackground source={require('../../../../assets/buttonBackground.png')} resizeMode="contain"
-                                                style={{ height: 50, width: 350, justifyContent: "center", alignItems: "center" }}
+                                                style={{ height: 50, width: 300, justifyContent: "center", alignItems: "center" }}
                                             >
-                                                <Text style={{ textAlign: "center", fontSize: 15, margin: 12, color: "white" }}>Write Review</Text>
+                                                {
+                                                    !loader ? <Text style={{ textAlign: "center", fontSize: 15, margin: 12, color: "white" }}>Submit Review</Text> :
+                                                        <ActivityIndicator color="white" />
+
+                                                }
                                             </ImageBackground>
                                         </TouchableOpacity>
 

@@ -11,7 +11,8 @@ class AppContainer extends Component {
     constructor() {
         super()
         this.state = {
-            rout: "Home"
+            rout: "Home",
+            focus: false
         }
     }
 
@@ -23,7 +24,10 @@ class AppContainer extends Component {
         }
     }
 
+
+
     render() {
+        console.log(this.props.openInput, "CONSOLE")
         return (
             <View style={{ flex: 1, }}>
                 <StatusBar backgroundColor="white" barStyle="dark-content" />
@@ -34,7 +38,7 @@ class AppContainer extends Component {
                         (this.state.rout === "Home") ? (<Home />) : null
                     }
                     {
-                        (this.state.rout === "Nearby") ? (<Nearby />) : null
+                        (this.state.rout === "Nearby") ? (<Nearby focusInput={this.props.openInput} />) : null
                     }
                     {
                         (this.state.rout === "Appointments") ? (<Appointments />) : null

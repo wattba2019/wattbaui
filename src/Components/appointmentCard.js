@@ -13,6 +13,7 @@ class AppointmentCard extends Component {
 
     render() {
         const { appointments, approved } = this.props
+        // console.log(appointments, "appointments")
 
         return (
             <ScrollView contentContainerStyle={styles.contentContainer}

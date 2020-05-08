@@ -1,15 +1,10 @@
 import React, { Component } from "react";
-import {
-    View, Image, ActivityIndicator, StyleSheet,
-    TouchableOpacity,
-    Text, TextInput, ScrollView
-} from 'react-native';
+import { View, Image, ActivityIndicator, StyleSheet, TouchableOpacity, Text, TextInput, ScrollView } from 'react-native';
 import { connect } from "react-redux";
 import { Actions } from 'react-native-router-flux';
 import IconFontAwesome from 'react-native-vector-icons/FontAwesome';
 import MapDirection from '../../../Components/maps'
 import { setNearByShops } from "../../../Store/Action/action";
-
 //icons import
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -48,7 +43,6 @@ class Nearby extends Component {
                     console.log(shops, "Fetch_Shops_NearBy")
                     this.props.setNearByShops(shops)
                     this.createShopLocationMarkers(shops)
-                    // Actions.Filters()
                     this.setState({
                         shops: shops,
                         isloader: false
@@ -125,8 +119,8 @@ class Nearby extends Component {
 
     render() {
         let { fullName, } = this.props.userProfile
-        let { nearByShops, currentLocation } = this.props
-        let { shops, shopLocationMarkers, search } = this.state
+        let { nearByShops, currentLocation, focusInput } = this.props
+        let { shops, shopLocationMarkers, search, } = this.state
 
         let filterShops = [];
         if (shops.length > 0) {
@@ -140,8 +134,7 @@ class Nearby extends Component {
             }
         }
 
-        console.log(currentLocation, "currentLocation")
-
+        console.log(focusInput, "openInput")
         return (
             <View style={{
                 flex: 1,
@@ -157,41 +150,26 @@ class Nearby extends Component {
                 }}>
                     <View style={{ width: "100%", flexDirection: "row", justifyContent: "space-between", marginTop: 20, }}>
                         <Text style={{ fontSize: 16, fontWeight: "bold", textAlign: "left" }}>{fullName}</Text>
-                        <TouchableOpacity style={{
-                            width: 50,
-                            alignItems: "flex-end",
-                            zIndex: 1,
-                        }}
-                            onPress={() => Actions.Filters()}
-                        >
+                        <TouchableOpacity style={{ width: 50, alignItems: "flex-end", zIndex: 1, }} onPress={() => Actions.Filters()}>
                             <IconFontAwesome name="filter" size={25} style={{ color: "grey" }} />
                         </TouchableOpacity>
                     </View>
 
                     <View style={{ width: "105%", top: -5, justifyContent: "center", alignItems: "center", flex: 1, flexDirection: "row" }}>
-                        <View style={{
-                            flex: 8, flexDirection: "row", justifyContent: "center", alignItems: "center",
-                        }}>
-
-                            <View style={{
-                                flex: 1,
-                                justifyContent: "center", alignItems: "center",
-                            }}>
+                        <View style={{ flex: 8, flexDirection: "row", justifyContent: "center", alignItems: "center", }}>
+                            <View style={{ flex: 1, justifyContent: "center", alignItems: "center", }}>
                                 <Image source={require('../../../../assets/Path27909.png')} resizeMode="contain"
                                     style={{ height: "50%", width: "50%", }}
                                 />
                             </View>
-                            <View style={{
-                                flex: 8
-                            }}>
+                            <View style={{ flex: 8 }}>
                                 <Text style={{ textAlign: "left" }}>Your Location</Text>
-
                             </View>
                         </View>
-                        <View style={{
-                            flex: 3, justifyContent: "center", alignItems: "center", flexDirection: "row",
-                        }}>
-                            <TouchableOpacity style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", }}
+
+                        <View style={{ flex: 3, justifyContent: "center", alignItems: "center", flexDirection: "row", }}>
+                            <TouchableOpacity
+                                style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", }}
                                 onPress={() => { Actions.Googlemapfullview({ draggable: true }) }}
                             >
                                 <Entypo name="direction" style={{ color: "#FD6958", fontWeight: 'bold', fontSize: 20 }} />
@@ -200,51 +178,32 @@ class Nearby extends Component {
                         </View>
                     </View>
 
-                    <View
-                        style={{
-                            flex: 1, flexDirection: "row",
-                            width: "100%", height: 40,
-                            borderRadius: 10,
-                            justifyContent: "center", alignItems: "center",
-                            backgroundColor: "#E8E6E7",
-                        }}
-                    >
-                        <View
-                            style={{ width: "5%", borderColor: 'gray', backgroundColor: "#E8E6E7", justifyContent: "center", alignItems: "center", }}
-                        >
+                    <View style={{ flex: 1, flexDirection: "row", width: "100%", height: 40, borderRadius: 10, justifyContent: "center", alignItems: "center", backgroundColor: "#E8E6E7", }}>
+                        <View style={{ width: "5%", borderColor: 'gray', backgroundColor: "#E8E6E7", justifyContent: "center", alignItems: "center", }}>
                             <AntDesign name="search1" style={{ marginLeft: "3%", color: '#909090', fontWeight: 'bold', fontSize: 15 }} />
                         </View>
 
-                        <View
-                            style={{ width: "80%", borderColor: 'gray', backgroundColor: "#E8E6E7", justifyContent: "center", alignItems: "center", }}
-                        >
+                        <View style={{ width: "80%", borderColor: 'gray', backgroundColor: "#E8E6E7", justifyContent: "center", alignItems: "center", }}>
                             <TextInput
                                 style={{ width: "90%", }}
                                 onChangeText={(e) => this.setState({ search: e.split(' ') })}
-                                // onChangeText={(e) => this.searchShops(e)}
                                 value={search[0]}
                                 placeholder={"Search"}
+                            // autoFocus={focusInput ? focusInput : false}
                             />
                         </View>
                     </View>
                 </View>
 
-                <View style={{
-                    flex: 8,
-                    width: "100%", height: "100%",
-                    justifyContent: "center",
-                    alignItems: "center",
-                }}>
+                <View style={{ flex: 8, width: "100%", height: "100%", justifyContent: "center", alignItems: "center", }}>
                     <View
                         style={{
-                            // flex: 1,
                             marginTop: 10,
                             marginBottom: 0,
                             width: "100%",
                             height: "100%",
                             marginHorizontal: "0%",
                             backgroundColor: "#EDEDED",
-                            // backgroundColor: "orange",
                         }}
                     >
                         <MapDirection markers={shopLocationMarkers} />
@@ -309,9 +268,9 @@ class Nearby extends Component {
                                                                 alignItems: "center"
                                                             }}>
                                                                 <Image source={require('../../../../assets/Path.png')} resizeMode="contain"
-                                                                    style={{ width: "30%", }}
+                                                                    style={{ width: "30%", left: -5 }}
                                                                 />
-                                                                <Text style={{ color: "#7F7F7F" }}>4.0</Text>
+                                                                <Text style={{ color: "#7F7F7F", marginRight: 10 }}>{key.review}</Text>
                                                             </View>
                                                         </View>
                                                     </View>
@@ -351,7 +310,6 @@ const styles = StyleSheet.create({
         flex: 1,
         paddingBottom: 150,
         backgroundColor: "green",
-
     },
     card: {
         width: 250, height: 115,
@@ -359,7 +317,6 @@ const styles = StyleSheet.create({
         padding: 10,
         backgroundColor: 'white',
         borderRadius: 6, overflow: 'hidden'
-
     },
     card_text: {
         color: 'black',

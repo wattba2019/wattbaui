@@ -112,81 +112,12 @@ class Enablelocation extends Component {
 
 
                                 {
-                                    err ? <Text style={{ textAlign: "center", fontSize: 15, marginTop: 12, color: "red" }}>{err}</Text> : null
+                                    err ? <Text style={{ textAlign: "center", fontSize: 15, marginTop: 0, color: "red" }}>{err}</Text> : null
                                 }
                             </View>
                         </View>
                     </View>
 
-
-
-
-
-
-                    {/* <View style={{ height: this.state.screenHeight / 1.5, justifyContent: 'center', alignItems: "center", }}>
-                        <View style={{
-                            backgroundColor: "white",
-                            width: "90%", height: "100%",
-                            borderRadius: 25,
-                            justifyContent: "center",
-                            alignItems: "center",
-                            flex: 1,
-                            // backgroundColor: "red",
-                        }}>
-
-                            <View style={{
-                                width: "100%",
-                                flex: 0.5,
-                                // backgroundColor: "green"
-                            }}>
-                                <TouchableOpacity onPress={() => this.upDatePassword()}>
-                                    <Entypo name="cross" style={{ marginLeft: 15, top: 10, color: "black", fontSize: 25 }} />
-                                </TouchableOpacity>
-                            </View>
-
-                            <View style={{
-                                flex: 7.5,
-                                justifyContent: "center",
-                                alignItems: "center",
-                                // backgroundColor: "yellow"
-                            }}>
-                                <Image source={require('../../assets/image.png')} resizeMode="contain"
-                                    style={{ height: 130, width: 130, }}
-                                />
-                                <Text style={{ textAlign: "center", fontSize: 25 }}>
-                                    Location Services
-                            </Text>
-                                <Text style={{ textAlign: "center", marginTop: 20 }}>
-                                    To help you find Barbershops near you,  {"\n"} WattBa needs to access your location
-                                </Text>
-
-                                <View
-                                    style={{ width: "100%", height: 50, top: -80, }}
-                                >
-                                    <TouchableOpacity
-                                        onPress={() => this.allowLocation()}>
-
-                                        <ImageBackground source={require('../../assets/buttonBackground.png')} resizeMode="contain"
-                                            style={{ height: 250, width: 250, justifyContent: "center", }}
-                                        >
-
-                                            {
-                                                (loader != true) ? (
-                                                    <Text style={{ textAlign: "center", fontSize: 15, margin: 12, color: "white" }}>Enable Location Service</Text>
-                                                ) : <ActivityIndicator color="white" />
-                                            }
-                                        </ImageBackground>
-                                    </TouchableOpacity>
-
-                                    {
-                                        err ? <Text style={{ textAlign: "center", fontSize: 15, marginTop: 12, color: "red" }}>{err}</Text> : null
-                                    }
-
-                                </View>
-                            </View>
-
-                        </View>
-                    </View> */}
                 </Modal>
             </View>
         );
