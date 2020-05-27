@@ -4,7 +4,8 @@ import { connect } from "react-redux";
 import { Actions } from 'react-native-router-flux';
 import IconFontAwesome from 'react-native-vector-icons/FontAwesome';
 import MapDirection from '../../../Components/maps'
-import { setNearByShops } from "../../../Store/Action/action";
+import GooglePlacesInput from '../../../Components/autoCompleteForm'
+import { setNearByShops, getNearByShopsUnder5Km } from "../../../Store/Action/action";
 //icons import
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -21,120 +22,28 @@ class Nearby extends Component {
 
     componentDidMount() {
         const { currentLocation } = this.props
-        if (currentLocation != null) {
-            let cloneLocation = {
-                lat: currentLocation.coords.latitude,
-                long: currentLocation.coords.longitude,
-                km: 15,
-            }
-            var options = {
-                method: 'POST',
-                url: `${this.props.bseUrl}/getallshops/`,
-                headers:
-                {
-                    'cache-control': 'no-cache',
-                    "Allow-Cross-Origin": '*',
-                },
-                data: cloneLocation
-            }
-            axios(options)
-                .then(result => {
-                    let shops = result.data.data
-                    console.log(shops, "Fetch_Shops_NearBy")
-                    this.props.setNearByShops(shops)
-                    this.createShopLocationMarkers(shops)
-                    this.setState({
-                        shops: shops,
-                        isloader: false
-                    })
-                })
-                .catch(err => {
-                    let error = JSON.parse(JSON.stringify(err))
-                    console.log(error, 'ERRROR', err)
-                    this.setState({
-                        err: error,
-                        isloader: false
-                    })
-                })
-
+        if (currentLocation) {
+            this.props.getNearByShopsUnder5Km(currentLocation)
         }
     }
-
-    UNSAFE_componentWillReceiveProps(nextProps) {
-        const { currentLocation } = nextProps
-        if (currentLocation != null) {
-            let cloneLocation = {
-                lat: currentLocation.coords.latitude,
-                long: currentLocation.coords.longitude,
-                km: 15,
-            }
-            var options = {
-                method: 'POST',
-                url: `${this.props.bseUrl}/getallshops/`,
-                headers:
-                {
-                    'cache-control': 'no-cache',
-                    "Allow-Cross-Origin": '*',
-                },
-                data: cloneLocation
-            }
-            axios(options)
-                .then(result => {
-                    let shops = result.data.data
-                    console.log(shops, "Fetch_Shops_NearBy_RECEIVE_PROPS")
-                    // this.props.setNearByShops(shops)
-                    this.createShopLocationMarkers(shops)
-                    this.setState({
-                        shops: shops,
-                        isloader: false
-                    })
-                })
-                .catch(err => {
-                    let error = JSON.parse(JSON.stringify(err))
-                    console.log(error, 'ERRROR', err)
-                    this.setState({
-                        err: error,
-                        isloader: false
-                    })
-                })
-        }
-    }
-
-    createShopLocationMarkers(shops) {
-        let shopLocationMarkers = []
-        for (let index = 0; index < shops.length; index++) {
-            let location = {
-                latitude: shops[index].location.coordinates[0],
-                longitude: shops[index].location.coordinates[1],
-                title: shops[index].businessName,
-            }
-            shopLocationMarkers.push(location)
-        }
-        // console.log(shopLocationMarkers, "Markers")
-        this.setState({
-            shopLocationMarkers: shopLocationMarkers,
-        })
-    }
-
-
     render() {
         let { fullName, } = this.props.userProfile
-        let { nearByShops, currentLocation, focusInput } = this.props
-        let { shops, shopLocationMarkers, search, } = this.state
+        let { nearByShops, currentLocation, focusInput, shopLocationMarkers } = this.props
+        let { shops, search, } = this.state
 
-        let filterShops = [];
-        if (shops.length > 0) {
-            if (search.length) {
-                const searchPattern = new RegExp(search.map(term => `(?=.*${term})`).join(''), 'i');
-                shops = shops.filter(data => {
-                    return data.businessName.match(searchPattern)
-                });
-            } else {
-                filterShops = shops;
-            }
-        }
+        // let filterShops = [];
+        // if (shops.length > 0) {
+        //     if (search.length) {
+        //         const searchPattern = new RegExp(search.map(term => `(?=.*${term})`).join(''), 'i');
+        //         shops = shops.filter(data => {
+        //             return data.businessName.match(searchPattern)
+        //         });
+        //     } else {
+        //         filterShops = shops;
+        //     }
+        // }
 
-        console.log(focusInput, "openInput")
+        console.log(nearByShops, shopLocationMarkers, "nearByShops")
         return (
             <View style={{
                 flex: 1,
@@ -155,7 +64,7 @@ class Nearby extends Component {
                         </TouchableOpacity>
                     </View>
 
-                    <View style={{ width: "105%", top: -5, justifyContent: "center", alignItems: "center", flex: 1, flexDirection: "row" }}>
+                    <View style={{ width: "105%", top: -15, justifyContent: "center", alignItems: "center", flex: 1, flexDirection: "row" }}>
                         <View style={{ flex: 8, flexDirection: "row", justifyContent: "center", alignItems: "center", }}>
                             <View style={{ flex: 1, justifyContent: "center", alignItems: "center", }}>
                                 <Image source={require('../../../../assets/Path27909.png')} resizeMode="contain"
@@ -178,7 +87,7 @@ class Nearby extends Component {
                         </View>
                     </View>
 
-                    <View style={{ flex: 1, flexDirection: "row", width: "100%", height: 40, borderRadius: 10, justifyContent: "center", alignItems: "center", backgroundColor: "#E8E6E7", }}>
+                    {/* <View style={{ flex: 1, flexDirection: "row", width: "100%", height: 40, borderRadius: 10, justifyContent: "center", alignItems: "center", backgroundColor: "#E8E6E7", }}>
                         <View style={{ width: "5%", borderColor: 'gray', backgroundColor: "#E8E6E7", justifyContent: "center", alignItems: "center", }}>
                             <AntDesign name="search1" style={{ marginLeft: "3%", color: '#909090', fontWeight: 'bold', fontSize: 15 }} />
                         </View>
@@ -189,10 +98,16 @@ class Nearby extends Component {
                                 onChangeText={(e) => this.setState({ search: e.split(' ') })}
                                 value={search[0]}
                                 placeholder={"Search"}
-                            // autoFocus={focusInput ? focusInput : false}
+                                autoFocus={focusInput}
                             />
                         </View>
-                    </View>
+                    </View> */}
+                    {/* <View style={{ flex: 1, flexDirection: "row", width: "100%", height: 40, borderRadius: 10, justifyContent: "center", alignItems: "center", backgroundColor: "#E8E6E7", }}> */}
+                    {/* <ScrollView style={{ width: "100%", position: "absolute", top: "65%", zIndex: 2 }} >
+                        <GooglePlacesInput />
+                    </ScrollView> */}
+                    {/* </View> */}
+
                 </View>
 
                 <View style={{ flex: 8, width: "100%", height: "100%", justifyContent: "center", alignItems: "center", }}>
@@ -209,12 +124,12 @@ class Nearby extends Component {
                         <MapDirection markers={shopLocationMarkers} />
                     </View>
 
-                    <View style={{ position: "absolute", zIndex: 1, bottom: 20, flexDirection: "row", flex: 1, }}>
+                    <View style={{ position: "absolute", zIndex: 1, bottom: 0, flexDirection: "row", flex: 1, }}>
                         <View style={{ flexDirection: "row", height: 180 }}>
                             <ScrollView horizontal={true} style={{ flexDirection: "row", zIndex: 1 }}>
                                 {
-                                    (shops && shops != 0) ? (
-                                        shops.map((key, index) => {
+                                    (nearByShops && nearByShops != 0) ? (
+                                        nearByShops.map((key, index) => {
                                             return (
                                                 <TouchableOpacity style={{
                                                     margin: 10,
@@ -294,12 +209,16 @@ let mapStateToProps = state => {
         currentLocation: state.root.currentLocation,
         bseUrl: state.root.bseUrl,
         nearByShops: state.root.nearByShops,
+        shopLocationMarkers: state.root.shopLocationMarkers,
     };
 };
 function mapDispatchToProps(dispatch) {
     return ({
-        setNearByShops: (shops, ) => {
+        setNearByShops: (shops) => {
             dispatch(setNearByShops(shops));
+        },
+        getNearByShopsUnder5Km: (shops) => {
+            dispatch(getNearByShopsUnder5Km(shops));
         },
     })
 }

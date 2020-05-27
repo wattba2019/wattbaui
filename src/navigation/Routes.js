@@ -32,6 +32,7 @@ import ServiceListing from '../Components/servicsListing'
 import MypaymentCard from '../Components/paymentcard/mypaymentsCard'
 import AddPaymenCard from '../Components/paymentcard/addpaymentcard'
 import CardVerification from '../Components/paymentcard/cardverification'
+import GooglePlacesInput from '../Components/autoCompleteForm'
 
 class Route extends Component {
   render() {
@@ -40,9 +41,10 @@ class Route extends Component {
         titleStyle={{ color: "white" }}
         tintColor="white">
         <Scene>
+          <Scene key='GooglePlacesInput' component={GooglePlacesInput} hideNavBar={true}  />
           <Scene key='SplashScreen' component={SplashScreen} hideNavBar={true} />
           <Scene key='Walkthrough' component={Walkthrough} hideNavBar={true} />
-          <Scene key='Signin' component={Signin} hideNavBar={true} initial />
+          <Scene key='Signin' component={Signin} hideNavBar={true}initial />
           <Scene key='Forgotyourpassword' component={Forgotyourpassword} hideNavBar={true} />
           <Scene key='VerifyCode' component={VerifyCode} hideNavBar={true} />
           <Scene key='VerifyCodeEmail' component={VerifyCodeEmail} hideNavBar={true} />

@@ -7,7 +7,7 @@ import {
 import { connect } from "react-redux";
 import Modal from "react-native-modal";
 import Entypo from 'react-native-vector-icons/Entypo';
-import { setUserCurrentLocation } from "./../Store/Action/action";
+import { setUserCurrentLocation, getNearByShopsUnder5Km } from "./../Store/Action/action";
 import Geolocation from 'react-native-geolocation-service';
 class Enablelocation extends Component {
     constructor(props) {
@@ -56,6 +56,7 @@ class Enablelocation extends Component {
                 if (position) {
                     console.log(position, "USER_CURRENT_LOCATION_AllowAcces")
                     this.props.setUserCurrentLocation(position, true)
+                    this.props.getNearByShopsUnder5Km(position)
                     this.setState({
                         loader: false
                     })
@@ -133,6 +134,9 @@ function mapDispatchToProps(dispatch) {
     return ({
         setUserCurrentLocation: (position, bolean) => {
             dispatch(setUserCurrentLocation(position, bolean));
+        },
+        getNearByShopsUnder5Km: (shops) => {
+            dispatch(getNearByShopsUnder5Km(shops));
         },
     })
 }

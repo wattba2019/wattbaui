@@ -215,7 +215,7 @@ class Profile extends Component {
                             </View>
                         </TouchableOpacity>
 
-                        <TouchableOpacity style={{ width: "90%", marginHorizontal: "5%" }}>
+                        {/* <TouchableOpacity style={{ width: "90%", marginHorizontal: "5%" }}>
                             <View style={{ flexDirection: "row", height: 70, alignItems: "center", borderBottomColor: "#F0F2F6", borderBottomWidth: 1, padding: 10 }}>
                                 <Image
                                     resizeMode="contain"
@@ -224,7 +224,7 @@ class Profile extends Component {
                                 />
                                 <Text style={{ alignItems: "center", color: "#131313", fontSize: 18, marginLeft: "7%" }}>Notifications</Text>
                             </View>
-                        </TouchableOpacity>
+                        </TouchableOpacity> */}
 
                         <Text style={{ alignItems: "center", color: "#131313", fontSize: 18, marginLeft: "7%", marginTop: 20 }}>Support</Text>
 

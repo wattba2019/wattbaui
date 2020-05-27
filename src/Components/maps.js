@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Image, StyleSheet, Dimensions, Text, TouchableOpacity, ImageBackground } from 'react-native';
 import { connect } from 'react-redux'
 import MapView, { PROVIDER_GOOGLE, Marker, } from 'react-native-maps';
-import { setUserCurrentLocation } from "./../Store/Action/action";
+import { setUserCurrentLocation, getNearByShopsUnder5Km } from "./../Store/Action/action";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const { width, height } = Dimensions.get('window');
@@ -66,13 +66,14 @@ class MapDirection extends React.Component {
         this.setState({
             coords: coords
         })
+        this.props.getNearByShopsUnder5Km(currentLocation)
         this.props.setUserCurrentLocation(currentLocation, true)
     }
 
 
     render() {
         let { coords, markers, draggable, tracksViewChanges } = this.state
-        console.log(coords, markers, draggable, "INSIDERENDER")
+        // console.log(coords, markers, draggable, "INSIDERENDER")
         return (
             <View>
                 {
@@ -88,8 +89,8 @@ class MapDirection extends React.Component {
                         >
                             {
                                 (markers.length != 0 && !draggable) ? (
-                                    markers.map((key, index) => {
-                                        return (
+                                    markers.map((key, index) =>
+                                        (
                                             <Marker key={index} draggable={false}
                                                 coordinate={
                                                     {
@@ -107,7 +108,7 @@ class MapDirection extends React.Component {
                                                 /> */}
                                             </Marker>
                                         )
-                                    })
+                                    )
                                 ) : null
                             }
 
@@ -183,6 +184,9 @@ function mapDispatchToProps(dispatch) {
     return ({
         setUserCurrentLocation: (position, bolean) => {
             dispatch(setUserCurrentLocation(position, bolean));
+        },
+        getNearByShopsUnder5Km: (shops) => {
+            dispatch(getNearByShopsUnder5Km(shops));
         },
     })
 }

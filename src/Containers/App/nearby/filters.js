@@ -134,7 +134,7 @@ class Filters extends Component {
                         this.getNearbyShopsServices(nearbyShopIDs, shops)
                     }
                     else {
-                        // alert("There is no shops in " + cloneLocation.km + " kilometre")
+                        Alert.alert("There is no shops in " + cloneLocation.km + " kilometre")
                         this.setState({
                             err: "There is no shops in " + cloneLocation.km + " kilometre",
                             isloader: false
@@ -143,7 +143,7 @@ class Filters extends Component {
                                 this.setState({
                                     err: ""
                                 })
-                            }, 10000)
+                            }, 30000)
 
                         })
                     }

@@ -67,7 +67,7 @@ class Review extends Component {
                         resizeMode="contain" style={{ width: "100%", height: 150 }}
                         source={require('../../../assets/Rectangles.png')}
                     />
-                    <View style={{ position: 'absolute', top: 0, left: 30, right: 0, bottom: 0, justifyContent: "center",  }}>
+                    <View style={{ position: 'absolute', top: 0, left: 30, right: 0, bottom: 0, justifyContent: "center", }}>
                         {
                             (totalRating) ? (
                                 <Text style={{ fontSize: 55, color: "#fff" }}>{String(totalRating).substring(0, 3)} </Text>
@@ -75,10 +75,10 @@ class Review extends Component {
                                 <ActivityIndicator color="#ffffff" size="large" style={{ left: "-45%" }} />
                         }
                     </View>
-                    <View style={{ position: 'absolute', top: 0, left: 120, right: 0, bottom: 20, justifyContent: "center" }}>
+                    <View style={{ position: 'absolute', top: 0, left: "30%", right: 0, bottom: 20, justifyContent: "center" }}>
                         <Text style={{ fontSize: 15, color: "#fff" }}>{reviews.length} reviews</Text>
                     </View>
-                    <View style={{ position: 'absolute', top: 75, left: 30, right: 0, bottom: 0, justifyContent: "center", flexDirection: "row" }}>
+                    <View style={{ position: 'absolute', top: 75, left: "-5%", right: 0, bottom: 0, justifyContent: "center", flexDirection: "row" }}>
                         {[1, 2, 3, 4, 5].map((v, i) => {
                             return (
                                 <View key={i}>

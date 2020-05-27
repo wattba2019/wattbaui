@@ -1,14 +1,16 @@
 import { Actions } from 'react-native-router-flux';
+import axios from 'axios';
 
 export function setUserCredentials(userCredentials, routeInsideApp) {
     return dispatch => {
         dispatch({ type: "SAVE_USER", payload: userCredentials })
-        // routeInsideApp != true ? Actions.Allowaccesslocation() : null
-        routeInsideApp != true ? Actions.AppContainer() : null
+        routeInsideApp != true ? Actions.Allowaccesslocation() : null
+        // routeInsideApp != true ? Actions.AppContainer() : null
     }
 }
 
 export function setUserCurrentLocation(location, bolean) {
+    console.log(location, "location_setUserCurrentLocation")
     return dispatch => {
         dispatch({ type: "USER_CURRENT_LOCATION_ACTION", payload: location })
         bolean != true ? Actions.AppContainer() : null
@@ -56,6 +58,19 @@ export function setNearByShops(shops) {
     // console.log(shops, "INSIDEACTION")
     return dispatch => {
         dispatch({ type: "SET_NEARBY_SHOP", payload: shops })
+        if (shops) {
+            let shopLocationMarkers = []
+            for (let index = 0; index < shops.length; index++) {
+                let location = {
+                    latitude: shops[index].location.coordinates[0],
+                    longitude: shops[index].location.coordinates[1],
+                    title: shops[index].businessName,
+                }
+                shopLocationMarkers.push(location)
+            }
+            dispatch({ type: "SET_MARKERS", payload: shopLocationMarkers })
+        }
+
     }
 }
 
@@ -67,6 +82,54 @@ export function setFavShops(shops) {
 }
 
 
+export function getNearByShopsUnder5Km(currentLocation) {
+    // console.log(currentLocation, "INSIDEACTION")
+    return dispatch => {
+        if (currentLocation != null) {
+            let cloneLocation = {
+                lat: currentLocation.coords.latitude,
+                long: currentLocation.coords.longitude,
+                km: 15,
+            }
+            var options = {
+                method: 'POST',
+                url: `https://fathomless-citadel-43321.herokuapp.com/getallshops/`,
+                headers:
+                {
+                    'cache-control': 'no-cache',
+                    "Allow-Cross-Origin": '*',
+                },
+                data: cloneLocation
+            }
+            axios(options)
+                .then(result => {
+                    let shops = result.data.data
+                    // console.log(shops, "Fetch_Shops_NearBy")
+                    dispatch({ type: "SET_NEARBY_SHOP", payload: shops })
+                    if (shops) {
+                        let shopLocationMarkers = []
+                        for (let index = 0; index < shops.length; index++) {
+                            let location = {
+                                latitude: shops[index].location.coordinates[0],
+                                longitude: shops[index].location.coordinates[1],
+                                title: shops[index].businessName,
+                            }
+                            shopLocationMarkers.push(location)
+                        }
+                        dispatch({ type: "SET_MARKERS", payload: shopLocationMarkers })
+                    }
+                })
+                .catch(err => {
+                    let error = JSON.parse(JSON.stringify(err))
+                    console.log(error, 'ERRROR', err)
+                    alert(error)
+
+                })
+
+        }
+
+    }
+}
 
 
 

@@ -2,15 +2,15 @@ import getDirections from 'react-native-google-maps-directions'
 import { Alert } from 'react-native';
 
 export default handleGetDirections = (shop, currentLocation) => {
-    if (currentLocation != null && shop.latitude && shop.longitude) {
+    if (currentLocation != null && shop.location.coordinates[0] && shop.location.coordinates[1]) {
         const data = {
             source: {
                 latitude: currentLocation.coords.latitude,
                 longitude: currentLocation.coords.longitude
             },
             destination: {
-                latitude: Number(shop.latitude),
-                longitude: Number(shop.longitude),
+                latitude: shop.location.coordinates[0],
+                longitude: shop.location.coordinates[1],
             },
             params: [
                 {

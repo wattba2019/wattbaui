@@ -382,11 +382,20 @@ class shop extends Component {
                     </View>
 
                     <View style={{ position: 'absolute', top: "80%", left: 30, bottom: 0, marginTop: 5, justifyContent: "center", flexDirection: "row" }}>
+                        {/* <Entypo name="star" style={{ color: "#EBAC43", fontWeight: 'bold', fontSize: 16 }} />
                         <Entypo name="star" style={{ color: "#EBAC43", fontWeight: 'bold', fontSize: 16 }} />
                         <Entypo name="star" style={{ color: "#EBAC43", fontWeight: 'bold', fontSize: 16 }} />
                         <Entypo name="star" style={{ color: "#EBAC43", fontWeight: 'bold', fontSize: 16 }} />
-                        <Entypo name="star" style={{ color: "#EBAC43", fontWeight: 'bold', fontSize: 16 }} />
-                        <Entypo name="star" style={{ color: "#fff", fontWeight: 'bold', fontSize: 16 }} />
+                        <Entypo name="star" style={{ color: "#fff", fontWeight: 'bold', fontSize: 16 }} /> */}
+                        {[1, 2, 3, 4, 5].map((v, i) => {
+                            return (
+                                <View key={i}>
+                                    <Entypo
+                                        name={shop.review > i ? "star" : "star-outlined"}
+                                        style={{ color: "#EBAC43", fontSize: 16 }} />
+                                </View>
+                            )
+                        })}
                     </View>
 
 

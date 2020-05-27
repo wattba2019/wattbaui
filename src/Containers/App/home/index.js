@@ -290,6 +290,7 @@ class Home extends Component {
                 })
             })
     }
+    
     onFocusSearch() {
         Actions.AppContainer({ rout: "Nearby", openInput: true })
     }

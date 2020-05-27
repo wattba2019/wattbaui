@@ -16,8 +16,8 @@ class Signin extends Component {
         this.state = {
             loader: false,
             activateAccount: false,
-            email: "",
-            password: "",
+            // email: "",
+            // password: "",
             email: "mynameisabdullahv1@gmail.com",
             password: "12345678"
             // email: "abddullahshah@gmail.com",
