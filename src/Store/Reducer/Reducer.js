@@ -1,7 +1,7 @@
 const INITIAL_STATE = {
   //API's URL
-  bseUrl: "https://fathomless-citadel-43321.herokuapp.com",
-  // bseUrl: "http://192.168.0.101:3002",
+  // bseUrl: "https://fathomless-citadel-43321.herokuapp.com",
+  bseUrl: "http://192.168.40.89:3002",
   //user details
   userProfile: {},
   currentLocation: null,

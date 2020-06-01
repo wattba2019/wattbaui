@@ -15,6 +15,8 @@ import Textarea from 'react-native-textarea';
 // import DatePicker1 from 'react-native-date-ranges';
 import axios from 'axios';
 
+import { SQIPCardEntry, SQIPCore } from 'react-native-square-in-app-payments';
+
 class Checkout extends Component {
     constructor(props) {
         super(props)
@@ -23,7 +25,79 @@ class Checkout extends Component {
             Message: "",
             loader: false,
         }
+        this.onStartCardEntry = this.onStartCardEntry.bind(this);
+        this.onCardNonceRequestSuccess = this.onCardNonceRequestSuccess.bind(this);
     }
+
+    async componentDidMount() {
+        await SQIPCore.setSquareApplicationId('sandbox-sq0idb-sYODojBTzgf0qX4bDKza0Q');
+    }
+    /**
+     * Callback when the card entry is closed after call 'SQIPCardEntry.completeCardEntry'
+     */
+    onCardEntryComplete(cardDetails) {
+        console.log('saved')
+        // Update UI to notify user that the payment flow is completed
+    }
+    /**
+     * Callback when successfully get the card nonce details for processig
+     * card entry is still open and waiting for processing card nonce details
+     * @param {*} cardDetails
+     */
+    async onCardNonceRequestSuccess(cardDetails) {
+        console.log(cardDetails, "Credential")
+        try {
+            // take payment with the card details
+            // await chargeCard(cardDetails);
+            var options = {
+                method: 'POST',
+                url: `${this.props.bseUrl}/payment/chargeCustomerCard`,
+                headers:
+                {
+                    'cache-control': 'no-cache',
+                    "Allow-Cross-Origin": '*',
+                },
+                data: cardDetails
+            };
+            axios(options)
+                .then((data) => {
+                    console.log(data.data, "Payment")
+
+                }).catch((err) => {
+                    console.log(err.response, "ERROR_Payment")
+                    alert(err.response.data.message)
+                })
+            // payment finished successfully
+            // you must call this method to close card entry
+            await SQIPCardEntry.completeCardEntry(
+                this.onCardEntryComplete(cardDetails),
+            );
+        } catch (ex) {
+            // payment failed to complete due to error
+            // notify card entry to show processing error
+            await SQIPCardEntry.showCardNonceProcessingError(ex.message);
+        }
+    }
+    /**
+     * Callback when card entry is cancelled and UI is closed
+     */
+    onCardEntryCancel() {
+        // Handle the cancel callback
+    }
+    /**
+     * An event listener to start card entry flow
+     */
+    async onStartCardEntry() {
+        const cardEntryConfig = {
+            collectPostalCode: false,
+        };
+        await SQIPCardEntry.startCardEntryFlow(
+            cardEntryConfig,
+            this.onCardNonceRequestSuccess,
+            this.onCardEntryCancel,
+        );
+    }
+
 
     submitBooking = () => {
         const { booking, } = this.props
@@ -357,8 +431,8 @@ class Checkout extends Component {
                             </View>
                         </View>
 
-
-                        <View style={{
+                        {/* add payment card */}
+                        {/* <View style={{
                             backgroundColor: "#ffffff",
                             width: "90%",
                             marginHorizontal: "5%",
@@ -420,7 +494,8 @@ class Checkout extends Component {
 
                                 </View>
                             </View>
-                        </View>
+                        </View> */}
+
                         <View style={{
                             // backgroundColor: "#ffffff",
                             width: "90%",
@@ -458,16 +533,16 @@ class Checkout extends Component {
                             }}>
                                 <View style={{ flex: 1, width: "100%", justifyContent: "center", alignItems: "flex-end", }}>
                                     <TouchableOpacity
-                                        onPress={() => this.submitBooking()}
+                                        // onPress={() => this.submitBooking()}
                                         // onPress={() => Actions.Submited()}
+                                        onPress={this.onStartCardEntry}
+
                                         style={{ width: "100%", height: 42, justifyContent: "center", alignItems: "center", backgroundColor: "#FD6958", borderRadius: 0 }}>
                                         {
                                             (loader != true) ? (
                                                 <Text style={{ fontWeight: "bold", fontSize: 18, color: "#ffffff" }}>Pay Now</Text>
                                             ) : <ActivityIndicator color="#ffffff" />
                                         }
-                                        {/* <Text style={{ fontWeight: "bold", fontSize: 18, color: "#ffffff" }}>Pay Now</Text> */}
-
                                     </TouchableOpacity>
                                 </View>
                             </View>

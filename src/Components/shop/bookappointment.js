@@ -14,7 +14,8 @@ class BookAppointment extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            date: "",
+            // date: "",
+            date: new Date(),
             slots: [],
             selectedSlotTime: "",
             selectedBarberBolean: false,
@@ -42,6 +43,7 @@ class BookAppointment extends Component {
         var d;
         if (date != "") {
             d = new Date(date);
+
         }
         else {
             d = new Date();
@@ -57,8 +59,13 @@ class BookAppointment extends Component {
         let day = weekday[d.getDay()];
         let currentDayShopOpen = workinghours[day].open;
         if (currentDayShopOpen === true) {
+
             let start = workinghours[day].openTimings;
             let end = workinghours[day].closingTime;
+            let currentTime = this.formatAMPM(new Date);
+            console.log(start, end, currentTime, "TimeSlots")
+
+
             let returnValue = this.getTimeStops(start, end);
             this.setState({
                 slots: returnValue,
@@ -76,6 +83,17 @@ class BookAppointment extends Component {
 
     }
 
+    formatAMPM(date) {
+        var hours = date.getHours();
+        var minutes = date.getMinutes();
+        var ampm = hours >= 12 ? 'pm' : 'am';
+        hours = hours % 12;
+        hours = hours ? hours : 12; // the hour '0' should be '12'
+        minutes = minutes < 10 ? '0' + minutes : minutes;
+        var strTime = hours + ':' + minutes + ' ' + ampm;
+        return strTime;
+    }
+
     getTimeStops(start, end) {
         var startTime = moment(start, 'h:mm a');
         var endTime = moment(end, 'h:mm a');
@@ -91,6 +109,7 @@ class BookAppointment extends Component {
     }
 
     slotSelect(key, index) {
+        console.log(key, index, "slotSelect")
         this.setState({
             selectedSlotTime: key
         })
@@ -111,6 +130,8 @@ class BookAppointment extends Component {
     }
 
     setDate(date) {
+        console.log(date, "SETDATE")
+
         this.setState({
             date: date
         })
@@ -124,12 +145,18 @@ class BookAppointment extends Component {
         let { date, selectedSlotTime, selectedBarber, selectedBarberBolean } = this.state
         var dt = moment(selectedSlotTime, ["h:mm A"]).format("HH");
         var dateMiliSecond = moment(date).format("x");
+
+
+        // var currentData = new Date().getTime();
+        // var dateMiliSecond1 = moment(currentData).format("x");
+        // var time = moment(currentData, 'h:mm a')
+        // console.log(time, currentData, "currentData")
+
         if (date === "") {
             Alert.alert("Please select date")
         }
         else if (selectedSlotTime === "") {
             Alert.alert("Please select slot")
-
         }
         else if (selectedBarberBolean === false) {
             Alert.alert("Please select barber")
@@ -156,7 +183,7 @@ class BookAppointment extends Component {
             else {
                 cloneObj.package = false
             }
-            Actions.Checkout({ booking: cloneObj })
+            // Actions.Checkout({ booking: cloneObj })
         }
     }
 
@@ -217,6 +244,7 @@ class BookAppointment extends Component {
                                     mode="date"
                                     placeholder="Date"
                                     format="YYYY-MM-DD"
+                                    // format="DD-MM-YYYY"
                                     confirmBtnText="Confirm"
                                     cancelBtnText="Cancel"
                                     customStyles={{
