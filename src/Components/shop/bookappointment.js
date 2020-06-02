@@ -14,8 +14,8 @@ class BookAppointment extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            // date: "",
-            date: new Date(),
+            date: "",
+            // date: new Date(),
             slots: [],
             selectedSlotTime: "",
             selectedBarberBolean: false,
@@ -25,7 +25,6 @@ class BookAppointment extends Component {
     componentDidMount() {
         let { stylists, workinghours, gendre } = this.props
         let { date } = this.state
-
         let barberList = []
         if (gendre) {
             for (let index = 0; index < stylists.length; index++) {
@@ -39,11 +38,9 @@ class BookAppointment extends Component {
         else {
             barberList = stylists
         }
-
         var d;
         if (date != "") {
             d = new Date(date);
-
         }
         else {
             d = new Date();
@@ -63,10 +60,13 @@ class BookAppointment extends Component {
             let start = workinghours[day].openTimings;
             let end = workinghours[day].closingTime;
             let currentTime = this.formatAMPM(new Date);
-            console.log(start, end, currentTime, "TimeSlots")
 
+            // let openTimeInMiliSeconds = this.makeDateStr(start);
+            // let closeTimeInMiliSeconds = this.makeDateStr(end);
+            // let currentTimeInMiliSeconds = this.makeDateStr(currentTime);
+            // console.log(start, end, day, currentDayShopOpen, "TimeSlots")
 
-            let returnValue = this.getTimeStops(start, end);
+            let returnValue = this.getTimeStops(start, end, currentTime);
             this.setState({
                 slots: returnValue,
                 stylists: barberList,
@@ -83,6 +83,23 @@ class BookAppointment extends Component {
 
     }
 
+    makeDateStr(dateStr) {
+        //5:14 am
+        var splittedDateStr = dateStr.split(":");
+        var hour = splittedDateStr[0]
+        var minuteAndAMPM = splittedDateStr[1]
+        var splittedMinuteAndAMPM = minuteAndAMPM.split(" ");
+        var minute = splittedMinuteAndAMPM[0];
+        var amPm = splittedMinuteAndAMPM[1];
+        // console.log(amPm, hour)
+        if (amPm === 'pm') {
+            hour = Number(hour) + 12
+        }
+        var bookingDate = new Date(this.state.date);
+        var bookingDateandTime = new Date(bookingDate.getFullYear(), bookingDate.getMonth(), bookingDate.getDate(), hour, minute, 0);
+        return bookingDateandTime.getTime();
+    }
+
     formatAMPM(date) {
         var hours = date.getHours();
         var minutes = date.getMinutes();
@@ -94,15 +111,21 @@ class BookAppointment extends Component {
         return strTime;
     }
 
-    getTimeStops(start, end) {
+    getTimeStops(start, end, ampmCurrent) {
+        console.log(start, end, ampmCurrent, "ampmCurrent")
         var startTime = moment(start, 'h:mm a');
         var endTime = moment(end, 'h:mm a');
+        var currentTime = moment(ampmCurrent, 'h:mm a');
         if (endTime.isBefore(startTime)) {
             endTime.add(1, 'day');
         }
+        console.log(startTime, "startTime")
         var timeStops = [];
         while (startTime <= endTime) {
-            timeStops.push(new moment(startTime).format('h:mm a'));
+            // console.log(startTime, currentTime, "currentTime", startTime > currentTime)
+            if (startTime > currentTime) {
+                timeStops.push(new moment(startTime).format('h:mm a'));
+            }
             startTime.add(60, 'minutes');
         }
         return timeStops;
@@ -138,19 +161,11 @@ class BookAppointment extends Component {
         this.componentDidMount(date)
     }
 
-
-
     Checkout() {
         let { chosenItems, extraServicesSelected, gendre, totalCost, pack } = this.props
         let { date, selectedSlotTime, selectedBarber, selectedBarberBolean } = this.state
         var dt = moment(selectedSlotTime, ["h:mm A"]).format("HH");
         var dateMiliSecond = moment(date).format("x");
-
-
-        // var currentData = new Date().getTime();
-        // var dateMiliSecond1 = moment(currentData).format("x");
-        // var time = moment(currentData, 'h:mm a')
-        // console.log(time, currentData, "currentData")
 
         if (date === "") {
             Alert.alert("Please select date")
@@ -183,13 +198,13 @@ class BookAppointment extends Component {
             else {
                 cloneObj.package = false
             }
-            // Actions.Checkout({ booking: cloneObj })
+            Actions.Checkout({ booking: cloneObj })
         }
     }
 
     render() {
         let { totalCost, gendre } = this.props
-        let { stylists, slots, selectedSlotTime, day } = this.state
+        let { stylists, slots, selectedSlotTime, day, date } = this.state
 
         return (
             <View style={{ paddingHorizontal: 10, flex: 1, backgroundColor: "#fff" }}>
@@ -237,6 +252,7 @@ class BookAppointment extends Component {
                             }}>
 
                                 <DatePicker showIcon={false}
+                                    minDate={moment().toDate()}
                                     style={{
                                         width: 280,
                                     }}
@@ -244,6 +260,7 @@ class BookAppointment extends Component {
                                     mode="date"
                                     placeholder="Date"
                                     format="YYYY-MM-DD"
+                                    // format="Do MMMM YYYY"
                                     // format="DD-MM-YYYY"
                                     confirmBtnText="Confirm"
                                     cancelBtnText="Cancel"
@@ -267,117 +284,130 @@ class BookAppointment extends Component {
                                 <Fontisto style={{ marginRight: "10%", color: "#4B534F" }} size={16} name={"date"} />
                             </View>
 
-                            <View style={{ paddingVertical: "5%" }}>
-                                <Text style={{ fontSize: 22, color: "#4B534F" }}>Availble Slots</Text>
-                            </View>
-                            <View style={{
-                                flexWrap: "wrap",
-                                flexDirection: "row",
-                                justifyContent: "flex-start",
-                                // backgroundColor: "red"
-                            }}>
-                                {
-                                    (slots.length != 0) ? (
-                                        slots.map((key, index) => {
-                                            // console.log(key, index, "INSIDE_MAP")
-                                            return (
-                                                <TouchableOpacity
-                                                    onPress={() => this.slotSelect(key, index)}
-                                                    key={index}
-                                                    style={{
-                                                        // backgroundColor: "#F3E7E3",
-                                                        backgroundColor: selectedSlotTime === key ? "#FD6958" : "#F3E7E3",
-                                                        margin: "1.5%", height: 45, width: "30%",
-                                                        justifyContent: "center",
-                                                        alignItems: "center"
-                                                    }}>
-                                                    <Text style={{
-                                                        color: selectedSlotTime === key ? "#ffffff" : "#4B534F",
-                                                        fontWeight: selectedSlotTime === key ? "bold" : "normal"
-                                                    }}>{key}</Text>
-                                                </TouchableOpacity>
-                                            )
-                                        })
-                                    ) : <Text style={{ color: "red" }}>{'Shop close on ' + day}</Text>
-
-                                }
-                            </View>
-
-                            <View style={{ paddingVertical: "5%" }}>
-                                <Text style={{ fontSize: 22, color: "#4B534F" }}>Choose Stylists</Text>
-                            </View>
-                        </View>
-
-
-                        <ScrollView
-                            contentContainerStyle={{ flexGrow: 1 }}
-                            showsHorizontalScrollIndicator={false}
-                            horizontal style={{ marginVertical: 15, marginTop: -15, }}
-                        >
                             {
-                                (stylists) ? (
-                                    stylists.map((key, index) => {
-                                        return (
-                                            <TouchableOpacity key={index} style={{
-                                                height: 120,
-                                                width: 110,
-                                                justifyContent: "center",
-                                                alignItems: "center",
-                                            }}
-                                                onPress={() => this.chooseBarber(key, index)}
-                                            >
-                                                <View style={{
-                                                    height: 75,
-                                                    width: 75,
-                                                    borderRadius: 50,
-                                                    justifyContent: "center",
-                                                    alignItems: "center",
-                                                    backgroundColor: "white",
-                                                    // borderColor: "#FD6958",
-                                                    borderColor: key.active == true ? "#FD6958" : "#E6E6E6",
-                                                    borderWidth: 1.80,
-                                                    overflow: "hidden"
-                                                }}>
-                                                    {(key.coverImage != null) ? (
-                                                        <Image source={{ uri: key.coverImage }} resizeMode="cover"
-                                                            style={{ width: "90%", height: "90%", borderRadius: 100 }}
-                                                        />
-                                                    ) : <Image source={require('../../../assets/nophoto.jpg')} resizeMode="cover"
-                                                        style={{ width: "90%", height: "90%", borderRadius: 100 }}
-                                                        />}
-                                                </View>
-                                                <Text style={{ marginTop: 5, fontSize: 10, color: "#000000", textAlign: "right", }}>{key.fullname}</Text>
-                                                <Text style={{ marginTop: 0, fontSize: 10, color: "#8E8E93", textAlign: "right", }}>{key.designation}</Text>
-                                            </TouchableOpacity>
-                                        )
-                                    })
-                                ) :
-                                    <TouchableOpacity style={{
-                                        height: 120,
-                                        width: "100%",
-                                        justifyContent: "center",
-                                        alignItems: "center",
-                                        // backgroundColor: "red"
-                                    }}
-                                    >
-                                        <ActivityIndicator size="large" color="#FD6958" />
-                                        <Text style={{ marginTop: 5, fontSize: 10, color: "#000000", textAlign: "right", }}>Loading...</Text>
-                                    </TouchableOpacity>
-                            }
-                            {
-                                (stylists && stylists.length === 0) ? (
-                                    <TouchableOpacity style={{
-                                        height: 30,
-                                        width: "100%",
-                                        justifyContent: "center",
-                                        alignItems: "center",
-                                        // backgroundColor: "red"
-                                    }}>
-                                        <Text style={{ marginTop: 5, fontSize: 10, color: "red", textAlign: "right", }}>There is no {gendre} stylists</Text>
-                                    </TouchableOpacity>
+                                (date != "") ? (
+                                    <>
+                                        <View style={{ paddingVertical: "5%" }}>
+                                            <Text style={{ fontSize: 22, color: "#4B534F" }}>Availble Slots</Text>
+                                        </View>
+                                        <View style={{
+                                            flexWrap: "wrap",
+                                            flexDirection: "row",
+                                            justifyContent: "flex-start",
+                                            // backgroundColor: "red"
+                                        }}>
+                                            {
+                                                (slots.length != 0) ? (
+                                                    slots.map((key, index) => {
+                                                        // console.log(key, index, "INSIDE_MAP")
+                                                        return (
+                                                            <TouchableOpacity
+                                                                onPress={() => this.slotSelect(key, index)}
+                                                                key={index}
+                                                                style={{
+                                                                    // backgroundColor: "#F3E7E3",
+                                                                    backgroundColor: selectedSlotTime === key ? "#FD6958" : "#F3E7E3",
+                                                                    margin: "1.5%", height: 45, width: "30%",
+                                                                    justifyContent: "center",
+                                                                    alignItems: "center"
+                                                                }}>
+                                                                <Text style={{
+                                                                    color: selectedSlotTime === key ? "#ffffff" : "#4B534F",
+                                                                    fontWeight: selectedSlotTime === key ? "bold" : "normal"
+                                                                }}>{key}</Text>
+                                                            </TouchableOpacity>
+                                                        )
+                                                    })
+                                                ) : <Text style={{ color: "red" }}>{'No slots available on ' + day + ' please change date'}</Text>
+
+                                            }
+                                        </View>
+
+                                        <View style={{ paddingVertical: "5%" }}>
+                                            <Text style={{ fontSize: 22, color: "#4B534F" }}>Choose Stylists</Text>
+                                        </View>
+                                    </>
                                 ) : null
                             }
-                        </ScrollView>
+
+
+                        </View>
+                        {
+                            (date != "") ? (
+                                <>
+                                    <ScrollView
+                                        contentContainerStyle={{ flexGrow: 1 }}
+                                        showsHorizontalScrollIndicator={false}
+                                        horizontal style={{ marginVertical: 15, marginTop: -15, }}
+                                    >
+                                        {
+                                            (stylists) ? (
+                                                stylists.map((key, index) => {
+                                                    return (
+                                                        <TouchableOpacity key={index} style={{
+                                                            height: 120,
+                                                            width: 110,
+                                                            justifyContent: "center",
+                                                            alignItems: "center",
+                                                        }}
+                                                            onPress={() => this.chooseBarber(key, index)}
+                                                        >
+                                                            <View style={{
+                                                                height: 75,
+                                                                width: 75,
+                                                                borderRadius: 50,
+                                                                justifyContent: "center",
+                                                                alignItems: "center",
+                                                                backgroundColor: "white",
+                                                                // borderColor: "#FD6958",
+                                                                borderColor: key.active == true ? "#FD6958" : "#E6E6E6",
+                                                                borderWidth: 1.80,
+                                                                overflow: "hidden"
+                                                            }}>
+                                                                {(key.coverImage != null) ? (
+                                                                    <Image source={{ uri: key.coverImage }} resizeMode="cover"
+                                                                        style={{ width: "90%", height: "90%", borderRadius: 100 }}
+                                                                    />
+                                                                ) : <Image source={require('../../../assets/nophoto.jpg')} resizeMode="cover"
+                                                                    style={{ width: "90%", height: "90%", borderRadius: 100 }}
+                                                                    />}
+                                                            </View>
+                                                            <Text style={{ marginTop: 5, fontSize: 10, color: "#000000", textAlign: "right", }}>{key.fullname}</Text>
+                                                            <Text style={{ marginTop: 0, fontSize: 10, color: "#8E8E93", textAlign: "right", }}>{key.designation}</Text>
+                                                        </TouchableOpacity>
+                                                    )
+                                                })
+                                            ) :
+                                                <TouchableOpacity style={{
+                                                    height: 120,
+                                                    width: "100%",
+                                                    justifyContent: "center",
+                                                    alignItems: "center",
+                                                    // backgroundColor: "red"
+                                                }}
+                                                >
+                                                    <ActivityIndicator size="large" color="#FD6958" />
+                                                    <Text style={{ marginTop: 5, fontSize: 10, color: "#000000", textAlign: "right", }}>Loading...</Text>
+                                                </TouchableOpacity>
+                                        }
+                                        {
+                                            (stylists && stylists.length === 0) ? (
+                                                <TouchableOpacity style={{
+                                                    height: 30,
+                                                    width: "100%",
+                                                    justifyContent: "center",
+                                                    alignItems: "center",
+                                                    // backgroundColor: "red"
+                                                }}>
+                                                    <Text style={{ marginTop: 5, fontSize: 10, color: "red", textAlign: "right", }}>There is no {gendre} stylists</Text>
+                                                </TouchableOpacity>
+                                            ) : null
+                                        }
+                                    </ScrollView>
+                                </>
+                            ) : null
+                        }
+
                     </ScrollView>
                 </View>
 

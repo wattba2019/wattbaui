@@ -45,7 +45,9 @@ class Checkout extends Component {
      * @param {*} cardDetails
      */
     async onCardNonceRequestSuccess(cardDetails) {
-        console.log(cardDetails, "Credential")
+        const { booking, } = this.props
+        cardDetails.cost = booking.cost;
+        // console.log(cardDetails, booking.cost, "Credential")
         try {
             // take payment with the card details
             // await chargeCard(cardDetails);
@@ -62,6 +64,7 @@ class Checkout extends Component {
             axios(options)
                 .then((data) => {
                     console.log(data.data, "Payment")
+                    // this.submitBooking()
 
                 }).catch((err) => {
                     console.log(err.response, "ERROR_Payment")
