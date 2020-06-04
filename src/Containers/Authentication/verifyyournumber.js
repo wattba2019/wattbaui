@@ -20,8 +20,8 @@ class Veryfiyournumber extends Component {
         this.state = {
             loader: false,
             phoneNumber: "",
-            dialCode: "1",
-            imgPath: require(`../../services/resources/flags/images/us.png`),
+            dialCode: "44",
+            imgPath: require(`../../services/resources/flags/images/gb.png`),
             // phoneNumber: "7480824582"
         };
     }
@@ -77,6 +77,7 @@ class Veryfiyournumber extends Component {
             },
             data: cloneNumbers
         };
+
         axios(options)
             .then((data) => {
                 console.log(data, "data")
@@ -158,10 +159,9 @@ class Veryfiyournumber extends Component {
                     >
                         {/* picker container */}
 
-                        <TouchableOpacity style={{ borderRightColor: "grey", borderRightWidth: 0.5, flex: 2.5, flexDirection: "row", }}
-                            onPress={() => {
-                                this.changePhoneCode()
-                            }}>
+                        <View style={{ borderRightColor: "grey", borderRightWidth: 0.5, flex: 2.5, flexDirection: "row", }}
+                        // onPress={() => { this.changePhoneCode() }}
+                        >
                             <View style={{ flex: 1.5, justifyContent: "center", alignItems: "center", }}>
                                 <View style={{ marginLeft: 30 }}>
                                     <Image
@@ -177,7 +177,7 @@ class Veryfiyournumber extends Component {
                                     <AntDesign name="caretdown" style={{ marginLeft: 5, color: '#909090', fontWeight: 'bold', fontSize: 15 }} />
                                 </View>
                             </View>
-                        </TouchableOpacity>
+                        </View>
 
                         {/* input phone container */}
 
@@ -222,7 +222,7 @@ class Veryfiyournumber extends Component {
                                 {
                                     (loader != true) ? (
                                         <Text style={{ textAlign: "center", fontSize: 15, margin: 12, color: "white" }}>Send OTP code</Text>
-                                    ) : <ActivityIndicator style={{ color: "orange" }} />
+                                    ) : <ActivityIndicator color="white" />
                                 }
                             </ImageBackground>
                         </TouchableOpacity>

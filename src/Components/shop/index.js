@@ -293,7 +293,7 @@ class shop extends Component {
         })
             .then(result => {
                 let data = result.data.data
-                // console.log(data, "DATA_FROM_API_SERVICES")
+                console.log(data, "DATA_FROM_API_SERVICES")
                 this.setState({
                     services: data,
                 })
@@ -302,6 +302,7 @@ class shop extends Component {
             .catch(err => {
                 if (err.response.status === 409) {
                     console.log(err.response.data.message, "ERROR_ON_GET_SERVICES")
+                    this.props.setShopServices([])
                 }
                 else {
                     alert(err.response.data.message)
@@ -398,8 +399,6 @@ class shop extends Component {
                         })}
                     </View>
 
-
-
                     <TouchableOpacity
                         onPress={
                             () => {
@@ -452,7 +451,7 @@ class shop extends Component {
                             // backgroundColor: "red"
                         }}>
                             <TouchableOpacity
-                                onPress={() => Linking.openURL(shop.websiteUrl)}
+                                onPress={() => Linking.openURL("https://" + shop.websiteUrl)}
                             >
                                 <Image
                                     resizeMode="contain"

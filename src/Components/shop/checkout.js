@@ -64,7 +64,7 @@ class Checkout extends Component {
             axios(options)
                 .then((data) => {
                     console.log(data.data, "Payment")
-                    // this.submitBooking()
+                    this.submitBooking()
 
                 }).catch((err) => {
                     console.log(err.response, "ERROR_Payment")
@@ -222,7 +222,7 @@ class Checkout extends Component {
                                     </View>
                                     <View style={{ flexDirection: "row", justifyContent: "space-between", marginTop: 15 }}>
                                         <Text style={{ alignItems: "center", fontWeight: "bold", fontSize: 16 }}>Cost</Text>
-                                        <Text style={{ alignItems: "center", fontWeight: "bold", fontSize: 16 }}>$ {booking.cost}</Text>
+                                        <Text style={{ alignItems: "center", fontWeight: "bold", fontSize: 16 }}>GBP {booking.cost}</Text>
                                     </View>
 
                                     {/* Promotion Discounts */}
@@ -272,7 +272,7 @@ class Checkout extends Component {
 
                                     <View style={{ flexDirection: "row", justifyContent: "space-between", marginTop: 15, marginBottom: 15 }}>
                                         <Text style={{ alignItems: "center", fontWeight: "bold", fontSize: 20 }}>Total</Text>
-                                        <Text style={{ alignItems: "center", fontWeight: "bold", fontSize: 16 }}>$ {booking.cost}</Text>
+                                        <Text style={{ alignItems: "center", fontWeight: "bold", fontSize: 16 }}>GBP {booking.cost}</Text>
                                     </View>
                                 </View>
 

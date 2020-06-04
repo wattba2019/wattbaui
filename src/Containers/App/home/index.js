@@ -701,7 +701,7 @@ class Home extends Component {
                                                             flex: 5,
                                                         }}>
                                                             <Text style={styles.card_text}>{key.packageName}</Text>
-                                                            <Text style={{ color: "#7F7F7F" }}>{key.price} $</Text>
+                                                            <Text style={{ color: "#7F7F7F" }}>{key.price} GBP</Text>
                                                         </View>
                                                         <View style={{
                                                             flex: 2,

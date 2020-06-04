@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import {
     View, Image, StyleSheet,
-    ImageBackground, StatusBar, TouchableOpacity,
+    ImageBackground, StatusBar, TouchableOpacity, AsyncStorage,
     Text, ScrollView, ActivityIndicator, Platform, PermissionsAndroid
 
 } from 'react-native';
@@ -18,7 +18,7 @@ class Allowaccesslocation extends Component {
             loader: false
         };
     }
-
+  
     async requestPermissions() {
         if (Platform.OS === 'ios') {
             Geolocation.requestAuthorization();

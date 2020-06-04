@@ -45,7 +45,7 @@ class ServiceChild1 extends Component {
                                             <Text style={{ color: "grey", fontSize: 11 }}>{key.offerTillAvailability}</Text>
                                         </View>
                                         <View>
-                                            <Text>${key.price}</Text>
+                                            <Text>GBP {key.price}</Text>
                                         </View>
                                     </View>
                                 </TouchableOpacity>

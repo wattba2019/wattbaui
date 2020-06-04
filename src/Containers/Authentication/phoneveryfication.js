@@ -9,6 +9,7 @@ import { connect } from "react-redux";
 import { Actions } from 'react-native-router-flux';
 import axios from 'axios';
 import OTPInputView from '@twotalltotems/react-native-otp-input'
+import firebase from 'react-native-firebase'
 
 class Phoneverification extends Component {
     constructor(props) {
@@ -16,6 +17,52 @@ class Phoneverification extends Component {
         this.state = {
             loader: false,
         };
+        this.verifyPhone = this.verifyPhone.bind(this);
+    }
+
+    componentDidMount() {
+        let that = this;
+        firebase.auth().onAuthStateChanged(function (user) {
+            if (user) {
+                // User is signed in.
+                that.verifyPhone();
+
+            } else {
+                // No user is signed in.
+            }
+        });
+    }
+
+    verifyPhone() {
+        let cloneData = {
+            phoneNumber: this.props.newNumber
+        }
+        var options = {
+            method: 'POST',
+            url: `${this.props.bseUrl}/signup/activateaccount`,
+            headers:
+            {
+                'cache-control': 'no-cache',
+                "Allow-Cross-Origin": '*',
+            },
+            data: cloneData
+        };
+        axios(options)
+            .then((data) => {
+                console.log(data.data, "USER_VERIFY_SUCCESSFULLY")
+                this.setState({
+                    loader: false
+                })
+                alert(data.data.message)
+                Actions.Signin()
+                firebase.logout();
+            }).catch((err) => {
+                console.log(err.response.data.message, "ERROR_ON_VERIFICATION")
+                alert(err.response.data.message)
+                this.setState({
+                    loader: false
+                })
+            })
     }
 
     verify = () => {
@@ -30,34 +77,34 @@ class Phoneverification extends Component {
             this.props.confirmResult.confirm(sixDigitCode)
                 .then(user => {
                     console.log(user)
-                    let cloneData = {
-                        phoneNumber: this.props.newNumber
-                    }
-                    var options = {
-                        method: 'POST',
-                        url: `${this.props.bseUrl}/signup/activateaccount`,
-                        headers:
-                        {
-                            'cache-control': 'no-cache',
-                            "Allow-Cross-Origin": '*',
-                        },
-                        data: cloneData
-                    };
-                    axios(options)
-                        .then((data) => {
-                            console.log(data.data, "USER_VERIFY_SUCCESSFULLY")
-                            this.setState({
-                                loader: false
-                            })
-                            alert(data.data.message)
-                            Actions.Signin()
-                        }).catch((err) => {
-                            console.log(err.response.data.message, "ERROR_ON_VERIFICATION")
-                            alert(err.response.data.message)
-                            this.setState({
-                                loader: false
-                            })
-                        })
+                    // let cloneData = {
+                    //     phoneNumber: this.props.newNumber
+                    // }
+                    // var options = {
+                    //     method: 'POST',
+                    //     url: `${this.props.bseUrl}/signup/activateaccount`,
+                    //     headers:
+                    //     {
+                    //         'cache-control': 'no-cache',
+                    //         "Allow-Cross-Origin": '*',
+                    //     },
+                    //     data: cloneData
+                    // };
+                    // axios(options)
+                    //     .then((data) => {
+                    //         console.log(data.data, "USER_VERIFY_SUCCESSFULLY")
+                    //         this.setState({
+                    //             loader: false
+                    //         })
+                    //         alert(data.data.message)
+                    //         Actions.Signin()
+                    //     }).catch((err) => {
+                    //         console.log(err.response.data.message, "ERROR_ON_VERIFICATION")
+                    //         alert(err.response.data.message)
+                    //         this.setState({
+                    //             loader: false
+                    //         })
+                    //     })
                 })
                 .catch(error => {
                     console.log(error)
@@ -222,7 +269,7 @@ class Phoneverification extends Component {
                                 {
                                     (loader != true) ? (
                                         <Text style={{ textAlign: "center", fontSize: 15, margin: 12, color: "white" }}>Next</Text>
-                                    ) : <ActivityIndicator style={{ color: "orange" }} />
+                                    ) : <ActivityIndicator color="white" />
                                 }
                             </ImageBackground>
                         </TouchableOpacity>

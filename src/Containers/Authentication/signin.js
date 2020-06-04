@@ -2,13 +2,14 @@ import React, { Component } from "react";
 import {
     View, Image, ActivityIndicator, StyleSheet,
     ImageBackground, StatusBar, TouchableOpacity,
-    Text, TextInput, ScrollView, BackHandler
+    Text, TextInput, ScrollView, BackHandler, AsyncStorage
 
 } from 'react-native';
 import { connect } from "react-redux";
 import { Actions } from 'react-native-router-flux';
 import axios from 'axios';
 import { setUserCredentials } from "./../../Store/Action/action";
+import Entypo from 'react-native-vector-icons/Entypo';
 
 class Signin extends Component {
     constructor(props) {
@@ -16,6 +17,7 @@ class Signin extends Component {
         this.state = {
             loader: false,
             activateAccount: false,
+            showPassword: true,
             // email: "",
             // password: "",
             email: "mynameisabdullahv1@gmail.com",
@@ -51,6 +53,7 @@ class Signin extends Component {
                 this.setState({
                     loader: !this.state.loader
                 })
+                this._storeData(data.data)
                 this.props.setUserCredentials(data.data)
             }).catch((err) => {
                 console.log(err.response.data.message, "ERROR_ON_SIGN_IN")
@@ -68,12 +71,19 @@ class Signin extends Component {
                 })
             })
     }
-
+    _storeData = async (data) => {
+        console.log("Assync", data)
+        try {
+            await AsyncStorage.setItem('userProfile', JSON.stringify(data));
+        } catch (error) {
+            // Error saving data
+        }
+    };
     componentWillUnmount() {
         BackHandler.removeEventListener('hardwareBackPress', BackHandler.exitApp());
     }
     render() {
-        let { email, password, loader, activateAccount } = this.state;
+        let { email, password, loader, activateAccount, showPassword } = this.state;
         return (
             <ImageBackground source={require('../../../assets/background.png')}
                 style={{
@@ -131,14 +141,21 @@ class Signin extends Component {
                         </View>
 
                         <View
-                            style={{ width: "85%", marginTop: 10, borderColor: 'gray', backgroundColor: "#E8E6E7", borderRadius: 25, justifyContent: "center", alignItems: "center" }}
+                            style={{ width: "85%", flexDirection: "row", marginTop: 10, borderColor: 'gray', backgroundColor: "#E8E6E7", borderRadius: 25, justifyContent: "center", alignItems: "center" }}
                         >
                             <TextInput
-                                secureTextEntry
-                                style={{ height: 50, width: "90%", }}
+                                secureTextEntry={showPassword}
+                                style={{ height: 50, width: "80%" }}
                                 onChangeText={(password) => this.setState({ password })}
                                 value={password}
                                 placeholder={"Password"}
+                            />
+                            <Entypo
+                                onPress={() => {
+                                    this.setState({ showPassword: !showPassword })
+                                }}
+                                name={showPassword ? "eye" : "eye-with-line"}
+                                style={{ marginLeft: 10, color: '#909090', fontWeight: 'bold', fontSize: 18 }}
                             />
                         </View>
 

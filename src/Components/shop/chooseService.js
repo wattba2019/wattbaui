@@ -25,6 +25,7 @@ class ChooseService extends Component {
 
     UNSAFE_componentWillMount() {
         let { shopServices, } = this.props
+        console.log(shopServices, "shopServices")
         this.setState({
             shopServices: shopServices
         })
@@ -251,7 +252,7 @@ class ChooseService extends Component {
                     }}>
                         <View style={{ flex: 1, justifyContent: "center", alignItems: "flex-start", }}>
                             <Text style={{ fontWeight: "normal", }}>Total Cost</Text>
-                            <Text style={{ fontWeight: "bold", fontSize: 18 }}>${totalCost}</Text>
+                            <Text style={{ fontWeight: "bold", fontSize: 18 }}>GBP {totalCost}</Text>
                         </View>
                         <View style={{ flex: 1, justifyContent: "center", alignItems: "flex-end", }}>
                             <TouchableOpacity

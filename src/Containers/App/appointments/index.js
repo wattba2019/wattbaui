@@ -11,8 +11,6 @@ import { connect } from "react-redux";
 import AppointmentCard from '../../../Components/appointmentCard';
 import axios from 'axios';
 
-
-
 class Appointments extends Component {
     constructor(props) {
         super(props);
@@ -52,10 +50,13 @@ class Appointments extends Component {
             .then((data) => {
                 let result = data.data
                 console.log(result, "FETCHING_MY_APPOINTMENTS")
-
-                const pending = result.pending.sort((a, b) => b.bookingDateTime - a.bookingDateTime)
-                const approved = result.approved.sort((a, b) => b.bookingDateTime - a.bookingDateTime)
-                const cancled = result.cancled.sort((a, b) => b.bookingDateTime - a.bookingDateTime)
+                const pending = result.pending.sort((a, b) => a.bookingDateTime - b.bookingDateTime)
+                const approved = result.approved.sort((a, b) => a.bookingDateTime - b.bookingDateTime)
+                const cancled = result.cancled.sort((a, b) => a.bookingDateTime - b.bookingDateTime)
+                
+                // const pending = result.pending.sort((a, b) => b.bookingDateTime - a.bookingDateTime)
+                // const approved = result.approved.sort((a, b) => b.bookingDateTime - a.bookingDateTime)
+                // const cancled = result.cancled.sort((a, b) => b.bookingDateTime - a.bookingDateTime)
 
                 this.setState({
                     loader: !this.state.loader,

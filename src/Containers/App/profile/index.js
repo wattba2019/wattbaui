@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import {
     View, Image, ActivityIndicator, StyleSheet,
-    ImageBackground, StatusBar, TouchableOpacity,
+    ImageBackground, StatusBar, TouchableOpacity, AsyncStorage,
     Text, TextInput, ScrollView, Alert
 
 } from 'react-native';
@@ -89,6 +89,20 @@ class Profile extends Component {
         }
 
     }
+
+    logout() {
+        this.clearAssync()
+    }
+
+    clearAssync = async () => {
+        try {
+            await AsyncStorage.clear();
+            Actions.Signin()
+
+        } catch (error) {
+            // Error retrieving data
+        }
+    };
 
 
     render() {
@@ -240,7 +254,10 @@ class Profile extends Component {
                         </TouchableOpacity>
 
                         <TouchableOpacity
-                            onPress={() => Actions.Signin()}
+                            onPress={() =>
+                                this.logout()
+                                //  Actions.Signin()
+                            }
                             style={{ width: "90%", marginHorizontal: "5%" }}
                         >
                             <View style={{ flexDirection: "row", height: 70, alignItems: "center", borderBottomColor: "#F0F2F6", borderBottomWidth: 1, padding: 10 }}>
@@ -257,7 +274,7 @@ class Profile extends Component {
 
 
                 </View>
-            </View>
+            </View >
         );
     }
 }

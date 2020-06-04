@@ -419,7 +419,7 @@ class BookAppointment extends Component {
                     }}>
                         <View style={{ flex: 1, justifyContent: "center", alignItems: "flex-start", }}>
                             <Text style={{ fontWeight: "normal", }}>Total Cost</Text>
-                            <Text style={{ fontWeight: "bold", fontSize: 18 }}>${totalCost}</Text>
+                            <Text style={{ fontWeight: "bold", fontSize: 18 }}>GBP {totalCost}</Text>
                         </View>
                         <View style={{ flex: 1, justifyContent: "center", alignItems: "flex-end", }}>
                             <TouchableOpacity

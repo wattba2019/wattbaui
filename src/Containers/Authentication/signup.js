@@ -10,21 +10,24 @@ import axios from 'axios';
 import CountryPicker from 'react-native-country-picker-modal';
 //icons import
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import Entypo from 'react-native-vector-icons/Entypo';
 
 class Signup extends Component {
     constructor(props) {
         super(props);
         this.state = {
             loader: false,
+            showPassword: true,
             // fullName: "Abdullah Shah",
             // email: "abddullahshah11@gmail.com",
             // password: "12345678",
-            // phoneNumber: "3368990497",
-            // phoneNumber: "3450558623",
-            // phoneNumber: "3452153709",
+            // phoneNumber: "3368990497", //ufone
+            // phoneNumber: "3450558623", //bug
+            // phoneNumber: "3452153709", //white list
+            // phoneNumber: "3040200538", //zeshan
 
-            dialCode: "1",
-            imgPath: require(`../../services/resources/flags/images/us.png`),
+            dialCode: "44",
+            imgPath: require(`../../services/resources/flags/images/gb.png`),
             fullName: "",
             email: "",
             password: "",
@@ -123,8 +126,7 @@ class Signup extends Component {
     }
 
     render() {
-        let { fullName, email, password, loader, dialCode, phoneNumber, imgPath, } = this.state;
-
+        let { fullName, email, password, loader, dialCode, phoneNumber, imgPath, showPassword } = this.state;
         return (
             <ScrollView contentContainerStyle={styles.contentContainer}>
                 <StatusBar backgroundColor="white" barStyle="dark-content" />
@@ -191,10 +193,9 @@ class Signup extends Component {
                         {/* picker container */}
 
                         <View style={{ borderRightColor: "grey", borderRightWidth: 0.5, flex: 2.2, flexDirection: "row", }}>
-                            <TouchableOpacity style={{ borderRightColor: "grey", borderRightWidth: 0.5, flex: 2.5, flexDirection: "row", }}
-                                onPress={() => {
-                                    this.changePhoneCode()
-                                }}>
+                            <View style={{ borderRightColor: "grey", borderRightWidth: 0.5, flex: 2.5, flexDirection: "row", }}
+                            // onPress={() => { this.changePhoneCode() }}
+                            >
                                 <View style={{ flex: 1.5, justifyContent: "center", alignItems: "center", }}>
                                     <View style={{ marginLeft: 30 }}>
                                         <Image
@@ -210,7 +211,7 @@ class Signup extends Component {
                                         <AntDesign name="caretdown" style={{ marginLeft: 5, color: '#909090', fontWeight: 'bold', fontSize: 15 }} />
                                     </View>
                                 </View>
-                            </TouchableOpacity>
+                            </View>
                         </View>
 
                         {/* input phone container */}
@@ -242,16 +243,30 @@ class Signup extends Component {
                         </TouchableOpacity>
                     </View>
                     <View
-                        style={{ width: "85%", marginTop: 20, borderColor: 'gray', backgroundColor: "#E8E6E7", borderRadius: 25, justifyContent: "center", alignItems: "center" }}
+                        style={{
+                            width: "85%", flexDirection: "row",
+                            marginTop: 20, borderColor: 'gray',
+                            borderRadius: 25,
+                            justifyContent: "center", alignItems: "center",
+                            backgroundColor: "#E8E6E7",
+                        }}
                     >
                         <TextInput
-                            secureTextEntry
-                            style={{ height: 50, width: "90%", }}
+                            secureTextEntry={showPassword}
+                            style={{ height: 50, width: "80%" }}
                             onChangeText={(password) => this.setState({ password })}
                             value={password}
                             placeholder={"Password"}
                         />
+                        <Entypo
+                            onPress={() => {
+                                this.setState({ showPassword: !showPassword })
+                            }}
+                            name={showPassword ? "eye" : "eye-with-line"}
+                            style={{ marginLeft: 10, color: '#909090', fontWeight: 'bold', fontSize: 18 }}
+                        />
                     </View>
+
                     <View style={{ width: "85%", height: 50, marginTop: 50, }}>
                         <TouchableOpacity
                             onPress={() => this.signup()} >
@@ -261,7 +276,7 @@ class Signup extends Component {
                                 {
                                     (loader != true) ? (
                                         <Text style={{ textAlign: "center", fontSize: 15, margin: 12, color: "white" }}>Sign Up</Text>
-                                    ) : <ActivityIndicator style={{ color: "orange" }} />
+                                    ) : <ActivityIndicator color="white" />
                                 }
                             </ImageBackground>
                         </TouchableOpacity>
