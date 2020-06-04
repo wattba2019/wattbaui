@@ -5,12 +5,6 @@ const INITIAL_STATE = {
   //user details
   userProfile: {},
   currentLocation: null,
-  // currentLocation: {
-  //   coords: {
-  //     latitude: 24.9819378,
-  //     longitude: 67.0545162,
-  //   }
-  // },
   //shop details
   shopServices: null,
   stylists: null,

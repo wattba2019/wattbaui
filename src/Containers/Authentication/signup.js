@@ -18,20 +18,21 @@ class Signup extends Component {
         this.state = {
             loader: false,
             showPassword: true,
-            // fullName: "Abdullah Shah",
-            // email: "abddullahshah11@gmail.com",
-            // password: "12345678",
+            fullName: "Abdullah Shah",
+            email: "abddullahshah11@gmail.com",
+            password: "12345678",
             // phoneNumber: "3368990497", //ufone
             // phoneNumber: "3450558623", //bug
             // phoneNumber: "3452153709", //white list
-            // phoneNumber: "3040200538", //zeshan
+            phoneNumber: "3040200538", //zeshan
 
-            dialCode: "44",
+            // dialCode: "44",
+            dialCode: "92",
             imgPath: require(`../../services/resources/flags/images/gb.png`),
-            fullName: "",
-            email: "",
-            password: "",
-            phoneNumber: "",
+            // fullName: "",
+            // email: "",
+            // password: "",
+            // phoneNumber: "",
         };
     }
 

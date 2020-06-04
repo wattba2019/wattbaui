@@ -55,7 +55,13 @@ class Phoneverification extends Component {
                 })
                 alert(data.data.message)
                 Actions.Signin()
-                firebase.logout();
+                // firebase.logout();
+                firebase.auth().signOut().then(function () {
+                    // alert("Sign-out successful.")
+                    // Sign-out successful.
+                }).catch(function (error) {
+                    // An error happened.
+                });
             }).catch((err) => {
                 console.log(err.response.data.message, "ERROR_ON_VERIFICATION")
                 alert(err.response.data.message)

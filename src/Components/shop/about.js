@@ -85,9 +85,11 @@ class About extends Component {
                         <View>
                             <Text style={{ marginTop: 20, fontWeight: "bold" }}>Photos</Text>
                         </View>
-                        <TouchableOpacity>
+                        {/* <TouchableOpacity
+                            onPress={this.props.viewAll}
+                        >
                             <Text style={{ marginTop: 20, fontWeight: "bold" }}>View all</Text>
-                        </TouchableOpacity>
+                        </TouchableOpacity> */}
                     </View>
                 </View>
 

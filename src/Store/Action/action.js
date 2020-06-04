@@ -9,8 +9,17 @@ export function setUserCredentials(userCredentials, routeInsideApp) {
     }
 }
 
+export function setUserCurrentLocationWithUserCredentials(location, userCredentials) {
+    // console.log(location, userCredentials, "location_setUserCurrentLocation")
+    return dispatch => {
+        dispatch({ type: "USER_CURRENT_LOCATION_ACTION", payload: location })
+        dispatch({ type: "SAVE_USER", payload: userCredentials })
+        Actions.AppContainer()
+    }
+}
+
 export function setUserCurrentLocation(location, bolean) {
-    console.log(location, "location_setUserCurrentLocation")
+    // console.log(location, "location_setUserCurrentLocation")
     return dispatch => {
         dispatch({ type: "USER_CURRENT_LOCATION_ACTION", payload: location })
         bolean != true ? Actions.AppContainer() : null

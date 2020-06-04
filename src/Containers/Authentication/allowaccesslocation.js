@@ -18,7 +18,7 @@ class Allowaccesslocation extends Component {
             loader: false
         };
     }
-  
+
     async requestPermissions() {
         if (Platform.OS === 'ios') {
             Geolocation.requestAuthorization();
@@ -45,6 +45,9 @@ class Allowaccesslocation extends Component {
                 if (position) {
                     console.log(position, "USER_CURRENT_LOCATION_AllowAcces")
                     this.props.setUserCurrentLocation(position)
+
+                    this._storeData(position)
+
                     this.setState({
                         loader: false
                     })
@@ -61,6 +64,15 @@ class Allowaccesslocation extends Component {
             { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000, }
         );
     }
+
+    _storeData = async (data) => {
+        console.log("Assync", data)
+        try {
+            await AsyncStorage.setItem('locationAllow', JSON.stringify(true));
+        } catch (error) {
+            // Error saving data
+        }
+    };
 
     render() {
         const { loader, err } = this.state

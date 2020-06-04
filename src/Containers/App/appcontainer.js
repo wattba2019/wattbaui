@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Image, TouchableOpacity, View, Text, StatusBar, ScrollView, KeyboardAvoidingView, Alert } from 'react-native';
+import { Image, TouchableOpacity, View, Text, StatusBar, ScrollView, KeyboardAvoidingView, Alert, BackHandler } from 'react-native';
 import { connect } from 'react-redux';
 import { Footer, FooterTab, } from 'native-base';
 import Home from '../App/home/index';
@@ -73,8 +73,10 @@ class AppContainer extends Component {
                     err: error,
                 })
             })
+    }
 
-
+    componentWillUnmount() {
+        BackHandler.removeEventListener('hardwareBackPress', BackHandler.exitApp());
     }
 
     render() {

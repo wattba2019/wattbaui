@@ -41,14 +41,14 @@ class Route extends Component {
         titleStyle={{ color: "white" }}
         tintColor="white">
         <Scene>
-          <Scene key='GooglePlacesInput' component={GooglePlacesInput} hideNavBar={true} />
-          <Scene key='SplashScreen' component={SplashScreen} hideNavBar={true} initial />
+          {/* <Scene key='GooglePlacesInput' component={GooglePlacesInput} hideNavBar={true} /> */}
+          <Scene key='SplashScreen' component={SplashScreen} hideNavBar={true} />
           <Scene key='Walkthrough' component={Walkthrough} hideNavBar={true} />
           <Scene key='Signin' component={Signin} hideNavBar={true} />
           <Scene key='Forgotyourpassword' component={Forgotyourpassword} hideNavBar={true} />
           <Scene key='VerifyCode' component={VerifyCode} hideNavBar={true} />
           <Scene key='VerifyCodeEmail' component={VerifyCodeEmail} hideNavBar={true} />
-          <Scene key='Signup' component={Signup} hideNavBar={true} />
+          <Scene key='Signup' component={Signup} hideNavBar={true} initial />
           <Scene key='ActivateAccount' component={ActivateAccount} hideNavBar={true} />
           <Scene key='Veryfiyournumber' component={Veryfiyournumber} hideNavBar={true} />
           <Scene key='Phoneverification' component={Phoneverification} hideNavBar={true} />

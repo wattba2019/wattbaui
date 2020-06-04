@@ -21,6 +21,7 @@ class shop extends Component {
     constructor(props) {
         super(props)
         this.state = {
+            initialPage: 0,
             activeColor: "about",
             workingtime: false,
             favroiteShops: [],
@@ -357,9 +358,21 @@ class shop extends Component {
         }
     }
 
+
+    // viewAll = () => {
+    //     this.refs.mytabs.goToPage(2)
+    //     // this.refs.REFERENCE.goToPage(2)
+    //     // alert("work")
+    //     // this.setState({
+    //     //     initialPage: 2
+    //     // })
+    // }
+
     render() {
-        const { activeColor, workingtime, workingHours, services, packages, stylists, gallery, favroite, favroiteLoader } = this.state
+        const { activeColor, workingtime, workingHours, services, packages, stylists, gallery, favroite, favroiteLoader, initialPage } = this.state
         let { shop, currentLocation } = this.props
+
+        // console.log(initialPage, "initialPage")
 
         return (
             <View style={{ flex: 1 }}>
@@ -556,6 +569,10 @@ class shop extends Component {
                         </ScrollView>
 
                         <Tabs
+                            // initialPage={initialPage}
+                            // page={initialPage}
+                            // page={initialPage}
+                            // ref="mytabs"
                             tabContainerStyle={{ height: 60 }}
                             onChangeTab={(key) => this.activeColor(key)}
                             locked={true}
@@ -570,7 +587,7 @@ class shop extends Component {
                                         <Text style={{ color: activeColor === "about" ? "#FD6958" : "black" }}>About</Text>
                                     </TabHeading>}
                             >
-                                <About shop={shop} workingHours={workingHours} gallery={gallery} />
+                                <About shop={shop} workingHours={workingHours} gallery={gallery} viewAll={this.viewAll} />
                             </Tab>
 
                             {/* //Services// */}
