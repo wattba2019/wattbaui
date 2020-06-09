@@ -90,7 +90,7 @@ class OfferDetails extends Component {
                             width: "90%", marginTop: 15, flexDirection: "row", justifyContent: "space-between"
                         }}>
                             {/* <Text style={{ color: "#000000", fontSize: 16, }}>Services</Text> */}
-                            <Text style={{ color: "#FD6958", fontSize: 16, fontWeight: "bold" }}>Total: ${offerDetails.price}</Text>
+                            <Text style={{ color: "#FD6958", fontSize: 16, fontWeight: "bold" }}>Total: GBP {offerDetails.price}</Text>
                         </View>
 
                         <View style={{

@@ -119,11 +119,22 @@ import React, { Component } from 'react';
 import { Provider } from 'react-redux';
 import store from './src/Store';
 import Route from './src/navigation/Routes';
+// import NetInfo from "@react-native-community/netinfo";
+import { Alert } from 'react-native';
 
 export default class App extends React.Component {
   UNSAFE_componentWillMount() {
     console.disableYellowBox = true
+    // NetInfo.fetch().then(state => {
+    //   console.log("Connection type", state.type);
+    //   console.log("Is connected?", state.isConnected);
+    //   if (!state.isConnected) {
+    //     Alert.alert("Please ensure your device is connected to the internet and try again.")
+    //   }
+    // });
   }
+
+
   render() {
     return (
       <Provider store={store}>

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {
     View, Text, StyleSheet, TouchableOpacity, StatusBar,
     ScrollView, Picker, Image, SafeAreaView, ActivityIndicator,
-    images, Dimensions, FlatList, TextInput
+    images, Dimensions, FlatList, TextInput, Alert
 } from 'react-native';
 import { connect } from "react-redux";
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -36,7 +36,7 @@ class Checkout extends Component {
      * Callback when the card entry is closed after call 'SQIPCardEntry.completeCardEntry'
      */
     onCardEntryComplete(cardDetails) {
-        console.log('saved')
+        // console.log('saved')
         // Update UI to notify user that the payment flow is completed
     }
     /**
@@ -68,7 +68,7 @@ class Checkout extends Component {
 
                 }).catch((err) => {
                     console.log(err.response, "ERROR_Payment")
-                    alert(err.response.data.message)
+                    Alert.alert(err.response.data.errorMessage)
                 })
             // payment finished successfully
             // you must call this method to close card entry
@@ -296,8 +296,24 @@ class Checkout extends Component {
                                         </View>
 
                                         <View style={{ justifyContent: "space-between", marginTop: 20 }}>
+                                            <Text style={{ alignItems: "center", fontWeight: "bold", fontSize: 18 }}>Stylist</Text>
+                                        </View>
+
+                                        <View style={{ width: "100%", marginTop: 10 }}>
+                                            <View style={{ width: "90%", marginHorizontal: "5%" }}></View>
+                                            <View style={{ flexDirection: "row", marginBottom: 0, height: 45, justifyContent: "space-between", marginTop: 0, borderColor: "#D4D4E0", borderWidth: 0.5, borderRadius: 5 }}>
+                                                <View style={{ flex: 1, borderTopRightRadius: 5, borderBottomRightRadius: 5, marginLeft: 15, justifyContent: "center", alignItems: "flex-start" }}>
+                                                    <Text style={{ alignItems: "center", fontSize: 12, }}>{booking.selectedBarberfullname}</Text>
+                                                </View>
+                                                <View style={{ flex: 0.2, borderColor: "#D4D4E0", borderWidth: 0.5, justifyContent: "center", alignItems: "center" }}>
+                                                    <AntDesign style={{ color: "#6E7990", }} size={28} name="user" />
+                                                </View>
+                                            </View>
+                                        </View>
+
+                                        <View style={{ justifyContent: "space-between", marginTop: 20 }}>
                                             <Text style={{ alignItems: "center", fontWeight: "bold", fontSize: 18 }}>Schedule</Text>
-                                            <Text style={{ alignItems: "center", fontSize: 14, color: "#6E7990", marginTop: 10 }}>Your Booking date should be within a month sstarting from today</Text>
+                                            <Text style={{ alignItems: "center", fontSize: 14, color: "#6E7990", marginTop: 10 }}>Date & Time - Make a good note of your booking</Text>
                                         </View>
 
                                         <View style={{ flexDirection: "row", height: 45, justifyContent: "space-between", marginTop: 10, borderColor: "#D4D4E0", borderWidth: 0.5, borderRadius: 5 }}>
@@ -516,18 +532,20 @@ class Checkout extends Component {
                             flexDirection: "row",
                             justifyContent: "space-between"
                         }}>
-                            <View style={{
+                            <TouchableOpacity style={{
                                 width: "30%",
                                 justifyContent: "center",
                                 alignItems: "center",
                                 backgroundColor: "#ffff",
                                 borderColor: "#44C062",
                                 borderWidth: 0.5
-                            }}>
+                            }}
+                                onPress={() => Actions.AppContainer()}
+                            >
                                 <View style={{ flex: 1, justifyContent: "center", alignItems: "center", }}>
                                     <Text style={{ fontSize: 17 }}>Cancel</Text>
                                 </View>
-                            </View>
+                            </TouchableOpacity>
                             <View style={{
                                 width: "60%",
                                 justifyContent: "center",

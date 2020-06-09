@@ -164,6 +164,7 @@ class BookAppointment extends Component {
     Checkout() {
         let { chosenItems, extraServicesSelected, gendre, totalCost, pack } = this.props
         let { date, selectedSlotTime, selectedBarber, selectedBarberBolean } = this.state
+        console.log(selectedBarber, "selectedBarber")
         var dt = moment(selectedSlotTime, ["h:mm A"]).format("HH");
         var dateMiliSecond = moment(date).format("x");
 
@@ -185,6 +186,7 @@ class BookAppointment extends Component {
                 bookingHour: dt,
                 selectedSlotTime: selectedSlotTime,
                 selectedBarber: selectedBarber._id,
+                selectedBarberfullname: selectedBarber.fullname,
                 bookingDateTime: dateMiliSecond,
                 bookingDate: date,
                 bookerId: this.props.bookerId,
