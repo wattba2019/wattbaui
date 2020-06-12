@@ -31,7 +31,7 @@ target 'BarberShop' do
 
   pod 'react-native-maps', :path => '../node_modules/react-native-maps'
 
-  pod 'RNFirebase', :path => '../node_modules/react-native-firebase'
+  pod 'RNFirebase', :path => '../node_modules/react-native-firebase/ios'
 
   target 'BarberShopTests' do
     inherit! :search_paths
