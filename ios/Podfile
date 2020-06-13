@@ -1,4 +1,4 @@
-platform :ios, '9.0'
+platform :ios, '11'
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
 
 target 'BarberShop' do
@@ -33,24 +33,12 @@ target 'BarberShop' do
 
   pod 'RNFirebase', :path => '../node_modules/react-native-firebase/ios'
 
-  pod 'RNSquareInAppPayments', :path => '../node_modules/react-native-square-in-app-payments'
 
   pod 'react-native-netinfo', :path => '../node_modules/@react-native-community/netinfo'
+  
+  
 
-  target 'BarberShopTests' do
-    inherit! :search_paths
-    # Pods for testing
-  end
 
   use_native_modules!
 end
 
-target 'BarberShop-tvOS' do
-  # Pods for BarberShop-tvOS
-
-  target 'BarberShop-tvOSTests' do
-    inherit! :search_paths
-    # Pods for testing
-  end
-
-end
