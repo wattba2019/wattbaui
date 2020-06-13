@@ -2,37 +2,156 @@ import React, { Component } from 'react';
 import {
     View, Text, StyleSheet, TouchableOpacity, StatusBar,
     ScrollView, Picker, Image, SafeAreaView, ActivityIndicator,
-    images, Dimensions, FlatList, TextInput
+    images, Dimensions, FlatList, TextInput, Alert
 } from 'react-native';
 import { connect } from "react-redux";
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import Fontisto from 'react-native-vector-icons/Fontisto'
+// import Fontisto from 'react-native-vector-icons/Fontisto'
 import DatePicker from 'react-native-datepicker'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Actions } from 'react-native-router-flux';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons'
-// import DatePicker1 from 'react-native-date-ranges';
 import Textarea from 'react-native-textarea';
+// import DatePicker1 from 'react-native-date-ranges';
+import axios from 'axios';
 
-var moment = require('moment');
+import { SQIPCardEntry, SQIPCore } from 'react-native-square-in-app-payments';
+
 class Checkout extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            catogeries: "services",
             date: "",
             Message: "",
-
+            loader: false,
         }
+        this.onStartCardEntry = this.onStartCardEntry.bind(this);
+        this.onCardNonceRequestSuccess = this.onCardNonceRequestSuccess.bind(this);
+    }
+
+    async componentDidMount() {
+        await SQIPCore.setSquareApplicationId('sandbox-sq0idb-sYODojBTzgf0qX4bDKza0Q');
+    }
+    /**
+     * Callback when the card entry is closed after call 'SQIPCardEntry.completeCardEntry'
+     */
+    onCardEntryComplete(cardDetails) {
+        // console.log('saved')
+        // Update UI to notify user that the payment flow is completed
+    }
+    /**
+     * Callback when successfully get the card nonce details for processig
+     * card entry is still open and waiting for processing card nonce details
+     * @param {*} cardDetails
+     */
+    async onCardNonceRequestSuccess(cardDetails) {
+        const { booking, } = this.props
+        cardDetails.cost = booking.cost;
+        // console.log(cardDetails, booking.cost, "Credential")
+        try {
+            // take payment with the card details
+            // await chargeCard(cardDetails);
+            var options = {
+                method: 'POST',
+                url: `${this.props.bseUrl}/payment/chargeCustomerCard`,
+                headers:
+                {
+                    'cache-control': 'no-cache',
+                    "Allow-Cross-Origin": '*',
+                },
+                data: cardDetails
+            };
+            axios(options)
+                .then((data) => {
+                    console.log(data.data, "Payment")
+                    this.submitBooking()
+
+                }).catch((err) => {
+                    console.log(err.response, "ERROR_Payment")
+                    Alert.alert(err.response.data.errorMessage)
+                })
+            // payment finished successfully
+            // you must call this method to close card entry
+            await SQIPCardEntry.completeCardEntry(
+                this.onCardEntryComplete(cardDetails),
+            );
+        } catch (ex) {
+            // payment failed to complete due to error
+            // notify card entry to show processing error
+            await SQIPCardEntry.showCardNonceProcessingError(ex.message);
+        }
+    }
+    /**
+     * Callback when card entry is cancelled and UI is closed
+     */
+    onCardEntryCancel() {
+        // Handle the cancel callback
+    }
+    /**
+     * An event listener to start card entry flow
+     */
+    async onStartCardEntry() {
+        const cardEntryConfig = {
+            collectPostalCode: false,
+        };
+        await SQIPCardEntry.startCardEntryFlow(
+            cardEntryConfig,
+            this.onCardNonceRequestSuccess,
+            this.onCardEntryCancel,
+        );
+    }
+
+
+    submitBooking = () => {
+        const { booking, } = this.props
+        this.setState({
+            loader: !this.state.loader
+        })
+        let cloneBookingData = {
+            shopId: booking.shopId,
+            bookerId: booking.bookerId,
+            stylistId: booking.selectedBarber,
+            bookingDateTime: booking.bookingDateTime,
+            bookingHour: booking.bookingHour,
+            requiredServiceId: booking.chosenItems,
+            requiredExtraServices: booking.extraServicesSelected,
+            package: booking.package,
+            instruction: this.state.Message,
+        }
+        console.log(cloneBookingData, "cloneSignUpData")
+        var options = {
+            method: 'POST',
+            url: `${this.props.bseUrl}/bookings/addBooking`,
+            headers:
+            {
+                'cache-control': 'no-cache',
+                "Allow-Cross-Origin": '*',
+            },
+            data: cloneBookingData
+        };
+        axios(options)
+            .then((data) => {
+                console.log(data, "BOOKING_CREATE_SUCCESSFULLY")
+                this.setState({
+                    loader: !this.state.loader
+                })
+                Actions.Submited()
+            }).catch((err) => {
+                console.log(err.response.data, "ERROR_ON_SIGN_UP")
+                // console.log(err.response.data.message, "ERROR_ON_SIGN_UP")
+                alert(err.response.data.message)
+                this.setState({
+                    loader: !this.state.loader
+                })
+            })
     }
 
     render() {
-        const { activeColor, Message } = this.state
+        const { Message, loader } = this.state
+        const { booking, shop, userProfile } = this.props
 
         return (
-
             <View style={{ flex: 1, backgroundColor: "#fff" }}>
-
                 <StatusBar backgroundColor="#FD6958" barStyle="dark-content" />
 
                 {/* header */}
@@ -75,7 +194,6 @@ class Checkout extends Component {
                                 marginHorizontal: "5%",
                                 marginTop: 15,
                                 padding: 10,
-
                                 shadowColor: "#000",
                                 shadowOffset: {
                                     width: 0,
@@ -83,7 +201,6 @@ class Checkout extends Component {
                                 },
                                 shadowOpacity: 0.22,
                                 shadowRadius: 2.22,
-
                                 elevation: 3,
                             }}
                         >
@@ -97,8 +214,6 @@ class Checkout extends Component {
                                     width: "90%",
                                     borderBottomColor: "#E3E5E6",
                                     borderBottomWidth: 0.2,
-                                    // height: 120
-                                    // borderStyle: "dashed",
                                     // backgroundColor: "yellow"
                                 }}>
 
@@ -106,13 +221,16 @@ class Checkout extends Component {
                                         <Text style={{ alignItems: "center", fontWeight: "bold", fontSize: 18 }}>Booking summary</Text>
                                     </View>
                                     <View style={{ flexDirection: "row", justifyContent: "space-between", marginTop: 15 }}>
-                                        <Text style={{ alignItems: "center", fontWeight: "bold", fontSize: 16 }}>Total</Text>
-                                        <Text style={{ alignItems: "center", fontWeight: "bold", fontSize: 16 }}>$20</Text>
+                                        <Text style={{ alignItems: "center", fontWeight: "bold", fontSize: 16 }}>Cost</Text>
+                                        <Text style={{ alignItems: "center", fontWeight: "bold", fontSize: 16 }}>GBP {booking.cost}</Text>
                                     </View>
-                                    <View style={{ flexDirection: "row", marginBottom: 20, justifyContent: "space-between", marginTop: 15 }}>
+
+                                    {/* Promotion Discounts */}
+                                    {/* <View style={{ flexDirection: "row", marginBottom: 20, justifyContent: "space-between", marginTop: 15 }}>
                                         <Text style={{ alignItems: "center", fontWeight: "bold", fontSize: 16 }}>Promotion Discounts</Text>
-                                        <Text style={{ alignItems: "center", fontWeight: "bold", fontSize: 16 }}>$0</Text>
-                                    </View>
+                                        <Text style={{ alignItems: "center", fontWeight: "bold", fontSize: 16 }}>$ 0</Text>
+                                    </View> */}
+
                                 </View>
 
                                 <View style={{
@@ -120,12 +238,12 @@ class Checkout extends Component {
                                     width: "90%",
                                     borderBottomColor: "#E3E5E6",
                                     borderBottomWidth: 0.2,
-                                    // height: 120  
-                                    // borderStyle: "dashed",
                                     // backgroundColor: "yellow"
                                 }}>
 
-                                    <View style={{ flexDirection: "row", justifyContent: "space-between", marginTop: 15 }}>
+                                    {/* Add Coupon */}
+
+                                    {/* <View style={{ flexDirection: "row", justifyContent: "space-between", marginTop: 15 }}>
                                         <View
                                             style={{ justifyContent: "center", alignItems: "center" }}
                                         >
@@ -138,78 +256,69 @@ class Checkout extends Component {
                                             <TextInput
                                                 keyboardType={"numeric"}
                                                 style={{ height: 50, width: "90%", }}
-                                                // onChangeText={text => onChangeText(text)}
                                                 value={this.state.email}
+                                            // onChangeText={text => onChangeText(text)}
                                             // placeholder={"Number"}
                                             />
                                         </View>
+                                    </View> */}
 
-                                    </View>
-                                    <View style={{ flexDirection: "row", justifyContent: "space-between", marginTop: 15 }}>
+                                    {/* Service Fees */}
+
+                                    {/* <View style={{ flexDirection: "row", justifyContent: "space-between", marginTop: 15 }}>
                                         <Text style={{ alignItems: "center", fontWeight: "bold", fontSize: 16 }}>Service Fees</Text>
                                         <Text style={{ alignItems: "center", fontWeight: "bold", fontSize: 16 }}>$5</Text>
-                                    </View>
+                                    </View> */}
+
                                     <View style={{ flexDirection: "row", justifyContent: "space-between", marginTop: 15, marginBottom: 15 }}>
                                         <Text style={{ alignItems: "center", fontWeight: "bold", fontSize: 20 }}>Total</Text>
-                                        <Text style={{ alignItems: "center", fontWeight: "bold", fontSize: 16 }}>$25</Text>
+                                        <Text style={{ alignItems: "center", fontWeight: "bold", fontSize: 16 }}>GBP {booking.cost}</Text>
                                     </View>
                                 </View>
+
                                 <View style={{ width: "100%", }}>
                                     <View style={{ width: "90%", marginHorizontal: "5%" }}>
                                         <Text style={{ alignItems: "center", fontWeight: "bold", fontSize: 18 }}>BarberShop</Text>
+
                                         <View style={{ flexDirection: "row", justifyContent: "space-between", marginTop: 10 }}>
-                                            <Text style={{ alignItems: "center", fontSize: 18 }}>Ranya Barbershop</Text>
+                                            <Text style={{ alignItems: "center", fontSize: 18 }}>{shop.businessName}</Text>
                                         </View>
+
                                         <View style={{ flexDirection: "row", height: 45, justifyContent: "space-between", marginTop: 10, borderColor: "#D4D4E0", borderWidth: 0.5, borderRadius: 5 }}>
 
-                                            <View style={{ flex: 1, borderTopRightRadius: 5, borderBottomRightRadius: 5, justifyContent: "center", alignItems: "center" }}>
-                                                <Text style={{ alignItems: "center", fontSize: 16, marginLeft: 18 }}>424/1D Palanwatta, Pannipitiya</Text>
+                                            <View style={{ flex: 1, borderTopRightRadius: 5, borderBottomRightRadius: 5, justifyContent: "center", alignItems: "flex-start" }}>
+                                                <Text style={{ alignItems: "center", fontSize: 12, marginLeft: 18 }}>{shop.addressLine1}</Text>
                                             </View>
 
-                                            <TouchableOpacity style={{ flex: 0.2, borderColor: "#D4D4E0", borderWidth: 0.5, justifyContent: "center", alignItems: "center" }}>
+                                            <View style={{ flex: 0.2, borderColor: "#D4D4E0", borderWidth: 0.5, justifyContent: "center", alignItems: "center" }}>
                                                 <SimpleLineIcons style={{ color: "#6E7990" }} size={22} name={"location-pin"} />
-                                            </TouchableOpacity>
+                                            </View>
+                                        </View>
+
+                                        <View style={{ justifyContent: "space-between", marginTop: 20 }}>
+                                            <Text style={{ alignItems: "center", fontWeight: "bold", fontSize: 18 }}>Stylist</Text>
+                                        </View>
+
+                                        <View style={{ width: "100%", marginTop: 10 }}>
+                                            <View style={{ width: "90%", marginHorizontal: "5%" }}></View>
+                                            <View style={{ flexDirection: "row", marginBottom: 0, height: 45, justifyContent: "space-between", marginTop: 0, borderColor: "#D4D4E0", borderWidth: 0.5, borderRadius: 5 }}>
+                                                <View style={{ flex: 1, borderTopRightRadius: 5, borderBottomRightRadius: 5, marginLeft: 15, justifyContent: "center", alignItems: "flex-start" }}>
+                                                    <Text style={{ alignItems: "center", fontSize: 12, }}>{booking.selectedBarberfullname}</Text>
+                                                </View>
+                                                <View style={{ flex: 0.2, borderColor: "#D4D4E0", borderWidth: 0.5, justifyContent: "center", alignItems: "center" }}>
+                                                    <AntDesign style={{ color: "#6E7990", }} size={28} name="user" />
+                                                </View>
+                                            </View>
                                         </View>
 
                                         <View style={{ justifyContent: "space-between", marginTop: 20 }}>
                                             <Text style={{ alignItems: "center", fontWeight: "bold", fontSize: 18 }}>Schedule</Text>
-                                            <Text style={{ alignItems: "center", fontSize: 16, color: "#6E7990", marginTop: 10 }}>Your Booking date should be within a month sstarting from today</Text>
+                                            <Text style={{ alignItems: "center", fontSize: 14, color: "#6E7990", marginTop: 10 }}>Date & Time - Make a good note of your booking</Text>
                                         </View>
 
-
                                         <View style={{ flexDirection: "row", height: 45, justifyContent: "space-between", marginTop: 10, borderColor: "#D4D4E0", borderWidth: 0.5, borderRadius: 5 }}>
-
-                                            <View style={{ flex: 1, borderTopRightRadius: 5, borderBottomRightRadius: 5, justifyContent: "center", alignItems: "center" }}>
-                                                <DatePicker showIcon={false}
-                                                    style={{
-                                                        width: 280,
-                                                        // backgroundColor: "yellow"
-                                                    }}
-                                                    date={this.state.date}
-                                                    mode="date"
-                                                    // placeholder="Date"
-                                                    // moment().format('MMMM Do YYYY, h:mm:ss a')
-                                                    format="dddd Do MMMM YYYY"
-                                                    // minDate="2016-05-01"
-                                                    // maxDate="2016-06-01"
-                                                    confirmBtnText="Confirm"
-                                                    cancelBtnText="Cancel"
-                                                    customStyles={{
-                                                        placeholderText: {
-                                                            marginRight: 180, color: "#9b9b9b"
-                                                        },
-                                                        dateInput: {
-                                                            left: "-60%",
-                                                            height: 52,
-                                                            borderLeftWidth: 0,
-                                                            borderRightWidth: 0,
-                                                            borderTopWidth: 0,
-                                                            borderBottomWidth: 0
-                                                        }
-                                                        // ... You can check the source to find the other keys.
-                                                    }}
-                                                    onDateChange={(date) => { this.setState({ date: date }) }}
-                                                />
+                                            <View style={{ flex: 1, borderTopRightRadius: 5, borderBottomRightRadius: 5, marginLeft: 15, justifyContent: "center", alignItems: "flex-start" }}>
+                                                <Text style={{ alignItems: "center", fontSize: 12, }}>{booking.bookingDate}</Text>
                                             </View>
 
                                             <View style={{ flex: 0.2, borderColor: "#D4D4E0", borderWidth: 0.5, justifyContent: "center", alignItems: "center" }}>
@@ -218,39 +327,8 @@ class Checkout extends Component {
                                         </View>
 
                                         <View style={{ flexDirection: "row", marginBottom: 20, height: 45, justifyContent: "space-between", marginTop: 10, borderColor: "#D4D4E0", borderWidth: 0.5, borderRadius: 5 }}>
-
-                                            <View style={{ flex: 1, borderTopRightRadius: 5, borderBottomRightRadius: 5, justifyContent: "center", alignItems: "center" }}>
-                                                <DatePicker showIcon={false}
-                                                    style={{
-                                                        width: 280,
-                                                        // backgroundColor: "yellow"
-                                                    }}
-                                                    date={this.state.time}
-                                                    mode="time"
-                                                    // placeholder="Time"
-                                                    // moment().format('MMMM Do YYYY, h:mm:ss a')
-                                                    format="h:mm:ss a"
-                                                    // minDate="2016-05-01"
-                                                    // maxDate="2016-06-01"
-                                                    confirmBtnText="Confirm"
-                                                    cancelBtnText="Cancel"
-                                                    customStyles={{
-                                                        placeholderText: {
-                                                            marginRight: 180, color: "#9b9b9b"
-                                                        },
-
-                                                        dateInput: {
-                                                            left: "-180%",
-                                                            height: 52,
-                                                            borderLeftWidth: 0,
-                                                            borderRightWidth: 0,
-                                                            borderTopWidth: 0,
-                                                            borderBottomWidth: 0
-                                                        }
-                                                        // ... You can check the source to find the other keys.
-                                                    }}
-                                                    onDateChange={(time) => { this.setState({ time: time }) }}
-                                                />
+                                            <View style={{ flex: 1, borderTopRightRadius: 5, borderBottomRightRadius: 5, marginLeft: 15, justifyContent: "center", alignItems: "flex-start" }}>
+                                                <Text style={{ alignItems: "center", fontSize: 12, }}>{booking.selectedSlotTime}</Text>
                                             </View>
 
                                             <View style={{ flex: 0.2, borderColor: "#D4D4E0", borderWidth: 0.5, justifyContent: "center", alignItems: "center" }}>
@@ -259,13 +337,9 @@ class Checkout extends Component {
                                         </View>
 
                                     </View>
-
-
                                 </View>
-
                             </View>
                         </View>
-
 
                         <View style={{
                             backgroundColor: "#ffffff",
@@ -292,8 +366,6 @@ class Checkout extends Component {
                                     width: "90%",
                                     borderBottomColor: "#E3E5E6",
                                     borderBottomWidth: 0.2,
-                                    // height: 120
-                                    // borderStyle: "dashed",
                                     // backgroundColor: "yellow"
                                 }}>
 
@@ -301,34 +373,28 @@ class Checkout extends Component {
                                         <Text style={{ alignItems: "center", fontWeight: "bold", fontSize: 18 }}>Customer Details</Text>
                                     </View>
 
-                                    <View style={{ flexDirection: "row", marginBottom: 20, height: 45, justifyContent: "space-between", marginTop: 10, borderColor: "#D4D4E0", borderWidth: 0.5, borderRadius: 5 }}>
+                                    <View style={{ flexDirection: "row", marginBottom: 10, height: 45, justifyContent: "space-between", marginTop: 10, borderColor: "#D4D4E0", borderWidth: 0.5, borderRadius: 5 }}>
                                         <View style={{ flex: 1, borderTopRightRadius: 5, borderBottomRightRadius: 5, justifyContent: "center", }}>
-                                            <Text style={{ marginLeft: 10, fontSize: 18 }}>Aqib Khan</Text>
+                                            <Text style={{ marginLeft: 10, fontSize: 12 }}>{userProfile.fullName}</Text>
                                         </View>
                                     </View>
 
-                                    <View style={{ flexDirection: "row", marginBottom: 20, height: 45, justifyContent: "space-between", marginTop: 0, borderRadius: 5 }}>
-                                        <View style={{ flexDirection: "row", height: "100%", width: "30%", justifyContent: "center", alignItems: "center", borderColor: "#D4D4E0", borderWidth: 0.5, borderRadius: 5 }}>
-
-                                            <Picker
-                                                selectedValue={this.state.language}
-                                                style={{ marginLeft: 15, width: 95 }}
-                                                onValueChange={(itemValue, itemIndex) =>
-                                                    this.setState({ language: itemValue })
-                                                }>
-                                                <Picker.Item label="+84" value="+84" />
-                                                <Picker.Item label="+84" value="+84" />
-                                            </Picker>
-
-
-                                        </View>
-                                        <View style={{ flexDirection: "row", height: "100%", width: "65%", justifyContent: "center", alignItems: "center", borderColor: "#D4D4E0", borderWidth: 0.5, borderRadius: 5 }}>
-                                            <Text style={{ marginLeft: 10, fontSize: 17 }}>3039626640</Text>
+                                    <View style={{ width: "100%", }}>
+                                        <View style={{ width: "90%", marginHorizontal: "5%" }}></View>
+                                        <View style={{ flexDirection: "row", marginBottom: 20, height: 45, justifyContent: "space-between", marginTop: 0, borderColor: "#D4D4E0", borderWidth: 0.5, borderRadius: 5 }}>
+                                            <View style={{ flex: 1, borderTopRightRadius: 5, borderBottomRightRadius: 5, marginLeft: 15, justifyContent: "center", alignItems: "flex-start" }}>
+                                                <Text style={{ alignItems: "center", fontSize: 12, }}>{userProfile.phoneNumber}</Text>
+                                            </View>
+                                            <View style={{ flex: 0.2, borderColor: "#D4D4E0", borderWidth: 0.5, justifyContent: "center", alignItems: "center" }}>
+                                                <MaterialCommunityIcons style={{ color: "#6E7990" }} size={28} name={"cellphone"} />
+                                            </View>
                                         </View>
                                     </View>
+
                                 </View>
                             </View>
                         </View>
+
 
 
                         <View style={{
@@ -380,15 +446,12 @@ class Checkout extends Component {
                                             </View>
                                         </View>
                                     </View>
-
-
-
                                 </View>
                             </View>
                         </View>
 
-
-                        <View style={{
+                        {/* add payment card */}
+                        {/* <View style={{
                             backgroundColor: "#ffffff",
                             width: "90%",
                             marginHorizontal: "5%",
@@ -450,7 +513,8 @@ class Checkout extends Component {
 
                                 </View>
                             </View>
-                        </View>
+                        </View> */}
+
                         <View style={{
                             // backgroundColor: "#ffffff",
                             width: "90%",
@@ -468,18 +532,20 @@ class Checkout extends Component {
                             flexDirection: "row",
                             justifyContent: "space-between"
                         }}>
-                            <View style={{
+                            <TouchableOpacity style={{
                                 width: "30%",
                                 justifyContent: "center",
                                 alignItems: "center",
                                 backgroundColor: "#ffff",
                                 borderColor: "#44C062",
                                 borderWidth: 0.5
-                            }}>
+                            }}
+                                onPress={() => Actions.AppContainer()}
+                            >
                                 <View style={{ flex: 1, justifyContent: "center", alignItems: "center", }}>
                                     <Text style={{ fontSize: 17 }}>Cancel</Text>
                                 </View>
-                            </View>
+                            </TouchableOpacity>
                             <View style={{
                                 width: "60%",
                                 justifyContent: "center",
@@ -488,10 +554,16 @@ class Checkout extends Component {
                             }}>
                                 <View style={{ flex: 1, width: "100%", justifyContent: "center", alignItems: "flex-end", }}>
                                     <TouchableOpacity
-                                        // onPress={() => alert("Under Development")}
-                                        onPress={() => Actions.Submited()}
+                                        // onPress={() => this.submitBooking()}
+                                        // onPress={() => Actions.Submited()}
+                                        onPress={this.onStartCardEntry}
+
                                         style={{ width: "100%", height: 42, justifyContent: "center", alignItems: "center", backgroundColor: "#FD6958", borderRadius: 0 }}>
-                                        <Text style={{ fontWeight: "bold", fontSize: 18, color: "#ffffff" }}>Pay Now</Text>
+                                        {
+                                            (loader != true) ? (
+                                                <Text style={{ fontWeight: "bold", fontSize: 18, color: "#ffffff" }}>Pay Now</Text>
+                                            ) : <ActivityIndicator color="#ffffff" />
+                                        }
                                     </TouchableOpacity>
                                 </View>
                             </View>
@@ -502,7 +574,7 @@ class Checkout extends Component {
 
 
 
-                
+
 
             </View>
         );
@@ -538,8 +610,10 @@ const styles = StyleSheet.create({
 
 let mapStateToProps = state => {
     return {
-        // str: state.root.str,
-        // userDetails: state.root.userDetails,
+        shop: state.root.shop,
+        userProfile: state.root.userProfile,
+        bseUrl: state.root.bseUrl,
+
     };
 };
 function mapDispatchToProps(dispatch) {

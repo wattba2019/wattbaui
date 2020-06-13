@@ -1,13 +1,15 @@
 import React, { Component } from "react";
 import {
     View, Image, ActivityIndicator, StyleSheet,
-    ImageBackground, StatusBar, TouchableOpacity,
-    Text, TextInput, ScrollView
+    ImageBackground, StatusBar, TouchableOpacity, AsyncStorage,
+    Text, TextInput, ScrollView, Alert
 
 } from 'react-native';
+import axios from 'axios';
 import { Icon, Tabs, Tab, TabHeading } from 'native-base';
 import { connect } from "react-redux";
 import { Actions } from 'react-native-router-flux';
+import { setFavShops } from "../../../Store/Action/action";
 
 import ChangePassword from '../../Authentication/changepassword';
 import EditProfile from '../../App/profile/editprofile';
@@ -25,6 +27,83 @@ class Profile extends Component {
             editProfile: false,
         };
     }
+
+    UNSAFE_componentWillMount() {
+        // this.getMultipleShopWithId(this.props.favShops)
+        this.getFavShops()
+    }
+    getFavShops() {
+        let urlm = `${this.props.bseUrl}/favorites/${this.props.userProfile._id}`
+        axios({
+            method: 'get',
+            url: urlm,
+        })
+            .then(result => {
+                let data = result.data.data[0].favrouiteIds
+                console.log(data, "FAV_ON_PROFILE")
+                this.props.setFavShops(data)
+            })
+            .catch(err => {
+                if (err.response.status === 409) {
+                    console.log(err.response.data.message, "ERROR_ON_GET_Fav")
+                }
+                else {
+                    alert(err.response.data.message)
+                }
+            })
+
+    }
+
+    getMultipleShopWithId(shopid) {
+        if (shopid.length) {
+            cloneData = {
+                shopid: shopid
+            }
+            var options = {
+                method: 'POST',
+                url: `${this.props.bseUrl}/getallshops/getMultipleShopWithId/`,
+                headers:
+                {
+                    'cache-control': 'no-cache',
+                    "Allow-Cross-Origin": '*',
+                },
+                data: cloneData
+            }
+            axios(options)
+                .then(result => {
+                    let shops = result.data.data
+                    console.log(shops, "Fetch_multiple_shops_withID_inside_profile")
+                    Actions.FavouritesShops({ shops: shops, headerTitle: "Favourites" })
+
+                })
+                .catch(err => {
+                    let error = JSON.parse(JSON.stringify(err))
+                    console.log(error, 'ERRROR', err)
+                    this.setState({
+                        err: error,
+                    })
+                })
+        }
+        else {
+            Alert.alert("There is no data")
+        }
+
+    }
+
+    logout() {
+        this.clearAssync()
+    }
+
+    clearAssync = async () => {
+        try {
+            await AsyncStorage.clear();
+            Actions.Signin()
+
+        } catch (error) {
+            // Error retrieving data
+        }
+    };
+
 
     render() {
         let { changePassword } = this.state
@@ -110,7 +189,11 @@ class Profile extends Component {
                             </View>
                         </TouchableOpacity>
 
-                        <TouchableOpacity style={{ width: "90%", marginHorizontal: "5%" }}>
+                        <TouchableOpacity style={{ width: "90%", marginHorizontal: "5%" }}
+                            onPress={() => {
+                                this.getMultipleShopWithId(this.props.favShops)
+                            }}
+                        >
                             <View style={{ flexDirection: "row", height: 70, alignItems: "center", borderBottomColor: "#F0F2F6", borderBottomWidth: 1, padding: 10 }}>
                                 <Image
                                     resizeMode="contain"
@@ -146,7 +229,7 @@ class Profile extends Component {
                             </View>
                         </TouchableOpacity>
 
-                        <TouchableOpacity style={{ width: "90%", marginHorizontal: "5%" }}>
+                        {/* <TouchableOpacity style={{ width: "90%", marginHorizontal: "5%" }}>
                             <View style={{ flexDirection: "row", height: 70, alignItems: "center", borderBottomColor: "#F0F2F6", borderBottomWidth: 1, padding: 10 }}>
                                 <Image
                                     resizeMode="contain"
@@ -155,7 +238,7 @@ class Profile extends Component {
                                 />
                                 <Text style={{ alignItems: "center", color: "#131313", fontSize: 18, marginLeft: "7%" }}>Notifications</Text>
                             </View>
-                        </TouchableOpacity>
+                        </TouchableOpacity> */}
 
                         <Text style={{ alignItems: "center", color: "#131313", fontSize: 18, marginLeft: "7%", marginTop: 20 }}>Support</Text>
 
@@ -171,7 +254,10 @@ class Profile extends Component {
                         </TouchableOpacity>
 
                         <TouchableOpacity
-                            onPress={() => Actions.Signin()}
+                            onPress={() =>
+                                this.logout()
+                                //  Actions.Signin()
+                            }
                             style={{ width: "90%", marginHorizontal: "5%" }}
                         >
                             <View style={{ flexDirection: "row", height: 70, alignItems: "center", borderBottomColor: "#F0F2F6", borderBottomWidth: 1, padding: 10 }}>
@@ -188,17 +274,23 @@ class Profile extends Component {
 
 
                 </View>
-            </View>
+            </View >
         );
     }
 }
 let mapStateToProps = state => {
     return {
         userProfile: state.root.userProfile,
+        favShops: state.root.favShops,
+        bseUrl: state.root.bseUrl,
+
     };
 };
 function mapDispatchToProps(dispatch) {
     return ({
+        setFavShops: (shops) => {
+            dispatch(setFavShops(shops));
+        },
     })
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Profile);

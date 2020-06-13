@@ -5,22 +5,43 @@ import {
     Text, TextInput, ScrollView, Picker,
 
 } from 'react-native';
+//icons import
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
 import { connect } from "react-redux";
 import { Actions } from 'react-native-router-flux';
 import firebase from 'react-native-firebase'
+import CountryPicker from 'react-native-country-picker-modal';
+import axios from 'axios';
 
 class Veryfiyournumber extends Component {
     constructor(props) {
         super(props);
         this.state = {
             loader: false,
-            countryCode: "+92",
-            phoneNumber: ""
-            // phoneNumber: "3452153709"
-            // phoneNumber: "3368990497"
-            // phoneNumber: "3472076096"
+            phoneNumber: "",
+            dialCode: "44",
+            imgPath: require(`../../services/resources/flags/images/gb.png`),
+            // phoneNumber: "7480824582"
         };
+    }
+
+    UNSAFE_componentWillMount() {
+        if (this.props.selectedCountry != undefined && this.props.imgPath != undefined) {
+            console.log(this.props.selectedCountry, this.props.imgPath, "ITEM")
+            this.setState({
+                dialCode: this.props.selectedCountry.dialCode,
+                imgPath: this.props.imgPath
+            })
+        }
+
+        if (this.props.route === "signup") {
+            this.setState({
+                dialCode: this.props.dialCode,
+                phoneNumber: this.props.phoneNumber,
+                imgPath: this.props.imgPath
+            })
+        }
     }
 
     clearNumber = () => {
@@ -29,47 +50,82 @@ class Veryfiyournumber extends Component {
         })
     }
 
+    changePhoneCode() {
+        Actions.CountryLists({ route: "verify", phoneNumberWithCode: this.props.phoneNumberWithCode })
+    }
+
     sendCode = () => {
-        let { countryCode, phoneNumber, } = this.state
-        console.log(countryCode + phoneNumber, "PHONE_NUMBER")
+        let { dialCode, phoneNumber, } = this.state
+        let newNumber = "+" + dialCode + phoneNumber;
+        let oldNumber = this.props.phoneNumberWithCode
+        console.log(newNumber, oldNumber, "PHONE_NUMBER")
         this.setState({
             loader: true
         })
-        firebase.auth().signInWithPhoneNumber(countryCode + phoneNumber)
-            .then(confirmResult => {
+        let cloneNumbers = {
+            phoneNumber: oldNumber,
+            newNumber
+        }
+        console.log(cloneNumbers, "cloneNumbers")
+        var options = {
+            method: 'POST',
+            url: `${this.props.bseUrl}/signup/phoneUpdate/`,
+            headers:
+            {
+                'cache-control': 'no-cache',
+                "Allow-Cross-Origin": '*',
+            },
+            data: cloneNumbers
+        };
+
+        axios(options)
+            .then((data) => {
+                console.log(data, "data")
+                firebase.auth().signInWithPhoneNumber(newNumber)
+                    .then(confirmResult => {
+                        this.setState({
+                            loader: false
+                        })
+                        console.log(confirmResult, "CONFIRMATION_RESULT")
+                        Actions.Phoneverification({ confirmResult: confirmResult, email: this.props.email, newNumber: newNumber })
+                    })
+                    .catch(error => {
+                        this.setState({
+                            loader: false
+                        })
+                        console.log(error)
+                        alert(error)
+                    });
+            }).catch((err) => {
+                console.log(err.response.data.message, "ERROR_ON_UPDATE_PHONE")
+                // console.log(err, "ERROR_ON_UPDATE_PHONE")
+                alert(err.response.data.message)
                 this.setState({
                     loader: false
                 })
-                console.log(confirmResult, "CONFIRMATION_RESULT")
-                Actions.Phoneverification({ confirmResult: confirmResult, email: this.props.email })
             })
-            .catch(error => {
-                this.setState({
-                    loader: false
-                })
-                console.log(error)
-                alert(error)
-            });
+
     }
 
     render() {
-        let { countryCode, phoneNumber, loader } = this.state
+        let { dialCode, phoneNumber, imgPath, loader } = this.state
         return (
-            <ScrollView
-                contentContainerStyle={styles.contentContainer}
-            >
-                <StatusBar backgroundColor="white" barStyle="dark-content" />
+            <View style={{ flex: 1, backgroundColor: "white" }}>
 
-                <View style={{ flex: 1, width: "100%", backgroundColor: "red" }}>
-                </View>
+                <StatusBar backgroundColor="white" barStyle="dark-content" />
 
                 {/* //header// */}
 
-                <View style={{ height: "15%", flexDirection: "row", width: "100%", }}>
+                <View style={{
+                    flex: 0.8, flexDirection: "row", width: "100%",
+                    // backgroundColor: "red"
+                }}>
                     <TouchableOpacity
-                        style={{ flex: 1.5, }}
+                        style={{
+                            flex: 0.2,
+                            // backgroundColor: "orange"
+                        }}
                         onPress={() => Actions.pop()}
-
                     >
                         <View style={{ flex: 2, justifyContent: "center", alignItems: "center", }}>
                             <Image source={require('../../../assets/ArrowLeft.png')}
@@ -77,53 +133,55 @@ class Veryfiyournumber extends Component {
                             />
                         </View>
                     </TouchableOpacity>
-                    <View style={{ flex: 8, }}>
-
-                    </View>
 
                 </View>
 
                 {/* //body// */}
 
                 <View style={{
-                    // flex: 8,
+                    flex: 8,
                     width: "100%",
-                    justifyContent: "center",
+                    // justifyContent: "center",
                     alignItems: "center",
-                    // backgroundColor:"white"
+                    // backgroundColor: "red",
                 }}>
-                    <Text style={{ fontSize: 30, fontWeight: "bold", textAlign: "center" }}>Verify your {"\n"} phone number</Text>
-                    <Text style={{ marginTop: 40, textAlign: "center" }}>We have sent you an SMS with a code to{"\n"} number {countryCode + " " + phoneNumber} </Text>
+                    <Text style={{ fontSize: 30, fontWeight: "bold", textAlign: "center", marginTop: 50 }}>Verify your {"\n"} phone number</Text>
+                    <Text style={{ marginTop: 40, textAlign: "center" }}>We have sent you an SMS with a code to{"\n"} number {"+" + dialCode + " " + phoneNumber} </Text>
 
                     {/* main container */}
 
                     <View
-                        style={{ flex: 1, flexDirection: "row", width: "85%", height: 50, marginTop: 40, backgroundColor: "#E8E6E7", borderRadius: 50 }}
+                        style={{
+                            flexDirection: "row", width: "85%", height: 50, marginTop: 40, borderRadius: 50,
+                            backgroundColor: "#E8E6E7",
+                            // backgroundColor: "red",
+                        }}
                     >
                         {/* picker container */}
 
-                        <View style={{ borderRightColor: "grey", borderRightWidth: 0.5, flex: 2.2, flexDirection: "row" }}>
-                            <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-                                <Image source={require('../../../assets/pak.png')} resizeMode="contain"
-                                    style={{ height: "100%", width: "100%", marginLeft: 35 }}
-                                />
+                        <View style={{ borderRightColor: "grey", borderRightWidth: 0.5, flex: 2.5, flexDirection: "row", }}
+                        // onPress={() => { this.changePhoneCode() }}
+                        >
+                            <View style={{ flex: 1.5, justifyContent: "center", alignItems: "center", }}>
+                                <View style={{ marginLeft: 30 }}>
+                                    <Image
+                                        source={imgPath}
+                                        style={{ height: 20, width: 30, }}
+                                    />
+                                </View>
                             </View>
-                            <View style={{ flex: 4 }}>
-                                <Picker
-                                    selectedValue={this.state.countryCode}
-                                    style={{ marginLeft: 15, width: 95 }}
-                                    onValueChange={(itemValue, itemIndex) =>
-                                        this.setState({ countryCode: itemValue })
-                                    }>
-                                    <Picker.Item label="+92" value="+92" />
-                                    <Picker.Item label="+92" value="+92" />
-                                </Picker>
+                            <View style={{ flex: 3, flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
+                                <View
+                                    style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginLeft: 5 }}>
+                                    <Text style={{ fontWeight: "bold" }}>{"+" + dialCode}</Text>
+                                    <AntDesign name="caretdown" style={{ marginLeft: 5, color: '#909090', fontWeight: 'bold', fontSize: 15 }} />
+                                </View>
                             </View>
                         </View>
 
                         {/* input phone container */}
 
-                        <View style={{ backgroundColor: "yellow", flex: 3, }}>
+                        <View style={{ backgroundColor: "yellow", flex: 2.8, }}>
                             <View
                                 style={{ borderColor: 'gray', backgroundColor: "#E8E6E7", justifyContent: "center", alignItems: "center" }}
                             >
@@ -150,7 +208,6 @@ class Veryfiyournumber extends Component {
                         </TouchableOpacity>
                     </View>
                     <View style={styles.container}>
-
                     </View>
 
                     <View
@@ -165,19 +222,21 @@ class Veryfiyournumber extends Component {
                                 {
                                     (loader != true) ? (
                                         <Text style={{ textAlign: "center", fontSize: 15, margin: 12, color: "white" }}>Send OTP code</Text>
-                                    ) : <ActivityIndicator style={{ color: "orange" }} />
+                                    ) : <ActivityIndicator color="white" />
                                 }
                             </ImageBackground>
                         </TouchableOpacity>
                     </View>
                 </View>
-            </ScrollView>
+            </View>
+
         );
     }
 }
+
 let mapStateToProps = state => {
     return {
-
+        bseUrl: state.root.bseUrl,
     };
 };
 function mapDispatchToProps(dispatch) {
@@ -186,10 +245,8 @@ function mapDispatchToProps(dispatch) {
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Veryfiyournumber);
 
-
 const styles = StyleSheet.create({
     contentContainer: {
-        // flex: 1,
         paddingBottom: 500,
         backgroundColor: "white",
 
@@ -197,5 +254,3 @@ const styles = StyleSheet.create({
     input: { justifyContent: 'center', alignItems: 'center', width: '90%' },
 
 });
-
-

@@ -1,78 +1,120 @@
 import React, { Component } from "react";
 import {
-    View, Image, ActivityIndicator, StyleSheet,
-    ImageBackground, StatusBar, TouchableOpacity,
-    Text, TextInput, ScrollView, Picker
+    View, StyleSheet,
+    StatusBar, TouchableOpacity,
+    Text, ScrollView, Picker, Alert
 
 } from 'react-native';
-import { Icon, Tabs, Tab, TabHeading } from 'native-base';
+import { CheckBox, Body } from 'native-base';
 import { connect } from "react-redux";
 import { Actions } from 'react-native-router-flux';
-// import ShopsCards from '../../../Components/shopscards';
-import BasicInfo from '../shop/basicInfo';
 import RadioForm, { RadioButton, RadioButtonInput, RadioButtonLabel } from 'react-native-simple-radio-button';
 import Entypo from 'react-native-vector-icons/Entypo';
-
-
 
 class ChooseService extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            activeColor: "basicinfo",
-            genderValue: "male",
+            totalCost: 0,
             types3: [{ label: 'Male', value: "male" }, { label: 'Female', value: "female" },],
-            value3: 0,
+            value3: "male",
             value3Index: 0,
-
+            allItems: [],
         };
     }
 
-    activeColor(key) {
-        console.log(key.ref.key)
-        if (key.ref.key == ".0") {
-            this.setState({
-                activeColor: "basicinfo"
-            })
+    UNSAFE_componentWillMount() {
+        let { shopServices, } = this.props
+        console.log(shopServices, "shopServices")
+        this.setState({
+            shopServices: shopServices
+        })
+    }
+
+    chooseYourService = (key, index, ) => {
+        let { shopServices, totalCost } = this.state
+        let price = totalCost
+        let cloneAllServices = shopServices
+        let selectedService = shopServices[index]
+        if (selectedService.selected != true) {
+            selectedService.selected = true
+            price = price + Number(selectedService.price)
         }
-        if (key.ref.key == ".1") {
-            this.setState({
-                activeColor: "review"
-            })
+        else {
+            selectedService.selected = false
+            price = price - Number(selectedService.price)
         }
+        cloneAllServices.splice(index, 1, selectedService)
+        this.setState({
+            shopServices: cloneAllServices,
+            totalCost: price
+        })
+    }
 
 
+    chooseYourExtraService = (key, index, serviceIndex) => {
+        let { shopServices, totalCost } = this.state
+        let price = totalCost
+        let cloneAllServices = shopServices
+        let selectedService = cloneAllServices[serviceIndex].extraServices[index]
+        if (selectedService.selected != true) {
+            selectedService.selected = true
+            price = price + Number(selectedService.price)
+        }
+        else {
+            selectedService.selected = false
+            price = price - Number(selectedService.price)
+
+        }
+        this.setState({
+            shopServices: cloneAllServices,
+            totalCost: price
+        })
+    }
+
+    next = () => {
+        let { value3, totalCost, shopServices } = this.state
+        let allItems = []
+        let extraServicesSelected = []
+        for (let index = 0; index < shopServices.length; index++) {
+            const extraServices = shopServices[index].extraServices;
+            const _id = shopServices[index]._id;
+            const selectedBolean = shopServices[index].selected;
+            if (selectedBolean && selectedBolean === true) {
+                for (let j = 0; j < extraServices.length; j++) {
+                    const extraServiceElement = extraServices[j];
+                    if (extraServiceElement.selected && extraServiceElement.selected === true) {
+                        extraServicesSelected.push(extraServiceElement)
+                    }
+                }
+                allItems.push(_id)
+            }
+        }
+
+        if (allItems.length != 0) {
+            Actions.Bookappointment({ chosenItems: allItems, extraServicesSelected: extraServicesSelected, gendre: value3, totalCost: totalCost, pack: false })
+        }
+        else {
+            Alert.alert("Please choose service")
+        }
     }
 
     render() {
-        const { activeColor } = this.state
-
-
-
-        var radio_props = [
-            { label: 'Male', value: "male" },
-            { label: 'Female', value: "female" }
-        ];
-
+        const { totalCost, shopServices } = this.state
+        // console.log(shopServices, "SERVICES_DETAILS")
         return (
             <View style={{
                 flex: 1,
                 width: "100%",
-                // alignItems: "center",
                 backgroundColor: "white",
                 paddingHorizontal: 10,
             }}>
                 <StatusBar backgroundColor="white" barStyle="dark-content" />
-
                 <View style={{
                     flex: 0.7,
                     flexDirection: "row",
                     borderBottomWidth: 0.5,
                     borderBottomColor: 'grey',
-                    // height:30
-                    // justifyContent: "center", 
-                    // alignItems: "center", 
-                    // backgroundColor: 'red'
                 }}>
 
                     <View style={{ position: "absolute" }}>
@@ -88,9 +130,7 @@ class ChooseService extends Component {
                     }}>
                         <Text style={{ alignItems: "center", fontSize: 16 }}>Book Appointment</Text>
                     </View>
-
                 </View>
-
 
                 <View style={{
                     flex: 8,
@@ -104,17 +144,10 @@ class ChooseService extends Component {
                         contentContainerStyle={styles.contentContainer}
                         showsHorizontalScrollIndicator={false}
                         showsVerticalScrollIndicator={false}
-
-                        style={{
-                            width: "90%",
-                            // backgroundColor: "grey"
-                        }}>
+                        style={{ width: "90%", }}
+                    >
                         <Text style={{ fontSize: 20, fontWeight: "normal" }}>Gender</Text>
-
-                        <View style={{
-                            width: "100%",
-                            marginTop: 10
-                        }}>
+                        <View style={{ width: "100%", marginTop: 10 }}>
                             <RadioForm formHorizontal={true} animation={true} >
                                 {this.state.types3.map((obj, i) => {
                                     var onPress = (value, index) => {
@@ -125,7 +158,6 @@ class ChooseService extends Component {
                                     }
                                     return (
                                         <RadioButton labelHorizontal={true} key={i} >
-                                            {/*  You can set RadioButtonLabel before RadioButtonInput */}
                                             <RadioButtonInput
                                                 animation={true}
                                                 obj={obj}
@@ -153,180 +185,78 @@ class ChooseService extends Component {
 
                             <Text style={{ fontSize: 20, fontWeight: "normal", marginTop: 20 }}>Choose your service</Text>
 
+                            {
+                                (shopServices) ? (
+                                    shopServices.map((key, index) => {
+                                        return (
+                                            <View key={index} style={{ flex: 1, marginTop: 10, }}>
 
-                            {/* Picker */}
+                                                <TouchableOpacity onPress={() => this.chooseYourService(key, index)}
+                                                    style={{ flex: 1, flexDirection: "row", borderBottomColor: "#E6E6EE", borderBottomWidth: key.selected ? 1.5 : 0.5, padding: 5, height: 40 }}>
+                                                    <View style={{ flex: 0.4, alignItems: "center", flexDirection: "row", }}>
+                                                        <CheckBox onPress={() => this.chooseYourService(key, index)} color="#FD6958" checked={key.selected} />
+                                                    </View>
+                                                    <View style={{ flex: 1.7, alignItems: "center", flexDirection: "row", }}>
+                                                        <Text style={{ fontWeight: "normal", fontSize: 15 }}>{key.serviceName}</Text>
+                                                    </View>
+                                                    <View style={{ flex: 0.5, alignItems: "center", justifyContent: "flex-end", flexDirection: "row", }}>
+                                                        <Text style={{ fontWeight: "normal", fontSize: 15 }}>{key.price}</Text>
+                                                    </View>
+                                                </TouchableOpacity>
+                                                {
+                                                    (key.selected) ? (
+                                                        <Text style={{ fontWeight: "bold", marginTop: 10, marginLeft: "5%", textDecorationLine: 'underline', }}>{"Extra Services"}</Text>
+                                                    ) : null
+                                                }
+                                                {
+                                                    (key.selected) ? (
+                                                        key.extraServices.map((item, indexing) => {
+                                                            return (
+                                                                <View key={indexing}>
+                                                                    <TouchableOpacity onPress={() => this.chooseYourExtraService(item, indexing, index)}
+                                                                        style={{ flex: 1, flexDirection: "row", borderBottomColor: "#E6E6EE", borderBottomWidth: 0.5, padding: 15 }}>
+                                                                        <View style={{ flex: 0.4, alignItems: "center", flexDirection: "row", }}>
+                                                                            <CheckBox onPress={() => this.chooseYourExtraService(item, indexing, index)} color="#FD6958" checked={item.selected} />
+                                                                        </View>
+                                                                        <View style={{ flex: 1.7, flexDirection: "row", }}>
+                                                                            <Text style={{ fontWeight: "normal", fontSize: 14, color: "#8E8E93" }}>{item.serviceName}</Text>
+                                                                        </View>
+                                                                        <View style={{ flex: 0.5, justifyContent: "flex-end", flexDirection: "row", }}>
+                                                                            <Text style={{ fontWeight: "normal", fontSize: 14, color: "#8E8E93" }}>{item.price}</Text>
+                                                                        </View>
+                                                                    </TouchableOpacity>
+                                                                </View>
+                                                            )
+                                                        })
 
-                            <View style={{ flex: 1, marginTop: 10, flexDirection: "row", justifyContent: "center", alignItems: "center", }}>
-
-                                <View style={{ flex: 0.5, justifyContent: "center", }}>
-                                    <Text style={{ fontWeight: "normal", fontSize: 18 }}>Haircut</Text>
-                                </View>
-
-                                <View style={{ flex: 0.8, justifyContent: "center", alignItems: "flex-end", backgroundColor: "#F0F0F0" }}>
-                                    <Picker
-                                        style={{ width: "90%", color: "#8E8E93", }}
-                                    // selectedValue={this.state.language}
-                                    // onValueChange={(itemValue, itemIndex) =>
-                                    //     this.setState({ language: itemValue })
-                                    // }
-                                    >
-                                        <Picker.Item label="Relexed Bob ($15)" value="Relexed Bob ($15)" />
-                                        <Picker.Item label="Select Type" value="Select Type" />
-                                    </Picker>
-                                </View>
-
-                            </View>
+                                                    ) : null
+                                                }
 
 
-                            <View style={{ flex: 1, marginTop: 10, flexDirection: "row", justifyContent: "center", alignItems: "center", }}>
 
-                                <View style={{ flex: 0.5, justifyContent: "center", }}>
-                                    <Text style={{ fontWeight: "normal", fontSize: 18 }}>Hair Styles</Text>
-                                </View>
-
-                                <View style={{ flex: 0.8, justifyContent: "center", alignItems: "flex-end", backgroundColor: "#F0F0F0" }}>
-                                    <Picker
-                                        style={{ width: "90%", color: "#8E8E93", }}
-                                    // selectedValue={this.state.language}
-                                    // onValueChange={(itemValue, itemIndex) =>
-                                    //     this.setState({ language: itemValue })
-                                    // }
-                                    >
-                                        <Picker.Item label="Select Type" value="Select Type" />
-                                        <Picker.Item label="Relexed Bob ($15)" value="Relexed Bob ($15)" />
-                                    </Picker>
-                                </View>
-
-                            </View>
-
-                            <View style={{ flex: 1, marginTop: 10, flexDirection: "row", justifyContent: "center", alignItems: "center", }}>
-
-                                <View style={{ flex: 0.5, justifyContent: "center", }}>
-                                    <Text style={{ fontWeight: "normal", fontSize: 18 }}>Shaving</Text>
-                                </View>
-
-                                <View style={{ flex: 0.8, justifyContent: "center", alignItems: "flex-end", backgroundColor: "#F0F0F0" }}>
-                                    <Picker
-                                        style={{ width: "90%", color: "#8E8E93", }}
-                                    // selectedValue={this.state.language}
-                                    // onValueChange={(itemValue, itemIndex) =>
-                                    //     this.setState({ language: itemValue })
-                                    // }
-                                    >
-                                        <Picker.Item label="Select Type" value="Select Type" />
-                                        <Picker.Item label="Relexed Bob ($15)" value="Relexed Bob ($15)" />
-                                    </Picker>
-                                </View>
-
-                            </View>
-
-                            <View style={{ flex: 1, marginTop: 10, flexDirection: "row", justifyContent: "center", alignItems: "center", }}>
-
-                                <View style={{ flex: 0.5, justifyContent: "center", }}>
-                                    <Text style={{ fontWeight: "normal", fontSize: 18 }}>Hairdryer</Text>
-                                </View>
-
-                                <View style={{ flex: 0.8, justifyContent: "center", alignItems: "flex-end", backgroundColor: "#F0F0F0" }}>
-                                    <Picker
-                                        style={{ width: "90%", color: "#8E8E93", }}
-                                    // selectedValue={this.state.language}
-                                    // onValueChange={(itemValue, itemIndex) =>
-                                    //     this.setState({ language: itemValue })
-                                    // }
-                                    >
-                                        <Picker.Item label="Select Type" value="Select Type" />
-                                        <Picker.Item label="Relexed Bob ($15)" value="Relexed Bob ($15)" />
-                                    </Picker>
-                                </View>
-
-                            </View>
-
-                            <View style={{ flex: 1, marginTop: 10, flexDirection: "row", justifyContent: "center", alignItems: "center", }}>
-
-                                <View style={{ flex: 0.5, justifyContent: "center", }}>
-                                    <Text style={{ fontWeight: "normal", fontSize: 18 }}>Hair Coloring</Text>
-                                </View>
-
-                                <View style={{ flex: 0.8, justifyContent: "center", alignItems: "flex-end", backgroundColor: "#F0F0F0" }}>
-                                    <Picker
-                                        style={{ width: "90%", color: "#8E8E93", }}
-                                    // selectedValue={this.state.language}
-                                    // onValueChange={(itemValue, itemIndex) =>
-                                    //     this.setState({ language: itemValue })
-                                    // }
-                                    >
-                                        <Picker.Item label="Select Type" value="Select Type" />
-                                        <Picker.Item label="Relexed Bob ($15)" value="Relexed Bob ($15)" />
-                                    </Picker>
-                                </View>
-
-                            </View>
-
-                            <View style={{ flex: 1, marginTop: 10, flexDirection: "row", justifyContent: "center", alignItems: "center", }}>
-
-                                <View style={{ flex: 0.5, justifyContent: "center", }}>
-                                    <Text style={{ fontWeight: "normal", fontSize: 18 }}>Facial Makeup</Text>
-                                </View>
-
-                                <View style={{ flex: 0.8, justifyContent: "center", alignItems: "flex-end", backgroundColor: "#F0F0F0" }}>
-                                    <Picker
-                                        style={{ width: "90%", color: "#8E8E93", }}
-                                    // selectedValue={this.state.language}
-                                    // onValueChange={(itemValue, itemIndex) =>
-                                    //     this.setState({ language: itemValue })
-                                    // }
-                                    >
-                                        <Picker.Item label="Select Type" value="Select Type" />
-                                        <Picker.Item label="Relexed Bob ($15)" value="Relexed Bob ($15)" />
-                                    </Picker>
-                                </View>
-
-                            </View>
-
-                            <View style={{ flex: 1, marginTop: 10, flexDirection: "row", justifyContent: "center", alignItems: "center", }}>
-
-                                <View style={{ flex: 0.5, justifyContent: "center", }}>
-                                    <Text style={{ fontWeight: "normal", fontSize: 18 }}>Eye Makeup</Text>
-                                </View>
-
-                                <View style={{ flex: 0.8, justifyContent: "center", alignItems: "flex-end", backgroundColor: "#F0F0F0" }}>
-                                    <Picker
-                                        style={{ width: "90%", color: "#8E8E93", }}
-                                    // selectedValue={this.state.language}
-                                    // onValueChange={(itemValue, itemIndex) =>
-                                    //     this.setState({ language: itemValue })
-                                    // }
-                                    >
-                                        <Picker.Item label="Select Type" value="Select Type" />
-                                        <Picker.Item label="Relexed Bob ($15)" value="Relexed Bob ($15)" />
-                                    </Picker>
-                                </View>
-
-                            </View>
+                                            </View>
+                                        )
+                                    })
+                                ) : null
+                            }
 
                         </View>
-
                     </ScrollView>
-
-
                 </View>
 
                 <View style={{
                     flex: 1, flexDirection: "row", justifyContent: "center", alignItems: "center", width: "100%", borderTopColor: "grey", borderTopWidth: 0.5,
-                    // backgroundColor: "green"
                 }}>
-
                     <View style={{
                         flex: 1, flexDirection: "row", justifyContent: "center", alignItems: "center", width: "90%", marginHorizontal: "5%",
-                        // backgroundColor: "red"
                     }}>
                         <View style={{ flex: 1, justifyContent: "center", alignItems: "flex-start", }}>
                             <Text style={{ fontWeight: "normal", }}>Total Cost</Text>
-                            <Text style={{ fontWeight: "bold", fontSize: 18 }}>$15</Text>
+                            <Text style={{ fontWeight: "bold", fontSize: 18 }}>GBP {totalCost}</Text>
                         </View>
                         <View style={{ flex: 1, justifyContent: "center", alignItems: "flex-end", }}>
                             <TouchableOpacity
-                                onPress={() => Actions.Bookappointment()}
+                                onPress={() => this.next()}
                                 style={{ width: "70%", height: 42, justifyContent: "center", alignItems: "center", backgroundColor: "#FD6958", borderRadius: 8 }}>
                                 <Text style={{ fontWeight: "bold", fontSize: 18, color: "#ffffff" }}>Next</Text>
                             </TouchableOpacity>
@@ -338,9 +268,11 @@ class ChooseService extends Component {
         );
     }
 }
-let mapStateToProps = state => {
-    return {
 
+let mapStateToProps = state => {
+    // console.log(state, 'mapStateToProps')
+    return {
+        shopServices: state.root.shopServices,
     };
 };
 function mapDispatchToProps(dispatch) {
@@ -349,12 +281,8 @@ function mapDispatchToProps(dispatch) {
 }
 export default connect(mapStateToProps, mapDispatchToProps)(ChooseService);
 
-
 const styles = StyleSheet.create({
     contentContainer: {
-        // flex: 1,
         paddingBottom: 30,
-        // backgroundColor: "green",
-
     },
 });

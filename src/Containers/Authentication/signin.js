@@ -2,13 +2,14 @@ import React, { Component } from "react";
 import {
     View, Image, ActivityIndicator, StyleSheet,
     ImageBackground, StatusBar, TouchableOpacity,
-    Text, TextInput, ScrollView, BackHandler
+    Text, TextInput, ScrollView, BackHandler, AsyncStorage
 
 } from 'react-native';
 import { connect } from "react-redux";
 import { Actions } from 'react-native-router-flux';
 import axios from 'axios';
 import { setUserCredentials } from "./../../Store/Action/action";
+import Entypo from 'react-native-vector-icons/Entypo';
 
 class Signin extends Component {
     constructor(props) {
@@ -16,10 +17,13 @@ class Signin extends Component {
         this.state = {
             loader: false,
             activateAccount: false,
+            showPassword: true,
             email: "",
-            password: ""
-            // email: "abddullahshah4@gmail.com",
+            password: "",
+            // email: "mynameisabdullahv1@gmail.com",
             // password: "12345678"
+            // email: "abddullahshah@gmail.com",
+            // password: "abcd@123456"
         };
     }
 
@@ -33,7 +37,6 @@ class Signin extends Component {
             email,
             password
         }
-        console.log(cloneSignUpData, "cloneSignUpData")
         var options = {
             method: 'POST',
             url: `${this.props.bseUrl}/signin`,
@@ -50,10 +53,10 @@ class Signin extends Component {
                 this.setState({
                     loader: !this.state.loader
                 })
+                this._storeData(data.data)
                 this.props.setUserCredentials(data.data)
             }).catch((err) => {
                 console.log(err.response.data.message, "ERROR_ON_SIGN_IN")
-                // console.log(err, "ERROR_ON_SIGN_IN")
                 alert(err.response.data.message)
                 this.setState({
                     loader: !this.state.loader,
@@ -68,21 +71,30 @@ class Signin extends Component {
                 })
             })
     }
-
+    _storeData = async (data) => {
+        console.log("Assync", data)
+        try {
+            await AsyncStorage.setItem('userProfile', JSON.stringify(data));
+        } catch (error) {
+            // Error saving data
+        }
+    };
+    
     componentWillUnmount() {
         BackHandler.removeEventListener('hardwareBackPress', BackHandler.exitApp());
     }
+
     render() {
-        let { email, password, loader, activateAccount } = this.state;
+        let { email, password, loader, activateAccount, showPassword } = this.state;
         return (
             <ImageBackground source={require('../../../assets/background.png')}
                 style={{
-                    // backgroundColor: '#fd902a',
                     flex: 1,
                     justifyContent: 'center',
                     alignItems: 'center',
                     width: "100%"
                 }}>
+
                 <StatusBar backgroundColor="#F86078" barStyle="dark-content" />
 
                 <View
@@ -104,14 +116,10 @@ class Signin extends Component {
                 <ScrollView
                     style={{
                         height: "30%",
-                        // flex: 1,
                         backgroundColor: "white",
                         width: "100%",
                         borderTopLeftRadius: 20,
                         borderTopRightRadius: 20,
-                        // justifyContent: "center",
-                        // alignItems: "center",
-
                     }}
                 >
                     <View style={{
@@ -135,14 +143,21 @@ class Signin extends Component {
                         </View>
 
                         <View
-                            style={{ width: "85%", marginTop: 10, borderColor: 'gray', backgroundColor: "#E8E6E7", borderRadius: 25, justifyContent: "center", alignItems: "center" }}
+                            style={{ width: "85%", flexDirection: "row", marginTop: 10, borderColor: 'gray', backgroundColor: "#E8E6E7", borderRadius: 25, justifyContent: "center", alignItems: "center" }}
                         >
                             <TextInput
-                                secureTextEntry
-                                style={{ height: 50, width: "90%", }}
+                                secureTextEntry={showPassword}
+                                style={{ height: 50, width: "80%" }}
                                 onChangeText={(password) => this.setState({ password })}
                                 value={password}
                                 placeholder={"Password"}
+                            />
+                            <Entypo
+                                onPress={() => {
+                                    this.setState({ showPassword: !showPassword })
+                                }}
+                                name={showPassword ? "eye" : "eye-with-line"}
+                                style={{ marginLeft: 10, color: '#909090', fontWeight: 'bold', fontSize: 18 }}
                             />
                         </View>
 
@@ -158,11 +173,12 @@ class Signin extends Component {
                                     {
                                         (loader != true) ? (
                                             <Text style={{ textAlign: "center", fontSize: 15, margin: 12, color: "white" }}>Login</Text>
-                                        ) : <ActivityIndicator style={{ color: "orange" }} />
+                                        ) : <ActivityIndicator color="white" />
                                     }
                                 </ImageBackground>
                             </TouchableOpacity>
                         </View>
+
                         {
                             activateAccount ?
                                 <TouchableOpacity
@@ -178,6 +194,7 @@ class Signin extends Component {
                         >
                             <Text style={{ textAlign: "center", fontSize: 15, marginTop: activateAccount ? 5 : 20, color: "black" }}>Forgot your password?</Text>
                         </TouchableOpacity>
+
                         <TouchableOpacity
                             style={{ flexDirection: "row", marginTop: 10, }}
                             onPress={() => Actions.Signup()}
@@ -185,6 +202,7 @@ class Signin extends Component {
                             <Text style={{ textAlign: "center", fontSize: 15, color: "#B7B7C0" }}>Don't have an account? </Text>
                             <Text style={{ textAlign: "center", fontSize: 15, color: "#F28602" }}>Sign up</Text>
                         </TouchableOpacity>
+
                     </View>
                 </ScrollView>
             </ImageBackground>

@@ -24,7 +24,7 @@ class ChangePassword extends Component {
 
         }
     }
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         var { height, width } = Dimensions.get('window');
         this.setState({
             screenHeight: height,

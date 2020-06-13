@@ -6,12 +6,13 @@ import {
     images, Dimensions, ImageBackground, Alert
 } from 'react-native';
 import { Container, Content, Card, CardItem, Thumbnail, Button, Icon, Item, Fab, Input } from 'native-base';
-// import { Actions } from 'react-native-router-flux';
+import { Actions } from 'react-native-router-flux';
 import { connect } from "react-redux";
 import Entypo from 'react-native-vector-icons/Entypo';
 import Modal from "react-native-modal";
 import axios from 'axios';
 import { setUserCredentials } from '../../../Store/Action/action';
+import { ActionConst } from 'react-native-router-flux';
 
 class EditProfile extends Component {
     constructor(props) {
@@ -19,7 +20,9 @@ class EditProfile extends Component {
         this.state = {
             isModalVisible: true,
             updateLoader: true,
-            fromApp: true
+            verifyLoader: false,
+            verificationModal: true,
+            fromApp: true,
         }
     }
     componentWillMount() {
@@ -27,9 +30,12 @@ class EditProfile extends Component {
         this.setState({
             screenHeight: height,
         })
+        console.log(this.props.userProfile, "USER_PROFILE")
         this.setState({
+            email: this.props.userProfile.email,
             userName: this.props.userProfile.fullName,
-            phoneNumber: this.props.userProfile.phoneNumber
+            phoneNumber: this.props.userProfile.phoneNumber,
+            verifiedEmail: this.props.userProfile.verifiedEmail
         })
     }
 
@@ -80,13 +86,55 @@ class EditProfile extends Component {
         }
     }
 
+    sendCode() {
+        this.setState({
+            verifyLoader: !this.state.verifyLoader
+        })
+        let cloneData = {
+            email: this.props.userProfile.email,
+            createdAt: new Date().getTime(),
+            insideApp: true,
+        }
+        console.log(cloneData, "data")
+        var options = {
+            method: 'POST',
+            url: `${this.props.bseUrl}/resetpassword/sendcode`,
+            headers:
+            {
+                'cache-control': 'no-cache',
+                "Allow-Cross-Origin": '*',
+            },
+            data: cloneData
+        };
+        axios(options)
+            .then((data) => {
+                this.setState({
+                    verifyLoader: !this.state.verifyLoader,
+                    verificationModal: !this.state.verificationModal
+                })
+                this.closeModal()
+                Actions.VerifyCodeEmail({ email: this.props.userProfile.email })
+                console.log(data.data, cloneData, "SEND_EMAIL_VERIFICATION_CODE")
+                // alert(data.data.message)
+            }).catch((err) => {
+                this.setState({
+                    verifyLoader: !this.state.verifyLoader
+                })
+                alert(JSON.stringify(err.response.data.message))
+            })
+    }
+
+    verifyCode() {
+        alert("work")
+    }
+
     render() {
-        let { userName, phoneNumber } = this.state
+        let { email, userName, phoneNumber, verifyLoader, verifiedEmail, verificationModal } = this.state
         return (
             <View>
                 <Modal isVisible={this.state.isModalVisible}>
                     <View
-                        style={{ height: this.state.screenHeight / 2, justifyContent: 'center', alignItems: "center", }}>
+                        style={{ height: this.state.screenHeight / 1.8, justifyContent: 'center', alignItems: "center", }}>
                         <View style={{ backgroundColor: "white", width: "90%", height: "100%", borderRadius: 10, justifyContent: "center", alignItems: "center", }}>
                             <View style={{ width: "80%", flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "white" }}>
                                 {/* Cancel Button*/}
@@ -98,6 +146,33 @@ class EditProfile extends Component {
                                     >
                                         <Entypo name='cross' style={{ textAlign: "right", marginRight: 10, fontSize: 19, fontWeight: "bold", color: "#1E90FF" }} />
                                     </TouchableOpacity>
+                                </View>
+
+
+                                {/* user email */}
+                                <View style={{ marginTop: 20, width: "90%", }}>
+                                    <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+                                        <Text style={{ color: "grey" }}>Email</Text>
+
+                                        {
+                                            (verifiedEmail === false) ? (
+                                                <TouchableOpacity onPress={() => {
+                                                    this.sendCode()
+                                                }} >
+                                                    {
+                                                        (verifyLoader === false) ? (<Text style={{ color: "red" }}>Unverified</Text>) : <ActivityIndicator style={{ marginRight: 6, }} />
+                                                    }
+                                                </TouchableOpacity>
+                                            ) : <View>
+                                                    <Text style={{ color: "green" }}>Verified</Text>
+                                                </View>
+                                        }
+
+                                    </View>
+                                    <View style={{ marginTop: 10, flexDirection: "row", justifyContent: "space-between" }}>
+                                        <Text>{email}</Text>
+                                        <Entypo name='mail' style={{ color: "#1E90FF", fontWeight: "bold", fontSize: 15, marginRight: 6, }} />
+                                    </View>
                                 </View>
                                 {/* user name */}
                                 <View style={{ marginTop: 20 }}>
@@ -143,6 +218,8 @@ class EditProfile extends Component {
                                         </TouchableOpacity>
                                     ) : <ActivityIndicator style={{ top: 20, marginBottom: 20 }} />
                                 }
+
+
                             </View>
                         </View>
                     </View>

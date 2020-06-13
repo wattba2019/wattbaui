@@ -1,26 +1,74 @@
 import React, { Component } from "react";
-import {
-    View, Image, ActivityIndicator, StyleSheet,
-    ImageBackground, StatusBar, TouchableOpacity,
-    Text, TextInput, ScrollView
-} from 'react-native';
+import { View, Image, ActivityIndicator, StyleSheet, BackHandler, ImageBackground, StatusBar, TouchableOpacity, Text, TextInput, ScrollView } from 'react-native';
 import { connect } from "react-redux";
 import { Actions } from 'react-native-router-flux';
 import axios from 'axios';
+import CountryPicker from 'react-native-country-picker-modal';
+//icons import
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import Entypo from 'react-native-vector-icons/Entypo';
 
 class Signup extends Component {
     constructor(props) {
         super(props);
         this.state = {
             loader: false,
+            showPassword: true,
             // fullName: "Abdullah Shah",
-            // email: "abddullahshah4@gmail.com",
-            // phoneNumber: "03452153709",
+            // email: "abddullahshah11@gmail.com",
             // password: "12345678",
+            // phoneNumber: "3368990497", //ufone
+            // phoneNumber: "3450558623", //bug
+            // phoneNumber: "3452153709", //white list
+            // phoneNumber: "3040200538", //zeshan
+
+            dialCode: "44",
+            // dialCode: "92",
+            imgPath: require(`../../services/resources/flags/images/gb.png`),
+            fullName: "",
+            email: "",
+            password: "",
+            phoneNumber: "",
         };
     }
+
+    componentWillUnmount() {
+        BackHandler.removeEventListener('hardwareBackPress', BackHandler.exitApp());
+    }
+
+    UNSAFE_componentWillMount() {
+        const { fullName, email, phoneNumber, password, selectedCountry, imgPath } = this.props
+
+        if (selectedCountry != undefined && imgPath != undefined) {
+            console.log(selectedCountry, imgPath, "ITEM")
+            this.setState({
+                dialCode: selectedCountry.dialCode,
+                imgPath: imgPath
+            })
+        }
+        if (fullName || email || phoneNumber || password) {
+            this.setState({
+                fullName, email, phoneNumber, password,
+            })
+        }
+
+    }
+
+
+    changePhoneCode() {
+        const { fullName, email, phoneNumber, password, } = this.state
+        Actions.CountryLists({ route: "signup", fullName, email, phoneNumber, password, })
+    }
+
+    clearNumber = () => {
+        this.setState({
+            phoneNumber: ""
+        })
+    }
+
     signup = () => {
-        let { fullName, email, phoneNumber, password } = this.state;
+        let { fullName, email, phoneNumber, password, dialCode, imgPath } = this.state;
+        let phoneNumberWithCode = "+" + dialCode + phoneNumber
         if (fullName && email && phoneNumber && password) {
             let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
             if (reg.test(email) === false) {
@@ -37,7 +85,7 @@ class Signup extends Component {
                     let cloneSignUpData = {
                         fullName,
                         email,
-                        phoneNumber,
+                        phoneNumber: phoneNumberWithCode,
                         password,
                         createdAt: Date.now(),
                     }
@@ -59,9 +107,11 @@ class Signup extends Component {
                                 loader: !this.state.loader
                             })
                             // Actions.Signin({ email: email })
-                            Actions.Veryfiyournumber({ email: email })
+                            console.log(phoneNumberWithCode, "phoneNumberWithCode")
+                            Actions.Veryfiyournumber({ email: email, dialCode: dialCode, imgPath, phoneNumber: phoneNumber, phoneNumberWithCode: phoneNumberWithCode, route: "signup" })
                         }).catch((err) => {
-                            console.log(err.response.data.message, "ERROR_ON_SIGN_UP")
+                            console.log(err.response.data, "ERROR_ON_SIGN_UP")
+                            // console.log(err.response.data.message, "ERROR_ON_SIGN_UP")
                             alert(err.response.data.message)
                             this.setState({
                                 loader: !this.state.loader
@@ -76,7 +126,7 @@ class Signup extends Component {
     }
 
     render() {
-        let { fullName, email, phoneNumber, password, loader } = this.state;
+        let { fullName, email, password, loader, dialCode, phoneNumber, imgPath, showPassword } = this.state;
         return (
             <ScrollView contentContainerStyle={styles.contentContainer}>
                 <StatusBar backgroundColor="white" barStyle="dark-content" />
@@ -123,7 +173,8 @@ class Signup extends Component {
                             placeholder={"Email"}
                         />
                     </View>
-                    <View
+
+                    {/* <View
                         style={{ width: "85%", marginTop: 20, borderColor: 'gray', backgroundColor: "#E8E6E7", borderRadius: 25, justifyContent: "center", alignItems: "center" }}
                     >
                         <TextInput
@@ -131,23 +182,93 @@ class Signup extends Component {
                             style={{ height: 50, width: "90%", }}
                             onChangeText={(phoneNumber) => this.setState({ phoneNumber })}
                             value={phoneNumber}
-                            placeholder={"Phone Number"}
+                            // placeholder={"Phone Number"}
+                            placeholder={"Phone +447480824582"}
                         />
+                    </View> */}
+
+                    <View
+                        style={{ flex: 1, flexDirection: "row", width: "85%", height: 50, marginTop: 25, backgroundColor: "#E8E6E7", borderRadius: 50 }}
+                    >
+                        {/* picker container */}
+
+                        <View style={{ borderRightColor: "grey", borderRightWidth: 0.5, flex: 2.2, flexDirection: "row", }}>
+                            <View style={{ borderRightColor: "grey", borderRightWidth: 0.5, flex: 2.5, flexDirection: "row", }}
+                            // onPress={() => { this.changePhoneCode() }}
+                            >
+                                <View style={{ flex: 1.5, justifyContent: "center", alignItems: "center", }}>
+                                    <View style={{ marginLeft: 30 }}>
+                                        <Image
+                                            source={imgPath}
+                                            style={{ height: 20, width: 30, }}
+                                        />
+                                    </View>
+                                </View>
+                                <View style={{ flex: 3, flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
+                                    <View
+                                        style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginLeft: 5 }}>
+                                        <Text style={{ fontWeight: "bold" }}>{"+" + dialCode}</Text>
+                                        <AntDesign name="caretdown" style={{ marginLeft: 5, color: '#909090', fontWeight: 'bold', fontSize: 15 }} />
+                                    </View>
+                                </View>
+                            </View>
+                        </View>
+
+                        {/* input phone container */}
+
+                        <View style={{ backgroundColor: "yellow", flex: 3, }}>
+                            <View
+                                style={{ borderColor: 'gray', backgroundColor: "#E8E6E7", justifyContent: "center", alignItems: "center" }}
+                            >
+                                <TextInput
+                                    keyboardType={"numeric"}
+                                    style={{ height: 50, width: "90%", }}
+                                    onChangeText={(phoneNumber) => this.setState({ phoneNumber })}
+                                    value={phoneNumber}
+                                    placeholder={"Number"}
+                                />
+                            </View>
+                        </View>
+
+                        {/* cancele container */}
+
+                        <TouchableOpacity
+                            onPress={() => {
+                                this.clearNumber()
+                            }}
+                            style={{ flex: 0.8, width: "100%", justifyContent: "center", alignItems: "center", }}>
+                            <Image source={require('../../../assets/Shape.png')} resizeMode="contain"
+                                style={{ height: "40%", width: "40%", }}
+                            />
+                        </TouchableOpacity>
                     </View>
                     <View
-                        style={{ width: "85%", marginTop: 20, borderColor: 'gray', backgroundColor: "#E8E6E7", borderRadius: 25, justifyContent: "center", alignItems: "center" }}
+                        style={{
+                            width: "85%", flexDirection: "row",
+                            marginTop: 20, borderColor: 'gray',
+                            borderRadius: 25,
+                            justifyContent: "center", alignItems: "center",
+                            backgroundColor: "#E8E6E7",
+                        }}
                     >
                         <TextInput
-                            secureTextEntry
-                            style={{ height: 50, width: "90%", }}
+                            secureTextEntry={showPassword}
+                            style={{ height: 50, width: "80%" }}
                             onChangeText={(password) => this.setState({ password })}
                             value={password}
                             placeholder={"Password"}
                         />
+                        <Entypo
+                            onPress={() => {
+                                this.setState({ showPassword: !showPassword })
+                            }}
+                            name={showPassword ? "eye" : "eye-with-line"}
+                            style={{ marginLeft: 10, color: '#909090', fontWeight: 'bold', fontSize: 18 }}
+                        />
                     </View>
+
                     <View style={{ width: "85%", height: 50, marginTop: 50, }}>
                         <TouchableOpacity
-                            // onPress={() => Actions.Veryfiyournumber()}
                             onPress={() => this.signup()} >
                             <ImageBackground source={require('../../../assets/buttonBackground.png')} resizeMode="contain"
                                 style={{ height: "100%", width: "100%", justifyContent: "center", }}
@@ -155,7 +276,7 @@ class Signup extends Component {
                                 {
                                     (loader != true) ? (
                                         <Text style={{ textAlign: "center", fontSize: 15, margin: 12, color: "white" }}>Sign Up</Text>
-                                    ) : <ActivityIndicator style={{ color: "orange" }} />
+                                    ) : <ActivityIndicator color="white" />
                                 }
                             </ImageBackground>
                         </TouchableOpacity>
@@ -167,7 +288,6 @@ class Signup extends Component {
                     <TouchableOpacity
                         style={{ flexDirection: "row", marginTop: 50, }}
                         onPress={() => Actions.Signin()} >
-                        {/* // onPress={() => this.signup()} > */}
                         <Text style={{ textAlign: "center", fontSize: 15, color: "#B7B7C0" }}>Already have an account? </Text>
                         <Text style={{ textAlign: "center", fontSize: 15, color: "#F28602" }}>Sign in</Text>
                     </TouchableOpacity>

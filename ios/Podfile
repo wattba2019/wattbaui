@@ -33,6 +33,10 @@ target 'BarberShop' do
 
   pod 'RNFirebase', :path => '../node_modules/react-native-firebase/ios'
 
+  pod 'RNSquareInAppPayments', :path => '../node_modules/react-native-square-in-app-payments'
+
+  pod 'react-native-netinfo', :path => '../node_modules/@react-native-community/netinfo'
+
   target 'BarberShopTests' do
     inherit! :search_paths
     # Pods for testing

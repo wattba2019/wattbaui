@@ -1,15 +1,15 @@
 import React from 'react';
-import { View, ScrollView, Text, Image, StyleSheet, ActivityIndicator, Dimensions, Platform } from 'react-native';
+import { View, Image, StyleSheet, Dimensions, Text, TouchableOpacity, ImageBackground } from 'react-native';
 import { connect } from 'react-redux'
-
-import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
-import Geolocation from 'react-native-geolocation-service';
-
+import MapView, { PROVIDER_GOOGLE, Marker, } from 'react-native-maps';
+import { setUserCurrentLocation, getNearByShopsUnder5Km } from "./../Store/Action/action";
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
 const LATITUDE_DELTA = 0.0922;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
+import Enablelocation from '../../src/Components/enableLocation';
 
 class MapDirection extends React.Component {
     constructor() {
@@ -17,55 +17,68 @@ class MapDirection extends React.Component {
         this.state = {
             location: null,
             errorMessage: null,
+            markers: [],
+            draggable: false,
+            tracksViewChanges: true,
+
+        }
+    }
+    stopTrackingViewChanges = () => {
+        this.setState(() => ({
+            tracksViewChanges: false,
+        }));
+    }
+    UNSAFE_componentWillMount() {
+        if (this.props.currentLocation) {
+            this.setState({
+                coords: this.props.currentLocation.coords
+            })
+        }
+        if (this.props.markers) {
+            this.setState({
+                markers: this.props.markers
+            })
+        }
+        if (this.props.draggable) {
+            this.setState({
+                draggable: this.props.draggable
+            })
         }
     }
 
-    componentWillMount() {
-        if (this.props.sendLocation) {
-            console.log(this.props.sendLocation, "sendLocation")
-            this.setState({ location: this.props.sendLocation });
+    UNSAFE_componentWillReceiveProps(nextProps) {
+        if (nextProps.currentLocation) {
+            this.setState({
+                coords: nextProps.currentLocation.coords
+            })
         }
-        else {
-            this.allowLocation()
+        if (nextProps.markers) {
+            this.setState({
+                markers: nextProps.markers
+            })
         }
     }
 
-    allowLocation = async () => {
-        // Instead of navigator.geolocation, just use Geolocation.
-        await Geolocation.getCurrentPosition(
-            (position) => {
-                if (position) {
-                    console.log(position, "USER_CURRENT_LOCATION")
-                    this.setState({
-                        coords: position.coords
-                    })
-                }
-            },
-            (error) => {
-                // See error code charts below.
-                console.log(error.code, error.message, "66666");
-            },
-            { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000, }
-        );
+    locationSet(coords) {
+        let currentLocation = {
+            coords: coords
+        }
+        this.setState({
+            coords: coords
+        })
+        this.props.getNearByShopsUnder5Km(currentLocation)
+        this.props.setUserCurrentLocation(currentLocation, true)
     }
 
-    // region={{
-    //     latitude: 37.78825,
-    //     longitude: -122.4324,
-    //     latitudeDelta: 0.015,
-    //     longitudeDelta: 0.0121,
-    // }}
 
     render() {
-        let { coords } = this.state
-        if (coords) {
-            console.log(coords)
-        }
+        let { coords, markers, draggable, tracksViewChanges } = this.state
+        // console.log(coords, markers, draggable, "INSIDERENDER")
         return (
-            <View >
+            <View>
                 {
                     (coords && coords.latitude && coords.longitude) ?
-                        <MapView style={{ width: "99%", height: 500 }}
+                        <MapView style={{ width: "100%", height: 500 }}
                             provider={PROVIDER_GOOGLE}
                             region={{
                                 latitude: coords.latitude,
@@ -73,9 +86,33 @@ class MapDirection extends React.Component {
                                 latitudeDelta: LATITUDE_DELTA,
                                 longitudeDelta: LONGITUDE_DELTA,
                             }}
-
                         >
-                            <Marker draggable={false} style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, alignItems: 'center', justifyContent: 'center', backgroundColor: 'transparent' }}
+                            {
+                                (markers.length != 0 && !draggable) ? (
+                                    markers.map((key, index) =>
+                                        (
+                                            <Marker key={index} draggable={false}
+                                                coordinate={
+                                                    {
+                                                        latitude: key.latitude,
+                                                        longitude: key.longitude,
+                                                        latitudeDelta: LATITUDE_DELTA,
+                                                        longitudeDelta: LONGITUDE_DELTA,
+                                                    }
+                                                }
+                                                title={key.title}
+                                            >
+                                                {/* <Image
+                                                    onLoad={this.stopTrackingViewChanges}
+                                                    source={require('../../assets/Group55346(2).png')} style={{ height: 45, width: 45 }}
+                                                /> */}
+                                            </Marker>
+                                        )
+                                    )
+                                ) : null
+                            }
+
+                            <Marker draggable={draggable}
                                 coordinate={
                                     {
                                         latitude: coords.latitude,
@@ -84,18 +121,35 @@ class MapDirection extends React.Component {
                                         longitudeDelta: LONGITUDE_DELTA,
                                     }
                                 }
-                            // onDragEnd={!this.props.sendLocation ? (e) => this.locationSet(e.nativeEvent.coordinate) : null}
-                            />
-                        </MapView> : <MapView style={{ width: "99%", height: 500 }}
-                            provider={PROVIDER_GOOGLE}
-                            region={{
-                                latitude: 37.78825,
-                                longitude: -122.4324,
-                                latitudeDelta: LATITUDE_DELTA,
-                                longitudeDelta: LONGITUDE_DELTA,
-                            }}
-                        >
-                        </MapView>
+                                onDragEnd={(e) => this.locationSet(e.nativeEvent.coordinate)}
+                            >
+                                <TouchableOpacity>
+                                    <Ionicons name="ios-navigate" style={{ color: '#FD6958', fontWeight: 'bold', fontSize: 35 }} />
+                                </TouchableOpacity>
+
+                                {/* <Image
+                                    onLoad={this.stopTrackingViewChanges}
+                                    source={require('../../assets/mapIcon.png')} style={{ height: 35, width: 35 }}
+                                /> */}
+                            </Marker>
+                        </MapView> :
+
+                        <View style={{ width: "99%", height: 500, justifyContent: "center", alignItems: "center" }} >
+                            <Enablelocation />
+                        </View>
+
+                    // <MapView style={{ width: "99%", height: 500 }}
+                    //     provider={PROVIDER_GOOGLE}
+                    //     region={{
+                    //         // latitude: 24.8607,
+                    //         // longitude: 67.0011,
+                    //         latitude: 37.78825,
+                    //         longitude: -122.4324,
+                    //         latitudeDelta: LATITUDE_DELTA,
+                    //         longitudeDelta: LONGITUDE_DELTA,
+                    //     }}
+                    // >
+                    // </MapView>
                 }
 
             </View>
@@ -104,6 +158,7 @@ class MapDirection extends React.Component {
 
 }
 const styles = StyleSheet.create({
+
     container: {
         ...StyleSheet.absoluteFillObject,
         height: 500,
@@ -120,16 +175,19 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => {
     return {
-        // isLoader: state.root.isLoader,
+        currentLocation: state.root.currentLocation,
     };
 };
 
 
 function mapDispatchToProps(dispatch) {
     return ({
-        // userAuth: (Email, Password) => {
-        //     dispatch(userAction(Email, Password));
-        // }
+        setUserCurrentLocation: (position, bolean) => {
+            dispatch(setUserCurrentLocation(position, bolean));
+        },
+        getNearByShopsUnder5Km: (shops) => {
+            dispatch(getNearByShopsUnder5Km(shops));
+        },
     })
 }
 

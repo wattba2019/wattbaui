@@ -44,7 +44,7 @@
 		00E356EE1AD99517003FC87E /* BarberShopTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BarberShopTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* BarberShopTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BarberShopTests.m; sourceTree = "<group>"; };
-		13B07F961A680F5B00A75B9A /* BarberShop.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BarberShop.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		13B07F961A680F5B00A75B9A /* Wattba.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Wattba.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = BarberShop/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = BarberShop/AppDelegate.m; sourceTree = "<group>"; };
 		13B07FB21A68108700A75B9A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
@@ -182,7 +182,7 @@
 		83CBBA001A601CBA00E9B192 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				13B07F961A680F5B00A75B9A /* BarberShop.app */,
+				13B07F961A680F5B00A75B9A /* Wattba.app */,
 				00E356EE1AD99517003FC87E /* BarberShopTests.xctest */,
 				2D02E47B1E0B4A5D006451C7 /* BarberShop-tvOS.app */,
 				2D02E4901E0B4A5D006451C7 /* BarberShop-tvOSTests.xctest */,
@@ -245,7 +245,7 @@
 			);
 			name = BarberShop;
 			productName = BarberShop;
-			productReference = 13B07F961A680F5B00A75B9A /* BarberShop.app */;
+			productReference = 13B07F961A680F5B00A75B9A /* Wattba.app */;
 			productType = "com.apple.product-type.application";
 		};
 		2D02E47A1E0B4A5D006451C7 /* BarberShop-tvOS */ = {
@@ -299,6 +299,9 @@
 					00E356ED1AD99517003FC87E = {
 						CreatedOnToolsVersion = 6.2;
 						TestTargetID = 13B07F861A680F5B00A75B9A;
+					};
+					13B07F861A680F5B00A75B9A = {
+						DevelopmentTeam = HF9KSWKDNX;
 					};
 					2D02E47A1E0B4A5D006451C7 = {
 						CreatedOnToolsVersion = 8.2.1;
@@ -685,6 +688,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
+				DEVELOPMENT_TEAM = HF9KSWKDNX;
 				INFOPLIST_FILE = BarberShop/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
@@ -692,8 +696,8 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = BarberShop;
+				PRODUCT_BUNDLE_IDENTIFIER = org.wattba;
+				PRODUCT_NAME = Wattba;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -704,6 +708,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = HF9KSWKDNX;
 				INFOPLIST_FILE = BarberShop/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
@@ -711,8 +716,8 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = BarberShop;
+				PRODUCT_BUNDLE_IDENTIFIER = org.wattba;
+				PRODUCT_NAME = Wattba;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;

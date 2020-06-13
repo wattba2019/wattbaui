@@ -12,8 +12,6 @@ import { Actions } from 'react-native-router-flux';
 import BasicInfo from '../shop/basicInfo';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-
-
 class BarberDetails extends Component {
     constructor(props) {
         super(props);
@@ -34,67 +32,33 @@ class BarberDetails extends Component {
                 activeColor: "review"
             })
         }
-
-
     }
 
     render() {
         const { activeColor } = this.state
-
+        const { barberDetails, shop, workingHours } = this.props
         return (
             <View style={{
                 flex: 1,
                 width: "100%",
-                // alignItems: "center",
                 backgroundColor: "white",
             }}>
                 <StatusBar backgroundColor="white" barStyle="dark-content" />
-
                 <View style={{
                     flex: 0.6,
                     flexDirection: "row",
                     borderBottomWidth: 0.5,
                     borderBottomColor: 'grey',
-                    // height:30
-                    // justifyContent: "center", 
-                    // alignItems: "center", 
-                    // backgroundColor: 'red'
                 }}>
                     <View style={{
                         flex: 1,
                         justifyContent: "center",
-                        // alignItems: "center",
-                        // backgroundColor: "red"
                     }}>
-                        {/* <TouchableOpacity
-                            onPress={() => Actions.pop()}
-                        >
-                            <Image source={require('../../../assets/ArrowLeft.png')} resizeMode="contain"
-                                style={{ height: 20, width: 20, marginLeft: 25 }}
-                            />
-                        </TouchableOpacity> */}
-
-                        <TouchableOpacity onPress={() => Actions.pop()}
-                        >
+                        <TouchableOpacity onPress={() => Actions.pop()}>
                             <Ionicons name="ios-arrow-back" style={{ marginLeft: 25, color: "black", fontWeight: 'bold', fontSize: 28 }} />
                         </TouchableOpacity>
                     </View>
-
-                    <View style={{
-                        flex: 1,
-                        justifyContent: "center", alignItems: "center",
-                        // backgroundColor: "green"
-                    }}>
-                        {/* <Text style={{ alignItems: "center", }}>Search Results</Text> */}
-                    </View>
-
-                    <View style={{
-                        flex: 1,
-                        // backgroundColor: "red"
-                    }}>
-                    </View>
                 </View>
-
 
                 <View style={{
                     flex: 8,
@@ -109,7 +73,6 @@ class BarberDetails extends Component {
                             flexDirection: "row",
                             height: 100,
                             // backgroundColor: 'orange'
-
                         }}>
                             <View style={{
                                 flex: 4,
@@ -123,33 +86,39 @@ class BarberDetails extends Component {
                                     borderColor: "#FD6958", borderWidth: 1, borderRadius: 15, padding: 5
                                     // backgroundColor: "grey"
                                 }}>
-                                    <Image source={require('../../../assets/image1.png')} resizeMode="contain"
+                                    {/* <Image source={require('../../../assets/image1.png')} resizeMode="contain"
                                         style={{ height: "100%", width: "100%", }}
-                                    />
+                                    /> */}
+                                    {
+                                        (barberDetails.coverImage != null) ? (
+                                            <Image source={{ uri: barberDetails.coverImage }} resizeMode="cover"
+                                                style={{ width: "100%", height: "100%", }} />
+                                        ) : <Image source={require('../../../assets/nophoto.jpg')} resizeMode="cover"
+                                            style={{ width: "100%", height: "100%", }} />
+                                    }
                                 </View>
                             </View>
 
                             <View style={{
                                 flex: 7,
                                 padding: 5,
-                                // alignItems: "center",
                                 justifyContent: "center",
                                 // backgroundColor: 'red'
                             }}>
-                                <Text style={{ fontSize: 25, color: "#3B566E" }}>William son</Text>
-                                <Text style={{ color: "#FD6958", fontSize: 14, marginTop: 7 }}>Manager</Text>
-                                <Text style={{ color: "#000000", fontSize: 14 }}>Ranya Barbershop</Text>
+                                <Text style={{ fontSize: 25, color: "#3B566E" }}>{barberDetails.fullname}</Text>
+                                <Text style={{ color: "#FD6958", fontSize: 14, marginTop: 7 }}>{barberDetails.designation}</Text>
+                                <Text style={{ color: "#000000", fontSize: 14 }}>{shop.businessName}</Text>
                             </View>
                         </View>
                         <View style={{ width: "90%", marginHorizontal: "5%", marginTop: 10 }}>
-                            <Text style={{ color: "#858585", fontSize: 14 }}>Vestibulum metus risus, facilisis vitae tincidunt vel per  dapibus in sapien. Proin posuere varius posuere dapibu  Quisque et rhoncus urna.</Text>
+                            <Text style={{ color: "#858585", fontSize: 14 }}>{barberDetails.description}</Text>
                         </View>
 
                         <View
                             style={{ width: "70%", height: 50, marginTop: 30, marginHorizontal: "15%", marginBottom: 20 }}
                         >
                             <TouchableOpacity
-                            onPress={() => Actions.ChooseService()}
+                                onPress={() => Actions.ChooseService()}
                             >
                                 <ImageBackground source={require('../../../assets/buttonBackground.png')} resizeMode="contain"
                                     style={{ height: "100%", width: "100%", justifyContent: "center", }}
@@ -159,7 +128,6 @@ class BarberDetails extends Component {
                             </TouchableOpacity>
 
                         </View>
-
 
                         <Tabs
                             onChangeTab={(key) => this.activeColor(key)}
@@ -175,12 +143,13 @@ class BarberDetails extends Component {
                                         <Text style={{ color: activeColor === "basicinfo" ? "#FD6958" : "black", fontWeight: "bold" }}>Basic Info</Text>
                                     </TabHeading>}
                             >
-                                <BasicInfo />
+                                <BasicInfo barberDetails={barberDetails} shop={shop} workingHours={workingHours} />
 
                             </Tab>
 
                             {/* //Review// */}
-                            <Tab
+
+                            {/* <Tab
                                 heading={
                                     <TabHeading
                                         style={{ flexDirection: "column", backgroundColor: "white" }}
@@ -192,21 +161,18 @@ class BarberDetails extends Component {
                                 <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
                                     <Text>Under Development</Text>
                                 </View>
-                            </Tab>
-
+                            </Tab> */}
 
                         </Tabs>
                     </ScrollView>
-
-
                 </View>
             </View>
         );
     }
 }
+
 let mapStateToProps = state => {
     return {
-
     };
 };
 function mapDispatchToProps(dispatch) {
@@ -214,13 +180,3 @@ function mapDispatchToProps(dispatch) {
     })
 }
 export default connect(mapStateToProps, mapDispatchToProps)(BarberDetails);
-
-
-const styles = StyleSheet.create({
-    contentContainer: {
-        flex: 1,
-        paddingBottom: 150,
-        backgroundColor: "green",
-
-    },
-});

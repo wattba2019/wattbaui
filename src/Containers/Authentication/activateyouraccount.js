@@ -5,23 +5,37 @@ import {
     Text, TextInput, ScrollView, Picker,
 
 } from 'react-native';
+//icons import
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
 import { connect } from "react-redux";
 import { Actions } from 'react-native-router-flux';
 import firebase from 'react-native-firebase'
+import CountryPicker from 'react-native-country-picker-modal';
+import axios from 'axios';
 
 class ActivateAccount extends Component {
     constructor(props) {
         super(props);
         this.state = {
             loader: false,
-            email: "",
-            countryCode: "+92",
-            phoneNumber: ""
-            // phoneNumber: "3452153709"
-            // phoneNumber: "3368990497"
-            // phoneNumber: "3472076096"
+
+            phoneNumber: "",
+            dialCode: "1",
+            imgPath: require(`../../services/resources/flags/images/us.png`),
+            // phoneNumber: "3368990499",
+            // phoneNumber: "7480824582"
         };
+    }
+
+    UNSAFE_componentWillMount() {
+        if (this.props.selectedCountry != undefined && this.props.imgPath != undefined) {
+            console.log(this.props.selectedCountry, this.props.imgPath, "ITEM")
+            this.setState({
+                dialCode: this.props.selectedCountry.dialCode,
+                imgPath: this.props.imgPath
+            })
+        }
     }
 
     clearNumber = () => {
@@ -30,53 +44,76 @@ class ActivateAccount extends Component {
         })
     }
 
-    sendCode = () => {
-        let { countryCode, phoneNumber, email } = this.state
-        console.log(countryCode + phoneNumber, "PHONE_NUMBER")
-        if (email) {
-            this.setState({
-                loader: true
-            })
-            firebase.auth().signInWithPhoneNumber(countryCode + phoneNumber)
-                .then(confirmResult => {
-                    this.setState({
-                        loader: false
-                    })
-                    console.log(confirmResult, "CONFIRMATION_RESULT")
-                    Actions.Phoneverification({ confirmResult: confirmResult, email: email })
-                })
-                .catch(error => {
-                    this.setState({
-                        loader: false
-                    })
-                    console.log(error)
-                    alert(error)
-                });
-        }
-        else {
-            alert("Please type your valid email")
-        }
+    changePhoneCode() {
+        Actions.CountryLists({ route: "activate" })
+    }
 
+    sendCode = () => {
+        let { dialCode, phoneNumber, } = this.state
+        let newNumber = "+" + dialCode + phoneNumber;
+        console.log(newNumber, "PHONE_NUMBER")
+        this.setState({
+            loader: true
+        })
+        let cloneNumbers = {
+            phoneNumber: newNumber
+        }
+        console.log(cloneNumbers, "cloneNumbers")
+        var options = {
+            method: 'POST',
+            url: `${this.props.bseUrl}/signup/finduserwithphonenumber/`,
+            headers:
+            {
+                'cache-control': 'no-cache',
+                "Allow-Cross-Origin": '*',
+            },
+            data: cloneNumbers
+        };
+        axios(options)
+            .then((data) => {
+                console.log(data, "Verify_Number")
+                firebase.auth().signInWithPhoneNumber(newNumber)
+                    .then(confirmResult => {
+                        this.setState({
+                            loader: false
+                        })
+                        console.log(confirmResult, "CONFIRMATION_RESULT")
+                        Actions.Phoneverification({ confirmResult: confirmResult, newNumber: newNumber })
+                    })
+                    .catch(error => {
+                        this.setState({
+                            loader: false
+                        })
+                        console.log(error)
+                        alert(error)
+                    });
+            }).catch((err) => {
+                console.log(err.response.data.message, "ERROR_ON_UPDATE_PHONE")
+                // console.log(err, "ERROR_ON_UPDATE_PHONE")
+                alert(err.response.data.message)
+                this.setState({
+                    loader: false
+                })
+            })
     }
 
     render() {
-        let { countryCode, phoneNumber, loader, email } = this.state
+        let { dialCode, phoneNumber, imgPath, loader } = this.state
         return (
-            <ScrollView
-                contentContainerStyle={styles.contentContainer}
-            >
+            <View style={{ flex: 1, backgroundColor: "white" }}>
+
                 <StatusBar backgroundColor="white" barStyle="dark-content" />
 
-                <View style={{ flex: 1, width: "100%", backgroundColor: "red" }}>
-                </View>
 
                 {/* //header// */}
 
-                <View style={{ height: "12%", flexDirection: "row", width: "100%", }}>
+                <View style={{
+                    flex: 0.8, flexDirection: "row", width: "100%",
+                    // backgroundColor: "red"
+                }}>
                     <TouchableOpacity
-                        style={{ flex: 1.5, }}
+                        style={{ flex: 0.2, }}
                         onPress={() => Actions.pop()}
-
                     >
                         <View style={{ flex: 2, justifyContent: "center", alignItems: "center", }}>
                             <Image source={require('../../../assets/ArrowLeft.png')}
@@ -84,59 +121,52 @@ class ActivateAccount extends Component {
                             />
                         </View>
                     </TouchableOpacity>
-                    <View style={{ flex: 8, }}>
-
-                    </View>
 
                 </View>
 
                 {/* //body// */}
 
                 <View style={{
-                    // flex: 8,
+                    flex: 8,
                     width: "100%",
-                    justifyContent: "center",
+                    // justifyContent: "center",
                     alignItems: "center",
-                    // backgroundColor:"white"
+                    // backgroundColor: "red",
                 }}>
                     <Text style={{ fontSize: 30, fontWeight: "bold", textAlign: "center" }}>Verify your {"\n"} phone number</Text>
-                    <Text style={{ marginTop: 40, textAlign: "center" }}>We have sent you an SMS with a code to{"\n"} number {countryCode + " " + phoneNumber} </Text>
+                    <Text style={{ marginTop: 40, textAlign: "center" }}>We have sent you an SMS with a code to{"\n"} number {"+" + dialCode + " " + phoneNumber} </Text>
 
                     {/* main container */}
-                    <View
-                        style={{ width: "85%", marginTop: 40, borderColor: 'gray', backgroundColor: "#E8E6E7", borderRadius: 25, justifyContent: "center", alignItems: "center" }}
-                    >
-                        <TextInput
-                            style={{ height: 50, width: "90%", }}
-                            onChangeText={(email) => this.setState({ email })}
-                            value={email}
-                            placeholder={"Email"}
-                        />
-                    </View>
-                    <View
-                        style={{ flex: 1, flexDirection: "row", width: "85%", height: 50, marginTop: 40, backgroundColor: "#E8E6E7", borderRadius: 50 }}
-                    >
 
+                    <View
+                        style={{
+                            flexDirection: "row", width: "85%", height: 50, marginTop: 40, borderRadius: 50,
+                            backgroundColor: "#E8E6E7",
+                            // backgroundColor: "red",
+                        }}
+                    >
                         {/* picker container */}
 
-                        <View style={{ borderRightColor: "grey", borderRightWidth: 0.5, flex: 2.2, flexDirection: "row" }}>
-                            <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-                                <Image source={require('../../../assets/pak.png')} resizeMode="contain"
-                                    style={{ height: "100%", width: "100%", marginLeft: 35 }}
-                                />
+                        <TouchableOpacity style={{ borderRightColor: "grey", borderRightWidth: 0.5, flex: 2.5, flexDirection: "row", }}
+                            onPress={() => {
+                                this.changePhoneCode()
+                            }}>
+                            <View style={{ flex: 1.5, justifyContent: "center", alignItems: "center", }}>
+                                <View style={{ marginLeft: 30 }}>
+                                    <Image
+                                        source={imgPath}
+                                        style={{ height: 20, width: 30, }}
+                                    />
+                                </View>
                             </View>
-                            <View style={{ flex: 4 }}>
-                                <Picker
-                                    selectedValue={this.state.countryCode}
-                                    style={{ marginLeft: 15, width: 95 }}
-                                    onValueChange={(itemValue, itemIndex) =>
-                                        this.setState({ countryCode: itemValue })
-                                    }>
-                                    <Picker.Item label="+92" value="+92" />
-                                    <Picker.Item label="+92" value="+92" />
-                                </Picker>
+                            <View style={{ flex: 3, flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
+                                <View
+                                    style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginLeft: 5 }}>
+                                    <Text style={{ fontWeight: "bold" }}>{"+" + dialCode}</Text>
+                                    <AntDesign name="caretdown" style={{ marginLeft: 5, color: '#909090', fontWeight: 'bold', fontSize: 15 }} />
+                                </View>
                             </View>
-                        </View>
+                        </TouchableOpacity>
 
                         {/* input phone container */}
 
@@ -167,7 +197,6 @@ class ActivateAccount extends Component {
                         </TouchableOpacity>
                     </View>
                     <View style={styles.container}>
-
                     </View>
 
                     <View
@@ -188,13 +217,14 @@ class ActivateAccount extends Component {
                         </TouchableOpacity>
                     </View>
                 </View>
-            </ScrollView>
+            </View>
         );
     }
 }
+
 let mapStateToProps = state => {
     return {
-
+        bseUrl: state.root.bseUrl,
     };
 };
 function mapDispatchToProps(dispatch) {
@@ -203,10 +233,8 @@ function mapDispatchToProps(dispatch) {
 }
 export default connect(mapStateToProps, mapDispatchToProps)(ActivateAccount);
 
-
 const styles = StyleSheet.create({
     contentContainer: {
-        // flex: 1,
         paddingBottom: 500,
         backgroundColor: "white",
 
@@ -214,5 +242,3 @@ const styles = StyleSheet.create({
     input: { justifyContent: 'center', alignItems: 'center', width: '90%' },
 
 });
-
-
