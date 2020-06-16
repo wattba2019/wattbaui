@@ -131,7 +131,7 @@ class Signup extends Component {
             <ScrollView contentContainerStyle={styles.contentContainer}>
                 <StatusBar backgroundColor="white" barStyle="dark-content" />
                 {/* //header// */}
-                <View style={{ height: "10%", flexDirection: "row", width: "100%", }}>
+                <View style={{ height: "10%", flexDirection: "row", width: "100%",marginTop:12 }}>
                     <TouchableOpacity
                         style={{ flex: 1.5, }}
                         onPress={() => Actions.pop()}

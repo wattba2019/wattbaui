@@ -113,6 +113,7 @@ class Appointments extends Component {
                     flexDirection: "row",
                     justifyContent: "center",
                     alignItems: "center",
+                    marginTop:20
                     // backgroundColor: 'red'
                 }}>
                     <View style={{

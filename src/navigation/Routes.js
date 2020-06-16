@@ -42,7 +42,7 @@ class Route extends Component {
         tintColor="white">
         <Scene>
           {/* <Scene key='GooglePlacesInput' component={GooglePlacesInput} hideNavBar={true} /> */}
-          <Scene key='SplashScreen' component={SplashScreen} hideNavBar={true} initial />
+          <Scene key='SplashScreen' component={SplashScreen} hideNavBar={true}initial  />
           <Scene key='Walkthrough' component={Walkthrough} hideNavBar={true} />
           <Scene key='Signin' component={Signin} hideNavBar={true} />
           <Scene key='Forgotyourpassword' component={Forgotyourpassword} hideNavBar={true} />

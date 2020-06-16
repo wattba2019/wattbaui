@@ -79,6 +79,7 @@ class VerifyCodeEmail extends Component {
                     flexDirection: "row",
                     width: "100%",
                     alignItems: "center",
+                    marginTop:12,
 
                 }}>
                     <View style={{ position: "absolute" }}>

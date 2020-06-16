@@ -161,21 +161,28 @@ class Checkout extends Component {
                     flexDirection: "row",
                     width: "100%",
                     alignItems: "center",
-                    backgroundColor: "#FD6958"
+                    backgroundColor: "#FD6958",
+                    marginTop:17
 
                 }}>
-                    <View style={{ position: "absolute" }}>
+                    <View style={{ flex:1}}>
                         <TouchableOpacity onPress={() => Actions.pop()}>
                             <AntDesign name="arrowleft" style={{ marginLeft: 15, color: "#ffffff", fontSize: 25 }} />
                         </TouchableOpacity>
                     </View>
 
                     <View style={{
-                        width: "100%",
+                        //width: "100%",
+                        flex:8,
                         justifyContent: "center",
                         alignItems: "center",
                     }}>
                         <Text style={{ alignItems: "center", color: "#ffffff", fontWeight: "bold", fontSize: 18 }}>Checkout</Text>
+                    </View>
+
+                    <View style={{ flex:1}}>
+                        <TouchableOpacity onPress={() => Actions.pop()}>
+                        </TouchableOpacity>
                     </View>
 
                 </View>

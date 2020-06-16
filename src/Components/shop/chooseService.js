@@ -115,20 +115,27 @@ class ChooseService extends Component {
                     flexDirection: "row",
                     borderBottomWidth: 0.5,
                     borderBottomColor: 'grey',
+                    marginTop:12
                 }}>
 
-                    <View style={{ position: "absolute" }}>
+                    <View style={{flex:1}}>
                         <TouchableOpacity onPress={() => Actions.pop()}>
                             <Entypo name="cross" style={{ marginLeft: 15, top: 10, color: "black", fontSize: 25 }} />
                         </TouchableOpacity>
                     </View>
 
                     <View style={{
-                        width: "100%",
+                        //width: "100%",
+                        flex:8,
                         justifyContent: "center",
                         alignItems: "center",
                     }}>
                         <Text style={{ alignItems: "center", fontSize: 16 }}>Book Appointment</Text>
+                    </View>
+
+                    <View style={{flex:1}}>
+                        <TouchableOpacity onPress={() => Actions.pop()}>
+                        </TouchableOpacity>
                     </View>
                 </View>
 

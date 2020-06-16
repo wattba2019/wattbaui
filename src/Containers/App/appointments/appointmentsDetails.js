@@ -305,21 +305,40 @@ class AppointmentDetails extends Component {
                     flexDirection: "row",
                     width: "100%",
                     alignItems: "center",
-                    backgroundColor: "#ffffff"
+                    backgroundColor: "#ffffff",
+                    marginTop:20,
+                   
                 }}>
-                    <View style={{ position: "absolute" }}>
-                        <TouchableOpacity onPress={() => Actions.pop()}>
+                    <TouchableOpacity
+                     style={{flex:1, }} 
+                    onPress={() => Actions.pop()}
+                    >
+                        <TouchableOpacity 
+                       onPress={() => Actions.pop()}
+                        >
                             <AntDesign name="arrowleft" style={{ marginLeft: 15, color: "#000000", fontSize: 25 }} />
                         </TouchableOpacity>
-                    </View>
+                    </TouchableOpacity>
 
                     <View style={{
-                        width: "100%",
+                      //  width: "100%",
+                      flex:8,
                         justifyContent: "center",
                         alignItems: "center",
+                       
                     }}>
                         <Text style={{ alignItems: "center", color: "#000000", fontSize: 18 }}>Appointment Details</Text>
                     </View>
+
+                    <TouchableOpacity
+                     style={{flex:1, }} 
+                    //onPress={() => Actions.pop()}
+                    >
+                        <TouchableOpacity 
+                       // onPress={() => Actions.pop()}
+                        >
+                        </TouchableOpacity>
+                    </TouchableOpacity>
 
                 </View >
 

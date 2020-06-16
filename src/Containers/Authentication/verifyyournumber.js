@@ -117,7 +117,7 @@ class Veryfiyournumber extends Component {
                 {/* //header// */}
 
                 <View style={{
-                    flex: 0.8, flexDirection: "row", width: "100%",
+                    flex: 0.8, flexDirection: "row", width: "100%",marginTop:12
                     // backgroundColor: "red"
                 }}>
                     <TouchableOpacity

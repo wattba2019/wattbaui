@@ -147,6 +147,8 @@ class Profile extends Component {
                     backgroundColor: "#ffffff",
                     borderBottomWidth: 0.5,
                     borderBottomColor: 'grey',
+                    marginTop:12
+                    
                 }}>
                     <View style={{ position: "absolute" }}>
                         {/* <TouchableOpacity onPress={() => Actions.pop()}>

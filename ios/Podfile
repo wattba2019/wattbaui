@@ -29,7 +29,6 @@ target 'BarberShop' do
 
   pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 
-  pod 'react-native-maps', :path => '../node_modules/react-native-maps'
 
   pod 'RNFirebase', :path => '../node_modules/react-native-firebase/ios'
 
@@ -37,6 +36,10 @@ target 'BarberShop' do
   pod 'react-native-netinfo', :path => '../node_modules/@react-native-community/netinfo'
   
   
+  rn_maps_path = '../node_modules/react-native-maps'
+  pod 'react-native-google-maps', :path => rn_maps_path
+  pod 'GoogleMaps'
+  pod 'Google-Maps-iOS-Utils'
 
 
   use_native_modules!
