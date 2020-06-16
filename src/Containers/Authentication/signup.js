@@ -22,8 +22,8 @@ class Signup extends Component {
             // phoneNumber: "3452153709", //white list
             // phoneNumber: "3040200538", //zeshan
 
-            dialCode: "44",
-            // dialCode: "92",
+             dialCode: "44",
+           // dialCode: "92",
             imgPath: require(`../../services/resources/flags/images/gb.png`),
             fullName: "",
             email: "",

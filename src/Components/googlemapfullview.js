@@ -26,6 +26,7 @@ class googlemapfullview extends Component {
                     flexDirection: "row",
                     borderBottomWidth: 0.5,
                     borderBottomColor: "#8E8E93",
+                    marginTop:12
                 }}>
                     <View style={{
                         flex: 1,
