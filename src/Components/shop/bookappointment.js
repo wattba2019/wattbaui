@@ -54,24 +54,31 @@ class BookAppointment extends Component {
         weekday[5] = "friday";
         weekday[6] = "saturday";
         let day = weekday[d.getDay()];
+
         let currentDayShopOpen = workinghours[day].open;
         if (currentDayShopOpen === true) {
-
-            let start = workinghours[day].openTimings;
-            let end = workinghours[day].closingTime;
-            let currentTime = this.formatAMPM(new Date);
-
-            // let openTimeInMiliSeconds = this.makeDateStr(start);
-            // let closeTimeInMiliSeconds = this.makeDateStr(end);
-            // let currentTimeInMiliSeconds = this.makeDateStr(currentTime);
-            // console.log(start, end, day, currentDayShopOpen, "TimeSlots")
-
-            let returnValue = this.getTimeStops(start, end, currentTime);
-            this.setState({
-                slots: returnValue,
-                stylists: barberList,
-                day: day,
-            })
+            if (new Date() === d) {
+                let start = workinghours[day].openTimings;
+                let end = workinghours[day].closingTime;
+                let currentTime = this.formatAMPM(new Date);
+                let returnValue = this.getTimeStops(start, end, currentTime);
+                this.setState({
+                    slots: returnValue,
+                    stylists: barberList,
+                    day: day,
+                })
+            }
+            else {
+                let start = workinghours[day].openTimings;
+                let end = workinghours[day].closingTime;
+                let returnValue = this.getTimeStopsAnotherDate(start, end);
+                this.setState({
+                    slots: returnValue,
+                    stylists: barberList,
+                    day: day,
+                })
+            }
+            console.log(new Date(), d, "weekdayAndCurrentDay")
         }
         else {
             this.setState({
@@ -131,6 +138,21 @@ class BookAppointment extends Component {
         return timeStops;
     }
 
+    getTimeStopsAnotherDate(start, end) {
+        var startTime = moment(start, 'h:mm a');
+        var endTime = moment(end, 'h:mm a');
+        if (endTime.isBefore(startTime)) {
+            endTime.add(1, 'day');
+        }
+        var timeStops = [];
+        while (startTime <= endTime) {
+            timeStops.push(new moment(startTime).format('h:mm a'));
+            startTime.add(60, 'minutes');
+        }
+        return timeStops;
+    }
+
+
     slotSelect(key, index) {
         console.log(key, index, "slotSelect")
         this.setState({
@@ -154,7 +176,6 @@ class BookAppointment extends Component {
 
     setDate(date) {
         console.log(date, "SETDATE")
-
         this.setState({
             date: date
         })
@@ -163,10 +184,16 @@ class BookAppointment extends Component {
 
     Checkout() {
         let { chosenItems, extraServicesSelected, gendre, totalCost, pack } = this.props
-        let { date, selectedSlotTime, selectedBarber, selectedBarberBolean } = this.state
-        console.log(selectedBarber, "selectedBarber")
+        let { date, selectedSlotTime, selectedBarber, selectedBarberBolean, stylists } = this.state
+
+        console.log(selectedBarber, stylists, stylists.length, "selectedBarber")
+
         var dt = moment(selectedSlotTime, ["h:mm A"]).format("HH");
         var dateMiliSecond = moment(date).format("x");
+
+        let randomStylist = stylists[Math.floor(Math.random() * stylists.length)]
+
+        console.log(randomStylist, "randomStylist")
 
         if (date === "") {
             Alert.alert("Please select date")
@@ -174,9 +201,9 @@ class BookAppointment extends Component {
         else if (selectedSlotTime === "") {
             Alert.alert("Please select slot")
         }
-        else if (selectedBarberBolean === false) {
-            Alert.alert("Please select barber")
-        }
+        // else if (selectedBarberBolean === false) {
+        //     Alert.alert("Please select barber")
+        // }
         else {
             let cloneObj = {
                 chosenItems: chosenItems,
@@ -185,8 +212,8 @@ class BookAppointment extends Component {
                 cost: totalCost,
                 bookingHour: dt,
                 selectedSlotTime: selectedSlotTime,
-                selectedBarber: selectedBarber._id,
-                selectedBarberfullname: selectedBarber.fullname,
+                selectedBarber: selectedBarber ? selectedBarber._id : randomStylist._id,
+                selectedBarberfullname: selectedBarber ? selectedBarber.fullname : randomStylist.fullname,
                 bookingDateTime: dateMiliSecond,
                 bookingDate: date,
                 bookerId: this.props.bookerId,

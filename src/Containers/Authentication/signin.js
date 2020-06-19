@@ -20,8 +20,8 @@ class Signin extends Component {
             showPassword: true,
             email: "",
             password: "",
-            email: "mynameisabdullahv1@gmail.com",
-            password: "12345678"
+            // email: "mynameisabdullahv1@gmail.com",
+            // password: "12345678"
             // email: "abddullahshah@gmail.com",
             // password: "abcd@123456"
         };
@@ -79,7 +79,7 @@ class Signin extends Component {
             // Error saving data
         }
     };
-    
+
     componentWillUnmount() {
         BackHandler.removeEventListener('hardwareBackPress', BackHandler.exitApp());
     }

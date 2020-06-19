@@ -21,8 +21,9 @@ class ActivateAccount extends Component {
             loader: false,
 
             phoneNumber: "",
-            dialCode: "1",
-            imgPath: require(`../../services/resources/flags/images/us.png`),
+            // dialCode: "1",
+            dialCode: "44",
+            imgPath: require(`../../services/resources/flags/images/gb.png`),
             // phoneNumber: "3368990499",
             // phoneNumber: "7480824582"
         };
@@ -147,10 +148,11 @@ class ActivateAccount extends Component {
                     >
                         {/* picker container */}
 
-                        <TouchableOpacity style={{ borderRightColor: "grey", borderRightWidth: 0.5, flex: 2.5, flexDirection: "row", }}
-                            onPress={() => {
-                                this.changePhoneCode()
-                            }}>
+                        <View style={{ borderRightColor: "grey", borderRightWidth: 0.5, flex: 2.5, flexDirection: "row", }}
+                        // onPress={() => {
+                        //     this.changePhoneCode()
+                        // }}
+                        >
                             <View style={{ flex: 1.5, justifyContent: "center", alignItems: "center", }}>
                                 <View style={{ marginLeft: 30 }}>
                                     <Image
@@ -166,7 +168,7 @@ class ActivateAccount extends Component {
                                     <AntDesign name="caretdown" style={{ marginLeft: 5, color: '#909090', fontWeight: 'bold', fontSize: 15 }} />
                                 </View>
                             </View>
-                        </TouchableOpacity>
+                        </View>
 
                         {/* input phone container */}
 

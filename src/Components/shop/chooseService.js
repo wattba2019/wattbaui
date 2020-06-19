@@ -31,7 +31,7 @@ class ChooseService extends Component {
         })
     }
 
-    chooseYourService = (key, index, ) => {
+    chooseYourService = (key, index,) => {
         let { shopServices, totalCost } = this.state
         let price = totalCost
         let cloneAllServices = shopServices

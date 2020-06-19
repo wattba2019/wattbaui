@@ -161,7 +161,7 @@ class Checkout extends Component {
     render() {
         const { Message, loader } = this.state
         const { booking, shop, userProfile } = this.props
-
+        console.log(shop, "shop")
         return (
             <View style={{ flex: 1, backgroundColor: "#fff" }}>
                 <StatusBar backgroundColor="#FD6958" barStyle="dark-content" />
@@ -299,7 +299,7 @@ class Checkout extends Component {
                                         <View style={{ flexDirection: "row", height: 45, justifyContent: "space-between", marginTop: 10, borderColor: "#D4D4E0", borderWidth: 0.5, borderRadius: 5 }}>
 
                                             <View style={{ flex: 1, borderTopRightRadius: 5, borderBottomRightRadius: 5, justifyContent: "center", alignItems: "flex-start" }}>
-                                                <Text style={{ alignItems: "center", fontSize: 12, marginLeft: 18 }}>{shop.addressLine1}</Text>
+                                                <Text style={{ alignItems: "center", fontSize: 12, marginLeft: 18 }}>{shop.addressLine1 + " " + shop.addressLine2}</Text>
                                             </View>
 
                                             <View style={{ flex: 0.2, borderColor: "#D4D4E0", borderWidth: 0.5, justifyContent: "center", alignItems: "center" }}>
