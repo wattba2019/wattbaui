@@ -10,6 +10,7 @@ import RangeSlider from 'rn-range-slider';
 import Geocoder from 'react-native-geocoding';
 import axios from 'axios';
 import { setNearByShops } from "../../../Store/Action/action";
+import Entypo from 'react-native-vector-icons/Entypo';
 
 //icons import
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -264,10 +265,13 @@ class Filters extends Component {
                         alignItems: "center",
                         // backgroundColor: "orange"
                     }}>
-                        <TouchableOpacity
+                        {/* <TouchableOpacity
                             onPress={() => Actions.pop()}
                         >
                             <Text style={{ marginTop: 10 }}>Cancle</Text>
+                        </TouchableOpacity> */}
+                        <TouchableOpacity onPress={() => Actions.pop()}>
+                            <Entypo name="cross" style={{ marginTop: 12, marginRight: "25%", fontSize: 25 }} />
                         </TouchableOpacity>
                     </View>
                     <View style={{

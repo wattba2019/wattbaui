@@ -23,11 +23,21 @@ class Checkout extends Component {
         this.state = {
             date: "",
             Message: "",
+            fullName: "",
+            phoneNumber: "",
             loader: false,
         }
         this.onStartCardEntry = this.onStartCardEntry.bind(this);
         this.onCardNonceRequestSuccess = this.onCardNonceRequestSuccess.bind(this);
     }
+
+    UNSAFE_componentWillMount() {
+        this.setState({
+            fullName: this.props.userProfile.fullName,
+            phoneNumber: this.props.userProfile.phoneNumber,
+        })
+    }
+
 
     async componentDidMount() {
         await SQIPCore.setSquareApplicationId('sandbox-sq0idb-sYODojBTzgf0qX4bDKza0Q');
@@ -108,6 +118,8 @@ class Checkout extends Component {
             loader: !this.state.loader
         })
         let cloneBookingData = {
+            bookerName: this.state.fullName,
+            userPhoneNumber: this.state.phoneNumber,
             shopId: booking.shopId,
             bookerId: booking.bookerId,
             stylistId: booking.selectedBarber,
@@ -312,8 +324,9 @@ class Checkout extends Component {
                                         </View>
 
                                         <View style={{ justifyContent: "space-between", marginTop: 20 }}>
-                                            <Text style={{ alignItems: "center", fontWeight: "bold", fontSize: 18 }}>Schedule</Text>
-                                            <Text style={{ alignItems: "center", fontSize: 14, color: "#6E7990", marginTop: 10 }}>Date & Time - Make a good note of your booking</Text>
+                                            <Text style={{ alignItems: "center", fontWeight: "bold", fontSize: 18 }}>Date & Time</Text>
+                                            <Text style={{ alignItems: "center", fontSize: 14, color: "#6E7990", marginTop: 10 }}>Make a good note of your booking</Text>
+                                            {/* <Text style={{ alignItems: "center", fontSize: 14, color: "#6E7990", marginTop: 10 }}>Your Booking date should be within a month sstarting from today</Text> */}
                                         </View>
 
                                         <View style={{ flexDirection: "row", height: 45, justifyContent: "space-between", marginTop: 10, borderColor: "#D4D4E0", borderWidth: 0.5, borderRadius: 5 }}>
@@ -374,8 +387,14 @@ class Checkout extends Component {
                                     </View>
 
                                     <View style={{ flexDirection: "row", marginBottom: 10, height: 45, justifyContent: "space-between", marginTop: 10, borderColor: "#D4D4E0", borderWidth: 0.5, borderRadius: 5 }}>
-                                        <View style={{ flex: 1, borderTopRightRadius: 5, borderBottomRightRadius: 5, justifyContent: "center", }}>
-                                            <Text style={{ marginLeft: 10, fontSize: 12 }}>{userProfile.fullName}</Text>
+                                        <View style={{ flex: 1, borderTopRightRadius: 5, borderBottomRightRadius: 5, marginLeft: 15, justifyContent: "center", }}>
+                                            {/* <Text style={{ marginLeft: 10, fontSize: 12 }}>{userProfile.fullName}</Text> */}
+                                            <TextInput
+                                                style={{ width: "90%", }}
+                                                value={this.state.fullName}
+                                                placeholder={"Please type full name"}
+                                                onChangeText={text => this.setState({ fullName: text })}
+                                            />
                                         </View>
                                     </View>
 
@@ -383,7 +402,14 @@ class Checkout extends Component {
                                         <View style={{ width: "90%", marginHorizontal: "5%" }}></View>
                                         <View style={{ flexDirection: "row", marginBottom: 20, height: 45, justifyContent: "space-between", marginTop: 0, borderColor: "#D4D4E0", borderWidth: 0.5, borderRadius: 5 }}>
                                             <View style={{ flex: 1, borderTopRightRadius: 5, borderBottomRightRadius: 5, marginLeft: 15, justifyContent: "center", alignItems: "flex-start" }}>
-                                                <Text style={{ alignItems: "center", fontSize: 12, }}>{userProfile.phoneNumber}</Text>
+                                                {/* <Text style={{ alignItems: "center", fontSize: 12, }}>{userProfile.phoneNumber}</Text> */}
+                                                <TextInput
+                                                    keyboardType={"numeric"}
+                                                    style={{ width: "90%", }}
+                                                    value={this.state.phoneNumber}
+                                                    placeholder={"+44"}
+                                                    onChangeText={text => this.setState({ phoneNumber: text })}
+                                                />
                                             </View>
                                             <View style={{ flex: 0.2, borderColor: "#D4D4E0", borderWidth: 0.5, justifyContent: "center", alignItems: "center" }}>
                                                 <MaterialCommunityIcons style={{ color: "#6E7990" }} size={28} name={"cellphone"} />
