@@ -532,7 +532,7 @@ class shop extends Component {
                                                 <View style={{
                                                     height: 75,
                                                     width: 75,
-                                                    borderRadius: 50,
+                                                    // borderRadius: 50,
                                                     justifyContent: "center",
                                                     alignItems: "center",
                                                     backgroundColor: "white",
@@ -542,10 +542,16 @@ class shop extends Component {
                                                 }}>
                                                     {(key.coverImage != null) ? (
                                                         <Image source={{ uri: key.coverImage }} resizeMode="cover"
-                                                            style={{ width: "90%", height: "90%", borderRadius: 100 }}
+                                                            style={{
+                                                                width: "90%", height: "90%",
+                                                                // borderRadius: 100
+                                                            }}
                                                         />
                                                     ) : <Image source={require('../../../assets/nophoto.jpg')} resizeMode="cover"
-                                                        style={{ width: "90%", height: "90%", borderRadius: 100 }}
+                                                        style={{
+                                                            width: "90%", height: "90%",
+                                                            // borderRadius: 100
+                                                        }}
                                                         />}
                                                 </View>
                                                 <Text style={{ marginTop: 5, fontSize: 10, color: "#000000", textAlign: "right", }}>{key.fullname}</Text>

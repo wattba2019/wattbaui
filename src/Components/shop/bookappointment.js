@@ -57,7 +57,8 @@ class BookAppointment extends Component {
 
         let currentDayShopOpen = workinghours[day].open;
         if (currentDayShopOpen === true) {
-            if (new Date() === d) {
+            let currentDate = moment(new Date().getTime()).format('YYYY-MM-DD');
+            if (currentDate === date) {
                 let start = workinghours[day].openTimings;
                 let end = workinghours[day].closingTime;
                 let currentTime = this.formatAMPM(new Date);
@@ -78,7 +79,7 @@ class BookAppointment extends Component {
                     day: day,
                 })
             }
-            console.log(new Date(), d, "weekdayAndCurrentDay")
+            // console.log(dateFormat, date, "weekdayAndCurrentDay")
         }
         else {
             this.setState({
@@ -186,14 +187,12 @@ class BookAppointment extends Component {
         let { chosenItems, extraServicesSelected, gendre, totalCost, pack } = this.props
         let { date, selectedSlotTime, selectedBarber, selectedBarberBolean, stylists } = this.state
 
-        console.log(selectedBarber, stylists, stylists.length, "selectedBarber")
+        // console.log(selectedBarber, stylists, stylists.length, "selectedBarber")
 
         var dt = moment(selectedSlotTime, ["h:mm A"]).format("HH");
         var dateMiliSecond = moment(date).format("x");
 
         let randomStylist = stylists[Math.floor(Math.random() * stylists.length)]
-
-        console.log(randomStylist, "randomStylist")
 
         if (date === "") {
             Alert.alert("Please select date")
@@ -212,8 +211,10 @@ class BookAppointment extends Component {
                 cost: totalCost,
                 bookingHour: dt,
                 selectedSlotTime: selectedSlotTime,
-                selectedBarber: selectedBarber ? selectedBarber._id : randomStylist._id,
-                selectedBarberfullname: selectedBarber ? selectedBarber.fullname : randomStylist.fullname,
+                // selectedBarber: selectedBarber ? selectedBarber._id : randomStylist._id,
+                // selectedBarberfullname: selectedBarber ? selectedBarber.fullname : randomStylist.fullname,
+                selectedBarber: selectedBarber ? selectedBarber._id : null,
+                selectedBarberfullname: selectedBarber ? selectedBarber.fullname : null,
                 bookingDateTime: dateMiliSecond,
                 bookingDate: date,
                 bookerId: this.props.bookerId,

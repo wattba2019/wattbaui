@@ -122,7 +122,7 @@ class Checkout extends Component {
             userPhoneNumber: this.state.phoneNumber,
             shopId: booking.shopId,
             bookerId: booking.bookerId,
-            stylistId: booking.selectedBarber,
+            stylistId: booking.selectedBarber ? booking.selectedBarber : null,
             bookingDateTime: booking.bookingDateTime,
             bookingHour: booking.bookingHour,
             requiredServiceId: booking.chosenItems,
@@ -296,16 +296,28 @@ class Checkout extends Component {
                                             <Text style={{ alignItems: "center", fontSize: 18 }}>{shop.businessName}</Text>
                                         </View>
 
-                                        <View style={{ flexDirection: "row", height: 45, justifyContent: "space-between", marginTop: 10, borderColor: "#D4D4E0", borderWidth: 0.5, borderRadius: 5 }}>
-
-                                            <View style={{ flex: 1, borderTopRightRadius: 5, borderBottomRightRadius: 5, justifyContent: "center", alignItems: "flex-start" }}>
-                                                <Text style={{ alignItems: "center", fontSize: 12, marginLeft: 18 }}>{shop.addressLine1 + " " + shop.addressLine2}</Text>
+                                        <View style={{ flexDirection: "row", height: 70, justifyContent: "space-between", marginTop: 10, borderColor: "#D4D4E0", borderWidth: 0.5, borderRadius: 5, }}>
+                                            <View>
+                                                <View style={{ flex: 1, borderTopRightRadius: 5, borderBottomRightRadius: 5, justifyContent: "center", alignItems: "flex-start" }}>
+                                                    <Text style={{ alignItems: "center", fontSize: 12, marginLeft: 18 }}>{shop.addressLine1}</Text>
+                                                </View>
+                                                <View style={{ flex: 1, borderTopRightRadius: 5, borderBottomRightRadius: 5, justifyContent: "center", alignItems: "flex-start" }}>
+                                                    <Text style={{ alignItems: "center", fontSize: 12, marginLeft: 18 }}>{shop.addressLine2}</Text>
+                                                </View>
                                             </View>
-
                                             <View style={{ flex: 0.2, borderColor: "#D4D4E0", borderWidth: 0.5, justifyContent: "center", alignItems: "center" }}>
                                                 <SimpleLineIcons style={{ color: "#6E7990" }} size={22} name={"location-pin"} />
                                             </View>
                                         </View>
+
+                                        {/* <View style={{ flexDirection: "row", height: 45, justifyContent: "space-between", marginTop: 10, borderColor: "#D4D4E0", borderWidth: 0.5, borderRadius: 5 }}>
+                                            <View style={{ flex: 1, borderTopRightRadius: 5, borderBottomRightRadius: 5, justifyContent: "center", alignItems: "flex-start" }}>
+                                                <Text style={{ alignItems: "center", fontSize: 12, marginLeft: 18 }}>{shop.addressLine2}</Text>
+                                            </View>
+                                            <View style={{ flex: 0.2, borderColor: "#D4D4E0", borderWidth: 0.5, justifyContent: "center", alignItems: "center" }}>
+                                                <SimpleLineIcons style={{ color: "#6E7990" }} size={22} name={"map"} />
+                                            </View>
+                                        </View> */}
 
                                         <View style={{ justifyContent: "space-between", marginTop: 20 }}>
                                             <Text style={{ alignItems: "center", fontWeight: "bold", fontSize: 18 }}>Stylist</Text>
@@ -315,7 +327,7 @@ class Checkout extends Component {
                                             <View style={{ width: "90%", marginHorizontal: "5%" }}></View>
                                             <View style={{ flexDirection: "row", marginBottom: 0, height: 45, justifyContent: "space-between", marginTop: 0, borderColor: "#D4D4E0", borderWidth: 0.5, borderRadius: 5 }}>
                                                 <View style={{ flex: 1, borderTopRightRadius: 5, borderBottomRightRadius: 5, marginLeft: 15, justifyContent: "center", alignItems: "flex-start" }}>
-                                                    <Text style={{ alignItems: "center", fontSize: 12, }}>{booking.selectedBarberfullname}</Text>
+                                                    <Text style={{ alignItems: "center", fontSize: 12, }}>{booking.selectedBarberfullname ? booking.selectedBarberfullname : "N/a"}</Text>
                                                 </View>
                                                 <View style={{ flex: 0.2, borderColor: "#D4D4E0", borderWidth: 0.5, justifyContent: "center", alignItems: "center" }}>
                                                     <AntDesign style={{ color: "#6E7990", }} size={28} name="user" />

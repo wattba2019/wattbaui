@@ -31,7 +31,7 @@ class AppointmentCard extends Component {
                                     }} >
                                         <View style={{ flex: 1, width: "90%", flexDirection: "row", height: 80 }}>
                                             {
-                                                (key.stylistId.coverImage != null) ? (
+                                                (key.stylistId && key.stylistId.coverImage != null) ? (
                                                     <Image source={{ uri: key.stylistId.coverImage }} resizeMode="cover"
                                                         style={{ width: 80, height: 80, borderRadius: 20 }}
                                                     />
@@ -40,7 +40,7 @@ class AppointmentCard extends Component {
                                                     />
                                             }
                                             <View style={{ marginLeft: 20, justifyContent: "center", }}>
-                                                <Text style={{ fontSize: 20 }}>{key.stylistId.fullname}</Text>
+                                                <Text style={{ fontSize: 20 }}>{key.stylistId ? key.stylistId.fullname : "N/a"}</Text>
                                                 <Text style={{ fontSize: 15 }}>{key.shopId.businessName}</Text>
                                             </View>
                                         </View>

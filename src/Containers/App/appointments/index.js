@@ -53,7 +53,9 @@ class Appointments extends Component {
                 const pending = result.pending.sort((a, b) => a.bookingDateTime - b.bookingDateTime)
                 const approved = result.approved.sort((a, b) => a.bookingDateTime - b.bookingDateTime)
                 const cancled = result.cancled.sort((a, b) => a.bookingDateTime - b.bookingDateTime)
-                
+
+
+
                 // const pending = result.pending.sort((a, b) => b.bookingDateTime - a.bookingDateTime)
                 // const approved = result.approved.sort((a, b) => b.bookingDateTime - a.bookingDateTime)
                 // const cancled = result.cancled.sort((a, b) => b.bookingDateTime - a.bookingDateTime)

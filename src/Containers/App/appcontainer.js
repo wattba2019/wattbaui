@@ -20,6 +20,7 @@ class AppContainer extends Component {
     }
 
     UNSAFE_componentWillMount() {
+        // alert("work")
         if (this.props.rout) {
             this.setState({
                 rout: this.props.rout
