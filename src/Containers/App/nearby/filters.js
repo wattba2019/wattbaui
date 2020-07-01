@@ -35,7 +35,6 @@ class Filters extends Component {
         this.getAllServices()
     }
 
-
     getLocationNameGeoCoader() {
         // Initialize the module (needs to be done only once)
         Geocoder.init("AIzaSyBQHKZTwhPJX_9IevM5jKC8kmz0NzqAaBk"); // use a valid API key
@@ -60,7 +59,6 @@ class Filters extends Component {
         // Works as well :
         // ------------
     }
-
 
     getAllServices() {
         let urlM = `${this.props.bseUrl}/getallshops/getAllService`
@@ -91,13 +89,11 @@ class Filters extends Component {
             })
     }
 
-
     selectService(key, index) {
         this.setState({
             selectedService: key
         })
     }
-
 
     saveSearch() {
         const { rangeLow, sortedby, selectedService } = this.state
@@ -113,7 +109,7 @@ class Filters extends Component {
             }
             var options = {
                 method: 'POST',
-                url: `${this.props.bseUrl}/getallshops/`,
+                url: `${this.props.bseUrl}/getallshops/0/1000`,
                 headers:
                 {
                     'cache-control': 'no-cache',
@@ -133,6 +129,7 @@ class Filters extends Component {
                             nearbyShopIDs.push(element)
                         }
                         this.getNearbyShopsServices(nearbyShopIDs, shops)
+                        // this.setState({ isloader: false })
                     }
                     else {
                         Alert.alert("There is no shops in " + cloneLocation.km + " kilometre")
@@ -174,7 +171,7 @@ class Filters extends Component {
         }
     }
 
-    getNearbyShopsServices(nearbyShopIDs, shops, ) {
+    getNearbyShopsServices(nearbyShopIDs, shops,) {
         const { selectedService, sortedby } = this.state
         let idsCloneData = { shopid: nearbyShopIDs }
         var options = {
@@ -190,6 +187,7 @@ class Filters extends Component {
         axios(options)
             .then(result => {
                 let allShopsServices = result.data.data
+
                 if (sortedby === "highToLow") {
                     allShopsServices.sort((a, b) => parseFloat(b.price) - parseFloat(a.price));
                 }
@@ -244,7 +242,6 @@ class Filters extends Component {
                 })
             })
     }
-
 
     render() {
         const { rangeLow, allServicesNames, selectedService, isloader, err } = this.state
@@ -456,7 +453,28 @@ class Filters extends Component {
                             (allServicesNames.length != 0) ? (
                                 allServicesNames.map((key, index) => {
                                     return (
-                                        <TouchableOpacity key={index} style={{
+                                        (key === selectedService) ? (
+                                            <TouchableOpacity key={index} style={{
+                                                justifyContent: "center",
+                                                alignItems: "center",
+                                                width: 150,
+                                                height: 35,
+                                                margin: 5,
+                                                borderRadius: 25,
+                                                borderWidth: 0.5,
+                                                borderColor: "grey",
+                                                backgroundColor: selectedService === key ? "#FD6958" : null,
+                                            }}
+                                                onPress={() => { this.setState({ selectedService: "" }) }}
+
+                                            >
+                                                <Text style={{
+                                                    color: "black", fontSize: 12,
+                                                    marginHorizontal: 25, marginVertical: 5,
+                                                    color: selectedService === key ? "#ffff" : null,
+                                                }}>{key}</Text>
+                                            </TouchableOpacity>
+                                        ) : <TouchableOpacity key={index} style={{
                                             justifyContent: "center",
                                             alignItems: "center",
                                             width: 150,
@@ -470,12 +488,13 @@ class Filters extends Component {
                                             onPress={() => { this.selectService(key, index) }}
 
                                         >
-                                            <Text style={{
-                                                color: "black", fontSize: 12,
-                                                marginHorizontal: 25, marginVertical: 5,
-                                                color: selectedService === key ? "#ffff" : null,
-                                            }}>{key}</Text>
-                                        </TouchableOpacity>
+                                                <Text style={{
+                                                    color: "black", fontSize: 12,
+                                                    marginHorizontal: 25, marginVertical: 5,
+                                                    color: selectedService === key ? "#ffff" : null,
+                                                }}>{key}</Text>
+                                            </TouchableOpacity>
+
 
                                     )
                                 })
@@ -549,7 +568,7 @@ let mapStateToProps = state => {
 };
 function mapDispatchToProps(dispatch) {
     return ({
-        setNearByShops: (shops, ) => {
+        setNearByShops: (shops,) => {
             dispatch(setNearByShops(shops));
         },
     })

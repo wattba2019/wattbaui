@@ -464,6 +464,7 @@ class shop extends Component {
                             // backgroundColor: "red"
                         }}>
                             <TouchableOpacity
+                                style={{ height: 50, }}
                                 onPress={() => Linking.openURL("https://" + shop.websiteUrl)}
                             >
                                 <Image
@@ -473,6 +474,7 @@ class shop extends Component {
                                 />
                             </TouchableOpacity>
                             <TouchableOpacity
+                                style={{ height: 50, }}
                                 onPress={() => handleGetDirections(shop, currentLocation)}
                             >
                                 <Image
@@ -481,7 +483,9 @@ class shop extends Component {
                                     style={{ width: 45, height: 45 }}
                                 />
                             </TouchableOpacity>
-                            <TouchableOpacity>
+                            <TouchableOpacity
+                                style={{ height: 50, }}
+                            >
                                 <Image
                                     resizeMode="contain"
                                     source={require("../../../assets/Group55288.png")}
@@ -532,7 +536,7 @@ class shop extends Component {
                                                 <View style={{
                                                     height: 75,
                                                     width: 75,
-                                                    // borderRadius: 50,
+                                                    borderRadius: 50,
                                                     justifyContent: "center",
                                                     alignItems: "center",
                                                     backgroundColor: "white",
@@ -544,13 +548,13 @@ class shop extends Component {
                                                         <Image source={{ uri: key.coverImage }} resizeMode="cover"
                                                             style={{
                                                                 width: "90%", height: "90%",
-                                                                // borderRadius: 100
+                                                                borderRadius: 50
                                                             }}
                                                         />
                                                     ) : <Image source={require('../../../assets/nophoto.jpg')} resizeMode="cover"
                                                         style={{
                                                             width: "90%", height: "90%",
-                                                            // borderRadius: 100
+                                                            borderRadius: 50
                                                         }}
                                                         />}
                                                 </View>

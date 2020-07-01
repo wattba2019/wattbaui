@@ -184,7 +184,7 @@ class BookAppointment extends Component {
     }
 
     Checkout() {
-        let { chosenItems, extraServicesSelected, gendre, totalCost, pack } = this.props
+        let { chosenItems, extraServicesSelected, gendre, totalCost, pack, renderSelectedService } = this.props
         let { date, selectedSlotTime, selectedBarber, selectedBarberBolean, stylists } = this.state
 
         // console.log(selectedBarber, stylists, stylists.length, "selectedBarber")
@@ -220,8 +220,8 @@ class BookAppointment extends Component {
                 bookerId: this.props.bookerId,
                 shopId: this.props.shopId,
                 package: pack,
+                renderSelectedService: renderSelectedService
             }
-
             if (pack === true) {
                 cloneObj.package = true
             }

@@ -75,10 +75,12 @@ class ChooseService extends Component {
     next = () => {
         let { value3, totalCost, shopServices } = this.state
         let allItems = []
+        let renderSelectedService = []
         let extraServicesSelected = []
         for (let index = 0; index < shopServices.length; index++) {
             const extraServices = shopServices[index].extraServices;
             const _id = shopServices[index]._id;
+            const service = shopServices[index];
             const selectedBolean = shopServices[index].selected;
             if (selectedBolean && selectedBolean === true) {
                 for (let j = 0; j < extraServices.length; j++) {
@@ -88,11 +90,13 @@ class ChooseService extends Component {
                     }
                 }
                 allItems.push(_id)
+                renderSelectedService.push(service)
             }
         }
 
         if (allItems.length != 0) {
-            Actions.Bookappointment({ chosenItems: allItems, extraServicesSelected: extraServicesSelected, gendre: value3, totalCost: totalCost, pack: false })
+            // console.log(renderSelectedService, "renderSelectedService")
+            Actions.Bookappointment({ chosenItems: allItems, extraServicesSelected: extraServicesSelected, gendre: value3, totalCost: totalCost, pack: false, renderSelectedService })
         }
         else {
             Alert.alert("Please choose service")

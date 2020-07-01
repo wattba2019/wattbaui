@@ -131,7 +131,7 @@ export function getNearByShopsUnder5Km(currentLocation) {
                 .catch(err => {
                     let error = JSON.parse(JSON.stringify(err))
                     console.log(error, 'ERRROR', err)
-                    alert(error)
+                    // alert(error)
 
                 })
 

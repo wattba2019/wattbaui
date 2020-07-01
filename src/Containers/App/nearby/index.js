@@ -147,22 +147,23 @@ class Nearby extends Component {
                                                             {(key.coverImage != null) ? (
                                                                 <Image style={{
                                                                     width: "100%", height: "100%",
-                                                                    borderTopLeftRadius: 6,
-                                                                    borderTopRightRadius: 6,
+                                                                    // borderTopLeftRadius: 6, borderTopRightRadius: 6,
                                                                 }}
                                                                     resizeMode="cover"
                                                                     source={{ uri: key.coverImage }}
                                                                 />
                                                             ) : <Image source={require('../../../../assets/nophoto.jpg')} resizeMode="cover"
-                                                                style={{ width: "100%", height: "100%", borderTopLeftRadius: 6, borderTopRightRadius: 6, }}
+                                                                style={{
+                                                                    width: "100%", height: "100%",
+                                                                    // borderTopLeftRadius: 6, borderTopRightRadius: 6,
+                                                                }}
                                                                 />
                                                             }
                                                         </View>
                                                         <View style={{
                                                             top: -10,
                                                             height: 50,
-                                                            borderBottomRightRadius: 6,
-                                                            borderBottomLeftRadius: 6,
+                                                            // borderBottomRightRadius: 6, borderBottomLeftRadius: 6,
                                                             padding: "2%",
                                                             borderColor: "#E8E6E7",
                                                             borderWidth: 1,

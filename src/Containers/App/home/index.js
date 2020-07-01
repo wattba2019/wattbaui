@@ -678,8 +678,6 @@ class Home extends Component {
                                         <View style={{
                                             flex: 1,
                                             height: 170,
-                                            // backgroundColor: "red",
-                                            // height: "100%",
                                             justifyContent: 'center',
                                             alignItems: "center",
                                         }}>
@@ -723,8 +721,7 @@ class Home extends Component {
                                                                             {(key.coverImage != null) ? (
                                                                                 <Image style={{
                                                                                     width: "100%", height: "100%",
-                                                                                    borderTopLeftRadius: 6,
-                                                                                    borderTopRightRadius: 6,
+                                                                                    // borderTopLeftRadius: 6, borderTopRightRadius: 6,
                                                                                 }}
                                                                                     resizeMode="cover"
                                                                                     source={{ uri: key.coverImage }}
@@ -732,7 +729,7 @@ class Home extends Component {
                                                                             ) : <Image source={require('../../../../assets/nophoto.jpg')} resizeMode="cover"
                                                                                 style={{
                                                                                     width: "100%", height: "100%",
-                                                                                    borderTopLeftRadius: 6, borderTopRightRadius: 6,
+                                                                                    // borderTopLeftRadius: 6, borderTopRightRadius: 6,
                                                                                 }}
                                                                                 />
                                                                             }
@@ -740,8 +737,7 @@ class Home extends Component {
                                                                         <View style={{
                                                                             top: -10,
                                                                             height: 50,
-                                                                            borderBottomRightRadius: 6,
-                                                                            borderBottomLeftRadius: 6,
+                                                                            // borderBottomRightRadius: 6, borderBottomLeftRadius: 6,
                                                                             padding: "2%",
                                                                             borderColor: "#E8E6E7",
                                                                             borderWidth: 1,
@@ -786,7 +782,6 @@ class Home extends Component {
                                     (isloader === true) ? (
                                         <View style={{
                                             flex: 1,
-                                            // backgroundColor: "red",
                                             height: 170,
                                             justifyContent: 'center',
                                             alignItems: "center",
@@ -833,8 +828,7 @@ class Home extends Component {
                                                                             {(key.coverImage != null) ? (
                                                                                 <Image style={{
                                                                                     width: "100%", height: "100%",
-                                                                                    borderTopLeftRadius: 6,
-                                                                                    borderTopRightRadius: 6,
+                                                                                    // borderTopLeftRadius: 6, borderTopRightRadius: 6,
                                                                                 }}
                                                                                     resizeMode="cover"
                                                                                     source={{ uri: key.coverImage }}
@@ -842,7 +836,7 @@ class Home extends Component {
                                                                             ) : <Image source={require('../../../../assets/nophoto.jpg')} resizeMode="cover"
                                                                                 style={{
                                                                                     width: "100%", height: "100%",
-                                                                                    borderTopLeftRadius: 6, borderTopRightRadius: 6,
+                                                                                    // borderTopLeftRadius: 6, borderTopRightRadius: 6,
                                                                                 }}
                                                                                 />
                                                                             }
@@ -850,8 +844,7 @@ class Home extends Component {
                                                                         <View style={{
                                                                             top: -10,
                                                                             height: 50,
-                                                                            borderBottomRightRadius: 6,
-                                                                            borderBottomLeftRadius: 6,
+                                                                            // borderBottomRightRadius: 6, borderBottomLeftRadius: 6,
                                                                             padding: "2%",
                                                                             borderColor: "#E8E6E7",
                                                                             borderWidth: 1,
@@ -906,7 +899,6 @@ class Home extends Component {
                                     (isloader === true) ? (
                                         <View style={{
                                             flex: 1,
-                                            // backgroundColor: "red",
                                             height: 170,
                                             justifyContent: 'center',
                                             alignItems: "center",
@@ -951,8 +943,7 @@ class Home extends Component {
                                                                             {(key.packageImage != null) ? (
                                                                                 <Image style={{
                                                                                     width: "100%", height: "100%",
-                                                                                    borderTopLeftRadius: 6,
-                                                                                    borderTopRightRadius: 6,
+                                                                                    // borderTopLeftRadius: 6, borderTopRightRadius: 6,
                                                                                 }}
                                                                                     resizeMode="cover"
                                                                                     source={{ uri: key.packageImage }}
@@ -960,7 +951,7 @@ class Home extends Component {
                                                                             ) : <Image source={require('../../../../assets/nophoto.jpg')} resizeMode="cover"
                                                                                 style={{
                                                                                     width: "100%", height: "100%",
-                                                                                    borderTopLeftRadius: 6, borderTopRightRadius: 6,
+                                                                                    // borderTopLeftRadius: 6, borderTopRightRadius: 6,
                                                                                 }}
                                                                                 />
                                                                             }
@@ -969,8 +960,7 @@ class Home extends Component {
                                                                         <View style={{
                                                                             top: -10,
                                                                             height: 50,
-                                                                            borderBottomRightRadius: 6,
-                                                                            borderBottomLeftRadius: 6,
+                                                                            // borderBottomRightRadius: 6, borderBottomLeftRadius: 6,
                                                                             padding: "2%",
                                                                             borderColor: "#E8E6E7",
                                                                             borderWidth: 1,
@@ -1039,7 +1029,7 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-end',
         padding: 10,
         backgroundColor: 'white',
-        borderRadius: 6,
+        // borderRadius: 6,
         overflow: 'hidden'
     },
     card_text: {

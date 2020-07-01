@@ -161,7 +161,7 @@ class Checkout extends Component {
     render() {
         const { Message, loader } = this.state
         const { booking, shop, userProfile } = this.props
-        console.log(shop, "shop")
+        console.log(booking.renderSelectedService, "shopsssssssssssssssssss")
         return (
             <View style={{ flex: 1, backgroundColor: "#fff" }}>
                 <StatusBar backgroundColor="#FD6958" barStyle="dark-content" />
@@ -232,10 +232,60 @@ class Checkout extends Component {
                                     <View>
                                         <Text style={{ alignItems: "center", fontWeight: "bold", fontSize: 18 }}>Booking summary</Text>
                                     </View>
-                                    <View style={{ flexDirection: "row", justifyContent: "space-between", marginTop: 15 }}>
+                                    {/* <View style={{ flexDirection: "row", justifyContent: "space-between", marginTop: 15 }}>
                                         <Text style={{ alignItems: "center", fontWeight: "bold", fontSize: 16 }}>Cost</Text>
                                         <Text style={{ alignItems: "center", fontWeight: "bold", fontSize: 16 }}>GBP {booking.cost}</Text>
-                                    </View>
+                                    </View> */}
+
+                                    {
+                                        booking.renderSelectedService && booking.renderSelectedService.map((key, index) => {
+                                            return (
+                                                <View key={index} style={{ marginTop: 10 }}>
+
+                                                    <View style={{ flexDirection: "row", justifyContent: "space-between", marginTop: 5, }}>
+                                                        <Text style={{ alignItems: "center", fontWeight: "bold", fontSize: 12 }}>{key.serviceName}</Text>
+                                                        <Text style={{ alignItems: "center", fontWeight: "bold", fontSize: 12 }}>{key.price}</Text>
+                                                    </View>
+
+                                                    {
+                                                        key.extraServices.map((item, count) => {
+                                                            return (
+                                                                (item.selected) ? (
+                                                                    <View key={count}>
+                                                                        <View style={{ flexDirection: "row", justifyContent: "space-between", marginTop: 5, }}>
+                                                                            <Text style={{ marginLeft: "2%", alignItems: "center", fontWeight: "bold", fontSize: 8, textDecorationLine: "underline", color: "grey" }}>Extra Services</Text>
+                                                                        </View>
+                                                                        <View style={{
+                                                                            flexDirection: "row",
+                                                                            justifyContent: "space-between",
+                                                                            marginTop: 5,
+                                                                            borderBottomColor: "#E3E5E6",
+                                                                            borderBottomWidth: 0.2,
+                                                                            height: 30
+                                                                        }}>
+                                                                            <Text style={{ marginLeft: "2%", alignItems: "center", fontWeight: "bold", fontSize: 12 }}>{item.serviceName}</Text>
+                                                                            <Text style={{ alignItems: "center", fontWeight: "bold", fontSize: 12 }}>{item.price}</Text>
+                                                                        </View>
+                                                                    </View>
+                                                                ) : null
+
+
+                                                            )
+                                                        })
+                                                    }
+
+
+                                                </View>
+                                                //     )
+                                                // })
+
+
+
+                                            )
+                                        })
+                                    }
+
+
 
                                     {/* Promotion Discounts */}
                                     {/* <View style={{ flexDirection: "row", marginBottom: 20, justifyContent: "space-between", marginTop: 15 }}>
@@ -283,17 +333,17 @@ class Checkout extends Component {
                                     </View> */}
 
                                     <View style={{ flexDirection: "row", justifyContent: "space-between", marginTop: 15, marginBottom: 15 }}>
-                                        <Text style={{ alignItems: "center", fontWeight: "bold", fontSize: 20 }}>Total</Text>
+                                        <Text style={{ alignItems: "center", fontWeight: "bold", fontSize: 16 }}>Total</Text>
                                         <Text style={{ alignItems: "center", fontWeight: "bold", fontSize: 16 }}>GBP {booking.cost}</Text>
                                     </View>
                                 </View>
 
                                 <View style={{ width: "100%", }}>
-                                    <View style={{ width: "90%", marginHorizontal: "5%" }}>
-                                        <Text style={{ alignItems: "center", fontWeight: "bold", fontSize: 18 }}>BarberShop</Text>
+                                    <View style={{ width: "90%", marginHorizontal: "5%", marginTop: 10 }}>
+                                        <Text style={{ alignItems: "center", fontWeight: "bold", fontSize: 18, }}>Shop Details</Text>
 
                                         <View style={{ flexDirection: "row", justifyContent: "space-between", marginTop: 10 }}>
-                                            <Text style={{ alignItems: "center", fontSize: 18 }}>{shop.businessName}</Text>
+                                            <Text style={{ alignItems: "center", fontSize: 16 }}>{shop.businessName}</Text>
                                         </View>
 
                                         <View style={{ flexDirection: "row", height: 70, justifyContent: "space-between", marginTop: 10, borderColor: "#D4D4E0", borderWidth: 0.5, borderRadius: 5, }}>
@@ -614,7 +664,7 @@ class Checkout extends Component {
 
 
 
-            </View>
+            </View >
         );
     }
 }
