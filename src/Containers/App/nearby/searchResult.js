@@ -27,7 +27,6 @@ class SearchResults extends Component {
 
     render() {
         const { shops, currentLocation, headerTitle } = this.props
-        console.log(headerTitle, "SHOPS")
         return (
             <View style={{
                 flex: 1,
@@ -52,7 +51,7 @@ class SearchResults extends Component {
                 <View style={{ flex: 8, }}>
                     <ScrollView>
                         {
-                            (shops && shops != 0) ? (
+                            (shops && shops.length != 0) ? (
                                 shops.map((key, index) => {
                                     return (
                                         <TouchableOpacity key={index}

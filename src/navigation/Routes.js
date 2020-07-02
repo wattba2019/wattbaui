@@ -28,6 +28,7 @@ import AppointmentDetails from '../Containers/App/appointments/appointmentsDetai
 import Profile from '../Containers/App/profile/index'
 import Googlemapfullview from '../Components/googlemapfullview'
 import VerifyCodeEmail from '../Containers/App/profile/6digitCode'
+import TermsAndCondition from '../Containers/App/profile/termAndConditions'
 import ServiceListing from '../Components/servicsListing'
 import MypaymentCard from '../Components/paymentcard/mypaymentsCard'
 import AddPaymenCard from '../Components/paymentcard/addpaymentcard'
@@ -74,6 +75,7 @@ class Route extends Component {
           <Scene key='MypaymentCard' component={MypaymentCard} hideNavBar={true} />
           <Scene key='AddPaymenCard' component={AddPaymenCard} hideNavBar={true} />
           <Scene key='CardVerification' component={CardVerification} hideNavBar={true} />
+          <Scene key='TermsAndCondition' component={TermsAndCondition} hideNavBar={true} />
         </Scene>
       </Router>
     )

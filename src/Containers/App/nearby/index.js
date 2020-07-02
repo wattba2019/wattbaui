@@ -42,8 +42,6 @@ class Nearby extends Component {
         //         filterShops = shops;
         //     }
         // }
-
-        console.log(nearByShops, shopLocationMarkers, "nearByShops")
         return (
             <View style={{
                 flex: 1,

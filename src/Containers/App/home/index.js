@@ -27,6 +27,16 @@ class Home extends Component {
             offsetBestBarber: 0,
             offsetNearByShops: 0,
             offsetPackages: 0,
+
+
+            Haircut: [],
+            Coloring: [],
+            Styling: [],
+            Hairdryer: [],
+            Hairspa: [],
+            Shampoo: [],
+            Shaving: [],
+            More: [],
         };
     }
 
@@ -48,7 +58,7 @@ class Home extends Component {
             let cloneLocation = {
                 lat: currentLocation.coords.latitude,
                 long: currentLocation.coords.longitude,
-                km: 15,
+                km: 5,
             }
             var options = {
                 method: 'POST',
@@ -116,6 +126,7 @@ class Home extends Component {
             })
 
     }
+
     getPackages() {
         let { offsetPackages, } = this.state
         this.setState({ isloader: true })
@@ -149,6 +160,7 @@ class Home extends Component {
             })
 
     }
+
     // getHairStyles() {
     //     var options = {
     //         method: 'GET',
@@ -177,6 +189,7 @@ class Home extends Component {
     //             })
     //         })
     // }
+
     getShopWithId(_id) {
         console.log(_id, "USERID")
         var options = {
@@ -204,6 +217,7 @@ class Home extends Component {
             })
 
     }
+
     getMultipleShopWithId(shopid) {
         if (shopid.length) {
             cloneData = {
@@ -239,6 +253,7 @@ class Home extends Component {
         }
 
     }
+
     getAllServices() {
         let urlM = `${this.props.bseUrl}/getallshops/getAllService`
         axios({

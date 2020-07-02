@@ -371,6 +371,11 @@ class AppointmentDetails extends Component {
                                             <View style={{ flexDirection: "row", }}>
                                                 <Text style={{ fontWeight: "bold" }}>{moment(service.bookingHour, ["h:mm A"]).format("h:mm A")}</Text>
                                                 {
+                                                    (service.bookingStatus === "Complete") ? (
+                                                        <Text style={{ fontWeight: "bold", marginLeft: 10, color: "green" }}>{service.bookingStatus}</Text>
+                                                    ) : null
+                                                }
+                                                {
                                                     (service.bookingStatus === "Approved") ? (
                                                         <Text style={{ fontWeight: "bold", marginLeft: 10, color: "green" }}>{service.bookingStatus}</Text>
                                                     ) : null

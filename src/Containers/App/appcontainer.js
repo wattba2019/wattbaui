@@ -20,7 +20,6 @@ class AppContainer extends Component {
     }
 
     UNSAFE_componentWillMount() {
-        // alert("work")
         if (this.props.rout) {
             this.setState({
                 rout: this.props.rout
@@ -35,8 +34,7 @@ class AppContainer extends Component {
     }
 
     getShopWithPlaceName(name, location) {
-        console.log(name, location, "PlaceName")
-        // let shops;
+        // console.log(name, location, "PlaceName")
         var options = {
             method: 'GET',
             url: `${this.props.bseUrl}/getallshops/getShopWithPlaceName/${name}`,
@@ -45,7 +43,6 @@ class AppContainer extends Component {
                 'cache-control': 'no-cache',
                 "Allow-Cross-Origin": '*',
             },
-
         }
         axios(options)
             .then(result => {
@@ -55,7 +52,7 @@ class AppContainer extends Component {
                     this.props.setNearByShops(shopwithplacename)
                 }
                 else {
-                    Alert.alert("There is no shops")
+                    Alert.alert("No salons/stylist found within 3 miles of location")
                     this.props.setNearByShops([])
 
                 }

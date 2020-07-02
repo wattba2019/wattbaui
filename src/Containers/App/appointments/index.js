@@ -50,20 +50,26 @@ class Appointments extends Component {
             .then((data) => {
                 let result = data.data
                 console.log(result, "FETCHING_MY_APPOINTMENTS")
-                const pending = result.pending.sort((a, b) => a.bookingDateTime - b.bookingDateTime)
-                const approved = result.approved.sort((a, b) => a.bookingDateTime - b.bookingDateTime)
+                // const pending = result.pending.sort((a, b) => a.bookingDateTime - b.bookingDateTime)
+                // const approved = result.approved.sort((a, b) => a.bookingDateTime - b.bookingDateTime)
+                const complete = result.complete.sort((a, b) => a.bookingDateTime - b.bookingDateTime)
                 const cancled = result.cancled.sort((a, b) => a.bookingDateTime - b.bookingDateTime)
 
-
-
-                // const pending = result.pending.sort((a, b) => b.bookingDateTime - a.bookingDateTime)
-                // const approved = result.approved.sort((a, b) => b.bookingDateTime - a.bookingDateTime)
-                // const cancled = result.cancled.sort((a, b) => b.bookingDateTime - a.bookingDateTime)
+                let upcommingAndApprovedBookings = []
+                for (let index = 0; index < result.pending.length; index++) {
+                    const element = result.pending[index];
+                    upcommingAndApprovedBookings.push(element)
+                }
+                for (let index = 0; index < result.approved.length; index++) {
+                    const element = result.approved[index];
+                    upcommingAndApprovedBookings.push(element)
+                }
+                let sortedupcommingAndApprovedBookings = upcommingAndApprovedBookings.sort((a, b) => a.bookingDateTime - b.bookingDateTime)
 
                 this.setState({
                     loader: !this.state.loader,
-                    upcoming: pending,
-                    approved: approved,
+                    upcoming: sortedupcommingAndApprovedBookings,
+                    approved: complete,
                     declined: cancled,
                 })
             }).catch((err) => {
@@ -176,7 +182,7 @@ class Appointments extends Component {
                                             <TabHeading
                                                 style={{ flexDirection: "column", backgroundColor: "white" }}
                                             >
-                                                <Text style={{ color: activeColor === "Approved" ? "#FD6958" : "black", fontWeight: "bold" }}>Approved</Text>
+                                                <Text style={{ color: activeColor === "Approved" ? "#FD6958" : "black", fontWeight: "bold" }}>Past bookings</Text>
                                             </TabHeading>
                                         }
                                     >

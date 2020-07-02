@@ -32,6 +32,7 @@ class Profile extends Component {
         // this.getMultipleShopWithId(this.props.favShops)
         this.getFavShops()
     }
+
     getFavShops() {
         let urlm = `${this.props.bseUrl}/favorites/${this.props.userProfile._id}`
         axios({
@@ -103,7 +104,6 @@ class Profile extends Component {
             // Error retrieving data
         }
     };
-
 
     render() {
         let { changePassword } = this.state
@@ -242,7 +242,11 @@ class Profile extends Component {
 
                         <Text style={{ alignItems: "center", color: "#131313", fontSize: 18, marginLeft: "7%", marginTop: 20 }}>Support</Text>
 
-                        <TouchableOpacity style={{ width: "90%", marginHorizontal: "5%" }}>
+                        <TouchableOpacity style={{ width: "90%", marginHorizontal: "5%" }}
+                            onPress={() =>
+                                // this.logout()
+                                 Actions.TermsAndCondition()
+                            }>
                             <View style={{ flexDirection: "row", height: 70, alignItems: "center", borderBottomColor: "#F0F2F6", borderBottomWidth: 1, padding: 10 }}>
                                 <Image
                                     resizeMode="contain"
