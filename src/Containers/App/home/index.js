@@ -528,9 +528,10 @@ class Home extends Component {
                         marginHorizontal: "2.5%",
                         justifyContent: "center",
                         alignItems: "center",
+                        // backgroundColor:"red"
                     }}>
                         <View style={{ width: "100%", marginTop: 20 }}>
-                            <Text style={{ fontSize: 16, fontWeight: "bold", textAlign: "left" }}>{fullName}</Text>
+                            <Text style={{ fontSize: fullName.length < 12 ? 16 : 12, fontWeight: "bold", textAlign: "left" }}>{fullName}</Text>
                         </View>
 
 

@@ -70,10 +70,16 @@ class MapDirection extends React.Component {
         this.props.setUserCurrentLocation(currentLocation, true)
     }
 
+    componentWillUnmount() {
+        this.setState({
+            markers: []
+        })
+    }
+
 
     render() {
         let { coords, markers, draggable, tracksViewChanges } = this.state
-        // console.log(coords, markers, draggable, "INSIDERENDER")
+        console.log(coords, markers, draggable, "INSIDERENDER")
         return (
             <View>
                 {

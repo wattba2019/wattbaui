@@ -13,6 +13,7 @@ import Allowaccesslocation from '../Containers/Authentication/allowaccesslocatio
 import CountryLists from '../Containers/Authentication/countryLists'
 import AppContainer from '../Containers/App/appcontainer'
 import Filters from '../Containers/App/nearby/filters'
+import FilteMap from '../Containers/App/nearby/filterMap'
 import Shop from '../Components/shop/index'
 import Bookappointment from '../Components/shop/bookappointment'
 import SearchResults from '../Containers/App/nearby/searchResult'
@@ -58,6 +59,7 @@ class Route extends Component {
           <Scene key='AppContainer' component={AppContainer} hideNavBar={true} />
           <Scene key='Shop' component={Shop} hideNavBar={true} />
           <Scene key='Filters' component={Filters} hideNavBar={true} />
+          <Scene key='FilteMap' component={FilteMap} hideNavBar={true} />
           <Scene key='SearchResults' component={SearchResults} hideNavBar={true} />
           <Scene key='FavouritesShops' component={FavouritesShops} hideNavBar={true} />
           <Scene key='ServiceDetaild' component={ServiceDetaild} hideNavBar={true} />

@@ -10,6 +10,7 @@ import { connect } from "react-redux";
 // import ShopsCards from '../../../Components/shopscards';
 import AppointmentCard from '../../../Components/appointmentCard';
 import axios from 'axios';
+import moment from 'moment';
 
 class Appointments extends Component {
     constructor(props) {
@@ -52,24 +53,47 @@ class Appointments extends Component {
                 console.log(result, "FETCHING_MY_APPOINTMENTS")
                 // const pending = result.pending.sort((a, b) => a.bookingDateTime - b.bookingDateTime)
                 // const approved = result.approved.sort((a, b) => a.bookingDateTime - b.bookingDateTime)
-                const complete = result.complete.sort((a, b) => a.bookingDateTime - b.bookingDateTime)
+                // const complete = result.complete.sort((a, b) => a.bookingDateTime - b.bookingDateTime)
                 const cancled = result.cancled.sort((a, b) => a.bookingDateTime - b.bookingDateTime)
 
-                let upcommingAndApprovedBookings = []
-                for (let index = 0; index < result.pending.length; index++) {
-                    const element = result.pending[index];
-                    upcommingAndApprovedBookings.push(element)
+                // let upcommingAndApprovedBookings = []
+                // for (let index = 0; index < result.pending.length; index++) {
+                //     const element = result.pending[index];
+                //     upcommingAndApprovedBookings.push(element)
+                // }
+                // for (let index = 0; index < result.approved.length; index++) {
+                //     const element = result.approved[index];
+                //     upcommingAndApprovedBookings.push(element)
+                // }
+                // let sortedupcommingAndApprovedBookings = upcommingAndApprovedBookings.sort((a, b) => a.bookingDateTime - b.bookingDateTime)
+
+                // var dateMiliSecond = moment(new Date()).format("x");
+                // console.log(dateMiliSecond, "past")
+
+
+                let upcomminBookings = []
+                let pastBookings = []
+                for (let i = 0; i < result.result.length; i++) {
+                    const element = result.result[i];
+                    if (element.bookingStatus != "Cancled") {
+                        let bookingDate = new Date(element.bookingDateTime)
+                        let hour = element.bookingHour
+                        bookingDate.setHours(hour)
+                        let dateAndTIme = bookingDate.getTime()
+
+                        if (dateAndTIme > new Date().getTime()) {
+                            upcomminBookings.push(element)
+                        }
+                        else {
+                            pastBookings.push(element)
+                        }
+                    }
                 }
-                for (let index = 0; index < result.approved.length; index++) {
-                    const element = result.approved[index];
-                    upcommingAndApprovedBookings.push(element)
-                }
-                let sortedupcommingAndApprovedBookings = upcommingAndApprovedBookings.sort((a, b) => a.bookingDateTime - b.bookingDateTime)
 
                 this.setState({
                     loader: !this.state.loader,
-                    upcoming: sortedupcommingAndApprovedBookings,
-                    approved: complete,
+                    upcoming: upcomminBookings,
+                    approved: pastBookings,
                     declined: cancled,
                 })
             }).catch((err) => {

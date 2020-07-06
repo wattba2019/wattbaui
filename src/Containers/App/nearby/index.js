@@ -56,7 +56,7 @@ class Nearby extends Component {
                     alignItems: "center",
                 }}>
                     <View style={{ width: "100%", flexDirection: "row", justifyContent: "space-between", marginTop: 20, }}>
-                        <Text style={{ fontSize: 16, fontWeight: "bold", textAlign: "left" }}>{fullName}</Text>
+                        <Text style={{ fontSize: fullName.length < 12 ? 16 : 12, fontWeight: "bold", textAlign: "left" }}>{fullName}</Text>
                         <TouchableOpacity style={{ width: 50, alignItems: "flex-end", zIndex: 1, }} onPress={() => Actions.Filters()}>
                             <IconFontAwesome name="filter" size={25} style={{ color: "grey" }} />
                         </TouchableOpacity>

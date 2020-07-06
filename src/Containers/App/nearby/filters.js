@@ -331,11 +331,14 @@ class Filters extends Component {
                         flexDirection: "row",
                         backgroundColor: "#E8E6E7"
                     }}
-                        onPress={() => { Actions.Googlemapfullview({ draggable: true }) }}
+                        // onPress={() => { Actions.Googlemapfullview({ draggable: true }) }}
+                        onPress={() => { Actions.FilteMap() }}
                     >
                         <FontAwesome name="location-arrow" style={{ marginLeft: "5%", color: '#909090', fontWeight: 'bold', fontSize: 20 }} />
                         <Text style={{ marginLeft: "5%", color: "black", fontWeight: "bold", fontSize: 14 }}>Current location </Text>
-                        <Text style={{ color: "#8E8E93", fontWeight: "bold", fontSize: 14 }}>(Select Location on map)</Text>
+                        {
+                            this.props.searchLocationName != null ? <Text style={{ color: "#8E8E93", fontWeight: "bold", fontSize: 14 }}>({this.props.searchLocationName})</Text> : null
+                        }
                     </TouchableOpacity>
 
                     {/* gender */}
@@ -563,7 +566,8 @@ class Filters extends Component {
 let mapStateToProps = state => {
     return {
         bseUrl: state.root.bseUrl,
-        currentLocation: state.root.currentLocation,
+        currentLocation: state.root.searchLocation,
+        searchLocationName: state.root.searchLocationName,
     };
 };
 function mapDispatchToProps(dispatch) {

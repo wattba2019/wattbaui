@@ -1,10 +1,12 @@
 const INITIAL_STATE = {
   //API's URL
   bseUrl: "https://fathomless-citadel-43321.herokuapp.com",
-  // bseUrl: "http://192.168.43.206:3002",
+  // bseUrl: "http://192.168.0.110:3002",
   //user details
   userProfile: {},
   currentLocation: null,
+  searchLocation: null,
+  searchLocationName: null,
   //shop details
   shopServices: null,
   stylists: null,
@@ -30,6 +32,16 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         currentLocation: action.payload,
         // isLoader: !state.isLoader
+      };
+    case "USER_SEARCH_LOCATION_ACTION":
+      return {
+        ...state,
+        searchLocation: action.payload,
+      };
+    case "USER_SEARCH_LOCATION_NAME_ACTION":
+      return {
+        ...state,
+        searchLocationName: action.payload,
       };
     case "SET_SERVICES":
       return {

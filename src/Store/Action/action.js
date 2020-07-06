@@ -27,6 +27,14 @@ export function setUserCurrentLocation(location, bolean) {
     }
 }
 
+export function setSearchLocation(location, locationName) {
+    // console.log(location, "location_setUserCurrentLocation")
+    return dispatch => {
+        dispatch({ type: "USER_SEARCH_LOCATION_ACTION", payload: location })
+        dispatch({ type: "USER_SEARCH_LOCATION_NAME_ACTION", payload: locationName })
+    }
+}
+
 export function setShopServices(services) {
     return dispatch => {
         dispatch({ type: "SET_SERVICES", payload: services })
@@ -102,7 +110,7 @@ export function getNearByShopsUnder5Km(currentLocation) {
             }
             var options = {
                 method: 'POST',
-                url: `https://fathomless-citadel-43321.herokuapp.com/getallshops/`,
+                url: `https://fathomless-citadel-43321.herokuapp.com/getallshops/0/100`,
                 headers:
                 {
                     'cache-control': 'no-cache',

@@ -1,8 +1,11 @@
 
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, StatusBar, ScrollView, Picker, Image, SafeAreaView, ActivityIndicator, images, Dimensions, Share } from 'react-native';
+import {
+    View, Text, StyleSheet, TouchableOpacity,
+    // StatusBar, ScrollView, Picker, Image, SafeAreaView, ActivityIndicator, images, Dimensions, Share
+} from 'react-native';
 import { Actions } from 'react-native-router-flux';
-import { Container, Content, Card, CardItem, Thumbnail, Button, Icon, Item, Fab, Input } from 'native-base';
+// import { Container, Content, Card, CardItem, Thumbnail, Button, Icon, Item, Fab, Input } from 'native-base';
 import { connect } from "react-redux";
 import MapDirection from '../Components/maps'
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -55,26 +58,18 @@ class googlemapfullview extends Component {
                 </View>
 
                 <View style={{ flex: 8, backgroundColor: "red" }}>
-
                     <View style={{ flex: 1, flexDirection: "row", borderBottomWidth: 0.5, borderBottomColor: "#BEBCBC", marginTop: 0, backgroundColor: "yellow" }} >
                         <View
                             style={{
-                                // marginTop: 10,
-                                // marginBottom: 10,
                                 width: "100%",
-                                // marginHorizontal: "5%",
-                                // borderWidth: 1,
                                 borderColor: "#1E90FF",
                                 borderRadius: 0,
                                 justifyContent: "center",
                                 backgroundColor: "#EDEDED",
                             }}
                         >
-                            {/* <Text>Location on map</Text> */}
                             <MapDirection draggable={draggable} />
                         </View>
-
-
                     </View>
                 </View>
 

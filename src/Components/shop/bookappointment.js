@@ -9,6 +9,7 @@ import DatePicker from 'react-native-datepicker'
 import Entypo from 'react-native-vector-icons/Entypo';
 import { Actions } from 'react-native-router-flux';
 import moment from 'moment';
+import axios from 'axios';
 
 class BookAppointment extends Component {
     constructor(props) {
@@ -23,9 +24,10 @@ class BookAppointment extends Component {
     }
 
     componentDidMount() {
-        let { stylists, workinghours, gendre } = this.props
+        let { stylists, workinghours, gendre, renderSelectedService } = this.props
         let { date } = this.state
         let barberList = []
+        let soortedBarberList = []
         if (gendre) {
             for (let index = 0; index < stylists.length; index++) {
                 const element = stylists[index];
@@ -34,10 +36,22 @@ class BookAppointment extends Component {
                     barberList.push(element)
                 }
             }
+
+            for (let index = 0; index < renderSelectedService.length; index++) {
+                const selectedServiceName = renderSelectedService[index].serviceName;
+                for (let k = 0; k < barberList.length; k++) {
+                    const stylist = barberList[k];
+                    const serviceProvided = barberList[k].serviceProvided;
+                    for (let j = 0; j < serviceProvided.length; j++) {
+                        const services = serviceProvided[j];
+                        if (services === selectedServiceName) {
+                            soortedBarberList.push(stylist)
+                        }
+                    }
+                }
+            }
         }
-        else {
-            barberList = stylists
-        }
+
         var d;
         if (date != "") {
             d = new Date(date);
@@ -65,7 +79,7 @@ class BookAppointment extends Component {
                 let returnValue = this.getTimeStops(start, end, currentTime);
                 this.setState({
                     slots: returnValue,
-                    stylists: barberList,
+                    stylists: soortedBarberList,
                     day: day,
                 })
             }
@@ -75,7 +89,7 @@ class BookAppointment extends Component {
                 let returnValue = this.getTimeStopsAnotherDate(start, end);
                 this.setState({
                     slots: returnValue,
-                    stylists: barberList,
+                    stylists: soortedBarberList,
                     day: day,
                 })
             }
@@ -85,7 +99,7 @@ class BookAppointment extends Component {
             this.setState({
                 day: day,
                 slots: [],
-                stylists: barberList,
+                stylists: soortedBarberList,
             })
         }
 
@@ -153,11 +167,85 @@ class BookAppointment extends Component {
         return timeStops;
     }
 
+    getFreeBarber() {
+        var { selectedSlotTime, date, stylists } = this.state
+        var { renderSelectedService } = this.props
+        var shopId = this.props.shopId
+        var hour = moment(selectedSlotTime, ["h:mm A"]).format("HH");
+        var options = {
+            method: 'GET',
+            url: `${this.props.bseUrl}/bookings/findBarberStatus/${date}/${shopId}/${hour}/`,
+            headers:
+            {
+                'cache-control': 'no-cache',
+                "Allow-Cross-Origin": '*',
+            },
+        }
+        axios(options)
+            .then(result => {
+                let freeStylist = result.data
+                let barberList = []
+                let soortedBarberList = []
+                if (this.props.gendre) {
+                    for (let index = 0; index < this.props.stylists.length; index++) {
+                        const element = this.props.stylists[index];
+                        const elementGender = this.props.stylists[index].gender.toLowerCase();
+                        if (elementGender === this.props.gendre) {
+                            barberList.push(element)
+                        }
+                    }
+                    for (let index = 0; index < renderSelectedService.length; index++) {
+                        const selectedServiceName = renderSelectedService[index].serviceName;
+                        for (let k = 0; k < barberList.length; k++) {
+                            const stylist = barberList[k];
+                            const serviceProvided = barberList[k].serviceProvided;
+                            for (let j = 0; j < serviceProvided.length; j++) {
+                                const services = serviceProvided[j];
+                                if (services === selectedServiceName) {
+                                    soortedBarberList.push(stylist)
+                                }
+                            }
+                        }
+                    }
+                }
+                if (freeStylist.stylistIds) {
+                    for (let index = 0; index < freeStylist.stylistIds.length; index++) {
+                        const freeStylistId = freeStylist.stylistIds[index];
+                        for (let k = 0; k < soortedBarberList.length; k++) {
+                            const element = soortedBarberList[k];
+                            if (freeStylistId === element._id) {
+                                soortedBarberList.splice(k, 1)
+                            }
+                        }
+                    }
+                    this.setState({
+                        stylists: soortedBarberList
+                    })
+                }
+                else {
+                    this.setState({
+                        stylists: soortedBarberList,
+                        // err: "No stylist available in this time slot"
+                    })
+                }
+
+            })
+            .catch(err => {
+                let error = JSON.parse(JSON.stringify(err))
+                console.log(error, 'ERRROR', err)
+                this.setState({
+                    err: error,
+                })
+            })
+
+        console.log(date, hour, shopId, "date")
+    }
 
     slotSelect(key, index) {
-        console.log(key, index, "slotSelect")
         this.setState({
             selectedSlotTime: key
+        }, () => {
+            this.getFreeBarber()
         })
     }
 
@@ -181,6 +269,7 @@ class BookAppointment extends Component {
             date: date
         })
         this.componentDidMount(date)
+        this.getFreeBarber()
     }
 
     Checkout() {
@@ -228,13 +317,16 @@ class BookAppointment extends Component {
             else {
                 cloneObj.package = false
             }
+            console.log(cloneObj, "cloneObj")
             Actions.Checkout({ booking: cloneObj })
         }
     }
 
     render() {
-        let { totalCost, gendre } = this.props
-        let { stylists, slots, selectedSlotTime, day, date } = this.state
+        let { totalCost, gendre, renderSelectedService } = this.props
+        let { stylists, slots, selectedSlotTime, day, date, err } = this.state
+
+        // console.log(stylists.length, "stylists")
 
         return (
             <View style={{ paddingHorizontal: 10, flex: 1, backgroundColor: "#fff" }}>
@@ -353,9 +445,14 @@ class BookAppointment extends Component {
                                             }
                                         </View>
 
-                                        <View style={{ paddingVertical: "5%" }}>
-                                            <Text style={{ fontSize: 22, color: "#4B534F" }}>Choose Stylists</Text>
-                                        </View>
+                                        {
+                                            (stylists && stylists.length != 0) ? (
+                                                <View style={{ paddingVertical: "5%" }}>
+                                                    <Text style={{ fontSize: 22, color: "#4B534F" }}>Choose Stylists</Text>
+                                                </View>
+                                            ) : null
+                                        }
+
                                     </>
                                 ) : null
                             }
@@ -429,7 +526,14 @@ class BookAppointment extends Component {
                                                     alignItems: "center",
                                                     // backgroundColor: "red"
                                                 }}>
-                                                    <Text style={{ marginTop: 5, fontSize: 10, color: "red", textAlign: "right", }}>There is no {gendre} stylists</Text>
+                                                    {
+                                                        (err) ? (
+                                                            // <Text style={{ marginTop: 5, fontSize: 10, color: "red", textAlign: "right", }}>{err}</Text>
+                                                            <Text style={{ marginTop: 5, fontSize: 10, color: "red", textAlign: "right", }}>""</Text>
+                                                        ) :
+                                                            // <Text style={{ marginTop: 5, fontSize: 10, color: "red", textAlign: "right", }}>There is no {gendre} stylists</Text>
+                                                            <Text style={{ marginTop: 5, fontSize: 10, color: "red", textAlign: "right", }}></Text>
+                                                    }
                                                 </TouchableOpacity>
                                             ) : null
                                         }
@@ -477,6 +581,7 @@ let mapStateToProps = state => {
         workinghours: state.root.workinghours,
         shopId: state.root.shop._id,
         bookerId: state.root.userProfile._id,
+        bseUrl: state.root.bseUrl,
     };
 };
 function mapDispatchToProps(dispatch) {

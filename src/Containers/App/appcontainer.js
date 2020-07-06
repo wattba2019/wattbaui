@@ -8,7 +8,7 @@ import Appointments from '../App/appointments/index';
 import Profile from '../App/profile/index'
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import axios from 'axios';
-import { setUserCurrentLocation, setNearByShops } from "./../../Store/Action/action";
+import { setUserCurrentLocation, setNearByShops, getNearByShopsUnder5Km } from "./../../Store/Action/action";
 
 class AppContainer extends Component {
     constructor() {
@@ -34,43 +34,52 @@ class AppContainer extends Component {
     }
 
     getShopWithPlaceName(name, location) {
-        // console.log(name, location, "PlaceName")
-        var options = {
-            method: 'GET',
-            url: `${this.props.bseUrl}/getallshops/getShopWithPlaceName/${name}`,
-            headers:
-            {
-                'cache-control': 'no-cache',
-                "Allow-Cross-Origin": '*',
-            },
+        let searchLocation = {
+            coords: {
+                latitude: location.lat,
+                longitude: location.lng
+            }
         }
-        axios(options)
-            .then(result => {
-                let shopwithplacename = result.data.data
-                if (shopwithplacename.length != 0) {
-                    console.log(shopwithplacename, "Fetch_shops_with_Place_name")
-                    this.props.setNearByShops(shopwithplacename)
-                }
-                else {
-                    Alert.alert("No salons/stylist found within 3 miles of location")
-                    this.props.setNearByShops([])
+        this.props.setUserCurrentLocation(searchLocation, true)
+        this.props.getNearByShopsUnder5Km(searchLocation)
 
-                }
-                let searchLocation = {
-                    coords: {
-                        latitude: location.lat,
-                        longitude: location.lng
-                    }
-                }
-                this.props.setUserCurrentLocation(searchLocation, true)
-            })
-            .catch(err => {
-                let error = JSON.parse(JSON.stringify(err))
-                console.log(error, 'error_on_get_shops_with_place_name', err)
-                this.setState({
-                    err: error,
-                })
-            })
+        // console.log(name, location, "PlaceName")
+        // var options = {
+        //     method: 'GET',
+        //     url: `${this.props.bseUrl}/getallshops/getShopWithPlaceName/${name}`,
+        //     headers:
+        //     {
+        //         'cache-control': 'no-cache',
+        //         "Allow-Cross-Origin": '*',
+        //     },
+        // }
+        // axios(options)
+        //     .then(result => {
+        //         let shopwithplacename = result.data.data
+        //         if (shopwithplacename.length != 0) {
+        //             console.log(shopwithplacename, "Fetch_shops_with_Place_name")
+        //             this.props.setNearByShops(shopwithplacename)
+        //         }
+        //         else {
+        //             Alert.alert("No salons/stylist found within 3 miles of location")
+        //             this.props.setNearByShops([])
+
+        //         }
+        //         let searchLocation = {
+        //             coords: {
+        //                 latitude: location.lat,
+        //                 longitude: location.lng
+        //             }
+        //         }
+        //         this.props.setUserCurrentLocation(searchLocation, true)
+        //     })
+        //     .catch(err => {
+        //         let error = JSON.parse(JSON.stringify(err))
+        //         console.log(error, 'error_on_get_shops_with_place_name', err)
+        //         this.setState({
+        //             err: error,
+        //         })
+        //     })
     }
 
     componentWillUnmount() {
@@ -78,7 +87,7 @@ class AppContainer extends Component {
     }
 
     render() {
-        // console.log(this.props.openInput, "openInput")
+        console.log(this.state.rout, "openInput")
         return (
             <View style={{ flex: 1, }}>
                 <StatusBar backgroundColor="white" barStyle="dark-content" />
@@ -128,6 +137,8 @@ class AppContainer extends Component {
                         </View>
                     ) : null
                 }
+
+
 
 
                 {
@@ -237,6 +248,9 @@ function mapDispatchToProp(dispatch) {
         },
         setNearByShops: (shops) => {
             dispatch(setNearByShops(shops));
+        },
+        getNearByShopsUnder5Km: (shops) => {
+            dispatch(getNearByShopsUnder5Km(shops));
         },
     })
 }
