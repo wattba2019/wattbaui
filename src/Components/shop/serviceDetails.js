@@ -56,12 +56,16 @@ class ServiceDetaild extends Component {
                         {
                             (serviceDetails) ? (
                                 <View style={{
-                                    width: "90%", flexDirection: "row", marginTop: 15
+                                    width: "90%", flexDirection: "row", marginTop: 15, justifyContent: "space-between"
                                 }}>
                                     <Text style={{
                                         color: "black",
                                         fontSize: 18,
                                     }}>{serviceDetails.serviceName}</Text>
+                                    <Text style={{
+                                        color: "black",
+                                        fontSize: 18,
+                                    }}>GBP {serviceDetails.price}</Text>
                                 </View>
                             ) : null
                         }

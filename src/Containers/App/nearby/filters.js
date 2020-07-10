@@ -314,14 +314,14 @@ class Filters extends Component {
                     marginTop: 0,
                     // backgroundColor: "green"
                 }}>
-                    <View style={{
+                    {/* <View style={{
                         width: "90%", marginTop: 20, flexDirection: "row",
                         // backgroundColor: "green"
                     }}>
                         <Text style={{ color: "#4A4A4A", fontSize: 16 }}>Location</Text>
-                    </View>
+                    </View> */}
 
-                    <TouchableOpacity style={{
+                    {/* <TouchableOpacity style={{
                         marginTop: 10,
                         width: "90%",
                         height: 45,
@@ -339,7 +339,7 @@ class Filters extends Component {
                         {
                             this.props.searchLocationName != null ? <Text style={{ color: "#8E8E93", fontWeight: "bold", fontSize: 14 }}>({this.props.searchLocationName})</Text> : null
                         }
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
 
                     {/* gender */}
                     {/* <View style={{
@@ -566,7 +566,7 @@ class Filters extends Component {
 let mapStateToProps = state => {
     return {
         bseUrl: state.root.bseUrl,
-        currentLocation: state.root.searchLocation,
+        currentLocation: state.root.currentLocation,
         searchLocationName: state.root.searchLocationName,
     };
 };

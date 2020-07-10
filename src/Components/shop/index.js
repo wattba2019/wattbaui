@@ -72,6 +72,7 @@ class shop extends Component {
             })
 
     }
+
     getFavShops(update) {
         let urlm = `${this.props.bseUrl}/favorites/${this.props.userProfile._id}`
         axios({
@@ -157,7 +158,6 @@ class shop extends Component {
             })
 
     }
-
 
     getStylists() {
         let urlm = `${this.props.bseUrl}/stylist/${this.props.shop._id}`
@@ -294,7 +294,7 @@ class shop extends Component {
         })
             .then(result => {
                 let data = result.data.data
-                console.log(data, "DATA_FROM_API_SERVICES")
+                // console.log(data, "DATA_FROM_API_SERVICES")
                 this.setState({
                     services: data,
                 })
@@ -379,9 +379,9 @@ class shop extends Component {
                 <SafeAreaView style={styles.container} >
                     {
                         (shop.coverImage != null) ? (
-                            <Image source={{ uri: shop.coverImage }} resizeMode="cover"
+                            <Image source={{ uri: shop.coverImage }} resizeMode="contain"
                                 style={{ width: "100%", height: 250 }} />
-                        ) : <Image source={require('../../../assets/nophoto.jpg')} resizeMode="cover"
+                        ) : <Image source={require('../../../assets/nophoto.jpg')} resizeMode="contain"
                             style={{ width: "100%", height: 250 }} />
                     }
 

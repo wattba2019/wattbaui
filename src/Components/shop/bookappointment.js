@@ -45,12 +45,44 @@ class BookAppointment extends Component {
                     for (let j = 0; j < serviceProvided.length; j++) {
                         const services = serviceProvided[j];
                         if (services === selectedServiceName) {
-                            soortedBarberList.push(stylist)
+                            // soortedBarberList.push(stylist)
+                            var d;
+                            if (date != "") {
+                                d = new Date(date);
+                            }
+                            else {
+                                d = new Date();
+                            }
+                            var weekday = new Array(7);
+                            weekday[0] = "Sunday";
+                            weekday[1] = "Monday";
+                            weekday[2] = "Tuesday";
+                            weekday[3] = "Wednesday";
+                            weekday[4] = "Thursday";
+                            weekday[5] = "Friday";
+                            weekday[6] = "Saturday";
+                            let day = weekday[d.getDay()];
+
+                            for (let i = 0; i < stylist.workingDays.length; i++) {
+                                const element = stylist.workingDays[i];
+                                const elementDay = stylist.workingDays[i].day;
+                                const openTime = stylist.workingDays[i].brStart;
+                                const closeTIme = stylist.workingDays[i].brEnd;
+                                if (day === elementDay) {
+                                    if (element.working === true) {
+                                        // console.log(stylist, "stylistBookAppointment")
+                                        soortedBarberList.push(stylist)
+
+                                    }
+                                }
+                            }
                         }
                     }
                 }
             }
         }
+
+        console.log(soortedBarberList, "soortedBarberList")
 
         var d;
         if (date != "") {
@@ -134,14 +166,14 @@ class BookAppointment extends Component {
     }
 
     getTimeStops(start, end, ampmCurrent) {
-        console.log(start, end, ampmCurrent, "ampmCurrent")
+        // console.log(start, end, ampmCurrent, "ampmCurrent")
         var startTime = moment(start, 'h:mm a');
         var endTime = moment(end, 'h:mm a');
         var currentTime = moment(ampmCurrent, 'h:mm a');
         if (endTime.isBefore(startTime)) {
             endTime.add(1, 'day');
         }
-        console.log(startTime, "startTime")
+        // console.log(startTime, "startTime")
         var timeStops = [];
         while (startTime <= endTime) {
             // console.log(startTime, currentTime, "currentTime", startTime > currentTime)
@@ -188,10 +220,41 @@ class BookAppointment extends Component {
                 let soortedBarberList = []
                 if (this.props.gendre) {
                     for (let index = 0; index < this.props.stylists.length; index++) {
-                        const element = this.props.stylists[index];
+                        const stylist = this.props.stylists[index];
                         const elementGender = this.props.stylists[index].gender.toLowerCase();
                         if (elementGender === this.props.gendre) {
-                            barberList.push(element)
+                            // barberList.push(stylist)
+                            var d;
+                            if (date != "") {
+                                d = new Date(date);
+                            }
+                            else {
+                                d = new Date();
+                            }
+                            var weekday = new Array(7);
+                            weekday[0] = "Sunday";
+                            weekday[1] = "Monday";
+                            weekday[2] = "Tuesday";
+                            weekday[3] = "Wednesday";
+                            weekday[4] = "Thursday";
+                            weekday[5] = "Friday";
+                            weekday[6] = "Saturday";
+                            let day = weekday[d.getDay()];
+
+                            for (let i = 0; i < stylist.workingDays.length; i++) {
+                                const element = stylist.workingDays[i];
+                                const elementDay = stylist.workingDays[i].day;
+                                const openTime = stylist.workingDays[i].brStart;
+                                const closeTIme = stylist.workingDays[i].brEnd;
+                                if (day === elementDay) {
+                                    if (element.working === true) {
+                                        // console.log(stylist, "stylistBookAppointment")
+                                        // soortedBarberList.push(stylist)
+                                        barberList.push(stylist)
+                                    }
+                                }
+                            }
+
                         }
                     }
                     for (let index = 0; index < renderSelectedService.length; index++) {
@@ -202,7 +265,9 @@ class BookAppointment extends Component {
                             for (let j = 0; j < serviceProvided.length; j++) {
                                 const services = serviceProvided[j];
                                 if (services === selectedServiceName) {
-                                    soortedBarberList.push(stylist)
+                                    if (soortedBarberList.indexOf(stylist) === -1) {
+                                        soortedBarberList.push(stylist);
+                                    }
                                 }
                             }
                         }
@@ -238,7 +303,7 @@ class BookAppointment extends Component {
                 })
             })
 
-        console.log(date, hour, shopId, "date")
+        // console.log(date, hour, shopId, "date")
     }
 
     slotSelect(key, index) {
@@ -264,7 +329,7 @@ class BookAppointment extends Component {
     }
 
     setDate(date) {
-        console.log(date, "SETDATE")
+        // console.log(date, "SETDATE")
         this.setState({
             date: date
         })
@@ -317,16 +382,16 @@ class BookAppointment extends Component {
             else {
                 cloneObj.package = false
             }
-            console.log(cloneObj, "cloneObj")
+            // console.log(cloneObj, "cloneObj")
             Actions.Checkout({ booking: cloneObj })
         }
     }
 
     render() {
         let { totalCost, gendre, renderSelectedService } = this.props
-        let { stylists, slots, selectedSlotTime, day, date, err } = this.state
+        let { stylists, slots, selectedSlotTime, day, date, err, soortedBarberList } = this.state
 
-        // console.log(stylists.length, "stylists")
+        console.log(stylists, "stylists")
 
         return (
             <View style={{ paddingHorizontal: 10, flex: 1, backgroundColor: "#fff" }}>

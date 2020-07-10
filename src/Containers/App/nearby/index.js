@@ -74,7 +74,7 @@ class Nearby extends Component {
                             </View>
                         </View>
 
-                        <View style={{ flex: 3, justifyContent: "center", alignItems: "center", flexDirection: "row", }}>
+                        {/* <View style={{ flex: 3, justifyContent: "center", alignItems: "center", flexDirection: "row", }}>
                             <TouchableOpacity
                                 style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", }}
                                 onPress={() => { Actions.Googlemapfullview({ draggable: true }) }}
@@ -82,7 +82,7 @@ class Nearby extends Component {
                                 <Entypo name="direction" style={{ color: "#FD6958", fontWeight: 'bold', fontSize: 20 }} />
                                 <Text style={{ color: "#FD6958" }}>CHANGE</Text>
                             </TouchableOpacity>
-                        </View>
+                        </View> */}
                     </View>
 
                     {/* <View style={{ flex: 1, flexDirection: "row", width: "100%", height: 40, borderRadius: 10, justifyContent: "center", alignItems: "center", backgroundColor: "#E8E6E7", }}>

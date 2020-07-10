@@ -25,7 +25,7 @@ class ChooseService extends Component {
 
     UNSAFE_componentWillMount() {
         let { shopServices, } = this.props
-        console.log(shopServices, "shopServices")
+        // console.log(shopServices, "shopServices")
         this.setState({
             shopServices: shopServices
         })
@@ -150,9 +150,9 @@ class ChooseService extends Component {
                         showsVerticalScrollIndicator={false}
                         style={{ width: "90%", }}
                     >
-                        <Text style={{ fontSize: 20, fontWeight: "normal" }}>Gender</Text>
-                        <View style={{ width: "100%", marginTop: 10 }}>
-                            <RadioForm formHorizontal={true} animation={true} >
+                        {/* <Text style={{ fontSize: 20, fontWeight: "normal" }}>Gender</Text> */}
+                        <View style={{ width: "100%", marginTop: -10 }}>
+                            {/* <RadioForm formHorizontal={true} animation={true} >
                                 {this.state.types3.map((obj, i) => {
                                     var onPress = (value, index) => {
                                         this.setState({
@@ -185,7 +185,7 @@ class ChooseService extends Component {
                                         </RadioButton>
                                     )
                                 })}
-                            </RadioForm>
+                            </RadioForm> */}
 
                             <Text style={{ fontSize: 20, fontWeight: "normal", marginTop: 20 }}>Choose your service</Text>
 

@@ -43,7 +43,7 @@ class Home extends Component {
     UNSAFE_componentWillMount() {
         console.log(this.props, "USER_CURRENT_LOCATION")
         this.getNeabyShops()
-        this.getBestBarbershops()
+        // this.getBestBarbershops()
         this.getPackages()
         this.getAllServices()
         // this.getHairStyles()
@@ -62,7 +62,8 @@ class Home extends Component {
             }
             var options = {
                 method: 'POST',
-                url: `${this.props.bseUrl}/getallshops/${offsetNearByShops}/${2}`,
+                // url: `${this.props.bseUrl}/getallshops/${offsetNearByShops}/${2}`,
+                url: `${this.props.bseUrl}/getallshops/`,
                 headers:
                 {
                     'cache-control': 'no-cache',
@@ -80,6 +81,7 @@ class Home extends Component {
                         isloader: false,
                         offsetNearByShops: 2
                     })
+                    this.getBestBarbershops()
                 })
                 .catch(err => {
                     let error = JSON.parse(JSON.stringify(err))
@@ -94,36 +96,51 @@ class Home extends Component {
     }
 
     getBestBarbershops() {
-        let { offsetBestBarber, } = this.state
-        this.setState({ isloader: true })
-        var options = {
-            method: 'GET',
-            url: `${this.props.bseUrl}/getallshops/getAllShops/${offsetBestBarber}/${2}`,
-
-            headers:
-            {
-                'cache-control': 'no-cache',
-                "Allow-Cross-Origin": '*',
-            },
+        let { nearByShops, } = this.state
+        const fiveStarRatingShops = nearByShops.filter(nearByShops => nearByShops.review === "5");
+        let bestShops = []
+        for (let index = 0; index < fiveStarRatingShops.length; index++) {
+            const element = fiveStarRatingShops[index];
+            if (index < 5) {
+                bestShops.push(element)
+            }
+            else {
+                break
+            }
         }
-        axios(options)
-            .then(result => {
-                let bestBarberShops = result.data.data
-                // console.log(bestBarberShops, "Fetch_Best_Shops")
-                this.setState({
-                    bestBarberShops: bestBarberShops,
-                    isloader: false,
-                    offsetBestBarber: 2
-                })
-            })
-            .catch(err => {
-                let error = JSON.parse(JSON.stringify(err))
-                console.log(error, 'ERRROR', err)
-                this.setState({
-                    err: error,
-                    isloader: false,
-                })
-            })
+        this.setState({
+            bestBarberShops: bestShops,
+        })
+
+        // this.setState({ isloader: true })
+        // var options = {
+        //     method: 'GET',
+        //     url: `${this.props.bseUrl}/getallshops/getAllShops/${offsetBestBarber}/${2}`,
+
+        //     headers:
+        //     {
+        //         'cache-control': 'no-cache',
+        //         "Allow-Cross-Origin": '*',
+        //     },
+        // }
+        // axios(options)
+        //     .then(result => {
+        //         let bestBarberShops = result.data.data
+        //         // console.log(bestBarberShops, "Fetch_Best_Shops")
+        //         this.setState({
+        //             bestBarberShops: bestBarberShops,
+        //             isloader: false,
+        //             offsetBestBarber: 2
+        //         })
+        //     })
+        //     .catch(err => {
+        //         let error = JSON.parse(JSON.stringify(err))
+        //         console.log(error, 'ERRROR', err)
+        //         this.setState({
+        //             err: error,
+        //             isloader: false,
+        //         })
+        //     })
 
     }
 
@@ -556,7 +573,7 @@ class Home extends Component {
                                 </View>
                             </View>
 
-                            <View style={{
+                            {/* <View style={{
                                 flex: 3, justifyContent: "center", alignItems: "center", flexDirection: "row",
                             }}>
                                 <TouchableOpacity
@@ -565,7 +582,7 @@ class Home extends Component {
                                     <Entypo name="direction" style={{ color: "#FD6958", fontWeight: 'bold', fontSize: 20 }} />
                                     <Text style={{ color: "#FD6958" }}>CHANGE</Text>
                                 </TouchableOpacity>
-                            </View>
+                            </View> */}
                         </View>
 
                         <View
@@ -715,7 +732,7 @@ class Home extends Component {
                                             <InfiniteScroll
                                                 showsHorizontalScrollIndicator={true}
                                                 horizontal={true}
-                                                onLoadMoreAsync={this._onEndReachedNeabyShops.bind(this)}
+                                            // onLoadMoreAsync={this._onEndReachedNeabyShops.bind(this)}
                                             >
                                                 {
                                                     (nearByShops && nearByShops != 0) ? (
@@ -822,7 +839,7 @@ class Home extends Component {
                                             <InfiniteScroll
                                                 showsHorizontalScrollIndicator={true}
                                                 horizontal={true}
-                                                onLoadMoreAsync={this._onEndReachedBestBarberShops.bind(this)}
+                                            // onLoadMoreAsync={this._onEndReachedBestBarberShops.bind(this)}
                                             >
                                                 {
                                                     (bestBarberShops && bestBarberShops != 0) ? (

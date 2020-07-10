@@ -90,10 +90,14 @@ class Appointments extends Component {
                     }
                 }
 
+
+                let sortedpastBookingss = pastBookings.sort((a, b) => b.bookingDateTime - a.bookingDateTime)
+                let sortedupcommingAndApprovedBookings = upcomminBookings.sort((a, b) => b.bookingDateTime - a.bookingDateTime)
+
                 this.setState({
                     loader: !this.state.loader,
-                    upcoming: upcomminBookings,
-                    approved: pastBookings,
+                    upcoming: sortedupcommingAndApprovedBookings,
+                    approved: sortedpastBookingss,
                     declined: cancled,
                 })
             }).catch((err) => {
