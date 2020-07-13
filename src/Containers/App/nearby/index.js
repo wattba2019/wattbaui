@@ -26,6 +26,15 @@ class Nearby extends Component {
             this.props.getNearByShopsUnder5Km(currentLocation)
         }
     }
+
+    // componentWillReceiveProps(nextProps) {
+    //     const { currentLocation } = nextProps
+    //     if (currentLocation) {
+    //         console.log(currentLocation, "currentLocationnextPropsnextProps")
+    //         this.props.getNearByShopsUnder5Km(currentLocation)
+    //     }
+    // }
+
     render() {
         let { fullName, } = this.props.userProfile
         let { nearByShops, currentLocation, focusInput, shopLocationMarkers } = this.props
@@ -62,11 +71,11 @@ class Nearby extends Component {
                         </TouchableOpacity>
                     </View>
 
-                    <View style={{ width: "105%", top: -15, justifyContent: "center", alignItems: "center", flex: 1, flexDirection: "row" }}>
+                    <View style={{ width: "105%", top: -25, justifyContent: "center", alignItems: "center", flex: 1, flexDirection: "row" }}>
                         <View style={{ flex: 8, flexDirection: "row", justifyContent: "center", alignItems: "center", }}>
                             <View style={{ flex: 1, justifyContent: "center", alignItems: "center", }}>
                                 <Image source={require('../../../../assets/Path27909.png')} resizeMode="contain"
-                                    style={{ height: "50%", width: "50%", }}
+                                    style={{ height: "32%", width: "32%", }}
                                 />
                             </View>
                             <View style={{ flex: 8 }}>

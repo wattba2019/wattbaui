@@ -44,7 +44,7 @@ class Home extends Component {
         console.log(this.props, "USER_CURRENT_LOCATION")
         this.getNeabyShops()
         // this.getBestBarbershops()
-        this.getPackages()
+        // this.getPackages()
         this.getAllServices()
         // this.getHairStyles()
         // this.setState({ activity: false, })
@@ -82,6 +82,7 @@ class Home extends Component {
                         offsetNearByShops: 2
                     })
                     this.getBestBarbershops()
+                    this.getNearbyPackages(nearByShops)
                 })
                 .catch(err => {
                     let error = JSON.parse(JSON.stringify(err))
@@ -147,7 +148,6 @@ class Home extends Component {
     getPackages() {
         let { offsetPackages, } = this.state
         this.setState({ isloader: true })
-
         var options = {
             method: 'GET',
             url: `${this.props.bseUrl}/getNearbyShopServices/getAllPackage/${offsetPackages}/${2}`,
@@ -176,6 +176,47 @@ class Home extends Component {
                 })
             })
 
+    }
+
+    getNearbyPackages(nearByShops) {
+        const fiveStarRatingShops = nearByShops.filter(nearByShops => nearByShops.review === "5");
+        let shopIds = []
+        for (let index = 0; index < fiveStarRatingShops.length; index++) {
+            const element = fiveStarRatingShops[index]._id;
+            shopIds.push(element)
+        }
+        console.log(shopIds, "Pack_Get_With_Shop_Id")
+        this.setState({ isloader: true })
+        let cloneLocation = {
+            shopIds: shopIds
+        }
+        var options = {
+            method: 'POST',
+            url: `${this.props.bseUrl}/getNearbyShopServices/getNearByPackages/`,
+            headers:
+            {
+                'cache-control': 'no-cache',
+                "Allow-Cross-Origin": '*',
+            },
+            data: cloneLocation
+        }
+        axios(options)
+            .then(result => {
+                let packages = result.data.data
+                console.log(packages, "Fetch_Packages")
+                this.setState({
+                    packages: packages,
+                    isloader: false,
+                })
+            })
+            .catch(err => {
+                let error = JSON.parse(JSON.stringify(err))
+                console.log(error, 'ERRROR', err)
+                this.setState({
+                    err: error,
+                    isloader: false,
+                })
+            })
     }
 
     // getHairStyles() {
@@ -955,7 +996,7 @@ class Home extends Component {
                                             <InfiniteScroll
                                                 showsHorizontalScrollIndicator={true}
                                                 horizontal={true}
-                                                onLoadMoreAsync={this._onEndReachedSpecialPackages.bind(this)}
+                                                // onLoadMoreAsync={this._onEndReachedSpecialPackages.bind(this)}
                                             >
                                                 {
                                                     (packages && packages != 0) ? (

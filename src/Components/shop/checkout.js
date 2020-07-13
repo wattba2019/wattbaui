@@ -41,11 +41,27 @@ class Checkout extends Component {
 
     async componentDidMount() {
         await SQIPCore.setSquareApplicationId('sandbox-sq0idb-sYODojBTzgf0qX4bDKza0Q');
+        // await SQIPCardEntry.setIOSCardEntryTheme({
+        //     saveButtonFont: {
+        //         size: 30,
+        //     },
+        //     saveButtonTitle: 'Pay 💳 ',
+        //     keyboardAppearance: 'Light',
+        //     saveButtonTextColor: {
+        //         r: 213,
+        //         g: 133,
+        //         b: 12,
+        //         a: 0.9,
+        //     },
+        // });
     }
     /**
      * Callback when the card entry is closed after call 'SQIPCardEntry.completeCardEntry'
      */
-    onCardEntryComplete(cardDetails) {
+    async onCardEntryComplete(cardDetails) {
+
+        // if (Platform.OS === 'ios') {
+        // }
         // console.log('saved')
         // Update UI to notify user that the payment flow is completed
     }

@@ -110,7 +110,7 @@ export function getNearByShopsUnder5Km(currentLocation) {
             }
             var options = {
                 method: 'POST',
-                url: `https://fathomless-citadel-43321.herokuapp.com/getallshops/0/100`,
+                url: `https://fathomless-citadel-43321.herokuapp.com/getallshops/`,
                 headers:
                 {
                     'cache-control': 'no-cache',
@@ -122,8 +122,8 @@ export function getNearByShopsUnder5Km(currentLocation) {
                 .then(result => {
                     let shops = result.data.data
                     // console.log(shops, "Fetch_Shops_NearBy")
-                    dispatch({ type: "SET_NEARBY_SHOP", payload: shops })
                     if (shops) {
+                        dispatch({ type: "SET_NEARBY_SHOP", payload: shops })
                         let shopLocationMarkers = []
                         for (let index = 0; index < shops.length; index++) {
                             let location = {

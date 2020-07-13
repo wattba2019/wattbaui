@@ -109,7 +109,7 @@ class Filters extends Component {
             }
             var options = {
                 method: 'POST',
-                url: `${this.props.bseUrl}/getallshops/0/1000`,
+                url: `${this.props.bseUrl}/getallshops/`,
                 headers:
                 {
                     'cache-control': 'no-cache',
