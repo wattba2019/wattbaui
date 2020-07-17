@@ -22,8 +22,12 @@ class About extends Component {
     }
 
     render() {
-        let { shop, workingHours, gallery, currentLocation } = this.props
+        let { shop, workingHours, gallery, busy, currentLocation } = this.props
         let { readmore } = this.state
+
+        console.log(busy, "workingHoursABuout")
+
+
         return (
             <View>
                 <View style={{ paddingHorizontal: 25, paddingVertical: 10, }} >
@@ -119,19 +123,21 @@ class About extends Component {
                     </ScrollView>
                 </View>
 
-                <View style={{ width: "85%", height: 50, marginTop: 0, marginHorizontal: "7%" }}>
-                    <TouchableOpacity
-                        // onPress={() => Actions.BarberDetails()}
-                        onPress={() => Actions.ChooseService()}
-
-                    >
-                        <ImageBackground source={require('../../../assets/buttonBackground.png')} resizeMode="contain"
-                            style={{ height: "100%", width: "100%", justifyContent: "center", }}
+                {
+                    busy ? <View style={{ width: "85%", height: 50, marginTop: 0, marginHorizontal: "7%" }}>
+                        <TouchableOpacity
+                            // onPress={() => Actions.BarberDetails()}
+                            onPress={() => Actions.ChooseService()}
                         >
-                            <Text style={{ textAlign: "center", fontSize: 15, margin: 12, color: "white" }}>Book</Text>
-                        </ImageBackground>
-                    </TouchableOpacity>
-                </View>
+                            <ImageBackground source={require('../../../assets/buttonBackground.png')} resizeMode="contain"
+                                style={{ height: "100%", width: "100%", justifyContent: "center", }}
+                            >
+                                <Text style={{ textAlign: "center", fontSize: 15, margin: 12, color: "white" }}>Book</Text>
+                            </ImageBackground>
+                        </TouchableOpacity>
+                    </View> : null
+                }
+
 
             </View >
         );

@@ -27,7 +27,7 @@ class OfferDetails extends Component {
     }
 
     render() {
-        let { offerDetails } = this.props
+        let { offerDetails, busy } = this.props
         // console.log(offerDetails, "OFFER_DETAILS")
         return (
             <View style={{
@@ -116,19 +116,24 @@ class OfferDetails extends Component {
                                 }
                             </View>
                         </View>
-                        <View
-                            style={{ width: "85%", height: 50, marginTop: 30, }}
-                        >
-                            <TouchableOpacity
-                                onPress={() => this.next()}
-                            >
-                                <ImageBackground source={require('../../../assets/buttonBackground.png')} resizeMode="contain"
-                                    style={{ height: "100%", width: "100%", justifyContent: "center", }}
+
+                        {
+                            busy ?
+                                <View
+                                    style={{ width: "85%", height: 50, marginTop: 30, }}
                                 >
-                                    <Text style={{ textAlign: "center", fontSize: 15, margin: 12, color: "white" }}>Book</Text>
-                                </ImageBackground>
-                            </TouchableOpacity>
-                        </View>
+                                    <TouchableOpacity
+                                        onPress={() => this.next()}
+                                    >
+                                        <ImageBackground source={require('../../../assets/buttonBackground.png')} resizeMode="contain"
+                                            style={{ height: "100%", width: "100%", justifyContent: "center", }}
+                                        >
+                                            <Text style={{ textAlign: "center", fontSize: 15, margin: 12, color: "white" }}>Book</Text>
+                                        </ImageBackground>
+                                    </TouchableOpacity>
+                                </View> : null
+                        }
+
                     </View>
                 </ScrollView>
             </View>

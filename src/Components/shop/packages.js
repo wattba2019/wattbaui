@@ -13,7 +13,7 @@ class ServiceChild1 extends Component {
     }
 
     render() {
-        let { packages } = this.props
+        let { packages, busy } = this.props
         // console.log(packages, "PACKAGES_INSIDE_COMPONENT")
         return (
             <View style={{ paddingHorizontal: 15, padding: 15 }}>
@@ -22,7 +22,7 @@ class ServiceChild1 extends Component {
                         packages.map((key, index) => {
                             return (
                                 <TouchableOpacity key={index} style={{ width: "90%", marginHorizontal: "5%", borderBottomColor: "#EEEEEE", borderBottomWidth: 1, margin: 5 }}
-                                    onPress={() => Actions.OfferDetails({ offerDetails: key })}
+                                    onPress={() => Actions.OfferDetails({ offerDetails: key, busy })}
                                 >
                                     {(key.packageImage != null) ? (
                                         <Image source={{ uri: key.packageImage }} resizeMode="cover"

@@ -17,7 +17,7 @@ class ServiceDetaild extends Component {
     }
 
     render() {
-        let { serviceDetails, } = this.props
+        let { serviceDetails, busy } = this.props
         return (
             <View style={{
                 flex: 1,
@@ -83,19 +83,23 @@ class ServiceDetaild extends Component {
                             })
                             ) : <Text style={{ color: "#FD6958", fontSize: 16, fontWeight: "bold" }}>There is no data</Text>
                         }
-                        <View
-                            style={{ width: "85%", height: 50, marginTop: 30, }}
-                        >
-                            <TouchableOpacity
-                                onPress={() => Actions.ChooseService({ serviceDetails: serviceDetails })}
+
+                        {
+                            busy ? <View
+                                style={{ width: "85%", height: 50, marginTop: 30, }}
                             >
-                                <ImageBackground source={require('../../../assets/buttonBackground.png')} resizeMode="contain"
-                                    style={{ height: "100%", width: "100%", justifyContent: "center", }}
+                                <TouchableOpacity
+                                    onPress={() => Actions.ChooseService({ serviceDetails: serviceDetails })}
                                 >
-                                    <Text style={{ textAlign: "center", fontSize: 15, margin: 12, color: "white" }}>Book</Text>
-                                </ImageBackground>
-                            </TouchableOpacity>
-                        </View>
+                                    <ImageBackground source={require('../../../assets/buttonBackground.png')} resizeMode="contain"
+                                        style={{ height: "100%", width: "100%", justifyContent: "center", }}
+                                    >
+                                        <Text style={{ textAlign: "center", fontSize: 15, margin: 12, color: "white" }}>Book</Text>
+                                    </ImageBackground>
+                                </TouchableOpacity>
+                            </View> : null
+                        }
+
                     </View>
                 </ScrollView>
             </View>

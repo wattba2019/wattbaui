@@ -26,7 +26,8 @@ class shop extends Component {
             workingtime: false,
             favroiteShops: [],
             favroite: false,
-            favroiteLoader: true
+            favroiteLoader: true,
+            busy: true
         }
     }
 
@@ -251,11 +252,14 @@ class shop extends Component {
 
                 if (shopStatus === true) {
                     if (returnValue[0] < time && returnValue[1] > time) {
-                        // console.log("STATUS_OPEN")
+                        console.log("STATUS_OPEN", data.switchButton)
                         workingtime = true
+                        this.setState({
+                            busy: data.switchButton
+                        })
                     }
                     else {
-                        // console.log("STATUS_CLOSE")
+                        console.log("STATUS_CLOSE", data)
                         workingtime = false
                     }
                 }
@@ -441,10 +445,21 @@ class shop extends Component {
 
                     {
                         (workingtime === true) ? (
-                            <View style={{ borderColor: "#16BE4E", borderWidth: 1, borderRadius: 4, justifyContent: "center", alignItems: "center", position: 'absolute', right: 20, bottom: 20, height: 30, width: 65, justifyContent: "center" }}>
-                                <Text style={{ color: "#16BE4E", fontSize: 14 }}>Open</Text>
-                            </View>
-                        ) : <View style={{ borderColor: "red", borderWidth: 1, borderRadius: 4, justifyContent: "center", alignItems: "center", position: 'absolute', right: 20, bottom: 20, height: 30, width: 65, justifyContent: "center" }}>
+                            (this.state.busy === false) ? (
+                                <View style={{ borderColor: "#FFF600", borderWidth: 1, borderRadius: 4, justifyContent: "center", alignItems: "center", position: 'absolute', right: 20, bottom: 20, height: 30, width: 65, justifyContent: "center" }}>
+                                    <Text style={{ color: "#FFF600", fontSize: 14 }}>Busy</Text>
+                                </View>
+                            ) :
+                                <View style={{ borderColor: "#16BE4E", borderWidth: 1, borderRadius: 4, justifyContent: "center", alignItems: "center", position: 'absolute', right: 20, bottom: 20, height: 30, width: 65, justifyContent: "center" }}>
+                                    <Text style={{ color: "#16BE4E", fontSize: 14 }}>Open</Text>
+                                </View>
+                        ) :
+                            // (this.state.busy) ? (
+                            //     <View style={{ borderColor: "#FFF600", borderWidth: 1, borderRadius: 4, justifyContent: "center", alignItems: "center", position: 'absolute', right: 20, bottom: 20, height: 30, width: 65, justifyContent: "center" }}>
+                            //         <Text style={{ color: "#FFF600", fontSize: 14 }}>Busy</Text>
+                            //     </View>
+                            // ) :
+                            <View style={{ borderColor: "red", borderWidth: 1, borderRadius: 4, justifyContent: "center", alignItems: "center", position: 'absolute', right: 20, bottom: 20, height: 30, width: 65, justifyContent: "center" }}>
                                 <Text style={{ color: "red", fontSize: 14 }}>Close</Text>
                             </View>
                     }
@@ -597,7 +612,7 @@ class shop extends Component {
                                         <Text style={{ color: activeColor === "about" ? "#FD6958" : "black" }}>About</Text>
                                     </TabHeading>}
                             >
-                                <About shop={shop} workingHours={workingHours} gallery={gallery} viewAll={this.viewAll} />
+                                <About shop={shop} busy={this.state.busy} workingHours={workingHours} gallery={gallery} viewAll={this.viewAll} />
                             </Tab>
 
                             {/* //Services// */}
@@ -611,7 +626,7 @@ class shop extends Component {
                                 }
                             >
                                 <View>
-                                    <Services shop={shop} services={services} packages={packages} />
+                                    <Services shop={shop} busy={this.state.busy} services={services} packages={packages} />
                                 </View>
                             </Tab>
 

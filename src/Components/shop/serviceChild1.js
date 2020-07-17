@@ -20,7 +20,7 @@ class ServiceChild1 extends Component {
         }
     }
     render() {
-        let { services } = this.props
+        let { services, busy } = this.props
         let images = [womenHairstyling, surface, surface2, dye, makeup, mascara]
         return (
             <View style={{ paddingVertical: 5, paddingHorizontal: 15, width: "90%", marginHorizontal: "5%" }}>
@@ -31,7 +31,7 @@ class ServiceChild1 extends Component {
                             return (
                                 <TouchableOpacity key={index}
                                     // onPress={() => this.serviceDetails(key)}
-                                    onPress={() => Actions.ServiceDetaild({ serviceDetails: key, })}
+                                    onPress={() => Actions.ServiceDetaild({ serviceDetails: key, busy })}
                                     style={{ marginTop: 25, flexDirection: "row", flex: 1 }}>
                                     <View style={{ flex: 2 }}>
                                         <Image
@@ -46,7 +46,7 @@ class ServiceChild1 extends Component {
                                         <Text style={{ fontSize: 11, color: "grey" }}>{key.extraServices.length} Types</Text>
                                     </View>
                                     <TouchableOpacity style={{ flex: 1 }}
-                                        onPress={() => Actions.ServiceDetaild({ serviceDetails: key, })}
+                                        onPress={() => Actions.ServiceDetaild({ serviceDetails: key, busy })}
                                     >
                                         <Text style={{ fontSize: 11, color: "#FD6958" }}>View</Text>
                                     </TouchableOpacity>

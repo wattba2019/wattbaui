@@ -14,7 +14,7 @@ class Services extends Component {
         }
     }
     render() {
-        let { shop, services, packages } = this.props
+        let { shop, services, busy, packages } = this.props
         console.log(services, "services")
         return (
             <View>
@@ -62,11 +62,11 @@ class Services extends Component {
                 {
                     (this.state.catogeries === "services") ?
                         (
-                            <ServiceChild1 services={services} />
+                            <ServiceChild1 busy={busy} services={services} />
                         ) :
                         (
                             this.state.catogeries === "packages" ?
-                                <Packages packages={packages} />
+                                <Packages busy={busy} packages={packages} />
                                 : null
                         )
                 }

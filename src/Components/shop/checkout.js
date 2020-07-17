@@ -36,7 +36,39 @@ class Checkout extends Component {
             fullName: this.props.userProfile.fullName,
             phoneNumber: this.props.userProfile.phoneNumber,
         })
+        this.getVatAndServiceCharge()
     }
+
+    getVatAndServiceCharge() {
+        var options = {
+            method: 'GET',
+            url: `${this.props.bseUrl}/vatandservicecharges/`,
+            headers:
+            {
+                'cache-control': 'no-cache',
+                "Allow-Cross-Origin": '*',
+            },
+        }
+        axios(options)
+            .then(result => {
+                let charges = result.data.data[0]
+                console.log(charges, "consoleconsoleconsole")
+                this.setState({
+                    serviceCharge: Number(charges.serviceCharges),
+                    vatCharges: Number(charges.vatCharges),
+                })
+
+            })
+            .catch(err => {
+                let error = JSON.parse(JSON.stringify(err))
+                console.log(error, 'error_on_get_shops_with_place_name', err)
+                this.setState({
+                    err: error,
+                })
+            })
+    }
+
+
 
 
     async componentDidMount() {
@@ -58,8 +90,7 @@ class Checkout extends Component {
     /**
      * Callback when the card entry is closed after call 'SQIPCardEntry.completeCardEntry'
      */
-    async onCardEntryComplete(cardDetails) {
-
+    onCardEntryComplete(cardDetails) {
         // if (Platform.OS === 'ios') {
         // }
         // console.log('saved')
@@ -72,7 +103,8 @@ class Checkout extends Component {
      */
     async onCardNonceRequestSuccess(cardDetails) {
         const { booking, } = this.props
-        cardDetails.cost = booking.cost;
+        // cardDetails.cost = booking.cost;
+        cardDetails.cost = (booking.cost / 100 * (this.state.serviceCharge + this.state.vatCharges)) + booking.cost;
         // console.log(cardDetails, booking.cost, "Credential")
         try {
             // take payment with the card details
@@ -89,7 +121,7 @@ class Checkout extends Component {
             };
             axios(options)
                 .then((data) => {
-                    console.log(data.data, "Payment")
+                    console.log(data.data, cardDetails, "Payment")
                     this.submitBooking()
 
                 }).catch((err) => {
@@ -175,9 +207,9 @@ class Checkout extends Component {
     }
 
     render() {
-        const { Message, loader } = this.state
+        const { Message, loader, serviceCharge, vatCharges } = this.state
         const { booking, shop, userProfile } = this.props
-        console.log(booking.renderSelectedService, "shopsssssssssssssssssss")
+        console.log(serviceCharge, vatCharges, "shopsssssssssssssssssss")
         return (
             <View style={{ flex: 1, backgroundColor: "#fff" }}>
                 <StatusBar backgroundColor="#FD6958" barStyle="dark-content" />
@@ -301,7 +333,15 @@ class Checkout extends Component {
                                         })
                                     }
 
+                                    <View style={{ flexDirection: "row", justifyContent: "space-between", marginTop: 5, }}>
+                                        <Text style={{ alignItems: "center", fontWeight: "bold", fontSize: 12 }}>{"Service Charges"}</Text>
+                                        <Text style={{ alignItems: "center", fontWeight: "bold", fontSize: 12 }}>{booking.cost / 100 * serviceCharge}</Text>
+                                    </View>
 
+                                    <View style={{ flexDirection: "row", justifyContent: "space-between", marginTop: 5, }}>
+                                        <Text style={{ alignItems: "center", fontWeight: "bold", fontSize: 12 }}>{"VAT Charges"}</Text>
+                                        <Text style={{ alignItems: "center", fontWeight: "bold", fontSize: 12 }}>{booking.cost / 100 * vatCharges}</Text>
+                                    </View>
 
                                     {/* Promotion Discounts */}
                                     {/* <View style={{ flexDirection: "row", marginBottom: 20, justifyContent: "space-between", marginTop: 15 }}>
@@ -350,7 +390,7 @@ class Checkout extends Component {
 
                                     <View style={{ flexDirection: "row", justifyContent: "space-between", marginTop: 15, marginBottom: 15 }}>
                                         <Text style={{ alignItems: "center", fontWeight: "bold", fontSize: 16 }}>Total</Text>
-                                        <Text style={{ alignItems: "center", fontWeight: "bold", fontSize: 16 }}>GBP {booking.cost}</Text>
+                                        <Text style={{ alignItems: "center", fontWeight: "bold", fontSize: 16 }}>GBP {(booking.cost / 100 * (serviceCharge + vatCharges)) + booking.cost}</Text>
                                     </View>
                                 </View>
 
