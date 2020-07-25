@@ -39,6 +39,8 @@ class Walkthrough extends Component {
                             <Image source={require('../../../assets/logo.png')} resizeMode="contain"
                                 style={{ height: "65%", width: "65%", }}
                             />
+                            <Text style={{ textAlign: "center", fontSize: 15, margin: 12, color: "white", top: "-25%" }}>Book any style, anywhere</Text>
+
                         </View>
                         <TouchableOpacity
                             style={{
@@ -71,7 +73,7 @@ class Walkthrough extends Component {
                             }}
                             onPress={() => Actions.Signup()}
                         >
-                            <Text style={{ textAlign: "center", fontSize: 15, margin: 12, color: "white" }}>Sign up</Text>
+                            <Text style={{ textAlign: "center", fontSize: 15, margin: 12, color: "white" }}>Create an Account</Text>
                         </TouchableOpacity>
                     </ImageBackground>
                 </View>

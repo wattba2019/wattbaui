@@ -138,9 +138,6 @@ class AppContainer extends Component {
                     ) : null
                 }
 
-
-
-
                 {
                     (this.state.rout === "Home") ? (
                         <ScrollView style={{ flex: 6, backgroundColor: "white" }}>
@@ -184,7 +181,7 @@ class AppContainer extends Component {
                                     style={{ width: "40%", height: "40%", }}
                                     />
                             }
-                            <Text style={{ textAlign: "center", marginTop: 0, color: this.state.rout === "Home" ? "#FD6958" : "#8E8E93", fontSize: 12 }}>Home</Text>
+                            <Text style={{ textAlign: "center", marginTop: 0, color: this.state.rout === "Home" ? "#FD6958" : "#8E8E93", fontSize: 10 }}>Home</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={{ flex: 1, justifyContent: "center", alignItems: "center" }} onPress={() => { this.setState({ rout: "Nearby", focus: false }) }}  >
 
@@ -198,7 +195,7 @@ class AppContainer extends Component {
                                     />
                             }
 
-                            <Text style={{ textAlign: "center", marginTop: 0, color: this.state.rout === "Nearby" ? "#FD6958" : "#8E8E93", fontSize: 12 }}>Nearby</Text>
+                            <Text style={{ textAlign: "center", marginTop: 0, color: this.state.rout === "Nearby" ? "#FD6958" : "#8E8E93", fontSize: 10 }}>Nearby shops</Text>
                         </TouchableOpacity>
 
                         <TouchableOpacity style={{ flex: 1, justifyContent: "center", alignItems: "center" }} onPress={() => { this.setState({ rout: "Appointments" }) }}>
@@ -214,7 +211,7 @@ class AppContainer extends Component {
                             }
 
 
-                            <Text style={{ textAlign: "center", marginTop: 0, color: this.state.rout === "Appointments" ? "#FD6958" : "#8E8E93", fontSize: 12 }}>Appointments</Text>
+                            <Text style={{ textAlign: "center", marginTop: 0, color: this.state.rout === "Appointments" ? "#FD6958" : "#8E8E93", fontSize: 10 }}>Appointments</Text>
                         </TouchableOpacity>
 
                         <TouchableOpacity style={{ flex: 1, justifyContent: "center", alignItems: "center" }} onPress={() => { this.setState({ rout: "Profile" }) }}>
@@ -227,7 +224,7 @@ class AppContainer extends Component {
                                     style={{ width: "40%", height: "40%", }}
                                     />
                             }
-                            <Text style={{ textAlign: "center", marginTop: 0, color: this.state.rout === "Profile" ? "#FD6958" : "#8E8E93", fontSize: 12 }}>Profile</Text>
+                            <Text style={{ textAlign: "center", marginTop: 0, color: this.state.rout === "Profile" ? "#FD6958" : "#8E8E93", fontSize: 10 }}>Profile</Text>
                         </TouchableOpacity>
                     </FooterTab>
                 </Footer>

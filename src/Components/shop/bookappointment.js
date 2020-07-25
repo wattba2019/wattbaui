@@ -413,7 +413,7 @@ class BookAppointment extends Component {
                         justifyContent: "center",
                         alignItems: "center",
                     }}>
-                        <Text style={{ alignItems: "center", fontSize: 15 }}>Book Appointment</Text>
+                        <Text style={{ alignItems: "center", fontSize: 15 }}>Book An Appointment</Text>
                     </View>
                 </View>
 
@@ -513,7 +513,7 @@ class BookAppointment extends Component {
                                         {
                                             (stylists && stylists.length != 0) ? (
                                                 <View style={{ paddingVertical: "5%" }}>
-                                                    <Text style={{ fontSize: 22, color: "#4B534F" }}>Choose Stylists</Text>
+                                                    <Text style={{ fontSize: 22, color: "#4B534F" }}>Choose Your Stylist</Text>
                                                 </View>
                                             ) : null
                                         }
@@ -617,14 +617,14 @@ class BookAppointment extends Component {
                         flex: 1, flexDirection: "row", justifyContent: "center", alignItems: "center", width: "90%", marginHorizontal: "5%",
                     }}>
                         <View style={{ flex: 1, justifyContent: "center", alignItems: "flex-start", }}>
-                            <Text style={{ fontWeight: "normal", }}>Total Cost</Text>
+                            <Text style={{ fontWeight: "normal", }}>Total</Text>
                             <Text style={{ fontWeight: "bold", fontSize: 18 }}>GBP {totalCost}</Text>
                         </View>
                         <View style={{ flex: 1, justifyContent: "center", alignItems: "flex-end", }}>
                             <TouchableOpacity
                                 onPress={() => this.Checkout()}
                                 style={{ width: "70%", height: 42, justifyContent: "center", alignItems: "center", backgroundColor: "#FD6958", borderRadius: 8 }}>
-                                <Text style={{ fontWeight: "bold", fontSize: 18, color: "#ffffff" }}>Book</Text>
+                                <Text style={{ fontWeight: "bold", fontSize: 12, color: "#ffffff", textAlign: "center" }}>Proceed to Checkout</Text>
                             </TouchableOpacity>
                         </View>
                     </View>

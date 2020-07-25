@@ -529,7 +529,8 @@ class Filters extends Component {
                                     }}
                                         onPress={() => { this.setState({ sortedby: "lowToHigh" }) }}
                                     >
-                                        <Text style={{ color: "black", fontSize: 16, color: this.state.sortedby === "lowToHigh" ? "#FD6958" : null, }}>Cost Low to High</Text>
+                                        {/* <Text style={{ color: "black", fontSize: 16, color: this.state.sortedby === "lowToHigh" ? "#FD6958" : null, }}>Cost Low to High</Text> */}
+                                        <Text style={{ color: "black", fontSize: 16, color: this.state.sortedby === "lowToHigh" ? "#FD6958" : null, }}>Ascending price</Text>
                                     </TouchableOpacity>
 
                                     <TouchableOpacity style={{
@@ -537,16 +538,19 @@ class Filters extends Component {
                                     }}
                                         onPress={() => { this.setState({ sortedby: "highToLow" }) }}
                                     >
-                                        <Text style={{ color: "black", fontSize: 16, color: this.state.sortedby === "highToLow" ? "#FD6958" : null, }}>Cost High to Low</Text>
+                                        {/* <Text style={{ color: "black", fontSize: 16, color: this.state.sortedby === "highToLow" ? "#FD6958" : null, }}>Cost High to Low</Text> */}
+                                        <Text style={{ color: "black", fontSize: 16, color: this.state.sortedby === "highToLow" ? "#FD6958" : null, }}>Descending price</Text>
                                     </TouchableOpacity>
                                 </>
                             ) : <>
                                     <TouchableOpacity disabled style={{ marginTop: 10, }}>
-                                        <Text style={{ color: "grey", fontSize: 16, }}>Cost Low to High</Text>
+                                        {/* <Text style={{ color: "grey", fontSize: 16, }}>Cost Low to High</Text> */}
+                                        <Text style={{ color: "grey", fontSize: 16, }}>Ascending price</Text>
                                     </TouchableOpacity>
 
                                     <TouchableOpacity disabled style={{ marginTop: 10, }}>
-                                        <Text style={{ color: "grey", fontSize: 16, }}>Cost High to Low</Text>
+                                        {/* <Text style={{ color: "grey", fontSize: 16, }}>Cost High to Low</Text> */}
+                                        <Text style={{ color: "grey", fontSize: 16, }}>Descending price</Text>
                                     </TouchableOpacity>
                                 </>
                         }

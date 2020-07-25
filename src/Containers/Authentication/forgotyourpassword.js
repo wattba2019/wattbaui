@@ -123,8 +123,8 @@ class Forgotyourpassword extends Component {
                     }}
                 >
                     <View style={{ justifyContent: "center", alignItems: "center", width: "100%", marginTop: "4%" }}>
-                        <Text style={{ fontSize: 30 }}>Forgot password</Text>
-                        <Text style={{ color: "grey", textAlign: "center" }}>we will need just your email to send you {"\n"} password reset instruction</Text>
+                        <Text style={{ fontSize: 30 }}>Forgot password?</Text>
+                        <Text style={{ color: "grey", textAlign: "center" }}>No worries! Password reset instructions {"\n"} will be send to your email</Text>
                         <View
                             style={{ width: "85%", marginTop: 40, borderColor: 'gray', backgroundColor: "#E8E6E7", borderRadius: 25, justifyContent: "center", alignItems: "center" }}
                         >
@@ -148,7 +148,7 @@ class Forgotyourpassword extends Component {
                                 >
                                     {
                                         (loader != true) ? (
-                                            <Text style={{ textAlign: "center", fontSize: 15, margin: 12, color: "white" }}>Reset Password</Text>
+                                            <Text style={{ textAlign: "center", fontSize: 15, margin: 12, color: "white" }}>Send Instructions</Text>
                                         ) : <ActivityIndicator style={{ color: "orange" }} />
                                     }
                                 </ImageBackground>
@@ -158,7 +158,7 @@ class Forgotyourpassword extends Component {
                         <TouchableOpacity
                             onPress={() => Actions.Signin()}
                         >
-                            <Text style={{ textAlign: "center", fontSize: 15, marginTop: 20, color: "black" }}>back to login</Text>
+                            <Text style={{ textAlign: "center", fontSize: 15, marginTop: 20, color: "black" }}>Back to sign in</Text>
                         </TouchableOpacity>
                     </View>
                 </ScrollView>

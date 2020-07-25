@@ -275,22 +275,22 @@ class Signup extends Component {
                             >
                                 {
                                     (loader != true) ? (
-                                        <Text style={{ textAlign: "center", fontSize: 15, margin: 12, color: "white" }}>Sign Up</Text>
+                                        <Text style={{ textAlign: "center", fontSize: 15, margin: 12, color: "white" }}>Create Account</Text>
                                     ) : <ActivityIndicator color="white" />
                                 }
                             </ImageBackground>
                         </TouchableOpacity>
                     </View>
-                    <View>
-                        <Text style={{ color: "black", textAlign: "center", top: 20 }}>By clicking Sign Up you agree to the </Text>
-                        <Text style={{ color: "black", textAlign: "center", top: 20, fontWeight: "bold" }}> Terms and Conditions </Text>
+                    <View style={{ marginTop: "15%" }}>
+                        <Text style={{ color: "black", textAlign: "center", top: 20 }}>By proceeding, I accept the </Text>
+                        <Text style={{ color: "black", textAlign: "center", top: 20, fontWeight: "bold" }}>Terms & Conditions of WattBa </Text>
                     </View>
-                    <TouchableOpacity
+                    {/* <TouchableOpacity
                         style={{ flexDirection: "row", marginTop: 50, }}
                         onPress={() => Actions.Signin()} >
                         <Text style={{ textAlign: "center", fontSize: 15, color: "#B7B7C0" }}>Already have an account? </Text>
                         <Text style={{ textAlign: "center", fontSize: 15, color: "#F28602" }}>Sign in</Text>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
                 </View>
             </ScrollView>
         );

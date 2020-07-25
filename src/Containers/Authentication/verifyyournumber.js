@@ -145,8 +145,10 @@ class Veryfiyournumber extends Component {
                     alignItems: "center",
                     // backgroundColor: "red",
                 }}>
-                    <Text style={{ fontSize: 30, fontWeight: "bold", textAlign: "center", marginTop: 50 }}>Verify your {"\n"} phone number</Text>
-                    <Text style={{ marginTop: 40, textAlign: "center" }}>We have sent you an SMS with a code to{"\n"} number {"+" + dialCode + " " + phoneNumber} </Text>
+                    {/* <Text style={{ fontSize: 30, fontWeight: "bold", textAlign: "center", marginTop: 50 }}>Verify your {"\n"} phone number</Text> */}
+                    <Text style={{ fontSize: 30, fontWeight: "bold", textAlign: "center", marginTop: 50 }}>Phone Verification </Text>
+                    {/* <Text style={{ marginTop: 40, textAlign: "center" }}>We have sent you an SMS with a code to{"\n"} number {"+" + dialCode + " " + phoneNumber} </Text> */}
+                    <Text style={{ marginTop: 40, textAlign: "center" }}>To verify your phone, an OTP code will be{"\n"} send to your  number {"+" + dialCode + " " + phoneNumber} via SMS </Text>
 
                     {/* main container */}
 

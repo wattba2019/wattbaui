@@ -79,7 +79,7 @@ class Nearby extends Component {
                                 />
                             </View>
                             <View style={{ flex: 8 }}>
-                                <Text style={{ textAlign: "left" }}>Your Location</Text>
+                                <Text style={{ textAlign: "left" }}>My location</Text>
                             </View>
                         </View>
 

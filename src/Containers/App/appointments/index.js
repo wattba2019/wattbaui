@@ -157,7 +157,7 @@ class Appointments extends Component {
                         alignItems: "center",
                         // backgroundColor: "red"
                     }}>
-                        <Text style={{ alignItems: "center", fontSize: 18, fontWeight: "bold" }}>Appointments</Text>
+                        <Text style={{ alignItems: "center", fontSize: 18, fontWeight: "bold" }}>My Appointments</Text>
                     </View>
                 </View>
 

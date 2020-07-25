@@ -126,8 +126,9 @@ class OfferDetails extends Component {
                                         onPress={() => this.next()}
                                     >
                                         <ImageBackground source={require('../../../assets/buttonBackground.png')} resizeMode="contain"
-                                            style={{ height: "100%", width: "100%", justifyContent: "center", }}
+                                            style={{ height: "100%", width: "100%", justifyContent: "center", flexDirection: "row" }}
                                         >
+                                            {/* <Text style={{ textAlign: "left", fontSize: 15, margin: 12, color: "white" }}> Total: GBP {offerDetails.price} </Text> */}
                                             <Text style={{ textAlign: "center", fontSize: 15, margin: 12, color: "white" }}>Book</Text>
                                         </ImageBackground>
                                     </TouchableOpacity>

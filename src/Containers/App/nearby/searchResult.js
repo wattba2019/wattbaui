@@ -94,10 +94,10 @@ class SearchResults extends Component {
                                                     </View>
 
                                                     <View style={{ flex: 2, flexDirection: "row", justifyContent: "center", alignItems: "center", }}>
-                                                        <TouchableOpacity style={{ backgroundColor: "#FD6958", width: '80%', height: 35, borderRadius: 25, justifyContent: "center", alignItems: "center" }}
+                                                        <TouchableOpacity style={{ backgroundColor: "#FD6958", width: '100%', height: 35, borderRadius: 25, marginRight: "15%", justifyContent: "center", alignItems: "center" }}
                                                             onPress={() => Actions.Shop({ shop: key })}
                                                         >
-                                                            <Text style={{ color: "#ffffff", fontSize: 12, }}>View</Text>
+                                                            <Text style={{ color: "#ffffff", fontSize: 10, textAlign: "center" }}>Book an Appointment</Text>
                                                             {/* <Image source={require('../../../../assets/book.png')} resizeMode="contain"
                                                                 style={{ height: 30, width: 80, }}
                                                             /> */}

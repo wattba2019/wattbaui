@@ -19,7 +19,7 @@ class BasicInfo extends Component {
         return (
             <View>
                 <View style={{ paddingHorizontal: 25, paddingVertical: 10 }} >
-                    <Text style={{ marginTop: 20, fontWeight: "bold" }}>Opening Hours</Text>
+                    <Text style={{ marginTop: 20, fontWeight: "bold" }}>Working Hours</Text>
                     {
                         (workingHours) ? (
                             workingHours.map((key, index) => {

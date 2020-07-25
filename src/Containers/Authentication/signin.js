@@ -128,8 +128,8 @@ class Signin extends Component {
                     }}>
 
 
-                        <Text style={{ fontSize: 30, marginTop: 10 }}>Welcome back</Text>
-                        <Text style={{ color: "grey" }}>Login to your account</Text>
+                        <Text style={{ fontSize: 30, marginTop: 10 }}>Welcome back,</Text>
+                        <Text style={{ color: "grey" }}>Sign in to book appointments</Text>
 
                         <View
                             style={{ width: "85%", marginTop: 10, borderColor: 'gray', backgroundColor: "#E8E6E7", borderRadius: 25, justifyContent: "center", alignItems: "center" }}
@@ -172,7 +172,7 @@ class Signin extends Component {
                                 >
                                     {
                                         (loader != true) ? (
-                                            <Text style={{ textAlign: "center", fontSize: 15, margin: 12, color: "white" }}>Login</Text>
+                                            <Text style={{ textAlign: "center", fontSize: 15, margin: 12, color: "white" }}>Sign In</Text>
                                         ) : <ActivityIndicator color="white" />
                                     }
                                 </ImageBackground>
@@ -192,15 +192,15 @@ class Signin extends Component {
                         <TouchableOpacity
                             onPress={() => Actions.Forgotyourpassword()}
                         >
-                            <Text style={{ textAlign: "center", fontSize: 15, marginTop: activateAccount ? 5 : 20, color: "black" }}>Forgot your password?</Text>
+                            <Text style={{ textAlign: "center", fontSize: 15, marginTop: activateAccount ? 5 : 20, color: "black" }}>Forgot password?</Text>
                         </TouchableOpacity>
 
                         <TouchableOpacity
                             style={{ flexDirection: "row", marginTop: 10, }}
                             onPress={() => Actions.Signup()}
                         >
-                            <Text style={{ textAlign: "center", fontSize: 15, color: "#B7B7C0" }}>Don't have an account? </Text>
-                            <Text style={{ textAlign: "center", fontSize: 15, color: "#F28602" }}>Sign up</Text>
+                            <Text style={{ textAlign: "center", fontSize: 15, color: "#B7B7C0" }}>New user? </Text>
+                            <Text style={{ textAlign: "center", fontSize: 15, color: "#F28602" }}>Create an account now!</Text>
                         </TouchableOpacity>
 
                     </View>

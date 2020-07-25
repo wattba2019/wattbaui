@@ -121,7 +121,7 @@ export function getNearByShopsUnder5Km(currentLocation) {
             axios(options)
                 .then(result => {
                     let shops = result.data.data
-                    // console.log(shops, "Fetch_Shops_NearBy")
+                    console.log(shops, "Fetch_Shops_NearBy")
                     if (shops) {
                         dispatch({ type: "SET_NEARBY_SHOP", payload: shops })
                         let shopLocationMarkers = []

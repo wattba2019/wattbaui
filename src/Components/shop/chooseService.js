@@ -132,7 +132,7 @@ class ChooseService extends Component {
                         justifyContent: "center",
                         alignItems: "center",
                     }}>
-                        <Text style={{ alignItems: "center", fontSize: 16 }}>Book Appointment</Text>
+                        <Text style={{ alignItems: "center", fontSize: 16 }}>Book An Appointment</Text>
                     </View>
                 </View>
 
@@ -187,7 +187,7 @@ class ChooseService extends Component {
                                 })}
                             </RadioForm> */}
 
-                            <Text style={{ fontSize: 20, fontWeight: "normal", marginTop: 20 }}>Choose your service</Text>
+                            <Text style={{ fontSize: 20, fontWeight: "normal", marginTop: 20 }}>Choose your service(s)</Text>
 
                             {
                                 (shopServices) ? (
@@ -255,14 +255,14 @@ class ChooseService extends Component {
                         flex: 1, flexDirection: "row", justifyContent: "center", alignItems: "center", width: "90%", marginHorizontal: "5%",
                     }}>
                         <View style={{ flex: 1, justifyContent: "center", alignItems: "flex-start", }}>
-                            <Text style={{ fontWeight: "normal", }}>Total Cost</Text>
+                            <Text style={{ fontWeight: "normal", }}>Total</Text>
                             <Text style={{ fontWeight: "bold", fontSize: 18 }}>GBP {totalCost}</Text>
                         </View>
                         <View style={{ flex: 1, justifyContent: "center", alignItems: "flex-end", }}>
                             <TouchableOpacity
                                 onPress={() => this.next()}
                                 style={{ width: "70%", height: 42, justifyContent: "center", alignItems: "center", backgroundColor: "#FD6958", borderRadius: 8 }}>
-                                <Text style={{ fontWeight: "bold", fontSize: 18, color: "#ffffff" }}>Next</Text>
+                                <Text style={{ fontWeight: "bold", fontSize: 12, color: "#ffffff",textAlign:"center" }}>Proceed to Checkout</Text>
                             </TouchableOpacity>
                         </View>
 

@@ -56,10 +56,10 @@ class UpdatePassword extends Component {
                             />
 
                             <Text style={{ textAlign: "center", fontSize: 25 }}>
-                                Your password has{"\n"}been reset
+                                Password reset{"\n"}instructions sent
                             </Text>
                             <Text style={{ textAlign: "center", marginTop: 20 }}>
-                                You'll shortly receive an email with {"\n"} a code to setup a new password.
+                                You'll shortly receive an email with {"\n"} instructions to setup a new password.
                             </Text>
                             {/* <TouchableOpacity style={{ marginBottom: 10, marginTop: 10, backgroundColor: "#E94E1B", width: "95%", height: "15%", justifyContent: "center", alignItems: "center" }}
                                 onPress={() => this.upDatePassword()}>
@@ -74,7 +74,7 @@ class UpdatePassword extends Component {
                                     <ImageBackground source={require('../../assets/buttonBackground.png')} resizeMode="contain"
                                         style={{ height: "100%", width: "100%", justifyContent: "center", }}
                                     >
-                                        <Text style={{ textAlign: "center", fontSize: 15, margin: 12, color: "white" }}>Done</Text>
+                                        <Text style={{ textAlign: "center", fontSize: 15, margin: 12, color: "white" }}>Ok</Text>
                                     </ImageBackground>
                                 </TouchableOpacity>
                             </View>

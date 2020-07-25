@@ -427,7 +427,7 @@ class AppointmentDetails extends Component {
                                         />
                                     </View>
                                     <View style={{ marginLeft: 20, flex: 7, flexDirection: "row", justifyContent: "space-between", alignItems: "center", }}>
-                                        <Text >Fees</Text>
+                                        {/* <Text >Fees</Text> */}
                                         <Text >{totalCost} GBP</Text>
                                     </View>
                                 </View>

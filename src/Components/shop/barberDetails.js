@@ -123,7 +123,7 @@ class BarberDetails extends Component {
                                 <ImageBackground source={require('../../../assets/buttonBackground.png')} resizeMode="contain"
                                     style={{ height: "100%", width: "100%", justifyContent: "center", }}
                                 >
-                                    <Text style={{ textAlign: "center", fontSize: 15, margin: 12, color: "white", }}>Book An Appointment</Text>
+                                    <Text style={{ textAlign: "center", fontSize: 15, margin: 12, color: "white", }}>Book an Appointment</Text>
                                 </ImageBackground>
                             </TouchableOpacity>
 

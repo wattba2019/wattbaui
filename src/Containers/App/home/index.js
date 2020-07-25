@@ -32,10 +32,12 @@ class Home extends Component {
             Haircut: [],
             Coloring: [],
             Styling: [],
-            Hairdryer: [],
-            Hairspa: [],
-            Shampoo: [],
             Shaving: [],
+            Childrens_Haircut: [],
+            Waxing: [],
+            // Hairdryer: [],
+            // Hairspa: [],
+            // Shampoo: [],
             More: [],
         };
     }
@@ -277,6 +279,7 @@ class Home extends Component {
     }
 
     getMultipleShopWithId(shopid) {
+        console.log(shopid, "shopid")
         if (shopid.length) {
             cloneData = {
                 shopid: shopid
@@ -294,8 +297,8 @@ class Home extends Component {
             axios(options)
                 .then(result => {
                     let shops = result.data.data
-                    // const fiveStarRatingShops = shops.filter(shops => shops.review === "5");
-                    Actions.SearchResults({ shops: shops, headerTitle: "Top Services" })
+                    const fiveStarRatingShops = shops.filter(shops => shops.review === "5");
+                    Actions.SearchResults({ shops: fiveStarRatingShops, headerTitle: "Top Services" })
                     // console.log(shops, "Fetch_multiple_shops_withID")
                 })
                 .catch(err => {
@@ -323,49 +326,71 @@ class Home extends Component {
                 let Haircut = []
                 let Coloring = []
                 let Styling = []
-                let Hairdryer = []
-                let Hairspa = []
-                let Shampoo = []
                 let Shaving = []
+                let Childrens_Haircut = []
+                let Waxing = []
+                // let Hairdryer = []
+                // let Hairspa = []
+                // let Shampoo = []
                 let More = []
                 for (let index = 0; index < allServices.length; index++) {
                     const service = allServices[index];
                     const serviceName = allServices[index].serviceName;
+
+                    console.log(service, "getAllServices")
+
                     if (serviceName === "Haircut") {
                         if (Haircut.indexOf(service.userId) == -1) {
                             Haircut.push(service.userId)
                         }
                     }
+
                     if (serviceName === "Coloring") {
                         if (Coloring.indexOf(service.userId) == -1) {
                             Coloring.push(service.userId)
                         }
                     }
+
                     if (serviceName === "Styling") {
                         if (Styling.indexOf(service.userId) == -1) {
                             Styling.push(service.userId)
                         }
                     }
-                    if (serviceName === "Hairdryer") {
-                        if (Hairdryer.indexOf(service.userId) == -1) {
-                            Hairdryer.push(service.userId)
-                        }
-                    }
-                    if (serviceName === "Hairspa") {
-                        if (Hairspa.indexOf(service.userId) == -1) {
-                            Hairspa.push(service.userId)
-                        }
-                    }
-                    if (serviceName === "Shampoo") {
-                        if (Shampoo.indexOf(service.userId) == -1) {
-                            Shampoo.push(service.userId)
-                        }
-                    }
+
                     if (serviceName === "Shaving") {
                         if (Shaving.indexOf(service.userId) == -1) {
                             Shaving.push(service.userId)
                         }
                     }
+
+                    if (serviceName === "Childrens Haircut") {
+                        if (Childrens_Haircut.indexOf(service.userId) == -1) {
+                            Childrens_Haircut.push(service.userId)
+                        }
+                    }
+
+                    if (serviceName === "Waxing") {
+                        if (Waxing.indexOf(service.userId) == -1) {
+                            Waxing.push(service.userId)
+                        }
+                    }
+
+                    // if (serviceName === "Hairdryer") {
+                    //     if (Hairdryer.indexOf(service.userId) == -1) {
+                    //         Hairdryer.push(service.userId)
+                    //     }
+                    // }
+                    // if (serviceName === "Hairspa") {
+                    //     if (Hairspa.indexOf(service.userId) == -1) {
+                    //         Hairspa.push(service.userId)
+                    //     }
+                    // }
+                    // if (serviceName === "Shampoo") {
+                    //     if (Shampoo.indexOf(service.userId) == -1) {
+                    //         Shampoo.push(service.userId)
+                    //     }
+                    // }
+
                     else {
                         // console.log(service, "MORE_DATA")
                         More.push(service)
@@ -375,10 +400,12 @@ class Home extends Component {
                     Haircut,
                     Coloring,
                     Styling,
-                    Hairdryer,
-                    Hairspa,
-                    Shampoo,
                     Shaving,
+                    Childrens_Haircut,
+                    Waxing,
+                    // Hairdryer,
+                    // Hairspa,
+                    // Shampoo,
                     More,
                 })
             })
@@ -551,16 +578,19 @@ class Home extends Component {
             Haircut,
             Coloring,
             Styling,
-            Hairdryer,
-            Hairspa,
-            Shampoo,
             Shaving,
+            Childrens_Haircut,
+            Waxing,
             More,
+            // Hairdryer,
+            // Hairspa,
+            // Shampoo,
             isloader,
             activity,
             moreLoader
         } = this.state
 
+        console.log(Haircut, Childrens_Haircut, "Childrens_Haircut")
         return (
             <View
                 style={{
@@ -610,7 +640,7 @@ class Home extends Component {
                                 <View style={{
                                     flex: 8
                                 }}>
-                                    <Text style={{ textAlign: "left" }}>Your Location</Text>
+                                    <Text style={{ textAlign: "left" }}>My location</Text>
                                 </View>
                             </View>
 
@@ -647,7 +677,7 @@ class Home extends Component {
                                 <TextInput
                                     style={{ width: "90%", }}
                                     value={this.state.email}
-                                    placeholder={"Search"}
+                                    placeholder={"Best Barbershops"}
                                     // onChangeText={text => onChangeText(text)}
                                     onFocus={() => this.onFocusSearch()}
                                 />
@@ -676,8 +706,10 @@ class Home extends Component {
                                 width: "100%",
                                 height: 180,
                                 flex: 1,
-                                flexDirection: "row", flexWrap: "wrap",
-                                justifyContent: "center", alignItems: "center",
+                                flexDirection: "row",
+                                flexWrap: "wrap",
+                                // justifyContent: "center",
+                                // alignItems: "center",
                                 // backgroundColor: "yellow"
                             }}>
 
@@ -705,7 +737,32 @@ class Home extends Component {
                                     />
                                 </TouchableOpacity>
 
+
                                 <TouchableOpacity style={styles.iconsStyle}
+                                    onPress={() => { this.getMultipleShopWithId(Shaving) }}
+                                >
+                                    <Image source={require('../../../../assets/services/shaving.png')} resizeMode="contain"
+                                        style={{ width: "100%", height: "100%", }}
+                                    />
+                                </TouchableOpacity>
+
+                                <TouchableOpacity style={styles.iconsStyle}
+                                    onPress={() => { this.getMultipleShopWithId(Childrens_Haircut) }}
+                                >
+                                    <Image source={require('../../../../assets/services/childrecutting.png')} resizeMode="contain"
+                                        style={{ width: "100%", height: "100%", }}
+                                    />
+                                </TouchableOpacity>
+
+                                <TouchableOpacity style={styles.iconsStyle}
+                                    onPress={() => { this.getMultipleShopWithId(Waxing) }}
+                                >
+                                    <Image source={require('../../../../assets/services/waxing.png')} resizeMode="contain"
+                                        style={{ width: "100%", height: "100%", }}
+                                    />
+                                </TouchableOpacity>
+
+                                {/* <TouchableOpacity style={styles.iconsStyle}
                                     onPress={() => { this.getMultipleShopWithId(Hairdryer) }}
                                 >
                                     <Image source={require('../../../../assets/services/hairdryer.png')} resizeMode="contain"
@@ -727,15 +784,9 @@ class Home extends Component {
                                     <Image source={require('../../../../assets/services/shampo.png')} resizeMode="contain"
                                         style={{ width: "100%", height: "100%", }}
                                     />
-                                </TouchableOpacity>
+                                </TouchableOpacity> */}
 
-                                <TouchableOpacity style={styles.iconsStyle}
-                                    onPress={() => { this.getMultipleShopWithId(Shaving) }}
-                                >
-                                    <Image source={require('../../../../assets/services/shaving.png')} resizeMode="contain"
-                                        style={{ width: "100%", height: "100%", }}
-                                    />
-                                </TouchableOpacity>
+
 
                                 <TouchableOpacity style={styles.iconsStyle}
                                     onPress={() => Actions.ServiceListing({ More, headerTitle: "More Services" })}
@@ -870,7 +921,7 @@ class Home extends Component {
                                                 (bestBarberShops && bestBarberShops != 0) ? (
                                                     <View style={{ width: "95%", marginTop: 10, flex: 1, flexDirection: "row", }}>
                                                         <TouchableOpacity style={{ flex: 1 }}>
-                                                            <Text style={{ color: "black", fontWeight: "bold", fontSize: 16 }}>Best Barbershops</Text>
+                                                            <Text style={{ color: "black", fontWeight: "bold", fontSize: 16 }}>Top rated Barbershops</Text>
                                                         </TouchableOpacity>
                                                     </View>
                                                 ) : null
@@ -996,7 +1047,7 @@ class Home extends Component {
                                             <InfiniteScroll
                                                 showsHorizontalScrollIndicator={true}
                                                 horizontal={true}
-                                                // onLoadMoreAsync={this._onEndReachedSpecialPackages.bind(this)}
+                                            // onLoadMoreAsync={this._onEndReachedSpecialPackages.bind(this)}
                                             >
                                                 {
                                                     (packages && packages != 0) ? (

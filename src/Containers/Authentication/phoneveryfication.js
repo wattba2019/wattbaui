@@ -163,7 +163,7 @@ class Phoneverification extends Component {
                     alignItems: "center",
                 }}>
                     <Text style={{ fontSize: 30, fontWeight: "bold" }}>Phone Verification</Text>
-                    <Text style={{}}>Enter your OTP code here</Text>
+                    <Text style={{}}>Enter your OTP code below</Text>
 
 
                     <View style={styles.mainContainer}>
@@ -274,7 +274,7 @@ class Phoneverification extends Component {
                             >
                                 {
                                     (loader != true) ? (
-                                        <Text style={{ textAlign: "center", fontSize: 15, margin: 12, color: "white" }}>Next</Text>
+                                        <Text style={{ textAlign: "center", fontSize: 15, margin: 12, color: "white" }}>Complete Verification</Text>
                                     ) : <ActivityIndicator color="white" />
                                 }
                             </ImageBackground>

@@ -32,7 +32,7 @@ class ServiceDetaild extends Component {
                         width: "100%",
                     }}
                 >
-                    <Image source={require('../../../assets/servicedetails.png')} resizeMode="cover"
+                    <Image source={require('../../../assets/servicedetails.jpg')} resizeMode="cover"
                         style={{ height: "110%", width: "100%", }}
                     />
                     <TouchableOpacity onPress={() => Actions.pop()}

@@ -93,10 +93,12 @@ class Allowaccesslocation extends Component {
                         style={{ left: 0, height: "40%", width: "40%", marginTop: 40 }}
                     />
                     <Text style={{ textAlign: "center", fontSize: 18, fontWeight: "bold" }}>
-                        Find Barbershops near{"\n"}your location!
+                        Find nearby Barbershops!
                   </Text>
                     <Text style={{ textAlign: "center", marginTop: 20 }}>
-                        Please allow app access to your location to{"\n"}find Barbershops near you
+                        To find Barbershops near you, allow
+                        {"\n"}
+                        app access to your location
                   </Text>
                     <View
                         style={{ width: "85%", height: 50, marginTop: 100, flexDirection: "column", }}
@@ -109,7 +111,7 @@ class Allowaccesslocation extends Component {
                             >
                                 {
                                     (loader != true) ? (
-                                        <Text style={{ textAlign: "center", fontSize: 15, margin: 12, color: "white" }}>Yes, allow</Text>
+                                        <Text style={{ textAlign: "center", fontSize: 15, margin: 12, color: "white" }}>Allow location access</Text>
                                     ) : <ActivityIndicator color="white" />
                                 }
                             </ImageBackground>
@@ -125,7 +127,7 @@ class Allowaccesslocation extends Component {
                             onPress={() => Actions.AppContainer()}
                             style={{ textAlign: "center", fontSize: 15, marginTop: 12, }}
                         >
-                            Don't allow
+                            Restrict location access
                         </Text>
                     </TouchableOpacity>
 
@@ -145,7 +147,7 @@ let mapStateToProps = state => {
 };
 function mapDispatchToProps(dispatch) {
     return ({
-        setUserCurrentLocation: (position, ) => {
+        setUserCurrentLocation: (position,) => {
             dispatch(setUserCurrentLocation(position));
         },
     })

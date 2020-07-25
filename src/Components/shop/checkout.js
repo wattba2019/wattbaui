@@ -104,7 +104,7 @@ class Checkout extends Component {
     async onCardNonceRequestSuccess(cardDetails) {
         const { booking, } = this.props
         // cardDetails.cost = booking.cost;
-        cardDetails.cost = (booking.cost / 100 * (this.state.serviceCharge + this.state.vatCharges)) + booking.cost;
+        cardDetails.cost = Math.round((booking.cost / 100 * (this.state.serviceCharge + this.state.vatCharges)) + booking.cost);
         // console.log(cardDetails, booking.cost, "Credential")
         try {
             // take payment with the card details
@@ -278,7 +278,7 @@ class Checkout extends Component {
                                 }}>
 
                                     <View>
-                                        <Text style={{ alignItems: "center", fontWeight: "bold", fontSize: 18 }}>Booking summary</Text>
+                                        <Text style={{ alignItems: "center", fontWeight: "bold", fontSize: 18 }}>Appointment summary</Text>
                                     </View>
                                     {/* <View style={{ flexDirection: "row", justifyContent: "space-between", marginTop: 15 }}>
                                         <Text style={{ alignItems: "center", fontWeight: "bold", fontSize: 16 }}>Cost</Text>
@@ -335,12 +335,12 @@ class Checkout extends Component {
 
                                     <View style={{ flexDirection: "row", justifyContent: "space-between", marginTop: 5, }}>
                                         <Text style={{ alignItems: "center", fontWeight: "bold", fontSize: 12 }}>{"Service Charges"}</Text>
-                                        <Text style={{ alignItems: "center", fontWeight: "bold", fontSize: 12 }}>{booking.cost / 100 * serviceCharge}</Text>
+                                        <Text style={{ alignItems: "center", fontWeight: "bold", fontSize: 12 }}> {Math.round(booking.cost / 100 * serviceCharge)}</Text>
                                     </View>
 
                                     <View style={{ flexDirection: "row", justifyContent: "space-between", marginTop: 5, }}>
                                         <Text style={{ alignItems: "center", fontWeight: "bold", fontSize: 12 }}>{"VAT Charges"}</Text>
-                                        <Text style={{ alignItems: "center", fontWeight: "bold", fontSize: 12 }}>{booking.cost / 100 * vatCharges}</Text>
+                                        <Text style={{ alignItems: "center", fontWeight: "bold", fontSize: 12 }}>{Math.round(booking.cost / 100 * vatCharges)}</Text>
                                     </View>
 
                                     {/* Promotion Discounts */}
@@ -390,13 +390,14 @@ class Checkout extends Component {
 
                                     <View style={{ flexDirection: "row", justifyContent: "space-between", marginTop: 15, marginBottom: 15 }}>
                                         <Text style={{ alignItems: "center", fontWeight: "bold", fontSize: 16 }}>Total</Text>
-                                        <Text style={{ alignItems: "center", fontWeight: "bold", fontSize: 16 }}>GBP {(booking.cost / 100 * (serviceCharge + vatCharges)) + booking.cost}</Text>
+                                        <Text style={{ alignItems: "center", fontWeight: "bold", fontSize: 16 }}>GBP {Math.round((booking.cost / 100 * (serviceCharge + vatCharges)) + booking.cost)}</Text>
                                     </View>
                                 </View>
 
                                 <View style={{ width: "100%", }}>
                                     <View style={{ width: "90%", marginHorizontal: "5%", marginTop: 10 }}>
-                                        <Text style={{ alignItems: "center", fontWeight: "bold", fontSize: 18, }}>Shop Details</Text>
+                                        {/* <Text style={{ alignItems: "center", fontWeight: "bold", fontSize: 18, }}>Shop Details</Text> */}
+                                        <Text style={{ alignItems: "center", fontWeight: "bold", fontSize: 18, }}>Location</Text>
 
                                         <View style={{ flexDirection: "row", justifyContent: "space-between", marginTop: 10 }}>
                                             <Text style={{ alignItems: "center", fontSize: 16 }}>{shop.businessName}</Text>
@@ -687,7 +688,7 @@ class Checkout extends Component {
                                 onPress={() => Actions.AppContainer()}
                             >
                                 <View style={{ flex: 1, justifyContent: "center", alignItems: "center", }}>
-                                    <Text style={{ fontSize: 17 }}>Cancel</Text>
+                                    <Text style={{ fontSize: 12 }}>Cancel</Text>
                                 </View>
                             </TouchableOpacity>
                             <View style={{
@@ -705,7 +706,8 @@ class Checkout extends Component {
                                         style={{ width: "100%", height: 42, justifyContent: "center", alignItems: "center", backgroundColor: "#FD6958", borderRadius: 0 }}>
                                         {
                                             (loader != true) ? (
-                                                <Text style={{ fontWeight: "bold", fontSize: 18, color: "#ffffff" }}>Pay Now</Text>
+                                                // <Text style={{ fontWeight: "bold", fontSize: 18, color: "#ffffff" }}>Pay Now</Text>
+                                                <Text style={{ fontWeight: "bold", fontSize: 12, color: "#ffffff" }}>Complete Checkout</Text>
                                             ) : <ActivityIndicator color="#ffffff" />
                                         }
                                     </TouchableOpacity>

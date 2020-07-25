@@ -212,7 +212,7 @@ class Profile extends Component {
                                     style={{ width: 25, height: 25 }}
                                     source={require("../../../../assets/profileicons/Icon.png")}
                                 />
-                                <Text style={{ alignItems: "center", color: "#131313", fontSize: 18, marginLeft: "7%" }}>Reset Password</Text>
+                                <Text style={{ alignItems: "center", color: "#131313", fontSize: 18, marginLeft: "7%" }}>Change Password</Text>
                             </View>
                         </TouchableOpacity>
 
@@ -245,7 +245,7 @@ class Profile extends Component {
                         <TouchableOpacity style={{ width: "90%", marginHorizontal: "5%" }}
                             onPress={() =>
                                 // this.logout()
-                                 Actions.TermsAndCondition()
+                                Actions.TermsAndCondition()
                             }>
                             <View style={{ flexDirection: "row", height: 70, alignItems: "center", borderBottomColor: "#F0F2F6", borderBottomWidth: 1, padding: 10 }}>
                                 <Image
@@ -253,9 +253,27 @@ class Profile extends Component {
                                     style={{ width: 25, height: 25 }}
                                     source={require("../../../../assets/profileicons/Icon-3.png")}
                                 />
-                                <Text style={{ alignItems: "center", color: "#131313", fontSize: 18, marginLeft: "7%" }}>Terms & Policies</Text>
+                                <Text style={{ alignItems: "center", color: "#131313", fontSize: 18, marginLeft: "7%" }}>Terms & Conditions</Text>
                             </View>
                         </TouchableOpacity>
+
+                        <View style={{ width: "90%", marginHorizontal: "5%" }}
+                        // onPress={() =>
+                        //     Actions.TermsAndCondition()
+                        // }
+                        >
+                            <View style={{ flexDirection: "row", height: 70, alignItems: "center", borderBottomColor: "#F0F2F6", borderBottomWidth: 1, padding: 10 }}>
+                                {/* <Image
+                                    resizeMode="contain"
+                                    style={{ width: 25, height: 25 }}
+                                    source={require("../../../../assets/profileicons/Icon-3.png")}
+                                /> */}
+
+                                <AntDesign name="contacts" style={{ color: "#FD6958", fontWeight: 'bold', fontSize: 28 }} />
+                                <Text style={{ alignItems: "center", color: "#131313", fontSize: 18, marginLeft: "7%" }}>Contact us at info@wattba.app</Text>
+                            </View>
+                        </View>
+
 
                         <TouchableOpacity
                             onPress={() =>
@@ -270,7 +288,7 @@ class Profile extends Component {
                                     style={{ width: 25, height: 25 }}
                                     source={require("../../../../assets/profileicons/Icon-4.png")}
                                 />
-                                <Text style={{ alignItems: "center", color: "#131313", fontSize: 18, marginLeft: "7%" }}>Log Out</Text>
+                                <Text style={{ alignItems: "center", color: "#131313", fontSize: 18, marginLeft: "7%" }}>Sign Out</Text>
                             </View>
                         </TouchableOpacity>
 

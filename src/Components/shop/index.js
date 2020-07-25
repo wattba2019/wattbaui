@@ -273,6 +273,8 @@ class shop extends Component {
                 workingHoursArr.push(data.saturday)
                 workingHoursArr.push(data.sunday)
 
+                console.log(workingtime,shopStatus, "workingtime")
+
                 this.setState({
                     workingtime: workingtime,
                     workingHours: workingHoursArr,
@@ -376,16 +378,16 @@ class shop extends Component {
         const { activeColor, workingtime, workingHours, services, packages, stylists, gallery, favroite, favroiteLoader, initialPage } = this.state
         let { shop, currentLocation } = this.props
 
-        // console.log(initialPage, "initialPage")
+        console.log(workingtime, "initialPage")
 
         return (
             <View style={{ flex: 1 }}>
                 <SafeAreaView style={styles.container} >
                     {
                         (shop.coverImage != null) ? (
-                            <Image source={{ uri: shop.coverImage }} resizeMode="contain"
+                            <Image source={{ uri: shop.coverImage }} resizeMode="cover"
                                 style={{ width: "100%", height: 250 }} />
-                        ) : <Image source={require('../../../assets/nophoto.jpg')} resizeMode="contain"
+                        ) : <Image source={require('../../../assets/nophoto.jpg')} resizeMode="cover"
                             style={{ width: "100%", height: 250 }} />
                     }
 
@@ -636,7 +638,7 @@ class shop extends Component {
                                     <TabHeading
                                         style={{ flexDirection: "column", backgroundColor: "white" }}
                                     >
-                                        <Text style={{ color: activeColor === "gallery" ? "#FD6958" : "black" }}>Gallery</Text>
+                                        <Text style={{ color: activeColor === "gallery" ? "#FD6958" : "black" }}>Photos</Text>
                                     </TabHeading>
                                 }
                             >
