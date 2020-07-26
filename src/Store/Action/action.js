@@ -99,6 +99,24 @@ export function setFavShops(shops) {
 }
 
 
+export function distance(lat1, lon1, lat2, lon2) {
+    return dispatch => {
+        var R = 6371; // km (change this constant to get miles)
+        var dLat = (lat2 - lat1) * Math.PI / 180;
+        var dLon = (lon2 - lon1) * Math.PI / 180;
+        var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+            Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+            Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        var d = R * c;
+        // if (d > 1) return Math.round(d) + " km";
+        // else if (d <= 1) return Math.round(d * 1000) + "m";
+        return d;
+    }
+
+}
+
+
 export function getNearByShopsUnder5Km(currentLocation) {
     // console.log(currentLocation, "INSIDEACTION")
     return dispatch => {
@@ -120,8 +138,17 @@ export function getNearByShopsUnder5Km(currentLocation) {
             }
             axios(options)
                 .then(result => {
-                    let shops = result.data.data
-                    console.log(shops, "Fetch_Shops_NearBy")
+                    let shops1 = result.data.data
+                    let shops = []
+                    for (let index = 0; index < shops1.length; index++) {
+                        const element = shops1[index];
+                        const lat = shops1[index].location.coordinates[0];
+                        const lng = shops1[index].location.coordinates[1];
+                        element.distance = dispatch(distance(lat, lng, currentLocation.coords.latitude, currentLocation.coords.longitude))
+                        shops.push(element)
+                    }
+                    shops = shops.sort((a, b) => a.distance - b.distance)
+                    // console.log(shops, "Fetch_Shops_NearBy")
                     if (shops) {
                         dispatch({ type: "SET_NEARBY_SHOP", payload: shops })
                         let shopLocationMarkers = []

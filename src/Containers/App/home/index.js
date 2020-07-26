@@ -52,6 +52,23 @@ class Home extends Component {
         // this.setState({ activity: false, })
     }
 
+
+
+    distance(lat1, lon1, lat2, lon2) {
+        var R = 6371; // km (change this constant to get miles)
+        var dLat = (lat2 - lat1) * Math.PI / 180;
+        var dLon = (lon2 - lon1) * Math.PI / 180;
+        var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+            Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+            Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        var d = R * c;
+        // if (d > 1) return Math.round(d) + " km";
+        // else if (d <= 1) return Math.round(d * 1000) + "m";
+        return d;
+    }
+
+
     getNeabyShops() {
         const { currentLocation } = this.props
         let { offsetNearByShops, } = this.state
@@ -75,8 +92,17 @@ class Home extends Component {
             }
             axios(options)
                 .then(result => {
-                    let nearByShops = result.data.data
-                    // console.log(nearByShops, "Fetch_Shops_NearBy")
+                    let nearByShops1 = result.data.data
+                    let nearByShops = []
+                    for (let index = 0; index < nearByShops1.length; index++) {
+                        const element = nearByShops1[index];
+                        const lat = nearByShops1[index].location.coordinates[0];
+                        const lng = nearByShops1[index].location.coordinates[1];
+                        element.distance = this.distance(lat, lng, currentLocation.coords.latitude, currentLocation.coords.longitude)
+                        nearByShops.push(element)
+                    }
+                    nearByShops = nearByShops.sort((a, b) => a.distance - b.distance)
+                    // console.log(nearByShops, "Fetch_Shops_NearBy_Home_Screen")
                     this.props.setNearByShops(nearByShops)
                     this.setState({
                         nearByShops: nearByShops,

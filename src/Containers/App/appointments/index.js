@@ -91,8 +91,9 @@ class Appointments extends Component {
                 }
 
 
-                let sortedpastBookingss = pastBookings.sort((a, b) => b.bookingDateTime - a.bookingDateTime)
-                let sortedupcommingAndApprovedBookings = upcomminBookings.sort((a, b) => b.bookingDateTime - a.bookingDateTime)
+                // let sortedpastBookingss = pastBookings.sort((a, b) => b.bookingDateTime - a.bookingDateTime)
+                let sortedpastBookingss = pastBookings.sort((a, b) => new Date(a.bookingDateTime).setHours(a.bookingHour) - new Date(b.bookingDateTime).setHours(b.bookingHour))
+                let sortedupcommingAndApprovedBookings = upcomminBookings.sort((a, b) =>new Date(a.bookingDateTime).setHours(a.bookingHour) - new Date(b.bookingDateTime).setHours(b.bookingHour))
 
                 this.setState({
                     loader: !this.state.loader,
