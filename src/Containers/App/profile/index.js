@@ -269,7 +269,7 @@ class Profile extends Component {
                                     source={require("../../../../assets/profileicons/Icon-3.png")}
                                 /> */}
 
-                                <AntDesign name="contacts" style={{ color: "#FD6958", fontWeight: 'bold', fontSize: 28 }} />
+                                <AntDesign name="contacts" style={{ color: "#FD6958", fontWeight: 'bold', fontSize: 28, left: -2 }} />
                                 <Text style={{ alignItems: "center", color: "#131313", fontSize: 18, marginLeft: "7%" }}>Contact us at info@wattba.app</Text>
                             </View>
                         </View>

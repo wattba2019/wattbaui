@@ -273,7 +273,7 @@ class shop extends Component {
                 workingHoursArr.push(data.saturday)
                 workingHoursArr.push(data.sunday)
 
-                console.log(workingtime,shopStatus, "workingtime")
+                console.log(workingtime, shopStatus, "workingtime")
 
                 this.setState({
                     workingtime: workingtime,
@@ -386,22 +386,50 @@ class shop extends Component {
                     {
                         (shop.coverImage != null) ? (
                             <Image source={{ uri: shop.coverImage }} resizeMode="cover"
-                                style={{ width: "100%", height: 250 }} />
+                                // style={{ width: "100%", height: "250" }}
+                                style={{ width: "100%", height: "100%" }}
+                            />
                         ) : <Image source={require('../../../assets/nophoto.jpg')} resizeMode="cover"
-                            style={{ width: "100%", height: 250 }} />
+                            style={{ width: "100%", height: "100%" }}
+                            // style={{ width: "100%", height: 250 }}
+                            />
                     }
 
                     <TouchableOpacity onPress={() => Actions.pop()}
                         style={{ width: 25, position: 'absolute', top: 0, left: 30, right: 0, bottom: 130, justifyContent: "center" }}>
-                        <Ionicons name="ios-arrow-back" style={{ color: "#fff", fontWeight: 'bold', fontSize: 28 }} />
+                        <Ionicons name="ios-arrow-back" style={{
+                            color: "#fff", fontWeight: 'bold', fontSize: 28, marginLeft: "5%",
+                            shadowColor: "#000",
+                            shadowColor: "#000",
+                            textShadowColor: 'black',
+                            textShadowOffset: { width: -1, height: 0 },
+                            textShadowRadius: 5,
+                        }} />
                     </TouchableOpacity>
 
-                    <View style={{ width: 230, position: 'absolute', top: "35%", left: 30, right: 0, bottom: 0, justifyContent: "center", }}>
-                        <Text style={{ color: "#fff", fontSize: 18 }}>{shop.businessName}</Text>
-                        <Text style={{ color: "#fff", fontSize: 14 }}>{shop.addressLine1}</Text>
+                    <View style={{
+                        width: 230,
+                        position: 'absolute', top: "35%", left: 30, right: 0, bottom: 0, justifyContent: "center",
+                        // padding: 10,
+                        // backgroundColor: "red"
+                    }}>
+                        <Text style={{
+                            color: "#fff", fontSize: 18, marginLeft: "3%",
+                            shadowColor: "#000",
+                            textShadowColor: 'black',
+                            textShadowOffset: { width: -1, height: 0 },
+                            textShadowRadius: 5,
+                        }}>{shop.businessName}</Text>
+                        <Text style={{
+                            color: "#fff", fontSize: 14, marginLeft: "3%",
+                            shadowColor: "#000",
+                            textShadowColor: 'black',
+                            textShadowOffset: { width: -1, height: 0 },
+                            textShadowRadius: 5,
+                        }}>{shop.addressLine1}</Text>
                     </View>
 
-                    <View style={{ position: 'absolute', top: "80%", left: 30, bottom: 0, marginTop: 5, justifyContent: "center", flexDirection: "row" }}>
+                    <View style={{ position: 'absolute', top: "80%", left: 30, bottom: 0, marginTop: 5, justifyContent: "center", flexDirection: "row", marginLeft: "1%", }}>
                         {/* <Entypo name="star" style={{ color: "#EBAC43", fontWeight: 'bold', fontSize: 16 }} />
                         <Entypo name="star" style={{ color: "#EBAC43", fontWeight: 'bold', fontSize: 16 }} />
                         <Entypo name="star" style={{ color: "#EBAC43", fontWeight: 'bold', fontSize: 16 }} />
@@ -412,7 +440,13 @@ class shop extends Component {
                                 <View key={i}>
                                     <Entypo
                                         name={shop.review > i ? "star" : "star-outlined"}
-                                        style={{ color: "#EBAC43", fontSize: 16 }} />
+                                        style={{
+                                            color: "#EBAC43", fontSize: 16,
+                                            shadowColor: "#000",
+                                            textShadowColor: 'black',
+                                            textShadowOffset: { width: -1, height: 0 },
+                                            textShadowRadius: 5,
+                                        }} />
                                 </View>
                             )
                         })}
@@ -422,16 +456,20 @@ class shop extends Component {
                         onPress={
                             () => {
                                 this.favroiteAdd()
-
                             }
                         }
-
                         style={{
                             borderColor: "#FD6958",
                             borderWidth: 1,
                             borderRadius: 4,
                             justifyContent: "center",
-                            alignItems: "center", position: 'absolute', right: 20, bottom: 20, height: 30, width: 65, justifyContent: "center", bottom: "25%"
+                            alignItems: "center", position: 'absolute', right: 20, bottom: 20, height: 30, width: 65, justifyContent: "center",
+                            shadowColor: "#000",
+                            shadowColor: "#000",
+                            textShadowColor: 'black',
+                            textShadowOffset: { width: -1, height: 0 },
+                            textShadowRadius: 5,
+                            // bottom: "25%"
                         }}
                     >
                         {
@@ -441,11 +479,9 @@ class shop extends Component {
                                     <Ionicons name="ios-heart-empty" style={{ color: "#FD6958", fontWeight: 'bold', fontSize: 28 }} />
                             ) : <ActivityIndicator color="#FD6958" />
                         }
-
                     </TouchableOpacity>
 
-
-                    {
+                    {/* {
                         (workingtime === true) ? (
                             (this.state.busy === false) ? (
                                 <View style={{ borderColor: "#FFF600", borderWidth: 1, borderRadius: 4, justifyContent: "center", alignItems: "center", position: 'absolute', right: 20, bottom: 20, height: 30, width: 65, justifyContent: "center" }}>
@@ -464,7 +500,7 @@ class shop extends Component {
                             <View style={{ borderColor: "red", borderWidth: 1, borderRadius: 4, justifyContent: "center", alignItems: "center", position: 'absolute', right: 20, bottom: 20, height: 30, width: 65, justifyContent: "center" }}>
                                 <Text style={{ color: "red", fontSize: 14 }}>Close</Text>
                             </View>
-                    }
+                    } */}
 
                 </SafeAreaView>
 

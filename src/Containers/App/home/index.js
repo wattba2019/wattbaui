@@ -6,7 +6,6 @@ import { setNearByShops, } from "../../../Store/Action/action";
 import axios from 'axios';
 //icons import
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import Entypo from 'react-native-vector-icons/Entypo';
 import InfiniteScroll from 'react-native-infinite-scroll';
 
 class Home extends Component {
@@ -52,8 +51,6 @@ class Home extends Component {
         // this.setState({ activity: false, })
     }
 
-
-
     distance(lat1, lon1, lat2, lon2) {
         var R = 6371; // km (change this constant to get miles)
         var dLat = (lat2 - lat1) * Math.PI / 180;
@@ -67,7 +64,6 @@ class Home extends Component {
         // else if (d <= 1) return Math.round(d * 1000) + "m";
         return d;
     }
-
 
     getNeabyShops() {
         const { currentLocation } = this.props
@@ -342,7 +338,8 @@ class Home extends Component {
     }
 
     getAllServices() {
-        let urlM = `${this.props.bseUrl}/getallshops/getAllService`
+        const { currentLocation } = this.props
+        let urlM = `${this.props.bseUrl}/getallshops/getAllService/${currentLocation.coords.latitude}/${currentLocation.coords.longitude}`
         axios({
             method: 'get',
             url: urlM,
@@ -362,8 +359,7 @@ class Home extends Component {
                 for (let index = 0; index < allServices.length; index++) {
                     const service = allServices[index];
                     const serviceName = allServices[index].serviceName;
-
-                    console.log(service, "getAllServices")
+                    // console.log(service, "getAllServices")
 
                     if (serviceName === "Haircut") {
                         if (Haircut.indexOf(service.userId) == -1) {
@@ -616,7 +612,7 @@ class Home extends Component {
             moreLoader
         } = this.state
 
-        console.log(Haircut, Childrens_Haircut, "Childrens_Haircut")
+        // console.log(Haircut, Childrens_Haircut, "Childrens_Haircut")
         return (
             <View
                 style={{

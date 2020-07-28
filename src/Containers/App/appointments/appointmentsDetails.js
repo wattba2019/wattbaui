@@ -7,6 +7,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import moment from 'moment';
 import axios from 'axios';
 import Textarea from 'react-native-textarea';
+import CancledBooking from '../../../Components/cancledBooking';
 
 class AppointmentDetails extends Component {
     constructor(props) {
@@ -17,7 +18,8 @@ class AppointmentDetails extends Component {
             totalCost: 0,
             star: 4,
             Message: "",
-            review: false
+            review: false,
+            cancledBooking: false,
         };
     }
 
@@ -29,15 +31,12 @@ class AppointmentDetails extends Component {
         }
         else {
             this.getBookedService(service.requiredServiceId)
-
         }
         this.checkAlreadyRewiew(service._id)
-
     }
 
     checkAlreadyRewiew(bookingId) {
-        console.log(bookingId, "bookingId")
-
+        // console.log(bookingId, "bookingId")
         let { service } = this.props
         let idsCloneData = { bookingId }
         var options = {
@@ -75,17 +74,11 @@ class AppointmentDetails extends Component {
                     }
                     // console.log(bookingDate, dateAndTimeAfter1hours, bookingHour, totalHours, "TIME")
                 }
-
             })
             .catch(err => {
                 let error = JSON.parse(JSON.stringify(err))
                 console.log(error, 'ERRROR', err)
             })
-
-
-
-
-
     }
 
     getBookedService(serviceId) {
@@ -141,8 +134,6 @@ class AppointmentDetails extends Component {
 
     }
 
-
-
     getBookedPackage(packageId) {
         let { totalCost } = this.state
         if (packageId != undefined) {
@@ -175,40 +166,82 @@ class AppointmentDetails extends Component {
         }
     }
 
-
     deleteBooking(_id) {
-        if (_id != undefined) {
-            this.setState({
-                loader: !this.state.loader
-            })
-            let idsCloneData = { _id: _id }
-            var options = {
-                method: 'POST',
-                url: `${this.props.bseUrl}/bookings/deleteBooking/`,
-                headers:
-                {
-                    'cache-control': 'no-cache',
-                    "Allow-Cross-Origin": '*',
-                },
-                data: idsCloneData
-            }
-            axios(options)
-                .then(result => {
-                    let data = result.data
-                    console.log(data, "Delete_Booking")
-                    this.setState({
-                        loader: !this.state.loader
-                    })
-                    Actions.AppContainer({ rout: "Appointments" })
-                })
-                .catch(err => {
-                    let error = JSON.parse(JSON.stringify(err))
-                    console.log(error, 'ERRROR', err)
-                    this.setState({
-                        loader: !this.state.loader
-                    })
-                })
-        }
+        // if (_id != undefined) {
+        //     this.setState({
+        //         loader: !this.state.loader
+        //     })
+        //     let idsCloneData = { _id: _id }
+        //     var options = {
+        //         method: 'POST',
+        //         url: `${this.props.bseUrl}/bookings/deleteBooking/`,
+        //         headers:
+        //         {
+        //             'cache-control': 'no-cache',
+        //             "Allow-Cross-Origin": '*',
+        //         },
+        //         data: idsCloneData
+        //     }
+        //     axios(options)
+        //         .then(result => {
+        //             let data = result.data
+        //             console.log(data, "Delete_Booking")
+        //             this.setState({
+        //                 loader: !this.state.loader
+        //             })
+        //             Actions.AppContainer({ rout: "Appointments" })
+        //         })
+        //         .catch(err => {
+        //             let error = JSON.parse(JSON.stringify(err))
+        //             console.log(error, 'ERRROR', err)
+        //             this.setState({
+        //                 loader: !this.state.loader
+        //             })
+        //         })
+        // }
+
+        this.setState({
+            cancledBooking: true
+        })
+
+
+        // if (_id != undefined) {
+        //     this.setState({
+        //         loader: !this.state.loader
+        //     })
+        //     let idsCloneData = {
+        //         _id: _id,
+        //         bookingStatus: "Cancled",
+        //         bookingCancledTime: new Date().getTime(),
+        //         cancledFromCustomer: true
+        //     }
+        //     var options = {
+        //         method: 'POST',
+        //         url: `${this.props.bseUrl}/bookings/cancledBookingFromCustomer/`,
+        //         headers:
+        //         {
+        //             'cache-control': 'no-cache',
+        //             "Allow-Cross-Origin": '*',
+        //         },
+        //         data: idsCloneData
+        //     }
+        //     axios(options)
+        //         .then(result => {
+        //             let data = result.data
+        //             console.log(data, "Delete_Booking")
+        //             this.setState({
+        //                 loader: !this.state.loader
+        //             })
+        //             Actions.AppContainer({ rout: "Appointments" })
+        //         })
+        //         .catch(err => {
+        //             let error = JSON.parse(JSON.stringify(err))
+        //             console.log(error, 'ERRROR', err)
+        //             this.setState({
+        //                 loader: !this.state.loader
+        //             })
+        //         })
+        // }
     }
 
 
@@ -288,7 +321,7 @@ class AppointmentDetails extends Component {
     render() {
         const { service, approved } = this.props
         const { selectedService, totalCost, loader, star, Message, review } = this.state
-        // console.log(review, service, "review")
+        // console.log(this.state.cancledBooking, service._id, "review")
         return (
             <View style={{
                 flex: 1,
@@ -297,6 +330,22 @@ class AppointmentDetails extends Component {
                 backgroundColor: "white",
             }} >
                 <StatusBar backgroundColor="white" barStyle="dark-content" />
+
+                {/* {
+                    (this.state.cancledBooking === true) ? (
+                        <CancledBooking />
+                    ) : null
+                } */}
+
+                {
+                    (this.state.cancledBooking === true) ? (
+                        <CancledBooking _id={service._id} closeModal={(data) => {
+                            this.setState({
+                                cancledBooking: data
+                            })
+                        }} />
+                    ) : null
+                }
 
                 {/* header */}
 
@@ -549,7 +598,7 @@ class AppointmentDetails extends Component {
                                             alignItems: "center",
                                             borderRadius: 35
                                         }}>
-                                        <Text style={{ color: "white", fontWeight: "bold" }}>Delete Booking</Text>
+                                        <Text style={{ color: "white", fontWeight: "bold" }}>Cancel Booking</Text>
                                     </TouchableOpacity> :
 
                                     (!approved) ? (
@@ -564,7 +613,6 @@ class AppointmentDetails extends Component {
                                             <ActivityIndicator color="white" />
                                         </View>
                                     ) :
-
                                         review && <TouchableOpacity style={{
                                             marginTop: 10,
                                             // backgroundColor: "red",
@@ -579,15 +627,10 @@ class AppointmentDetails extends Component {
                                                 {
                                                     !loader ? <Text style={{ textAlign: "center", fontSize: 15, margin: 12, color: "white" }}>Submit Review</Text> :
                                                         <ActivityIndicator color="white" />
-
                                                 }
                                             </ImageBackground>
                                         </TouchableOpacity>
-
                             }
-
-
-
                         </View>
                     </ScrollView>
                 </View>

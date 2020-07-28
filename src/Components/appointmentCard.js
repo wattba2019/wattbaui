@@ -12,7 +12,7 @@ class AppointmentCard extends Component {
     }
 
     render() {
-        const { appointments, approved } = this.props
+        const { appointments, approved, declined } = this.props
         // console.log(appointments, "appointments")
 
         return (
@@ -23,7 +23,7 @@ class AppointmentCard extends Component {
                         appointments.map((key, index) => {
                             return (
                                 <TouchableOpacity key={index}
-                                    onPress={() => Actions.AppointmentDetails({ service: key, approved: approved ? approved : null })}
+                                    onPress={() => Actions.AppointmentDetails({ service: key, approved: approved ? approved : null, declined })}
                                 >
                                     <View style={{
                                         flex: 1, justifyContent: "center", alignItems: "center", marginTop: 10,

@@ -28,7 +28,6 @@ class UpdatePassword extends Component {
     componentWillReceiveProps(nextProps) {
         // if (nextProps.modalOpen) {
         //      this.setState({ isModalVisible: true });
-
         //      // alert("working modal")
         //      // _toggleModal = () =>
         //      // this.setState({ isModalVisible: !this.state.isModalVisible });
