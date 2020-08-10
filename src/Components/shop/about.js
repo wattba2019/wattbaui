@@ -127,7 +127,7 @@ class About extends Component {
                     busy ? <View style={{ width: "85%", height: 50, marginTop: 0, marginHorizontal: "7%" }}>
                         <TouchableOpacity
                             // onPress={() => Actions.BarberDetails()}
-                            onPress={() => Actions.ChooseService()}
+                            onPress={() => Actions.ChooseService({ shop: shop })}
                         >
                             <ImageBackground source={require('../../../assets/buttonBackground.png')} resizeMode="contain"
                                 style={{ height: "100%", width: "100%", justifyContent: "center", }}

@@ -61,7 +61,7 @@ class Filters extends Component {
     }
 
     getAllServices() {
-        let urlM = `${this.props.bseUrl}/getallshops/getAllService`
+        let urlM = `${this.props.bseUrl}/getallshops/getAllService1`
         axios({
             method: 'get',
             url: urlM,

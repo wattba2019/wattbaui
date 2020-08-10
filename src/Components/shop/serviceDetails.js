@@ -17,7 +17,7 @@ class ServiceDetaild extends Component {
     }
 
     render() {
-        let { serviceDetails, busy } = this.props
+        let { serviceDetails, busy, shop } = this.props
         return (
             <View style={{
                 flex: 1,
@@ -89,7 +89,7 @@ class ServiceDetaild extends Component {
                                 style={{ width: "85%", height: 50, marginTop: 30, }}
                             >
                                 <TouchableOpacity
-                                    onPress={() => Actions.ChooseService({ serviceDetails: serviceDetails })}
+                                    onPress={() => Actions.ChooseService({ serviceDetails: serviceDetails, shop })}
                                 >
                                     <ImageBackground source={require('../../../assets/buttonBackground.png')} resizeMode="contain"
                                         style={{ height: "100%", width: "100%", justifyContent: "center", }}

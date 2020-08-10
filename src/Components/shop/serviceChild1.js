@@ -12,6 +12,7 @@ import surface2 from '../../../assets/surface-2.png';
 import dye from '../../../assets/dye.png';
 import makeup from '../../../assets/makeup.png';
 import mascara from '../../../assets/mascara.png';
+import iconForService from '../../../assets/iconForServices.png';
 
 class ServiceChild1 extends Component {
     constructor(props) {
@@ -20,8 +21,9 @@ class ServiceChild1 extends Component {
         }
     }
     render() {
-        let { services, busy } = this.props
+        let { services, busy, shop } = this.props
         let images = [womenHairstyling, surface, surface2, dye, makeup, mascara]
+        // let images = [iconForService]
         return (
             <View style={{ paddingVertical: 5, paddingHorizontal: 15, width: "90%", marginHorizontal: "5%" }}>
                 {
@@ -31,14 +33,14 @@ class ServiceChild1 extends Component {
                             return (
                                 <TouchableOpacity key={index}
                                     // onPress={() => this.serviceDetails(key)}
-                                    onPress={() => Actions.ServiceDetaild({ serviceDetails: key, busy })}
+                                    onPress={() => Actions.ServiceDetaild({ serviceDetails: key, busy, shop })}
                                     style={{ marginTop: 25, flexDirection: "row", flex: 1 }}>
                                     <View style={{ flex: 2 }}>
                                         <Image
                                             resizeMode="contain"
                                             style={{ width: 35, height: 35 }}
-                                            // source={surface2}
-                                            source={images[Math.floor(Math.random() * 6)]}
+                                            source={iconForService}
+                                        // source={images[Math.floor(Math.random() * 6)]}
                                         />
                                     </View>
                                     <View style={{ flex: 7 }}>
@@ -46,7 +48,7 @@ class ServiceChild1 extends Component {
                                         <Text style={{ fontSize: 11, color: "grey" }}>{key.extraServices.length} Types</Text>
                                     </View>
                                     <TouchableOpacity style={{ flex: 1 }}
-                                        onPress={() => Actions.ServiceDetaild({ serviceDetails: key, busy })}
+                                        onPress={() => Actions.ServiceDetaild({ serviceDetails: key, busy, shop })}
                                     >
                                         <Text style={{ fontSize: 11, color: "#FD6958" }}>View</Text>
                                     </TouchableOpacity>

@@ -62,7 +62,7 @@ class Services extends Component {
                 {
                     (this.state.catogeries === "services") ?
                         (
-                            <ServiceChild1 busy={busy} services={services} />
+                            <ServiceChild1 busy={busy} services={services} shop={shop} />
                         ) :
                         (
                             this.state.catogeries === "packages" ?

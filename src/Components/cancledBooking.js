@@ -76,13 +76,14 @@ class CancledBooking extends Component {
         return (
             <View>
                 <Modal isVisible={this.state.isModalVisible}>
-                    <View style={{ height: this.state.screenHeight / 1.5, justifyContent: 'center', alignItems: "center", }}>
+                    {/* <View style={{ height: this.state.screenHeight / 1.5, justifyContent: 'center', alignItems: "center", }}> */}
+                    <View style={{ height: "70%", justifyContent: 'center', alignItems: "center", }}>
                         <View style={{ backgroundColor: "white", width: "90%", height: "100%", borderRadius: 25, justifyContent: "center", alignItems: "center" }}>
-                            <AntDesign name="delete" style={{ color: 'red', fontWeight: 'bold', fontSize: 80, }} />
+                            <AntDesign name="delete" style={{ color: 'red', fontWeight: 'bold', fontSize: 50, }} />
                             <Text style={{ textAlign: "center", fontSize: 25 }}>
                                 Are you sure?
                             </Text>
-                            <Text style={{ textAlign: "center", marginTop: 5, marginHorizontal: "10%" }}>
+                            <Text style={{ textAlign: "center", marginTop: 5, marginHorizontal: "10%", fontSize: 12 }}>
                                 If you are cancelling within 24 hours of the time your booking is scheduled for then you will only receive 50% refund of your payment. If you are cancelling outside of 24 hours then we will refund you your payment in full. If you are cancelling within 2 hours you won't be liable for any refund. For any issues contact info@wattba.app
                             </Text>
                             <View

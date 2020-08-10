@@ -3,13 +3,14 @@ import {
     View, StyleSheet,
     StatusBar, TouchableOpacity,
     Text, ScrollView, Picker, Alert
-
 } from 'react-native';
 import { CheckBox, Body } from 'native-base';
 import { connect } from "react-redux";
 import { Actions } from 'react-native-router-flux';
 import RadioForm, { RadioButton, RadioButtonInput, RadioButtonLabel } from 'react-native-simple-radio-button';
 import Entypo from 'react-native-vector-icons/Entypo';
+import axios from 'axios';
+import { setShopServices, } from '../../Store/Action/action';
 
 class ChooseService extends Component {
     constructor(props) {
@@ -25,9 +26,8 @@ class ChooseService extends Component {
 
     UNSAFE_componentWillMount() {
         let { shopServices, } = this.props
-        // console.log(shopServices, "shopServices")
         this.setState({
-            shopServices: shopServices
+            shopServices: shopServices.slice(0)
         })
     }
 
@@ -50,7 +50,6 @@ class ChooseService extends Component {
             totalCost: price
         })
     }
-
 
     chooseYourExtraService = (key, index, serviceIndex) => {
         let { shopServices, totalCost } = this.state
@@ -103,9 +102,35 @@ class ChooseService extends Component {
         }
     }
 
+    componentWillUnmount() {
+        this.getServices()
+    }
+
+    getServices() {
+        let urlm = `${this.props.bseUrl}/servicesget/${this.props.shop._id}`
+        axios({
+            method: 'get',
+            url: urlm,
+        })
+            .then(result => {
+                let data = result.data.data
+                // console.log(data, "DATA_FROM_API_SERVICES_CHOOSE_SERVICES")
+                this.props.setShopServices(data)
+            })
+            .catch(err => {
+                if (err.response.status === 409) {
+                    console.log(err.response.data.message, "ERROR_ON_GET_SERVICES")
+                    this.props.setShopServices([])
+                }
+                else {
+                    alert(err.response.data.message)
+                }
+            })
+    }
+
+
     render() {
         const { totalCost, shopServices } = this.state
-        // console.log(shopServices, "SERVICES_DETAILS")
         return (
             <View style={{
                 flex: 1,
@@ -123,6 +148,7 @@ class ChooseService extends Component {
 
                     <View style={{ position: "absolute" }}>
                         <TouchableOpacity onPress={() => Actions.pop()}>
+                            {/* <TouchableOpacity onPress={() => Actions.ServiceDetaild()}> */}
                             <Entypo name="cross" style={{ marginLeft: 15, top: 10, color: "black", fontSize: 25 }} />
                         </TouchableOpacity>
                     </View>
@@ -262,7 +288,7 @@ class ChooseService extends Component {
                             <TouchableOpacity
                                 onPress={() => this.next()}
                                 style={{ width: "70%", height: 42, justifyContent: "center", alignItems: "center", backgroundColor: "#FD6958", borderRadius: 8 }}>
-                                <Text style={{ fontWeight: "bold", fontSize: 12, color: "#ffffff",textAlign:"center" }}>Proceed to Checkout</Text>
+                                <Text style={{ fontWeight: "bold", fontSize: 12, color: "#ffffff", textAlign: "center" }}>Proceed to Checkout</Text>
                             </TouchableOpacity>
                         </View>
 
@@ -277,10 +303,15 @@ let mapStateToProps = state => {
     // console.log(state, 'mapStateToProps')
     return {
         shopServices: state.root.shopServices,
+        bseUrl: state.root.bseUrl,
+
     };
 };
 function mapDispatchToProps(dispatch) {
     return ({
+        setShopServices: (services) => {
+            dispatch(setShopServices(services))
+        },
     })
 }
 export default connect(mapStateToProps, mapDispatchToProps)(ChooseService);

@@ -15,6 +15,7 @@ class AppContainer extends Component {
         super()
         this.state = {
             rout: "Home",
+            // rout: "Profile",
             focus: false
         }
     }

@@ -12,6 +12,7 @@ import surface2 from '../../assets/surface-2.png';
 import dye from '../../assets/dye.png';
 import makeup from '../../assets/makeup.png';
 import mascara from '../../assets/mascara.png';
+import iconForServices from '../../assets/iconForServices.png';
 
 class ServiceListing extends Component {
     constructor(props) {
@@ -129,13 +130,13 @@ class ServiceListing extends Component {
                                                     <Image
                                                         resizeMode="contain"
                                                         style={{ width: 35, height: 35 }}
-                                                        // source={surface2}
-                                                        source={images[Math.floor(Math.random() * 6)]}
+                                                        source={iconForServices}
+                                                        // source={images[Math.floor(Math.random() * 6)]}
                                                     />
                                                 </View>
                                                 <View style={{ flex: 7 }}>
                                                     <Text>{key}</Text>
-                                                    <Text style={{ fontSize: 11, color: "grey" }}>{MoreAfterSort[key].length ? MoreAfterSort[key].length : null} Shops</Text>
+                                                    {/* <Text style={{ fontSize: 11, color: "grey" }}>{MoreAfterSort[key].length ? MoreAfterSort[key].length : null} Shops</Text> */}
                                                 </View>
                                                 <TouchableOpacity style={{ flex: 1 }}
                                                     onPress={() => Actions.ServiceDetaild({ serviceDetails: key, })}

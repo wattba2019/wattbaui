@@ -36,6 +36,8 @@ export function setSearchLocation(location, locationName) {
 }
 
 export function setShopServices(services) {
+    // alert("work_action")
+    console.log(services, "services")
     return dispatch => {
         dispatch({ type: "SET_SERVICES", payload: services })
     }

@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
 import {
-    View, Text, StyleSheet, TouchableOpacity, StatusBar,
+    View, Text, StyleSheet, TouchableOpacity, StatusBar, AsyncStorage,
     ScrollView, Picker, Image, SafeAreaView, ActivityIndicator,
     images, Dimensions, ImageBackground, Alert
 } from 'react-native';
@@ -72,6 +72,7 @@ class EditProfile extends Component {
                     console.log(data.data.data[0], "AFTER_UPDATE_PROFILE_RETURN_UPDATED_DATA")
                     alert(data.data.message)
                     this.closeModal()
+                    this._storeData(data.data.data[0])
                     this.props.setUserCredentials(data.data.data[0], fromApp)
 
                 }).catch((err) => {
@@ -85,6 +86,15 @@ class EditProfile extends Component {
             alert("Name and phone number are required")
         }
     }
+
+    _storeData = async (data) => {
+        console.log("Assync", data)
+        try {
+            await AsyncStorage.setItem('userProfile', JSON.stringify(data));
+        } catch (error) {
+            // Error saving data
+        }
+    };
 
     sendCode() {
         this.setState({

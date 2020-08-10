@@ -68,8 +68,8 @@ class Home extends Component {
     getNeabyShops() {
         const { currentLocation } = this.props
         let { offsetNearByShops, } = this.state
-        this.setState({ isloader: true })
         if (currentLocation != null) {
+            this.setState({ isloader: true })
             let cloneLocation = {
                 lat: currentLocation.coords.latitude,
                 long: currentLocation.coords.longitude,
@@ -339,105 +339,108 @@ class Home extends Component {
 
     getAllServices() {
         const { currentLocation } = this.props
-        let urlM = `${this.props.bseUrl}/getallshops/getAllService/${currentLocation.coords.latitude}/${currentLocation.coords.longitude}`
-        axios({
-            method: 'get',
-            url: urlM,
-        })
-            .then(result => {
-                let allServices = result.data.data
-                let Haircut = []
-                let Coloring = []
-                let Styling = []
-                let Shaving = []
-                let Childrens_Haircut = []
-                let Waxing = []
-                // let Hairdryer = []
-                // let Hairspa = []
-                // let Shampoo = []
-                let More = []
-                for (let index = 0; index < allServices.length; index++) {
-                    const service = allServices[index];
-                    const serviceName = allServices[index].serviceName;
-                    // console.log(service, "getAllServices")
-
-                    if (serviceName === "Haircut") {
-                        if (Haircut.indexOf(service.userId) == -1) {
-                            Haircut.push(service.userId)
-                        }
-                    }
-
-                    if (serviceName === "Coloring") {
-                        if (Coloring.indexOf(service.userId) == -1) {
-                            Coloring.push(service.userId)
-                        }
-                    }
-
-                    if (serviceName === "Styling") {
-                        if (Styling.indexOf(service.userId) == -1) {
-                            Styling.push(service.userId)
-                        }
-                    }
-
-                    if (serviceName === "Shaving") {
-                        if (Shaving.indexOf(service.userId) == -1) {
-                            Shaving.push(service.userId)
-                        }
-                    }
-
-                    if (serviceName === "Childrens Haircut") {
-                        if (Childrens_Haircut.indexOf(service.userId) == -1) {
-                            Childrens_Haircut.push(service.userId)
-                        }
-                    }
-
-                    if (serviceName === "Waxing") {
-                        if (Waxing.indexOf(service.userId) == -1) {
-                            Waxing.push(service.userId)
-                        }
-                    }
-
-                    // if (serviceName === "Hairdryer") {
-                    //     if (Hairdryer.indexOf(service.userId) == -1) {
-                    //         Hairdryer.push(service.userId)
-                    //     }
-                    // }
-                    // if (serviceName === "Hairspa") {
-                    //     if (Hairspa.indexOf(service.userId) == -1) {
-                    //         Hairspa.push(service.userId)
-                    //     }
-                    // }
-                    // if (serviceName === "Shampoo") {
-                    //     if (Shampoo.indexOf(service.userId) == -1) {
-                    //         Shampoo.push(service.userId)
-                    //     }
-                    // }
-
-                    else {
-                        // console.log(service, "MORE_DATA")
-                        More.push(service)
-                    }
-                }
-                this.setState({
-                    Haircut,
-                    Coloring,
-                    Styling,
-                    Shaving,
-                    Childrens_Haircut,
-                    Waxing,
-                    // Hairdryer,
-                    // Hairspa,
-                    // Shampoo,
-                    More,
-                })
+        if (currentLocation != null) {
+            let urlM = `${this.props.bseUrl}/getallshops/getAllService/${currentLocation.coords.latitude}/${currentLocation.coords.longitude}`
+            axios({
+                method: 'get',
+                url: urlM,
             })
-            .catch(err => {
-                let error = JSON.parse(JSON.stringify(err))
-                console.log(error, 'ERRROR', err)
-                this.setState({
-                    err: error,
+                .then(result => {
+                    let allServices = result.data.data
+                    let Haircut = []
+                    let Coloring = []
+                    let Styling = []
+                    let Shaving = []
+                    let Childrens_Haircut = []
+                    let Waxing = []
+                    // let Hairdryer = []
+                    // let Hairspa = []
+                    // let Shampoo = []
+                    let More = []
+                    for (let index = 0; index < allServices.length; index++) {
+                        const service = allServices[index];
+                        const serviceName = allServices[index].serviceName;
+                        // console.log(service, "getAllServices")
+
+                        if (serviceName === "Haircut") {
+                            if (Haircut.indexOf(service.userId) == -1) {
+                                Haircut.push(service.userId)
+                            }
+                        }
+
+                        if (serviceName === "Coloring") {
+                            if (Coloring.indexOf(service.userId) == -1) {
+                                Coloring.push(service.userId)
+                            }
+                        }
+
+                        if (serviceName === "Styling") {
+                            if (Styling.indexOf(service.userId) == -1) {
+                                Styling.push(service.userId)
+                            }
+                        }
+
+                        if (serviceName === "Shaving") {
+                            if (Shaving.indexOf(service.userId) == -1) {
+                                Shaving.push(service.userId)
+                            }
+                        }
+
+                        if (serviceName === "Childrens Haircut") {
+                            if (Childrens_Haircut.indexOf(service.userId) == -1) {
+                                Childrens_Haircut.push(service.userId)
+                            }
+                        }
+
+                        if (serviceName === "Waxing") {
+                            if (Waxing.indexOf(service.userId) == -1) {
+                                Waxing.push(service.userId)
+                            }
+                        }
+
+                        // if (serviceName === "Hairdryer") {
+                        //     if (Hairdryer.indexOf(service.userId) == -1) {
+                        //         Hairdryer.push(service.userId)
+                        //     }
+                        // }
+                        // if (serviceName === "Hairspa") {
+                        //     if (Hairspa.indexOf(service.userId) == -1) {
+                        //         Hairspa.push(service.userId)
+                        //     }
+                        // }
+                        // if (serviceName === "Shampoo") {
+                        //     if (Shampoo.indexOf(service.userId) == -1) {
+                        //         Shampoo.push(service.userId)
+                        //     }
+                        // }
+
+                        else {
+                            // console.log(service, "MORE_DATA")
+                            More.push(service)
+                        }
+                    }
+                    this.setState({
+                        Haircut,
+                        Coloring,
+                        Styling,
+                        Shaving,
+                        Childrens_Haircut,
+                        Waxing,
+                        // Hairdryer,
+                        // Hairspa,
+                        // Shampoo,
+                        More,
+                    })
                 })
-            })
+                .catch(err => {
+                    let error = JSON.parse(JSON.stringify(err))
+                    console.log(error, 'ERRROR', err)
+                    this.setState({
+                        err: error,
+                    })
+                })
+        }
+
     }
 
     onFocusSearch() {
@@ -640,16 +643,15 @@ class Home extends Component {
                         alignItems: "center",
                         // backgroundColor:"red"
                     }}>
-                        <View style={{ width: "100%", marginTop: 20 }}>
-                            <Text style={{ fontSize: fullName.length < 12 ? 16 : 12, fontWeight: "bold", textAlign: "left" }}>{fullName}</Text>
+                        <View style={{ width: "100%", marginTop: 5 }}>
+                            <Text style={{ fontSize: fullName.length < 12 ? 16 : 12, fontWeight: "bold", textAlign: "left" }}>Hi {fullName}</Text>
                         </View>
 
 
-                        <View style={{ width: "105%", top: -5, justifyContent: "center", alignItems: "center", flex: 1, flexDirection: "row" }}>
+                        {/* <View style={{ width: "105%", top: -5, justifyContent: "center", alignItems: "center", flex: 1, flexDirection: "row", backgroundColor: "red" }}>
                             <View style={{
                                 flex: 8, flexDirection: "row", justifyContent: "center", alignItems: "center",
                             }}>
-
                                 <View style={{
                                     flex: 1,
                                     justifyContent: "center", alignItems: "center",
@@ -666,7 +668,7 @@ class Home extends Component {
                                 </View>
                             </View>
 
-                            {/* <View style={{
+                            <View style={{
                                 flex: 3, justifyContent: "center", alignItems: "center", flexDirection: "row",
                             }}>
                                 <TouchableOpacity
@@ -675,13 +677,13 @@ class Home extends Component {
                                     <Entypo name="direction" style={{ color: "#FD6958", fontWeight: 'bold', fontSize: 20 }} />
                                     <Text style={{ color: "#FD6958" }}>CHANGE</Text>
                                 </TouchableOpacity>
-                            </View> */}
-                        </View>
+                            </View>
+                        </View> */}
 
                         <View
                             style={{
-                                flex: 1, flexDirection: "row",
-                                width: "100%", height: 40,
+                                flex: 0.45, flexDirection: "row",
+                                width: "100%", height: 40, marginTop: 10,
                                 borderRadius: 10,
                                 justifyContent: "center", alignItems: "center",
                                 backgroundColor: "#E8E6E7",
