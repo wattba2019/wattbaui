@@ -32,11 +32,12 @@ class Enablelocation extends Component {
     }
     async requestPermissions() {
         if (Platform.OS === 'ios') {
-            Geolocation.requestAuthorization();
-            Geolocation.setRNConfiguration({
-                skipPermissionRequests: false,
-                authorizationLevel: 'whenInUse',
-            });
+            // Geolocation.requestAuthorization();
+            // Geolocation.setRNConfiguration({
+            //     skipPermissionRequests: false,
+            //     authorizationLevel: 'whenInUse',
+            // });
+            Geolocation.requestAuthorization('whenInUse');
         }
         if (Platform.OS === 'android') {
             await PermissionsAndroid.request(

@@ -41,8 +41,21 @@ class ChooseService extends Component {
             price = price + Number(selectedService.price)
         }
         else {
+
+            if (selectedService.extraServices.length) {
+                for (let index = 0; index < selectedService.extraServices.length; index++) {
+                    if (selectedService.extraServices[index].selected === true) {
+                        price = price - Number(selectedService.extraServices[index].price)
+                    }
+                    selectedService.extraServices[index].selected = false
+                }
+            }
+
+
             selectedService.selected = false
             price = price - Number(selectedService.price)
+            console.log(selectedService, "selectedExtraService")
+
         }
         cloneAllServices.splice(index, 1, selectedService)
         this.setState({
@@ -64,7 +77,9 @@ class ChooseService extends Component {
             selectedService.selected = false
             price = price - Number(selectedService.price)
 
+            // console.log(selectedService, "selectedService")
         }
+
         this.setState({
             shopServices: cloneAllServices,
             totalCost: price

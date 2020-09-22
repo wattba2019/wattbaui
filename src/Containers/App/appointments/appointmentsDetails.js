@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Image, StatusBar, TouchableOpacity, Text, ScrollView, StyleSheet, ActivityIndicator, ImageBackground, Alert } from 'react-native';
+import { View, Image, StatusBar, TouchableOpacity, Text, ScrollView, StyleSheet, ActivityIndicator, ImageBackground, Alert, Platform } from 'react-native';
 import { connect } from "react-redux";
 import { Actions } from 'react-native-router-flux';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -354,9 +354,10 @@ class AppointmentDetails extends Component {
                     flexDirection: "row",
                     width: "100%",
                     alignItems: "center",
-                    backgroundColor: "#ffffff"
+                    backgroundColor: "#ffffff",
+                    marginTop: Platform.OS === 'ios' ? 30 : 0
                 }}>
-                    <View style={{ position: "absolute" }}>
+                    <View style={{ position: "absolute",zIndex:1 }}>
                         <TouchableOpacity onPress={() => Actions.pop()}>
                             <AntDesign name="arrowleft" style={{ marginLeft: 15, color: "#000000", fontSize: 25 }} />
                         </TouchableOpacity>

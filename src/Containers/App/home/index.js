@@ -622,7 +622,7 @@ class Home extends Component {
                     flex: 1,
                     width: "100%",
                     alignItems: "center",
-                    backgroundColor: "white",
+                    // backgroundColor: "red",
                 }}
             >
                 <InfiniteScroll
@@ -636,6 +636,7 @@ class Home extends Component {
                     }
                 >
                     <View style={{
+                        marginTop: Platform.OS === 'ios' ? 20 : -15,
                         height: 120,
                         width: "95%",
                         marginHorizontal: "2.5%",
@@ -704,6 +705,8 @@ class Home extends Component {
                                     placeholder={"Best Barbershops"}
                                     // onChangeText={text => onChangeText(text)}
                                     onFocus={() => this.onFocusSearch()}
+                                    placeholderTextColor="grey"
+
                                 />
                             </View>
                         </View>
@@ -1159,7 +1162,7 @@ let mapStateToProps = state => {
 };
 function mapDispatchToProps(dispatch) {
     return ({
-        setNearByShops: (shops,) => {
+        setNearByShops: (shops, ) => {
             dispatch(setNearByShops(shops));
         },
     })

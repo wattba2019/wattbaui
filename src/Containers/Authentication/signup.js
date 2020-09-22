@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Image, ActivityIndicator, StyleSheet, BackHandler, ImageBackground, StatusBar, TouchableOpacity, Text, TextInput, ScrollView } from 'react-native';
+import { Platform, View, Image, ActivityIndicator, StyleSheet, BackHandler, Linking, ImageBackground, StatusBar, TouchableOpacity, Text, TextInput, ScrollView } from 'react-native';
 import { connect } from "react-redux";
 import { Actions } from 'react-native-router-flux';
 import axios from 'axios';
@@ -131,7 +131,7 @@ class Signup extends Component {
             <ScrollView contentContainerStyle={styles.contentContainer}>
                 <StatusBar backgroundColor="white" barStyle="dark-content" />
                 {/* //header// */}
-                <View style={{ height: "10%", flexDirection: "row", width: "100%", }}>
+                <View style={{ height: "10%", flexDirection: "row", width: "100%", marginTop: Platform.OS === 'ios' ? 30 : 0 }}>
                     <TouchableOpacity
                         style={{ flex: 1.5, }}
                         onPress={() => Actions.pop()}
@@ -157,20 +157,22 @@ class Signup extends Component {
                         style={{ width: "85%", marginTop: 40, borderColor: 'gray', backgroundColor: "#E8E6E7", borderRadius: 25, justifyContent: "center", alignItems: "center" }}
                     >
                         <TextInput
-                            style={{ height: 50, width: "90%", }}
+                            style={{ height: 50, width: "90%", color: "black" }}
                             onChangeText={(fullName) => this.setState({ fullName })}
                             value={fullName}
                             placeholder={"Full Name"}
+                            placeholderTextColor="grey"
                         />
                     </View>
                     <View
                         style={{ width: "85%", marginTop: 20, borderColor: 'gray', backgroundColor: "#E8E6E7", borderRadius: 25, justifyContent: "center", alignItems: "center" }}
                     >
                         <TextInput
-                            style={{ height: 50, width: "90%", }}
+                            style={{ height: 50, width: "90%", color: "black" }}
                             onChangeText={(email) => this.setState({ email })}
                             value={email}
                             placeholder={"Email"}
+                            placeholderTextColor="grey"
                         />
                     </View>
 
@@ -207,7 +209,7 @@ class Signup extends Component {
                                 <View style={{ flex: 3, flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
                                     <View
                                         style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginLeft: 5 }}>
-                                        <Text style={{ fontWeight: "bold" }}>{"+" + dialCode}</Text>
+                                        <Text style={{ fontWeight: "bold", }}>{"+" + dialCode}</Text>
                                         <AntDesign name="caretdown" style={{ marginLeft: 5, color: '#909090', fontWeight: 'bold', fontSize: 15 }} />
                                     </View>
                                 </View>
@@ -222,10 +224,11 @@ class Signup extends Component {
                             >
                                 <TextInput
                                     keyboardType={"numeric"}
-                                    style={{ height: 50, width: "90%", }}
+                                    style={{ height: 50, width: "90%", color: "black" }}
                                     onChangeText={(phoneNumber) => this.setState({ phoneNumber })}
                                     value={phoneNumber}
                                     placeholder={"Number"}
+                                    placeholderTextColor="grey"
                                 />
                             </View>
                         </View>
@@ -253,10 +256,12 @@ class Signup extends Component {
                     >
                         <TextInput
                             secureTextEntry={showPassword}
-                            style={{ height: 50, width: "80%" }}
+                            style={{ height: 50, width: "80%", color: "black" }}
                             onChangeText={(password) => this.setState({ password })}
                             value={password}
                             placeholder={"Password"}
+                            placeholderTextColor="grey"
+
                         />
                         <Entypo
                             onPress={() => {
@@ -281,10 +286,12 @@ class Signup extends Component {
                             </ImageBackground>
                         </TouchableOpacity>
                     </View>
-                    <View style={{ marginTop: "15%" }}>
+                    <TouchableOpacity style={{ marginTop: "15%" }}
+                        onPress={() => Linking.openURL("https://www.wattba.app/TAndC")}
+                    >
                         <Text style={{ color: "black", textAlign: "center", top: 20 }}>By proceeding, I accept the </Text>
                         <Text style={{ color: "black", textAlign: "center", top: 20, fontWeight: "bold" }}>Terms & Conditions of WattBa </Text>
-                    </View>
+                    </TouchableOpacity>
                     {/* <TouchableOpacity
                         style={{ flexDirection: "row", marginTop: 50, }}
                         onPress={() => Actions.Signin()} >

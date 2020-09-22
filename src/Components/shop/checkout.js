@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {
     View, Text, StyleSheet, TouchableOpacity, StatusBar,
     ScrollView, Picker, Image, SafeAreaView, ActivityIndicator,
-    images, Dimensions, FlatList, TextInput, Alert
+    images, Dimensions, FlatList, TextInput, Alert, Platform
 } from 'react-native';
 import { connect } from "react-redux";
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -70,6 +70,22 @@ class Checkout extends Component {
 
     async componentDidMount() {
         await SQIPCore.setSquareApplicationId('sandbox-sq0idb-sYODojBTzgf0qX4bDKza0Q');
+
+        if (Platform.OS === 'ios') {
+            await SQIPCardEntry.setIOSCardEntryTheme({
+                //   saveButtonFont: {
+                //     size: 30,
+                //   },
+                saveButtonTitle: 'Make Payment',
+                //   keyboardAppearance: 'Light',
+                //   saveButtonTextColor: {
+                //     r: 213,
+                //     g: 133,
+                //     b: 12,
+                //     a: 0.9,
+                //   },
+            });
+        }
         // await SQIPCardEntry.setIOSCardEntryTheme({
         //     saveButtonFont: {
         //         size: 30,
@@ -208,27 +224,39 @@ class Checkout extends Component {
     render() {
         const { Message, loader, serviceCharge, vatCharges } = this.state
         const { booking, shop, userProfile } = this.props
-        console.log(serviceCharge, vatCharges, "shopsssssssssssssssssss")
         return (
             <View style={{ flex: 1, backgroundColor: "#fff" }}>
                 <StatusBar backgroundColor="#FD6958" barStyle="dark-content" />
 
                 {/* header */}
 
+                {
+                    Platform.OS === 'ios' ?
+                        <View style={{ position: "absolute", top: "7.8%", zIndex: 1 }}>
+                            <TouchableOpacity onPress={() => Actions.pop()}>
+                                <AntDesign name="arrowleft" style={{ marginLeft: 15, color: "#ffffff", fontSize: 25 }} />
+                            </TouchableOpacity>
+                        </View>
+                        : null
+                }
+
                 <View style={{
                     flex: 0.8,
                     flexDirection: "row",
                     width: "100%",
                     alignItems: "center",
-                    backgroundColor: "#FD6958"
-
+                    backgroundColor: "#FD6958",
+                    marginTop: Platform.OS === 'ios' ? 40 : 20
                 }}>
-                    <View style={{ position: "absolute" }}>
-                        <TouchableOpacity onPress={() => Actions.pop()}>
-                            <AntDesign name="arrowleft" style={{ marginLeft: 15, color: "#ffffff", fontSize: 25 }} />
-                        </TouchableOpacity>
-                    </View>
-
+                    {
+                        Platform.OS === 'android' ?
+                            <View style={{ position: "absolute" }}>
+                                <TouchableOpacity onPress={() => Actions.pop()}>
+                                    <AntDesign name="arrowleft" style={{ marginLeft: 15, color: "#ffffff", fontSize: 25 }} />
+                                </TouchableOpacity>
+                            </View>
+                            : null
+                    }
                     <View style={{
                         width: "100%",
                         justifyContent: "center",
@@ -236,7 +264,6 @@ class Checkout extends Component {
                     }}>
                         <Text style={{ alignItems: "center", color: "#ffffff", fontWeight: "bold", fontSize: 18 }}>Checkout</Text>
                     </View>
-
                 </View>
 
                 {/* body */}
@@ -514,10 +541,11 @@ class Checkout extends Component {
                                         <View style={{ flex: 1, borderTopRightRadius: 5, borderBottomRightRadius: 5, marginLeft: 15, justifyContent: "center", }}>
                                             {/* <Text style={{ marginLeft: 10, fontSize: 12 }}>{userProfile.fullName}</Text> */}
                                             <TextInput
-                                                style={{ width: "90%", }}
+                                                style={{ width: "90%", color: "black" }}
                                                 value={this.state.fullName}
                                                 placeholder={"Please type full name"}
                                                 onChangeText={text => this.setState({ fullName: text })}
+                                                placeholderTextColor="grey"
                                             />
                                         </View>
                                     </View>
@@ -529,10 +557,11 @@ class Checkout extends Component {
                                                 {/* <Text style={{ alignItems: "center", fontSize: 12, }}>{userProfile.phoneNumber}</Text> */}
                                                 <TextInput
                                                     keyboardType={"numeric"}
-                                                    style={{ width: "90%", }}
+                                                    style={{ width: "90%", color: "black" }}
                                                     value={this.state.phoneNumber}
                                                     placeholder={"+44"}
                                                     onChangeText={text => this.setState({ phoneNumber: text })}
+                                                    placeholderTextColor="grey"
                                                 />
                                             </View>
                                             <View style={{ flex: 0.2, borderColor: "#D4D4E0", borderWidth: 0.5, justifyContent: "center", alignItems: "center" }}>
@@ -736,7 +765,7 @@ class Checkout extends Component {
 const styles = StyleSheet.create({
     contentContainer: {
         // flex: 1,
-        paddingBottom: 30,
+        paddingBottom: 80,
         backgroundColor: "#F4F7FA",
 
     },

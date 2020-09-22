@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Image, ActivityIndicator, StyleSheet, TouchableOpacity, Text, TextInput, ScrollView } from 'react-native';
+import { View, Image, ActivityIndicator, StyleSheet, TouchableOpacity, Text, TextInput, ScrollView, Platform } from 'react-native';
 import { connect } from "react-redux";
 import { Actions } from 'react-native-router-flux';
 import IconFontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -59,19 +59,41 @@ class Nearby extends Component {
                 backgroundColor: "white",
             }}>
                 <View style={{
-                    height: 120,
+                    marginTop: Platform.OS === 'ios' ? 22 : 10,
+                    height: Platform.OS === 'ios' ? 120 : 100,
                     width: "95%",
                     justifyContent: "center",
                     alignItems: "center",
+                    // backgroundColor: "red"
                 }}>
-                    <View style={{ width: "100%", flexDirection: "row", justifyContent: "space-between", marginTop: 20, }}>
+
+
+
+                    <View style={{ width: "100%", flexDirection: "row", justifyContent: "space-between", marginTop: Platform.OS === 'ios' ? 20 : 0, }}>
                         <Text style={{ fontSize: fullName.length < 12 ? 16 : 12, fontWeight: "bold", textAlign: "left" }}>{fullName}</Text>
-                        <TouchableOpacity style={{ width: 50, alignItems: "flex-end", zIndex: 1, }} onPress={() => Actions.Filters()}>
-                            <IconFontAwesome name="filter" size={25} style={{ color: "grey" }} />
-                        </TouchableOpacity>
+                        {
+                            (Platform.OS === 'android') ?
+                                <TouchableOpacity style={{
+                                    width: 50, alignItems: "flex-end", zIndex: 1,
+                                    // backgroundColor: "green"
+                                }} onPress={() => Actions.Filters()}>
+                                    <IconFontAwesome name="filter" size={25} style={{ color: "grey" }} />
+                                </TouchableOpacity> : null
+                        }
                     </View>
 
-                    <View style={{ width: "105%", top: -25, justifyContent: "center", alignItems: "center", flex: 1, flexDirection: "row" }}>
+                    {
+                        (Platform.OS === 'ios') ?
+                            <TouchableOpacity style={{
+                                width: 50, alignItems: "flex-end", zIndex: 1, marginLeft: "80%", top: -25,
+                                // position:"absolute",
+                                // backgroundColor: "green"
+                            }} onPress={() => Actions.Filters()}>
+                                <IconFontAwesome name="filter" size={25} style={{ color: "grey" }} />
+                            </TouchableOpacity> : null
+                    }
+
+                    <View style={{ width: "105%", top: Platform.OS === 'ios' ? -35 : -25, justifyContent: "center", alignItems: "center", flex: 1, flexDirection: "row", }}>
                         <View style={{ flex: 8, flexDirection: "row", justifyContent: "center", alignItems: "center", }}>
                             <View style={{ flex: 1, justifyContent: "center", alignItems: "center", }}>
                                 <Image source={require('../../../../assets/Path27909.png')} resizeMode="contain"

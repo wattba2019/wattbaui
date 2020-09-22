@@ -396,24 +396,36 @@ class BookAppointment extends Component {
         return (
             <View style={{ paddingHorizontal: 10, flex: 1, backgroundColor: "#fff" }}>
                 <StatusBar backgroundColor="white" barStyle="dark-content" />
+                {
+                    Platform.OS === 'ios' ?
+                        <View style={{ position: "absolute", top: 35, zIndex: 1 }}>
+                            <TouchableOpacity onPress={() => Actions.pop()}>
+                                <Entypo name="cross" style={{ marginLeft: 15, top: 10, color: "black", fontSize: 25 }} />
+                            </TouchableOpacity>
+                        </View> : null
+                }
+
                 <View style={{
                     flex: 0.7,
                     flexDirection: "row",
                     borderBottomWidth: 0.5,
                     borderBottomColor: 'grey',
+                    marginTop: Platform.OS === 'ios' ? 25 : 0
                 }}>
-                    <View style={{ position: "absolute" }}>
-                        <TouchableOpacity onPress={() => Actions.pop()}>
-                            <Entypo name="cross" style={{ marginLeft: 15, top: 10, color: "black", fontSize: 25 }} />
-                        </TouchableOpacity>
-                    </View>
-
+                    {
+                        Platform.OS === 'android' ?
+                            <View style={{ position: "absolute", }}>
+                                <TouchableOpacity onPress={() => Actions.pop()}>
+                                    <Entypo name="cross" style={{ marginLeft: 15, top: 10, color: "black", fontSize: 25 }} />
+                                </TouchableOpacity>
+                            </View> : null
+                    }
                     <View style={{
                         width: "100%",
                         justifyContent: "center",
                         alignItems: "center",
                     }}>
-                        <Text style={{ alignItems: "center", fontSize: 15 }}>Book An Appointment</Text>
+                        <Text style={{ alignItems: "center", fontSize: 15, marginTop: Platform.OS === 'ios' ? 18 : 0, marginBottom: Platform.OS === 'ios' ? 10 : 0 }}>Book An Appointment</Text>
                     </View>
                 </View>
 

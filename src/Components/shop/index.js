@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-    View, Text, StyleSheet, TouchableOpacity, Linking,
+    View, Text, StyleSheet, TouchableOpacity, Linking, Platform,
     ScrollView, Image, SafeAreaView, ActivityIndicator, Alert
 } from 'react-native';
 import { connect } from "react-redux";
@@ -364,22 +364,9 @@ class shop extends Component {
         }
     }
 
-
-    // viewAll = () => {
-    //     this.refs.mytabs.goToPage(2)
-    //     // this.refs.REFERENCE.goToPage(2)
-    //     // alert("work")
-    //     // this.setState({
-    //     //     initialPage: 2
-    //     // })
-    // }
-
     render() {
         const { activeColor, workingtime, workingHours, services, packages, stylists, gallery, favroite, favroiteLoader, initialPage } = this.state
         let { shop, currentLocation } = this.props
-
-        console.log(workingtime, "initialPage")
-
         return (
             <View style={{ flex: 1 }}>
                 <SafeAreaView style={styles.container} >
@@ -396,20 +383,20 @@ class shop extends Component {
                     }
 
                     <TouchableOpacity onPress={() => Actions.pop()}
-                        style={{ width: 25, position: 'absolute', top: 0, left: 30, right: 0, bottom: 130, justifyContent: "center" }}>
+                        style={{ width: 35, position: 'absolute', top: 0, left: 30, right: 0, bottom: 130, justifyContent: "center",  }}>
                         <Ionicons name="ios-arrow-back" style={{
                             color: "#fff", fontWeight: 'bold', fontSize: 28, marginLeft: "5%",
                             shadowColor: "#000",
                             shadowColor: "#000",
                             textShadowColor: 'black',
-                            textShadowOffset: { width: -1, height: 0 },
-                            textShadowRadius: 5,
+                            textShadowOffset: { width: 1, height: 0 },
+                            textShadowRadius: 5, left: 10,
                         }} />
                     </TouchableOpacity>
 
                     <View style={{
                         width: 230,
-                        position: 'absolute', top: "35%", left: 30, right: 0, bottom: 0, justifyContent: "center",
+                        position: 'absolute', top: Platform.OS === 'ios' ? "65%" : "35%", left: 30, right: 0, bottom: 0, justifyContent: "center",
                         // padding: 10,
                         // backgroundColor: "red"
                     }}>
@@ -429,12 +416,7 @@ class shop extends Component {
                         }}>{shop.addressLine1}</Text>
                     </View>
 
-                    <View style={{ position: 'absolute', top: "80%", left: 30, bottom: 0, marginTop: 5, justifyContent: "center", flexDirection: "row", marginLeft: "1%", }}>
-                        {/* <Entypo name="star" style={{ color: "#EBAC43", fontWeight: 'bold', fontSize: 16 }} />
-                        <Entypo name="star" style={{ color: "#EBAC43", fontWeight: 'bold', fontSize: 16 }} />
-                        <Entypo name="star" style={{ color: "#EBAC43", fontWeight: 'bold', fontSize: 16 }} />
-                        <Entypo name="star" style={{ color: "#EBAC43", fontWeight: 'bold', fontSize: 16 }} />
-                        <Entypo name="star" style={{ color: "#fff", fontWeight: 'bold', fontSize: 16 }} /> */}
+                    <View style={{ position: 'absolute', top: Platform.OS === 'ios' ? "100%" : "80%", left: 30, bottom: 0, marginTop: 5, justifyContent: "center", flexDirection: "row", marginLeft: "1%", }}>
                         {[1, 2, 3, 4, 5].map((v, i) => {
                             return (
                                 <View key={i}>
@@ -720,7 +702,7 @@ const styles = StyleSheet.create({
     },
     container: {
         flex: 0.35,
-        backgroundColor: "black"
+        backgroundColor: "white"
     },
 });
 

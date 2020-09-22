@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import {
     View, Image, ActivityIndicator, StyleSheet,
     ImageBackground, StatusBar, TouchableOpacity, Dimensions,
-    Text, TextInput, ScrollView
+    Text, TextInput, ScrollView, Platform
 
 } from 'react-native';
 import { Icon, Tabs, Tab, TabHeading } from 'native-base';
@@ -150,7 +150,8 @@ class Appointments extends Component {
                     flexDirection: "row",
                     justifyContent: "center",
                     alignItems: "center",
-                    // backgroundColor: 'red'
+                    // backgroundColor: 'red',
+
                 }}>
                     <View style={{
                         flex: 1,
@@ -158,7 +159,7 @@ class Appointments extends Component {
                         alignItems: "center",
                         // backgroundColor: "red"
                     }}>
-                        <Text style={{ alignItems: "center", fontSize: 18, fontWeight: "bold" }}>My Appointments</Text>
+                        <Text style={{ alignItems: "center", fontSize: 18, fontWeight: "bold", marginTop: Platform.OS === 'ios' ? 40 : 0 }}>My Appointments</Text>
                     </View>
                 </View>
 

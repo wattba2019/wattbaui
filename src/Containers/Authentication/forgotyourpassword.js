@@ -130,10 +130,12 @@ class Forgotyourpassword extends Component {
                         >
                             {/* email input */}
                             <TextInput
-                                style={{ height: 50, width: "90%", }}
+                                style={{ height: 50, width: "90%",color:"black" }}
                                 onChangeText={(email) => this.setState({ email })}
                                 value={email}
                                 placeholder={"Email"}
+                                placeholderTextColor="grey"
+
                             />
                         </View>
                         {/* Submit Button */}

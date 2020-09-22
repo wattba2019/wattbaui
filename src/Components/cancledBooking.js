@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, ActivityIndicator, Dimensions, } from 'react-native';
+import { View, Text, TouchableOpacity, ActivityIndicator, Dimensions, Platform } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { connect } from "react-redux";
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -77,7 +77,7 @@ class CancledBooking extends Component {
             <View>
                 <Modal isVisible={this.state.isModalVisible}>
                     {/* <View style={{ height: this.state.screenHeight / 1.5, justifyContent: 'center', alignItems: "center", }}> */}
-                    <View style={{ height: "70%", justifyContent: 'center', alignItems: "center", }}>
+                    <View style={{ height: Platform.OS === 'ios' ? "60%" : "70%", justifyContent: 'center', alignItems: "center", }}>
                         <View style={{ backgroundColor: "white", width: "90%", height: "100%", borderRadius: 25, justifyContent: "center", alignItems: "center" }}>
                             <AntDesign name="delete" style={{ color: 'red', fontWeight: 'bold', fontSize: 50, }} />
                             <Text style={{ textAlign: "center", fontSize: 25 }}>

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Image, ActivityIndicator, StyleSheet, ImageBackground, StatusBar, TouchableOpacity, Text, TextInput, ScrollView, Alert } from 'react-native';
+import { View, Image, ActivityIndicator, StyleSheet, ImageBackground, StatusBar, TouchableOpacity, Text, TextInput, ScrollView, Alert, Platform } from 'react-native';
 import { connect } from "react-redux";
 import { Actions } from 'react-native-router-flux';
 import axios from 'axios';
@@ -34,9 +34,10 @@ class TermsAndCondition extends Component {
                     alignItems: "center",
                     backgroundColor: "#ffffff",
                     borderBottomColor: "#EAECEF",
-                    borderBottomWidth: 0.5
+                    borderBottomWidth: 0.5,
+                    marginTop: Platform.OS === 'ios' ? 25 : 0
                 }}>
-                    <View style={{ position: "absolute" }}>
+                    <View style={{ position: "absolute", zIndex: 1 }}>
                         <TouchableOpacity onPress={() => Actions.pop()}>
                             <AntDesign name="arrowleft" style={{ marginLeft: 15, color: "#000000", fontSize: 25 }} />
                         </TouchableOpacity>

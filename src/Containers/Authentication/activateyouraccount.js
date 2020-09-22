@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import {
     View, Image, ActivityIndicator, StyleSheet,
     ImageBackground, StatusBar, TouchableOpacity,
-    Text, TextInput, ScrollView, Picker,
+    Text, TextInput, ScrollView, Picker, Platform
 
 } from 'react-native';
 //icons import
@@ -109,7 +109,7 @@ class ActivateAccount extends Component {
                 {/* //header// */}
 
                 <View style={{
-                    flex: 0.8, flexDirection: "row", width: "100%",
+                    flex: 0.8, flexDirection: "row", width: "100%", marginTop: Platform.OS === 'ios' ? 30 : 0
                     // backgroundColor: "red"
                 }}>
                     <TouchableOpacity
@@ -180,10 +180,12 @@ class ActivateAccount extends Component {
                             >
                                 <TextInput
                                     keyboardType={"numeric"}
-                                    style={{ height: 50, width: "90%", }}
+                                    style={{ height: 50, width: "90%",color:"black" }}
                                     onChangeText={(phoneNumber) => this.setState({ phoneNumber })}
                                     value={phoneNumber}
                                     placeholder={"Number"}
+                                    placeholderTextColor="grey"
+                                    
                                 />
                             </View>
                         </View>

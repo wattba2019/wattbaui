@@ -79,9 +79,10 @@ class VerifyCodeEmail extends Component {
                     flexDirection: "row",
                     width: "100%",
                     alignItems: "center",
+                    marginTop:30
 
                 }}>
-                    <View style={{ position: "absolute" }}>
+                    <View style={{ position: "absolute" ,}}>
                         <TouchableOpacity onPress={() => Actions.pop()}>
                             <AntDesign name="arrowleft" style={{ marginLeft: 15, color: "#000000", fontSize: 25 }} />
                         </TouchableOpacity>
@@ -101,6 +102,8 @@ class VerifyCodeEmail extends Component {
                             onChangeText={(code) => this.setState({ code })}
                             value={code}
                             placeholder={"Verification Code"}
+                            placeholderTextColor="grey"
+
                         />
                     </View>
                     {/* Submit Button */}

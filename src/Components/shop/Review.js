@@ -104,7 +104,7 @@ class Review extends Component {
                                         />
                                     </View>
                                     <View style={{ flex: 4, marginHorizontal: 15 }}>
-                                        <Text style={{ fontSize: 15, color: "#8B867E" }}>{key.userId.fullName}</Text>
+                                        <Text style={{ fontSize: 15, color: "#8B867E" }}>{key.userId ? key.userId.fullName : "N/a"}</Text>
                                         <Text style={{ fontSize: 12, color: "#C4BCAE" }}>
                                             {
                                                 moment(key.createdAt).format('MMMM Do, YYYY hh:mm:ss A')

@@ -101,7 +101,7 @@ class ServiceListing extends Component {
             }}>
                 <StatusBar backgroundColor="white" barStyle="dark-content" />
 
-                <View style={{ flex: 0.7, flexDirection: "row", borderBottomWidth: 0.5, borderBottomColor: 'grey', }}>
+                <View style={{ flex: 0.7, marginTop:Platform.OS === 'ios' ? 25 : 0,flexDirection: "row", borderBottomWidth: 0.5, borderBottomColor: 'grey', }}>
                     <View style={{ flex: 1, justifyContent: "center", }}>
                         <TouchableOpacity onPress={() => Actions.pop()}>
                             <Ionicons name="ios-arrow-back" style={{ marginLeft: 25, color: "black", fontWeight: 'bold', fontSize: 28 }} />

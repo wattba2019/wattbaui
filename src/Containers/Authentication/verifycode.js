@@ -137,10 +137,12 @@ class VerifyCode extends Component {
                         >
                             {/* email input */}
                             <TextInput
-                                style={{ height: 50, width: "90%", }}
+                                style={{ height: 50, width: "90%",color:"black" }}
                                 onChangeText={(code) => this.setState({ code })}
                                 value={code}
                                 placeholder={"Verification Code"}
+                                placeholderTextColor="grey"
+
                             />
                         </View>
                         {/* Submit Button */}

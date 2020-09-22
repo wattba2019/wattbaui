@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import {
     View, ActivityIndicator, StyleSheet,
     StatusBar, TouchableOpacity,
-    Text, ScrollView, Alert,
+    Text, ScrollView, Alert, Platform
 } from 'react-native';
 import { connect } from "react-redux";
 import { Actions } from 'react-native-router-flux';
@@ -171,7 +171,7 @@ class Filters extends Component {
         }
     }
 
-    getNearbyShopsServices(nearbyShopIDs, shops,) {
+    getNearbyShopsServices(nearbyShopIDs, shops, ) {
         const { selectedService, sortedby } = this.state
         let idsCloneData = { shopid: nearbyShopIDs }
         var options = {
@@ -250,6 +250,7 @@ class Filters extends Component {
                 <StatusBar backgroundColor="white" barStyle="dark-content" />
                 <View style={{
                     // flex: 2,
+                    marginTop: Platform.OS === 'ios' ? 12 : null,
                     height: 60,
                     flexDirection: "row",
                     borderBottomWidth: 0.5,
@@ -576,7 +577,7 @@ let mapStateToProps = state => {
 };
 function mapDispatchToProps(dispatch) {
     return ({
-        setNearByShops: (shops,) => {
+        setNearByShops: (shops, ) => {
             dispatch(setNearByShops(shops));
         },
     })

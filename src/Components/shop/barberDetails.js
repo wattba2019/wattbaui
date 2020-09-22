@@ -2,8 +2,7 @@ import React, { Component } from "react";
 import {
     View, Image, ActivityIndicator, StyleSheet,
     ImageBackground, StatusBar, TouchableOpacity,
-    Text, TextInput, ScrollView
-
+    Text, TextInput, ScrollView, Platform,
 } from 'react-native';
 import { Icon, Tabs, Tab, TabHeading } from 'native-base';
 import { connect } from "react-redux";
@@ -49,6 +48,7 @@ class BarberDetails extends Component {
                     flexDirection: "row",
                     borderBottomWidth: 0.5,
                     borderBottomColor: 'grey',
+                    marginTop: Platform.OS === 'ios' ? 15 : 0
                 }}>
                     <View style={{
                         flex: 1,
@@ -118,7 +118,7 @@ class BarberDetails extends Component {
                             style={{ width: "70%", height: 50, marginTop: 30, marginHorizontal: "15%", marginBottom: 20 }}
                         >
                             <TouchableOpacity
-                                onPress={() => Actions.ChooseService()}
+                                onPress={() => Actions.ChooseService({shop:shop})}
                             >
                                 <ImageBackground source={require('../../../assets/buttonBackground.png')} resizeMode="contain"
                                     style={{ height: "100%", width: "100%", justifyContent: "center", }}

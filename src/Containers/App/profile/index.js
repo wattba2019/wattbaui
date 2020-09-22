@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import {
-    View, Image, ActivityIndicator, StyleSheet,
+    View, Image, ActivityIndicator, StyleSheet,Platform,
     ImageBackground, StatusBar, TouchableOpacity, AsyncStorage,
     Text, TextInput, ScrollView, Alert
 
@@ -139,6 +139,7 @@ class Profile extends Component {
                 {/* header */}
 
                 <View style={{
+                    marginTop: Platform.OS === 'ios' ? 30 : null,
                     flex: 0.6,
                     height: 60,
                     flexDirection: "row",

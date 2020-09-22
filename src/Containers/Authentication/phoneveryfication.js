@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import {
     View, Image, ActivityIndicator, StyleSheet,
     ImageBackground, StatusBar, TouchableOpacity,
-    Text, TextInput, ScrollView
+    Text, TextInput, ScrollView, Platform
 
 } from 'react-native';
 import { connect } from "react-redux";
@@ -139,7 +139,7 @@ class Phoneverification extends Component {
 
                 {/* //header// */}
 
-                <View style={{ height: "13%", flexDirection: "row", width: "100%", }}>
+                <View style={{ height: "13%", flexDirection: "row", width: "100%", marginTop: Platform.OS === 'ios' ? 15 : 0 }}>
                     <TouchableOpacity
                         style={{ flex: 2, }}
                         onPress={() => Actions.pop()}
