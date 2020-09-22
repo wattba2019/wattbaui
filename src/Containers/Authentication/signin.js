@@ -20,8 +20,8 @@ class Signin extends Component {
             showPassword: true,
             email: "",
             password: "",
-            email: "mynameisabdullahv1@gmail.com",
-            password: "12345678"
+            // email: "mynameisabdullahv1@gmail.com",
+            // password: "12345678"
             // email: "abddullahshah@gmail.com",
             // password: "abcd@123456"
         };
@@ -135,7 +135,7 @@ class Signin extends Component {
                             style={{ width: "85%", marginTop: 10, borderColor: 'gray', backgroundColor: "#E8E6E7", borderRadius: 25, justifyContent: "center", alignItems: "center" }}
                         >
                             <TextInput
-                                style={{ height: 50, width: "90%",color:"black" }}
+                                style={{ height: 50, width: "90%", color: "black" }}
                                 onChangeText={(email) => this.setState({ email })}
                                 value={email}
                                 placeholder={"Email"}
@@ -149,7 +149,7 @@ class Signin extends Component {
                         >
                             <TextInput
                                 secureTextEntry={showPassword}
-                                style={{ height: 50, width: "80%",color:"black" }}
+                                style={{ height: 50, width: "80%", color: "black" }}
                                 onChangeText={(password) => this.setState({ password })}
                                 value={password}
                                 placeholder={"Password"}

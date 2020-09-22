@@ -314,9 +314,10 @@ class AppointmentDetails extends Component {
     }
 
     render() {
-        const { service, approved } = this.props
+        const { service, approved, extraService } = this.props
         const { selectedService, totalCost, loader, star, Message, review } = this.state
         // console.log(this.state.cancledBooking, service._id, "review")
+        console.log(extraService, "review")
         return (
             <View style={{
                 flex: 1,
@@ -352,7 +353,7 @@ class AppointmentDetails extends Component {
                     backgroundColor: "#ffffff",
                     marginTop: Platform.OS === 'ios' ? 30 : 0
                 }}>
-                    <View style={{ position: "absolute",zIndex:1 }}>
+                    <View style={{ position: "absolute", zIndex: 1 }}>
                         <TouchableOpacity onPress={() => Actions.pop()}>
                             <AntDesign name="arrowleft" style={{ marginLeft: 15, color: "#000000", fontSize: 25 }} />
                         </TouchableOpacity>
@@ -502,7 +503,7 @@ class AppointmentDetails extends Component {
                                                                 </View>
                                                             </View>
 
-                                                            {
+                                                            {/* {
                                                                 (key.extraServices.length != 0) ? (
                                                                     <View style={{ flex: 1, width: "90%", flexDirection: "row", height: 80, borderBottomColor: "#EFEFF4", borderBottomWidth: 0.5 }}>
                                                                         <View style={{ justifyContent: "center", alignItems: "center", flexDirection: "row" }}>
@@ -518,7 +519,26 @@ class AppointmentDetails extends Component {
                                                                         </View>
                                                                     </View>
                                                                 ) : null
+                                                            } */}
+
+                                                            {
+                                                                (extraService.length != 0) ? (
+                                                                    <View style={{ flex: 1, width: "90%", flexDirection: "row", height: 80, borderBottomColor: "#EFEFF4", borderBottomWidth: 0.5 }}>
+                                                                        <View style={{ justifyContent: "center", alignItems: "center", flexDirection: "row" }}>
+                                                                            <View style={{ marginLeft: 0 }}>
+                                                                                <Text style={{ fontWeight: "bold", color: "#A3B8CB" }}>Extra Service</Text>
+                                                                                {
+                                                                                    extraService.map((keys, index) => {
+                                                                                        return (
+                                                                                            <Text key={index} >{keys.serviceName}</Text>
+                                                                                        )
+                                                                                    })}
+                                                                            </View>
+                                                                        </View>
+                                                                    </View>
+                                                                ) : null
                                                             }
+
                                                         </>
                                                         : <View style={{ flex: 1, width: "90%", flexDirection: "row", borderBottomColor: "#EFEFF4", borderBottomWidth: 0.5, padding: 8 }}>
                                                             <View style={{ justifyContent: "center", alignItems: "center", flexDirection: "row" }}>

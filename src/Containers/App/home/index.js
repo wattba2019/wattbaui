@@ -121,10 +121,41 @@ class Home extends Component {
     }
 
     getBestBarbershops() {
-        let { nearByShops, } = this.state
+        let { nearByShops } = this.state
 
-        const result = nearByShops.sort((a, b) => b.review - a.review)
-        this.setState({ bestBarberShops: result })
+        let sortedShops = []
+        let noRating = []
+
+        if (nearByShops) {
+            console.log(nearByShops[0], "SORTING")
+            for (let index = 0; index < nearByShops.length; index++) {
+                const element = nearByShops[index];
+                const review = nearByShops[index].review;
+                if (review != "No rating") {
+                    sortedShops.push(element)
+                }
+                else {
+                    noRating.push(element)
+                }
+            }
+            for (let index = 0; index < noRating.length; index++) {
+                const element = noRating[index];
+                sortedShops.push(element)
+            }
+
+            // const ratingSorting = sortedShops.sort((a, b) => b.review - a.review)
+            // console.log(sortedShops, ratingSorting, "ratingSorting")
+            this.setState({ bestBarberShops: sortedShops })
+            // const ratingSorting = nearByShops.sort((a, b) => b.review - a.review)
+        }
+
+        // const result = nearByShops.sort((a, b) => b.review - a.review)
+        // const result = nearByShops.sort((a, b) =>
+        //     b.review != "No rating" ? b.review - a.review : null
+        //     // console.log(a, b, "result")
+        // )
+
+        // this.setState({ bestBarberShops: result })
 
         // const fiveStarRatingShops = nearByShops.filter(nearByShops => nearByShops.review === "5");
         // let bestShops = []

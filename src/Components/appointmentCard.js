@@ -13,7 +13,7 @@ class AppointmentCard extends Component {
 
     render() {
         const { appointments, approved, declined } = this.props
-        // console.log(appointments, "appointments")
+        console.log(appointments, "appointments")
 
         return (
             <ScrollView contentContainerStyle={styles.contentContainer}
@@ -21,9 +21,10 @@ class AppointmentCard extends Component {
                 {
                     (appointments && appointments.length != 0) ? (
                         appointments.map((key, index) => {
+                            console.log(key, "INSIDE_MAP")
                             return (
                                 <TouchableOpacity key={index}
-                                    onPress={() => Actions.AppointmentDetails({ service: key, approved: approved ? approved : null, declined })}
+                                    onPress={() => Actions.AppointmentDetails({ service: key, approved: approved ? approved : null, declined, extraService: key.package === false ? key.requiredExtraServices : null })}
                                 >
                                     <View style={{
                                         flex: 1, justifyContent: "center", alignItems: "center", marginTop: 10,

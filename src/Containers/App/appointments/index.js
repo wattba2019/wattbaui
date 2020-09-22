@@ -135,7 +135,7 @@ class Appointments extends Component {
 
     render() {
         const { activeColor, loader, upcoming, approved, declined } = this.state
-        // console.log(upcoming, approved, declined, "LOADER")
+        console.log(upcoming, "LOADER_UPCOMMING")
         return (
             <View style={{
                 flex: 1,

@@ -119,7 +119,7 @@ class Checkout extends Component {
         // cardDetails.cost = booking.cost;
         // cardDetails.cost = Math.round((booking.cost / 100 * (this.state.serviceCharge + this.state.vatCharges)) + booking.cost);
         // cardDetails.cost = (booking.cost / 100 * (this.state.serviceCharge + this.state.vatCharges)) + booking.cost.toFixed(2);
-        cardDetails.cost = Number((booking.cost / 100 * (this.state.serviceCharge + this.state.vatCharges)) + booking.cost).toFixed(2);
+        cardDetails.cost = Number((booking.cost / 100 * (this.state.serviceCharge + this.state.vatCharges)) + Number(booking.cost)).toFixed(2);
         // console.log(cardDetails, booking.cost, "Credential")
         try {
             // take payment with the card details
@@ -224,6 +224,7 @@ class Checkout extends Component {
     render() {
         const { Message, loader, serviceCharge, vatCharges } = this.state
         const { booking, shop, userProfile } = this.props
+        console.log(booking, Number((booking.cost / 100 * (serviceCharge + vatCharges)) + Number(booking.cost)).toFixed(2), serviceCharge, vatCharges, "extraService_booking")
         return (
             <View style={{ flex: 1, backgroundColor: "#fff" }}>
                 <StatusBar backgroundColor="#FD6958" barStyle="dark-content" />
@@ -350,26 +351,17 @@ class Checkout extends Component {
 
 
                                                 </View>
-                                                //     )
-                                                // })
-
-
-
                                             )
                                         })
                                     }
 
                                     <View style={{ flexDirection: "row", justifyContent: "space-between", marginTop: 5, }}>
                                         <Text style={{ alignItems: "center", fontWeight: "bold", fontSize: 12 }}>{"Service Charges"}</Text>
-                                        {/* <Text style={{ alignItems: "center", fontWeight: "bold", fontSize: 12 }}> {Math.round(booking.cost / 100 * serviceCharge)}</Text> */}
-                                        {/* <Text style={{ alignItems: "center", fontWeight: "bold", fontSize: 12 }}> {booking.cost / 100 * serviceCharge.toFixed(2)}</Text> */}
                                         <Text style={{ alignItems: "center", fontWeight: "bold", fontSize: 12 }}> {Number(booking.cost / 100 * serviceCharge).toFixed(2)}</Text>
                                     </View>
 
                                     <View style={{ flexDirection: "row", justifyContent: "space-between", marginTop: 5, }}>
                                         <Text style={{ alignItems: "center", fontWeight: "bold", fontSize: 12 }}>{"VAT Charges"}</Text>
-                                        {/* <Text style={{ alignItems: "center", fontWeight: "bold", fontSize: 12 }}>{Math.round(booking.cost / 100 * vatCharges)}</Text> */}
-                                        {/* <Text style={{ alignItems: "center", fontWeight: "bold", fontSize: 12 }}>{booking.cost / 100 * vatCharges.toFixed(2)}</Text> */}
                                         <Text style={{ alignItems: "center", fontWeight: "bold", fontSize: 12 }}>{Number(booking.cost / 100 * vatCharges).toFixed(2)}</Text>
                                     </View>
 
@@ -390,7 +382,6 @@ class Checkout extends Component {
                                 }}>
 
                                     {/* Add Coupon */}
-
                                     {/* <View style={{ flexDirection: "row", justifyContent: "space-between", marginTop: 15 }}>
                                         <View
                                             style={{ justifyContent: "center", alignItems: "center" }}
@@ -412,7 +403,6 @@ class Checkout extends Component {
                                     </View> */}
 
                                     {/* Service Fees */}
-
                                     {/* <View style={{ flexDirection: "row", justifyContent: "space-between", marginTop: 15 }}>
                                         <Text style={{ alignItems: "center", fontWeight: "bold", fontSize: 16 }}>Service Fees</Text>
                                         <Text style={{ alignItems: "center", fontWeight: "bold", fontSize: 16 }}>$5</Text>
@@ -420,9 +410,7 @@ class Checkout extends Component {
 
                                     <View style={{ flexDirection: "row", justifyContent: "space-between", marginTop: 15, marginBottom: 15 }}>
                                         <Text style={{ alignItems: "center", fontWeight: "bold", fontSize: 16 }}>Total</Text>
-                                        {/* <Text style={{ alignItems: "center", fontWeight: "bold", fontSize: 16 }}>GBP {Math.round((booking.cost / 100 * (serviceCharge + vatCharges)) + booking.cost)}</Text> */}
-                                        <Text style={{ alignItems: "center", fontWeight: "bold", fontSize: 16 }}>GBP {Number((booking.cost / 100 * (serviceCharge + vatCharges)) + booking.cost).toFixed(2)}</Text>
-                                        {/* <Text style={{ alignItems: "center", fontWeight: "bold", fontSize: 16 }}>GBP {(booking.cost / 100 * (serviceCharge + vatCharges)) + booking.cost.toFixed(2)}</Text> */}
+                                        <Text style={{ alignItems: "center", fontWeight: "bold", fontSize: 16 }}>GBP {Number((booking.cost / 100 * (serviceCharge + vatCharges)) + Number(booking.cost)).toFixed(2)}</Text>
                                     </View>
                                 </View>
 
