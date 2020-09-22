@@ -23,7 +23,6 @@ class AppointmentDetails extends Component {
         };
     }
 
-
     UNSAFE_componentWillMount() {
         const { service } = this.props
         if (service.package === true) {
@@ -244,7 +243,6 @@ class AppointmentDetails extends Component {
         // }
     }
 
-
     submitReview() {
         const { Message, star } = this.state
         const { service, userProfile } = this.props
@@ -314,9 +312,6 @@ class AppointmentDetails extends Component {
 
             })
     }
-
-
-
 
     render() {
         const { service, approved } = this.props

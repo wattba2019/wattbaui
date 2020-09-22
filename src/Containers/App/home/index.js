@@ -122,20 +122,24 @@ class Home extends Component {
 
     getBestBarbershops() {
         let { nearByShops, } = this.state
-        const fiveStarRatingShops = nearByShops.filter(nearByShops => nearByShops.review === "5");
-        let bestShops = []
-        for (let index = 0; index < fiveStarRatingShops.length; index++) {
-            const element = fiveStarRatingShops[index];
-            if (index < 5) {
-                bestShops.push(element)
-            }
-            else {
-                break
-            }
-        }
-        this.setState({
-            bestBarberShops: bestShops,
-        })
+
+        const result = nearByShops.sort((a, b) => b.review - a.review)
+        this.setState({ bestBarberShops: result })
+
+        // const fiveStarRatingShops = nearByShops.filter(nearByShops => nearByShops.review === "5");
+        // let bestShops = []
+        // for (let index = 0; index < fiveStarRatingShops.length; index++) {
+        //     const element = fiveStarRatingShops[index];
+        //     if (index < 5) {
+        //         bestShops.push(element)
+        //     }
+        //     else {
+        //         break
+        //     }
+        // }
+        // this.setState({
+        //     bestBarberShops: bestShops,
+        // })
 
         // this.setState({ isloader: true })
         // var options = {
@@ -1162,7 +1166,7 @@ let mapStateToProps = state => {
 };
 function mapDispatchToProps(dispatch) {
     return ({
-        setNearByShops: (shops, ) => {
+        setNearByShops: (shops,) => {
             dispatch(setNearByShops(shops));
         },
     })

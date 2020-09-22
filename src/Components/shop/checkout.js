@@ -246,7 +246,7 @@ class Checkout extends Component {
                     width: "100%",
                     alignItems: "center",
                     backgroundColor: "#FD6958",
-                    marginTop: Platform.OS === 'ios' ? 40 : 20
+                    marginTop: Platform.OS === 'ios' ? 40 : 0
                 }}>
                     {
                         Platform.OS === 'android' ?
