@@ -10,6 +10,7 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import { Actions } from 'react-native-router-flux';
 import moment from 'moment';
 import axios from 'axios';
+import { Appearance } from 'react-native';
 
 class BookAppointment extends Component {
     constructor(props) {
@@ -391,7 +392,9 @@ class BookAppointment extends Component {
         let { totalCost, gendre, renderSelectedService } = this.props
         let { stylists, slots, selectedSlotTime, day, date, err, soortedBarberList } = this.state
 
-        console.log(stylists, "stylists")
+        if (Platform.OS === 'ios') {
+            const colorScheme = Appearance.getColorScheme();
+        }
 
         return (
             <View style={{ paddingHorizontal: 10, flex: 1, backgroundColor: "#fff" }}>
@@ -475,6 +478,19 @@ class BookAppointment extends Component {
                                             borderBottomWidth: 0,
                                             marginRight: "40%"
                                         },
+
+                                        datePicker: {
+                                            backgroundColor: Platform.OS === 'ios' ? colorScheme === "dark" ? "white" : "white" : "white",
+                                            ios_backgroundColor: 'white',
+                                            color: Platform.OS === 'ios' ? colorScheme === "dark" ? "black" : "black" : "black"
+                                        },
+
+                                        datePickerCon: {
+                                            color: 'black',
+                                            ios_backgroundColor: 'white',
+                                            backgroundColor: 'white',
+                                        },
+
                                         // ... You can check the source to find the other keys.
                                     }}
                                     // onDateChange={(date) => { this.setState({ date: date }) }}

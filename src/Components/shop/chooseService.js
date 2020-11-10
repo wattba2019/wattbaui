@@ -1,16 +1,20 @@
 import React, { Component } from "react";
 import {
-    View, StyleSheet,
+    View, StyleSheet, Platform,
     StatusBar, TouchableOpacity,
-    Text, ScrollView, Picker, Alert
+    Text, ScrollView, Picker, Alert,
 } from 'react-native';
-import { CheckBox, Body } from 'native-base';
+// import { CheckBox, Content, Container } from 'native-base';
 import { connect } from "react-redux";
 import { Actions } from 'react-native-router-flux';
 import RadioForm, { RadioButton, RadioButtonInput, RadioButtonLabel } from 'react-native-simple-radio-button';
 import Entypo from 'react-native-vector-icons/Entypo';
 import axios from 'axios';
 import { setShopServices, } from '../../Store/Action/action';
+
+import CheckBox from 'react-native-check-box'
+
+
 
 class ChooseService extends Component {
     constructor(props) {
@@ -159,9 +163,12 @@ class ChooseService extends Component {
                     flexDirection: "row",
                     borderBottomWidth: 0.5,
                     borderBottomColor: 'grey',
+                    marginTop: Platform.OS === 'ios' ? 32 : 0,
+
+                    // backgroundColor:"red"
                 }}>
 
-                    <View style={{ position: "absolute" }}>
+                    <View style={{ position: "absolute", zIndex: 1 }}>
                         <TouchableOpacity onPress={() => Actions.pop()}>
                             {/* <TouchableOpacity onPress={() => Actions.ServiceDetaild()}> */}
                             <Entypo name="cross" style={{ marginLeft: 15, top: 10, color: "black", fontSize: 25 }} />
@@ -238,9 +245,23 @@ class ChooseService extends Component {
 
                                                 <TouchableOpacity onPress={() => this.chooseYourService(key, index)}
                                                     style={{ flex: 1, flexDirection: "row", borderBottomColor: "#E6E6EE", borderBottomWidth: key.selected ? 1.5 : 0.5, padding: 5, height: 40 }}>
+
+
+                                                    {/* <View style={{ flex: 0.4, alignItems: "center", flexDirection: "row", alignSelf: "center", }}>
+                                                                <CheckBox onPress={() => this.chooseYourService(key, index)} color="#FD6958" checked={key.selected} />
+                                                        </View> */}
+
                                                     <View style={{ flex: 0.4, alignItems: "center", flexDirection: "row", }}>
-                                                        <CheckBox onPress={() => this.chooseYourService(key, index)} color="#FD6958" checked={key.selected} />
+                                                        <CheckBox
+                                                            style={{ flex: 1, padding: 10, }}
+                                                            checkBoxColor="#FD6958"
+                                                            onClick={() => this.chooseYourService(key, index)}
+                                                            isChecked={key.selected}
+                                                        />
                                                     </View>
+
+
+
                                                     <View style={{ flex: 1.7, alignItems: "center", flexDirection: "row", }}>
                                                         <Text style={{ fontWeight: "normal", fontSize: 15 }}>{key.serviceName}</Text>
                                                     </View>
@@ -248,11 +269,13 @@ class ChooseService extends Component {
                                                         <Text style={{ fontWeight: "normal", fontSize: 15 }}>{key.price}</Text>
                                                     </View>
                                                 </TouchableOpacity>
+
                                                 {
                                                     (key.selected) ? (
                                                         <Text style={{ fontWeight: "bold", marginTop: 10, marginLeft: "5%", textDecorationLine: 'underline', }}>{"Extra Services"}</Text>
                                                     ) : null
                                                 }
+
                                                 {
                                                     (key.selected) ? (
                                                         key.extraServices.map((item, indexing) => {
@@ -261,7 +284,15 @@ class ChooseService extends Component {
                                                                     <TouchableOpacity onPress={() => this.chooseYourExtraService(item, indexing, index)}
                                                                         style={{ flex: 1, flexDirection: "row", borderBottomColor: "#E6E6EE", borderBottomWidth: 0.5, padding: 15 }}>
                                                                         <View style={{ flex: 0.4, alignItems: "center", flexDirection: "row", }}>
-                                                                            <CheckBox onPress={() => this.chooseYourExtraService(item, indexing, index)} color="#FD6958" checked={item.selected} />
+                                                                            {/* <CheckBox onPress={() => this.chooseYourExtraService(item, indexing, index)} color="#FD6958" checked={item.selected} /> */}
+
+                                                                            <CheckBox
+                                                                                style={{ top: -2 }}
+                                                                                checkBoxColor="#FD6958"
+                                                                                onClick={() => this.chooseYourExtraService(item, indexing, index)}
+                                                                                isChecked={item.selected}
+                                                                            />
+
                                                                         </View>
                                                                         <View style={{ flex: 1.7, flexDirection: "row", }}>
                                                                             <Text style={{ fontWeight: "normal", fontSize: 14, color: "#8E8E93" }}>{item.serviceName}</Text>

@@ -61,7 +61,7 @@ class Checkout extends Component {
             })
             .catch(err => {
                 let error = JSON.parse(JSON.stringify(err))
-                console.log(error, 'error_on_get_shops_with_place_name', err)
+                console.log(error, 'error_on_getting_vat_and_service_charges', err)
                 this.setState({
                     err: error,
                 })
@@ -224,7 +224,7 @@ class Checkout extends Component {
     render() {
         const { Message, loader, serviceCharge, vatCharges } = this.state
         const { booking, shop, userProfile } = this.props
-        console.log(booking, Number((booking.cost / 100 * (serviceCharge + vatCharges)) + Number(booking.cost)).toFixed(2), serviceCharge, vatCharges, "extraService_booking")
+        console.log(booking.cost, Number((booking.cost / 100 * (serviceCharge + vatCharges)) + Number(booking.cost)).toFixed(2), serviceCharge, vatCharges, "extraService_booking")
         return (
             <View style={{ flex: 1, backgroundColor: "#fff" }}>
                 <StatusBar backgroundColor="#FD6958" barStyle="dark-content" />
@@ -753,7 +753,7 @@ class Checkout extends Component {
 const styles = StyleSheet.create({
     contentContainer: {
         // flex: 1,
-        paddingBottom: 80,
+        paddingBottom: 240,
         backgroundColor: "#F4F7FA",
 
     },

@@ -15,7 +15,7 @@ class Signup extends Component {
             loader: false,
             showPassword: true,
             // fullName: "Abdullah Shah",
-            // email: "abddullahshah11@gmail.com",
+            // email: "abddullahshah@gmail.com",
             // password: "12345678",
             // phoneNumber: "3368990497", //ufone
             // phoneNumber: "3450558623", //bug

@@ -32,6 +32,37 @@ class AppointmentDetails extends Component {
             this.getBookedService(service.requiredServiceId)
         }
         this.checkAlreadyRewiew(service._id)
+        this.getVatAndServiceCharge()
+
+    }
+
+    getVatAndServiceCharge() {
+        var options = {
+            method: 'GET',
+            url: `${this.props.bseUrl}/vatandservicecharges/`,
+            headers:
+            {
+                'cache-control': 'no-cache',
+                "Allow-Cross-Origin": '*',
+            },
+        }
+        axios(options)
+            .then(result => {
+                let charges = result.data.data[0]
+                console.log(charges, "consoleconsoleconsole")
+                this.setState({
+                    serviceCharge: Number(charges.serviceCharges),
+                    vatCharges: Number(charges.vatCharges),
+                })
+
+            })
+            .catch(err => {
+                let error = JSON.parse(JSON.stringify(err))
+                console.log(error, 'error_on_getting_vat_and_service_charges', err)
+                this.setState({
+                    err: error,
+                })
+            })
     }
 
     checkAlreadyRewiew(bookingId) {
@@ -82,6 +113,27 @@ class AppointmentDetails extends Component {
 
     getBookedService(serviceId) {
         let { totalCost } = this.state
+        let { service, extraService } = this.props
+        console.log(totalCost, service, extraService, "Create_costing")
+
+        // let price = totalCost
+        // for (let index = 0; index < service.length; index++) {
+        //     let servicePrice = service[index].price;
+        //     price = price + Number(servicePrice)
+        // }
+
+        // if (extraService.length != 0) {
+        //     for (let index = 0; index < extraService.length; index++) {
+        //         let extraServicePrice = extraService[index].price;
+        //         price = price + Number(extraServicePrice)
+        //     }
+        // }
+
+        // this.setState({
+        //     totalCost: price
+        // })
+
+
         if (serviceId != undefined) {
             let idsCloneData = { serviceId: serviceId }
             var options = {
@@ -98,31 +150,46 @@ class AppointmentDetails extends Component {
                 .then(result => {
                     let bookedService = result.data.data
                     console.log(bookedService, "Fetch_Booked_Services")
-
                     let price = totalCost
-
                     for (let index = 0; index < bookedService.length; index++) {
-                        const extraServices = bookedService[index].extraServices;
+                        // const extraServices = bookedService[index].extraServices;
                         const servicePrice = bookedService[index].price;
                         price = price + Number(servicePrice)
-                        console.log(servicePrice, price, "ELEMENT")
-                        if (extraServices.length != 0) {
-                            for (let index = 0; index < extraServices.length; index++) {
-                                const extraPrice = extraServices[index].price;
-                                price = price + Number(extraPrice)
-                            }
-                            this.setState({
-                                totalCost: price
-                            })
-                        }
-                        else {
-                            this.setState({
-                                totalCost: price
-                            })
+                        // console.log(servicePrice, price, "ELEMENT")
+
+
+
+                        // if (extraService.length != 0) {
+                        //     for (let index = 0; index < extraService.length; index++) {
+                        //         const extraPrice = extraService[index].price;
+                        //         console.log(extraPrice,"extraPrice")
+                        //         price = price + Number(extraPrice)
+                        //     }
+
+                        //     // this.setState({
+                        //     //     totalCost: price
+                        //     // })
+                        // }
+                        // else {
+                        //     this.setState({
+                        //         totalCost: price
+                        //     })
+                        // }
+                    }
+
+                    if (extraService.length != 0) {
+                        for (let index = 0; index < extraService.length; index++) {
+                            const extraPrice = extraService[index].price;
+                            price = price + Number(extraPrice)
+                            console.log(extraPrice, "extraPrice")
                         }
                     }
+
+                    console.log(price, "Total_Price")
                     this.setState({
-                        selectedService: bookedService
+                        selectedService: bookedService,
+                        totalCost: price
+
                     })
                 })
                 .catch(err => {
@@ -315,9 +382,8 @@ class AppointmentDetails extends Component {
 
     render() {
         const { service, approved, extraService } = this.props
-        const { selectedService, totalCost, loader, star, Message, review } = this.state
-        // console.log(this.state.cancledBooking, service._id, "review")
-        console.log(extraService, "review")
+        const { selectedService, totalCost, loader, star, Message, review, serviceCharge, vatCharges } = this.state
+        console.log(serviceCharge, vatCharges, totalCost, "Srvice_Charges")
         return (
             <View style={{
                 flex: 1,
@@ -474,7 +540,8 @@ class AppointmentDetails extends Component {
                                     </View>
                                     <View style={{ marginLeft: 20, flex: 7, flexDirection: "row", justifyContent: "space-between", alignItems: "center", }}>
                                         {/* <Text >Fees</Text> */}
-                                        <Text >{totalCost} GBP</Text>
+                                        <Text style={{ alignItems: "center", fontWeight: "bold", fontSize: 16 }}>{Number((totalCost / 100 * (serviceCharge + vatCharges)) + Number(totalCost)).toFixed(2)} GBP</Text>
+                                        {/* <Text >{totalCost} GBP</Text> */}
                                     </View>
                                 </View>
                             </View>

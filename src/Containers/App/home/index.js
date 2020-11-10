@@ -124,7 +124,7 @@ class Home extends Component {
         let { nearByShops } = this.state
 
         let sortedShops = []
-        let noRating = []
+        // let noRating = []
 
         if (nearByShops) {
             console.log(nearByShops[0], "SORTING")
@@ -134,18 +134,18 @@ class Home extends Component {
                 if (review != "No rating") {
                     sortedShops.push(element)
                 }
-                else {
-                    noRating.push(element)
-                }
+                // else {
+                //     noRating.push(element)
+                // }
             }
-            for (let index = 0; index < noRating.length; index++) {
-                const element = noRating[index];
-                sortedShops.push(element)
-            }
+            // for (let index = 0; index < noRating.length; index++) {
+            //     const element = noRating[index];
+            //     sortedShops.push(element)
+            // }
 
-            // const ratingSorting = sortedShops.sort((a, b) => b.review - a.review)
+            const ratingSorting = sortedShops.sort((a, b) => b.review - a.review)
             // console.log(sortedShops, ratingSorting, "ratingSorting")
-            this.setState({ bestBarberShops: sortedShops })
+            this.setState({ bestBarberShops: ratingSorting })
             // const ratingSorting = nearByShops.sort((a, b) => b.review - a.review)
         }
 

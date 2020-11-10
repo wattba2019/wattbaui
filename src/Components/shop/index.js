@@ -383,14 +383,14 @@ class shop extends Component {
                     }
 
                     <TouchableOpacity onPress={() => Actions.pop()}
-                        style={{ width: 35, position: 'absolute', top: 0, left: 30, right: 0, bottom: 130, justifyContent: "center",  }}>
+                        style={{ width: 35, position: 'absolute', top: 0, left: 30, right: 0, bottom: 130, justifyContent: "center", }}>
                         <Ionicons name="ios-arrow-back" style={{
                             color: "#fff", fontWeight: 'bold', fontSize: 28, marginLeft: "5%",
                             shadowColor: "#000",
                             shadowColor: "#000",
                             textShadowColor: 'black',
-                            textShadowOffset: { width: 1, height: 0 },
-                            textShadowRadius: 5, left: 10,
+                            textShadowOffset: { width: 5, height: 2 },
+                            textShadowRadius: 10, left: 0,
                         }} />
                     </TouchableOpacity>
 
@@ -457,8 +457,12 @@ class shop extends Component {
                         {
                             (favroiteLoader === false) ? (
                                 (favroite) ?
-                                    (<Ionicons name="ios-heart" style={{ color: "#FD6958", fontWeight: 'bold', fontSize: 28 }} />) :
-                                    <Ionicons name="ios-heart-empty" style={{ color: "#FD6958", fontWeight: 'bold', fontSize: 28 }} />
+                                    (
+                                        <Entypo name="heart" style={{ color: "#FD6958", fontWeight: 'bold', fontSize: 28 }} />
+                                        )
+                                    :
+                                    <Entypo name="heart-outlined" style={{ color: "#FD6958", fontWeight: 'bold', fontSize: 28 }} />
+
                             ) : <ActivityIndicator color="#FD6958" />
                         }
                     </TouchableOpacity>
