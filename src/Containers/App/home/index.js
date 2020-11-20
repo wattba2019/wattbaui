@@ -382,6 +382,7 @@ class Home extends Component {
             })
                 .then(result => {
                     let allServices = result.data.data
+                    console.log(allServices, "allServices_getting_home_screen")
                     let Haircut = []
                     let Coloring = []
                     let Styling = []
@@ -650,7 +651,7 @@ class Home extends Component {
             moreLoader
         } = this.state
 
-        // console.log(Haircut, Childrens_Haircut, "Childrens_Haircut")
+        console.log(Coloring, "Childrens_Haircut")
         return (
             <View
                 style={{

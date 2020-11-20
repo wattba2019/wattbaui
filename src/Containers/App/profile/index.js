@@ -1,22 +1,11 @@
 import React, { Component } from "react";
-import {
-    View, Image, ActivityIndicator, StyleSheet,Platform,
-    ImageBackground, StatusBar, TouchableOpacity, AsyncStorage,
-    Text, TextInput, ScrollView, Alert
-
-} from 'react-native';
+import { View, Image, Platform, StatusBar, TouchableOpacity, AsyncStorage, Text, ScrollView, Alert } from 'react-native';
 import axios from 'axios';
-import { Icon, Tabs, Tab, TabHeading } from 'native-base';
 import { connect } from "react-redux";
 import { Actions } from 'react-native-router-flux';
 import { setFavShops } from "../../../Store/Action/action";
-
 import ChangePassword from '../../Authentication/changepassword';
 import EditProfile from '../../App/profile/editprofile';
-
-// import ShopsCards from '../../../Components/shopscards';
-import AppointmentCard from '../../../Components/appointmentCard';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
 class Profile extends Component {
@@ -29,7 +18,6 @@ class Profile extends Component {
     }
 
     UNSAFE_componentWillMount() {
-        // this.getMultipleShopWithId(this.props.favShops)
         this.getFavShops()
     }
 
@@ -91,15 +79,12 @@ class Profile extends Component {
 
     }
 
-    logout() {
-        this.clearAssync()
-    }
+    logout() { this.clearAssync() }
 
     clearAssync = async () => {
         try {
             await AsyncStorage.clear();
             Actions.Signin()
-
         } catch (error) {
             // Error retrieving data
         }
@@ -108,12 +93,9 @@ class Profile extends Component {
     render() {
         let { changePassword } = this.state
         return (
-            <View style={{
-                flex: 1,
-                width: "100%",
-                // alignItems: "center",
-                backgroundColor: "white",
-            }}>
+            <View style={{ flex: 1, width: "100%", backgroundColor: "white", }}>
+                <StatusBar backgroundColor="white" barStyle="dark-content" />
+
                 {/* Edit Profile Modal*/}
                 {
                     (this.state.editProfile === true) ? (
@@ -124,6 +106,7 @@ class Profile extends Component {
                         }} />
                     ) : null
                 }
+
                 {/* Change Password Modal*/}
                 {
                     (this.state.changePassword === true) ? (
@@ -134,10 +117,8 @@ class Profile extends Component {
                         }} />
                     ) : null
                 }
-                <StatusBar backgroundColor="white" barStyle="dark-content" />
 
                 {/* header */}
-
                 <View style={{
                     marginTop: Platform.OS === 'ios' ? 30 : null,
                     flex: 0.6,
@@ -154,29 +135,14 @@ class Profile extends Component {
                             <AntDesign name="arrowleft" style={{ marginLeft: 15, color: "#000000", fontSize: 25 }} />
                         </TouchableOpacity> */}
                     </View>
-
-                    <View style={{
-                        width: "100%",
-                        justifyContent: "center",
-                        alignItems: "center",
-                    }}>
+                    <View style={{ width: "100%", justifyContent: "center", alignItems: "center", }}>
                         <Text style={{ alignItems: "center", color: "#000000", fontSize: 18 }}>Settings</Text>
                     </View>
-
                 </View>
 
-
-                <View style={{
-                    flex: 8,
-                    width: "100%",
-                    marginTop: 10
-                }}>
-                    <ScrollView style={{
-                        width: "100%",
-                        // backgroundColor: "#F6F6F6"
-                    }}>
+                <View style={{ flex: 8, width: "100%", marginTop: 10 }}>
+                    <ScrollView style={{ width: "100%", }}>
                         <Text style={{ alignItems: "center", color: "#131313", fontSize: 18, marginLeft: "7%", marginTop: 20 }}>Profile</Text>
-
                         <TouchableOpacity style={{ width: "90%", marginHorizontal: "5%" }}
                             onPress={() => { this.setState({ editProfile: true }) }}>
 
@@ -191,10 +157,7 @@ class Profile extends Component {
                         </TouchableOpacity>
 
                         <TouchableOpacity style={{ width: "90%", marginHorizontal: "5%" }}
-                            onPress={() => {
-                                this.getMultipleShopWithId(this.props.favShops)
-                            }}
-                        >
+                            onPress={() => { this.getMultipleShopWithId(this.props.favShops) }}>
                             <View style={{ flexDirection: "row", height: 70, alignItems: "center", borderBottomColor: "#F0F2F6", borderBottomWidth: 1, padding: 10 }}>
                                 <Image
                                     resizeMode="contain"
@@ -217,37 +180,10 @@ class Profile extends Component {
                             </View>
                         </TouchableOpacity>
 
-                        {/* <TouchableOpacity style={{ width: "90%", marginHorizontal: "5%" }}
-                            onPress={() => { Actions.Googlemapfullview() }}
-                        >
-                            <View style={{ flexDirection: "row", height: 70, alignItems: "center", borderBottomColor: "#F0F2F6", borderBottomWidth: 1, padding: 10 }}>
-                                <Image
-                                    resizeMode="contain"
-                                    style={{ width: 25, height: 25 }}
-                                    source={require("../../../../assets/profileicons/Icon-1.png")}
-                                />
-                                <Text style={{ alignItems: "center", color: "#131313", fontSize: 18, marginLeft: "7%" }}>My Location</Text>
-                            </View>
-                        </TouchableOpacity> */}
-
-                        {/* <TouchableOpacity style={{ width: "90%", marginHorizontal: "5%" }}>
-                            <View style={{ flexDirection: "row", height: 70, alignItems: "center", borderBottomColor: "#F0F2F6", borderBottomWidth: 1, padding: 10 }}>
-                                <Image
-                                    resizeMode="contain"
-                                    style={{ width: 25, height: 25 }}
-                                    source={require("../../../../assets/profileicons/Icon-2.png")}
-                                />
-                                <Text style={{ alignItems: "center", color: "#131313", fontSize: 18, marginLeft: "7%" }}>Notifications</Text>
-                            </View>
-                        </TouchableOpacity> */}
-
                         <Text style={{ alignItems: "center", color: "#131313", fontSize: 18, marginLeft: "7%", marginTop: 20 }}>Support</Text>
 
                         <TouchableOpacity style={{ width: "90%", marginHorizontal: "5%" }}
-                            onPress={() =>
-                                // this.logout()
-                                Actions.TermsAndCondition()
-                            }>
+                            onPress={() => Actions.TermsAndCondition()}>
                             <View style={{ flexDirection: "row", height: 70, alignItems: "center", borderBottomColor: "#F0F2F6", borderBottomWidth: 1, padding: 10 }}>
                                 <Image
                                     resizeMode="contain"
@@ -258,31 +194,15 @@ class Profile extends Component {
                             </View>
                         </TouchableOpacity>
 
-                        <View style={{ width: "90%", marginHorizontal: "5%" }}
-                        // onPress={() =>
-                        //     Actions.TermsAndCondition()
-                        // }
-                        >
+                        <View style={{ width: "90%", marginHorizontal: "5%" }}>
                             <View style={{ flexDirection: "row", height: 70, alignItems: "center", borderBottomColor: "#F0F2F6", borderBottomWidth: 1, padding: 10 }}>
-                                {/* <Image
-                                    resizeMode="contain"
-                                    style={{ width: 25, height: 25 }}
-                                    source={require("../../../../assets/profileicons/Icon-3.png")}
-                                /> */}
-
                                 <AntDesign name="contacts" style={{ color: "#FD6958", fontWeight: 'bold', fontSize: 28, left: -2 }} />
                                 <Text style={{ alignItems: "center", color: "#131313", fontSize: 18, marginLeft: "7%" }}>Contact us at info@wattba.app</Text>
                             </View>
                         </View>
 
-
                         <TouchableOpacity
-                            onPress={() =>
-                                this.logout()
-                                //  Actions.Signin()
-                            }
-                            style={{ width: "90%", marginHorizontal: "5%" }}
-                        >
+                            onPress={() => this.logout()} style={{ width: "90%", marginHorizontal: "5%" }}>
                             <View style={{ flexDirection: "row", height: 70, alignItems: "center", borderBottomColor: "#F0F2F6", borderBottomWidth: 1, padding: 10 }}>
                                 <Image
                                     resizeMode="contain"
@@ -292,23 +212,21 @@ class Profile extends Component {
                                 <Text style={{ alignItems: "center", color: "#131313", fontSize: 18, marginLeft: "7%" }}>Sign Out</Text>
                             </View>
                         </TouchableOpacity>
-
                     </ScrollView>
-
-
                 </View>
-            </View >
+            </View>
         );
     }
 }
+
 let mapStateToProps = state => {
     return {
         userProfile: state.root.userProfile,
         favShops: state.root.favShops,
         bseUrl: state.root.bseUrl,
-
     };
 };
+
 function mapDispatchToProps(dispatch) {
     return ({
         setFavShops: (shops) => {
@@ -316,14 +234,5 @@ function mapDispatchToProps(dispatch) {
         },
     })
 }
+
 export default connect(mapStateToProps, mapDispatchToProps)(Profile);
-
-
-const styles = StyleSheet.create({
-    contentContainer: {
-        flex: 1,
-        paddingBottom: 150,
-        backgroundColor: "green",
-
-    },
-});

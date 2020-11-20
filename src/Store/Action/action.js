@@ -5,7 +5,7 @@ export function setUserCredentials(userCredentials, routeInsideApp) {
     return dispatch => {
         dispatch({ type: "SAVE_USER", payload: userCredentials })
         routeInsideApp != true ? Actions.Allowaccesslocation() : null
-        // routeInsideApp != true ? Actions.AppContainer() : null
+        // routeInsideApp != true ? Actions.BusinessType() : null
     }
 }
 
@@ -14,7 +14,8 @@ export function setUserCurrentLocationWithUserCredentials(location, userCredenti
     return dispatch => {
         dispatch({ type: "USER_CURRENT_LOCATION_ACTION", payload: location })
         dispatch({ type: "SAVE_USER", payload: userCredentials })
-        Actions.AppContainer()
+        // Actions.AppContainer()
+        Actions.BusinessType()
     }
 }
 
@@ -22,8 +23,8 @@ export function setUserCurrentLocation(location, bolean) {
     // console.log(location, "location_setUserCurrentLocation")
     return dispatch => {
         dispatch({ type: "USER_CURRENT_LOCATION_ACTION", payload: location })
-        bolean != true ? Actions.AppContainer() : null
-        // Actions.AppContainer()
+        // bolean != true ? Actions.AppContainer() : null
+        bolean != true ? Actions.BusinessType() : null
     }
 }
 

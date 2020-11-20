@@ -1,10 +1,5 @@
 import React, { Component } from "react";
-import {
-    View, Image, StyleSheet,
-    ImageBackground, StatusBar, TouchableOpacity, AsyncStorage,
-    Text, ScrollView, ActivityIndicator, Platform, PermissionsAndroid
-
-} from 'react-native';
+import { View, Image, StyleSheet, ImageBackground, StatusBar, TouchableOpacity, AsyncStorage, Text, ScrollView, ActivityIndicator, Platform, PermissionsAndroid } from 'react-native';
 import { connect } from "react-redux";
 import { Actions } from 'react-native-router-flux';
 import { setUserCurrentLocation } from "./../../Store/Action/action";
@@ -21,42 +16,28 @@ class Allowaccesslocation extends Component {
 
     async requestPermissions() {
         if (Platform.OS === 'ios') {
-            // Geolocation.requestAuthorization();
-            // Geolocation.setRNConfiguration({
-            //     skipPermissionRequests: false,
-            //     authorizationLevel: 'whenInUse',
-            // });
             Geolocation.requestAuthorization('whenInUse');
         }
         if (Platform.OS === 'android') {
-            await PermissionsAndroid.request(
-                PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-            );
+            await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION);
         }
     }
 
     allowLocation = () => {
         this.requestPermissions()
-        this.setState({
-            loader: true
-        })
-        // Instead of navigator.geolocation, just use Geolocation.
+        this.setState({ loader: true })
         Geolocation.getCurrentPosition(
             (position) => {
                 if (position) {
-                    console.log(position, "USER_CURRENT_LOCATION_AllowAcces")
+                    // console.log(position, "USER_CURRENT_LOCATION_AllowAcces")
                     this.props.setUserCurrentLocation(position)
-
                     this._storeData(position)
-
-                    this.setState({
-                        loader: false
-                    })
+                    this.setState({ loader: false })
                 }
             },
             (error) => {
                 // See error code charts below.
-                console.log(error.code, error.message, "ERROR_ON_GETTING_YOUR_LOCATION_AllowAcces");
+                // console.log(error.code, error.message, "ERROR_ON_GETTING_YOUR_LOCATION_AllowAcces");
                 this.setState({
                     loader: false,
                     err: error.message
@@ -78,38 +59,31 @@ class Allowaccesslocation extends Component {
     render() {
         const { loader, err } = this.state
         return (
-            <ScrollView
-                contentContainerStyle={styles.contentContainer}
-            >
+            <ScrollView contentContainerStyle={styles.contentContainer}>
                 <StatusBar backgroundColor="white" barStyle="dark-content" />
                 {/* //body// */}
                 <View style={{
-                    // flex: 8,
                     width: "100%",
                     justifyContent: "center",
                     alignItems: "center",
                     backgroundColor: "white"
                 }}>
-                    <Image source={require('../../../assets/image.png')} resizeMode="contain"
-                        style={{ left: 0, height: "40%", width: "40%", marginTop: 40 }}
-                    />
+                    <Image
+                        source={require('../../../assets/image.png')}
+                        resizeMode="contain"
+                        style={{ left: 0, height: "40%", width: "40%", marginTop: 40 }} />
                     <Text style={{ textAlign: "center", fontSize: 18, fontWeight: "bold" }}>
                         Find nearby Barbershops!
-                  </Text>
+                    </Text>
                     <Text style={{ textAlign: "center", marginTop: 20 }}>
                         To find Barbershops near you, allow
                         {"\n"}
                         app access to your location
-                  </Text>
-                    <View
-                        style={{ width: "85%", height: 50, marginTop: 100, flexDirection: "column", }}
-                    >
-                        <TouchableOpacity style={{}}
-                            onPress={() => this.allowLocation()}
-                        >
+                    </Text>
+                    <View style={{ width: "85%", height: 50, marginTop: 100, flexDirection: "column", }}>
+                        <TouchableOpacity onPress={() => this.allowLocation()}>
                             <ImageBackground source={require('../../../assets/buttonBackground.png')} resizeMode="contain"
-                                style={{ height: "100%", width: "100%", justifyContent: "center", }}
-                            >
+                                style={{ height: "100%", width: "100%", justifyContent: "center", }}>
                                 {
                                     (loader != true) ? (
                                         <Text style={{ textAlign: "center", fontSize: 15, margin: 12, color: "white" }}>Allow location access</Text>
@@ -119,23 +93,20 @@ class Allowaccesslocation extends Component {
                         </TouchableOpacity>
                     </View>
 
-                    <TouchableOpacity style={{
-                        width: "100%"
-                    }}
-                        onPress={() => Actions.AppContainer()}
+                    <TouchableOpacity style={{ width: "100%" }}
+                        // onPress={() => Actions.AppContainer()}
+                        onPress={() => Actions.BusinessType()}
                     >
                         <Text
-                            onPress={() => Actions.AppContainer()}
-                            style={{ textAlign: "center", fontSize: 15, marginTop: 12, }}
-                        >
+                            // onPress={() => Actions.AppContainer()}
+                            onPress={() => Actions.BusinessType()}
+                            style={{ textAlign: "center", fontSize: 15, marginTop: 12, }}>
                             Restrict location access
                         </Text>
                     </TouchableOpacity>
-
                     {
                         err ? <Text style={{ textAlign: "center", fontSize: 15, marginTop: 12, color: "red" }}>{err}</Text> : null
                     }
-
                 </View>
             </ScrollView>
         );

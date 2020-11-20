@@ -79,11 +79,6 @@ class SplashScreen extends Component {
 
   async requestPermissions() {
     if (Platform.OS === 'ios') {
-      // Geolocation.requestAuthorization();
-      // Geolocation.setRNConfiguration({
-      //   skipPermissionRequests: false,
-      //   authorizationLevel: 'whenInUse',
-      // });
       Geolocation.requestAuthorization('whenInUse');
     }
     if (Platform.OS === 'android') {
@@ -125,32 +120,19 @@ class SplashScreen extends Component {
     if (this.state.percent === 100) {
       this._retrieveData()
     }
-
     return (
-      <ImageBackground source={require('../../../assets/background.png')}
-        style={{
-          // backgroundColor: '#fd902a',
-          flex: 1,
-          justifyContent: 'center',
-          alignItems: 'center'
-        }}>
+      <ImageBackground source={require('../../../assets/background.png')} style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <StatusBar backgroundColor="#F86078" barStyle="dark-content" />
         {
           (this.state.modal) ? (
             <ErrorAlert modalClose={this.modalClose} />
           ) : null
         }
-        <View
-          style={{
-            alignItems: "center",
-            justifyContent: "center",
-            width: "100%",
-            // backgroundColor: "red",
-          }}
-        >
-          <Image source={require('../../../assets/logo.png')} resizeMode="contain"
-            style={{ height: "65%", width: "65%", }}
-          />
+        <View style={{ alignItems: "center", justifyContent: "center", width: "100%", }}>
+          <Image
+            source={require('../../../assets/logo.png')}
+            resizeMode="contain"
+            style={{ height: "65%", width: "65%", }} />
           <ActivityIndicator style={{ flex: 1.5 }} size={40} color="white" />
           {
             (this.state.networkErr) ? (
@@ -158,7 +140,6 @@ class SplashScreen extends Component {
             ) :
               <Text style={{ color: "white", fontWeight: "bold" }}>Loading...</Text>
           }
-
         </View>
       </ImageBackground>
     );
@@ -166,7 +147,6 @@ class SplashScreen extends Component {
 }
 let mapStateToProps = state => {
   return {
-
   };
 };
 function mapDispatchToProps(dispatch) {

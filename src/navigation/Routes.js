@@ -3,12 +3,13 @@ import { Router, Scene, Actions, Tabs } from 'react-native-router-flux'
 import SplashScreen from '../Containers/SplashScreen/index'
 import Walkthrough from '../Containers/Authentication/index'
 import Signin from '../Containers/Authentication/signin'
+import Signup from '../Containers/Authentication/signup'
 import Forgotyourpassword from '../Containers/Authentication/forgotyourpassword'
 import VerifyCode from '../Containers/Authentication/verifycode'
-import Signup from '../Containers/Authentication/signup'
 import ActivateAccount from '../Containers/Authentication/activateyouraccount'
 import Phoneverification from '../Containers/Authentication/phoneveryfication'
 import Veryfiyournumber from '../Containers/Authentication/verifyyournumber'
+import BusinessType from '../Containers/Authentication/businessType'
 import Allowaccesslocation from '../Containers/Authentication/allowaccesslocation'
 import CountryLists from '../Containers/Authentication/countryLists'
 import AppContainer from '../Containers/App/appcontainer'
@@ -57,6 +58,7 @@ class Route extends Component {
           <Scene key='Phoneverification' component={Phoneverification} hideNavBar={true} />
           <Scene key='CountryLists' component={CountryLists} hideNavBar={true} />
           <Scene key='Allowaccesslocation' component={Allowaccesslocation} hideNavBar={true} />
+          <Scene key='BusinessType' component={BusinessType} hideNavBar={true} />
           <Scene key='AppContainer' component={AppContainer} hideNavBar={true} />
           <Scene key='Shop' component={Shop} hideNavBar={true} />
           <Scene key='Filters' component={Filters} hideNavBar={true} />

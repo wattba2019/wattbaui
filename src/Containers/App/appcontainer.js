@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Image, TouchableOpacity, View, Text, StatusBar, ScrollView, KeyboardAvoidingView, Alert, BackHandler } from 'react-native';
+import { Image, TouchableOpacity, View, Text, StatusBar, ScrollView, BackHandler } from 'react-native';
 import { connect } from 'react-redux';
 import { Footer, FooterTab, } from 'native-base';
 import Home from '../App/home/index';
@@ -7,7 +7,6 @@ import Nearby from '../App/nearby/index';
 import Appointments from '../App/appointments/index';
 import Profile from '../App/profile/index'
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-import axios from 'axios';
 import { setUserCurrentLocation, setNearByShops, getNearByShopsUnder5Km } from "./../../Store/Action/action";
 
 class AppContainer extends Component {
@@ -15,7 +14,7 @@ class AppContainer extends Component {
         super()
         this.state = {
             rout: "Home",
-            // rout: "Nearby",
+            // rout: "Profile",
             focus: false
         }
     }
@@ -43,58 +42,18 @@ class AppContainer extends Component {
         }
         this.props.setUserCurrentLocation(searchLocation, true)
         this.props.getNearByShopsUnder5Km(searchLocation)
-
-        // console.log(name, location, "PlaceName")
-        // var options = {
-        //     method: 'GET',
-        //     url: `${this.props.bseUrl}/getallshops/getShopWithPlaceName/${name}`,
-        //     headers:
-        //     {
-        //         'cache-control': 'no-cache',
-        //         "Allow-Cross-Origin": '*',
-        //     },
-        // }
-        // axios(options)
-        //     .then(result => {
-        //         let shopwithplacename = result.data.data
-        //         if (shopwithplacename.length != 0) {
-        //             console.log(shopwithplacename, "Fetch_shops_with_Place_name")
-        //             this.props.setNearByShops(shopwithplacename)
-        //         }
-        //         else {
-        //             Alert.alert("No salons/stylist found within 3 miles of location")
-        //             this.props.setNearByShops([])
-
-        //         }
-        //         let searchLocation = {
-        //             coords: {
-        //                 latitude: location.lat,
-        //                 longitude: location.lng
-        //             }
-        //         }
-        //         this.props.setUserCurrentLocation(searchLocation, true)
-        //     })
-        //     .catch(err => {
-        //         let error = JSON.parse(JSON.stringify(err))
-        //         console.log(error, 'error_on_get_shops_with_place_name', err)
-        //         this.setState({
-        //             err: error,
-        //         })
-        //     })
     }
 
-    componentWillUnmount() {
-        BackHandler.removeEventListener('hardwareBackPress', BackHandler.exitApp());
-    }
+    // componentWillUnmount() {
+    //     BackHandler.removeEventListener('hardwareBackPress', BackHandler.exitApp());
+    // }
 
     render() {
-        console.log(this.state.rout, "openInput")
+        console.log(this.props.businessType, "Business_Type")
         return (
             <View style={{ flex: 1, }}>
                 <StatusBar backgroundColor="white" barStyle="dark-content" />
-
                 {/* //body// */}
-
                 {
                     (this.state.rout === "Nearby") ? (
                         <View style={{ width: "100%", position: "absolute", zIndex: 1, marginTop: Platform.OS === 'ios' ? "26%" : "16%", backgroundColor: "white" }}>
@@ -169,7 +128,6 @@ class AppContainer extends Component {
                     ) : null
                 }
 
-
                 <Footer style={{ backgroundColor: "#F8F8F8", borderTopColor: "#8E8E93", borderTopWidth: 0.5 }}>
                     <FooterTab style={{ backgroundColor: "#F8F8F8", marginHorizontal: 12 }}>
                         <TouchableOpacity style={{ flex: 1, justifyContent: "center", alignItems: "center" }} onPress={() => { this.setState({ rout: "Home" }) }} >
@@ -185,7 +143,6 @@ class AppContainer extends Component {
                             <Text style={{ textAlign: "center", marginTop: 0, color: this.state.rout === "Home" ? "#FD6958" : "#8E8E93", fontSize: 10 }}>Home</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={{ flex: 1, justifyContent: "center", alignItems: "center" }} onPress={() => { this.setState({ rout: "Nearby", focus: false }) }}  >
-
                             {
                                 (this.state.rout === "Nearby") ? (
                                     <Image source={require('../../../assets/footericons/nearbyOrange.png')} resizeMode="contain"
@@ -195,12 +152,10 @@ class AppContainer extends Component {
                                     style={{ width: "40%", height: "40%", }}
                                     />
                             }
-
                             <Text style={{ textAlign: "center", marginTop: 0, color: this.state.rout === "Nearby" ? "#FD6958" : "#8E8E93", fontSize: 10 }}>Nearby shops</Text>
                         </TouchableOpacity>
 
                         <TouchableOpacity style={{ flex: 1, justifyContent: "center", alignItems: "center" }} onPress={() => { this.setState({ rout: "Appointments" }) }}>
-
                             {
                                 (this.state.rout === "Appointments") ? (
                                     <Image source={require('../../../assets/footericons/appointmentOrange.png')} resizeMode="contain"
@@ -210,8 +165,6 @@ class AppContainer extends Component {
                                     style={{ width: "40%", height: "40%", }}
                                     />
                             }
-
-
                             <Text style={{ textAlign: "center", marginTop: 0, color: this.state.rout === "Appointments" ? "#FD6958" : "#8E8E93", fontSize: 10 }}>Appointments</Text>
                         </TouchableOpacity>
 
@@ -229,15 +182,13 @@ class AppContainer extends Component {
                         </TouchableOpacity>
                     </FooterTab>
                 </Footer>
-            </View >
+            </View>
         );
     }
 }
 
 function mapStateToProp(state) {
-    return ({
-        bseUrl: state.root.bseUrl,
-    })
+    return ({ bseUrl: state.root.bseUrl })
 }
 function mapDispatchToProp(dispatch) {
     return ({
@@ -252,6 +203,5 @@ function mapDispatchToProp(dispatch) {
         },
     })
 }
-
 
 export default connect(mapStateToProp, mapDispatchToProp)(AppContainer);
