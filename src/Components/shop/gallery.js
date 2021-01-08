@@ -13,20 +13,40 @@ class Gallery extends Component {
     }
 
     render() {
-        const { gallery } = this.props
+        const { gallery, galleryStylist } = this.props
+        console.log(gallery, "gallery_get")
         return (
             <View style={styles.imageCard}>
                 {
                     (gallery && gallery[0].galleryImages) ? (
                         gallery[0].galleryImages.map((key, index) => {
                             return (
-                                <Image key={index} style={styles.imageSizing} resizeMode="stretch"
+                                <Image
+                                    key={index}
+                                    style={styles.imageSizing}
+                                    resizeMode="stretch"
                                     source={{ uri: key }}
                                 />
                             )
                         })
                     ) : null
                 }
+
+                {
+                    (galleryStylist) ? (
+                        galleryStylist.map((key, index) => {
+                            return (
+                                <Image
+                                    key={index}
+                                    style={styles.imageSizing}
+                                    resizeMode="stretch"
+                                    source={{ uri: key }}
+                                />
+                            )
+                        })
+                    ) : null
+                }
+
             </View>
         );
     }

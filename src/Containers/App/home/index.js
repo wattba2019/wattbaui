@@ -29,14 +29,27 @@ class Home extends Component {
 
 
             Haircut: [],
-            Coloring: [],
+            Style: [],
+            Hair_Color: [],
+            Shave: [],
+            Children_Haircut: [],
+            Wax: [],
+
+            Ladies_Haircuts: [],
+            Blow_Dry: [],
+            Hair_Coloring: [],
+            Mens_Haircuts: [],
             Styling: [],
-            Shaving: [],
-            Childrens_Haircut: [],
+            Treatments: [],
+            Bridal_And_Weding: [],
+
+            Nails: [],
+            Brows_Lashes: [],
             Waxing: [],
-            // Hairdryer: [],
-            // Hairspa: [],
-            // Shampoo: [],
+            Body_Treatment: [],
+            Hair_Treatments: [],
+            Tanning: [],
+            Mens_Grooming: [],
             More: [],
         };
     }
@@ -66,7 +79,7 @@ class Home extends Component {
     }
 
     getNeabyShops() {
-        const { currentLocation } = this.props
+        const { currentLocation, businessType } = this.props
         let { offsetNearByShops, } = this.state
         if (currentLocation != null) {
             this.setState({ isloader: true })
@@ -77,7 +90,6 @@ class Home extends Component {
             }
             var options = {
                 method: 'POST',
-                // url: `${this.props.bseUrl}/getallshops/${offsetNearByShops}/${2}`,
                 url: `${this.props.bseUrl}/getallshops/`,
                 headers:
                 {
@@ -90,6 +102,7 @@ class Home extends Component {
                 .then(result => {
                     let nearByShops1 = result.data.data
                     let nearByShops = []
+                    let filterdAccordingToBusinessType = []
                     for (let index = 0; index < nearByShops1.length; index++) {
                         const element = nearByShops1[index];
                         const lat = nearByShops1[index].location.coordinates[0];
@@ -98,10 +111,52 @@ class Home extends Component {
                         nearByShops.push(element)
                     }
                     nearByShops = nearByShops.sort((a, b) => a.distance - b.distance)
-                    // console.log(nearByShops, "Fetch_Shops_NearBy_Home_Screen")
-                    this.props.setNearByShops(nearByShops)
+
+                    //for business type barberShop soorting
+                    if (nearByShops.length && businessType === "barberShop") {
+                        for (let index = 0; index < nearByShops.length; index++) {
+                            const element = nearByShops[index];
+                            const businessTypeClone = nearByShops[index].businessType;
+                            if (businessTypeClone === "Barbershop" ||
+                                businessTypeClone === "Barbershop + Salon" ||
+                                businessTypeClone === "Barbershop + Beauty Salons, Spas & Other" ||
+                                businessTypeClone === "Salons + Barbershop + Spa/Other") {
+                                filterdAccordingToBusinessType.push(element)
+                            }
+                        }
+                    }
+
+                    //for business type saloon soorting
+                    if (nearByShops.length && businessType === "saloon") {
+                        for (let index = 0; index < nearByShops.length; index++) {
+                            const element = nearByShops[index];
+                            const businessTypeClone = nearByShops[index].businessType;
+                            if (businessTypeClone === "Salons" ||
+                                businessTypeClone === "Barbershop + Salon" ||
+                                businessTypeClone === "Salons + Beauty Salons, Spas & Otherr" ||
+                                businessTypeClone === "Salons + Barbershop + Spa/Other") {
+                                filterdAccordingToBusinessType.push(element)
+                            }
+                        }
+                    }
+
+                    //for business type beautySaloon soorting
+                    if (nearByShops.length && businessType === "beautySaloon") {
+                        for (let index = 0; index < nearByShops.length; index++) {
+                            const element = nearByShops[index];
+                            const businessTypeClone = nearByShops[index].businessType;
+                            if (businessTypeClone === "Beauty Salons, Spas & Other" ||
+                                businessTypeClone === "Salons + Beauty Salons, Spas & Other" ||
+                                businessTypeClone === "Barbershop + Beauty Salons, Spas & Other" ||
+                                businessTypeClone === "Salons + Barbershop + Spa/Other") {
+                                filterdAccordingToBusinessType.push(element)
+                            }
+                        }
+                    }
+                    console.log(nearByShops, filterdAccordingToBusinessType, businessType, "Fetch_Shops_NearBy_Home_Screen")
+                    this.props.setNearByShops(filterdAccordingToBusinessType)
                     this.setState({
-                        nearByShops: nearByShops,
+                        nearByShops: filterdAccordingToBusinessType,
                         isloader: false,
                         offsetNearByShops: 2
                     })
@@ -122,7 +177,6 @@ class Home extends Component {
 
     getBestBarbershops() {
         let { nearByShops } = this.state
-
         let sortedShops = []
         // let noRating = []
 
@@ -204,47 +258,47 @@ class Home extends Component {
 
     }
 
-    getPackages() {
-        let { offsetPackages, } = this.state
-        this.setState({ isloader: true })
-        var options = {
-            method: 'GET',
-            url: `${this.props.bseUrl}/getNearbyShopServices/getAllPackage/${offsetPackages}/${2}`,
-            headers:
-            {
-                'cache-control': 'no-cache',
-                "Allow-Cross-Origin": '*',
-            },
-        }
-        axios(options)
-            .then(result => {
-                let packages = result.data.data
-                // console.log(packages, "Fetch_Packages")
-                this.setState({
-                    packages: packages,
-                    offsetPackages: 2,
-                    isloader: false,
-                })
-            })
-            .catch(err => {
-                let error = JSON.parse(JSON.stringify(err))
-                console.log(error, 'ERRROR', err)
-                this.setState({
-                    err: error,
-                    isloader: false,
-                })
-            })
+    // getPackages() {
+    //     let { offsetPackages, } = this.state
+    //     this.setState({ isloader: true })
+    //     var options = {
+    //         method: 'GET',
+    //         url: `${this.props.bseUrl}/getNearbyShopServices/getAllPackage/${offsetPackages}/${2}`,
+    //         headers:
+    //         {
+    //             'cache-control': 'no-cache',
+    //             "Allow-Cross-Origin": '*',
+    //         },
+    //     }
+    //     axios(options)
+    //         .then(result => {
+    //             let packages = result.data.data
+    //             // console.log(packages, "Fetch_Packages")
+    //             this.setState({
+    //                 packages: packages,
+    //                 offsetPackages: 2,
+    //                 isloader: false,
+    //             })
+    //         })
+    //         .catch(err => {
+    //             let error = JSON.parse(JSON.stringify(err))
+    //             console.log(error, 'ERRROR', err)
+    //             this.setState({
+    //                 err: error,
+    //                 isloader: false,
+    //             })
+    //         })
 
-    }
+    // }
 
     getNearbyPackages(nearByShops) {
-        const fiveStarRatingShops = nearByShops.filter(nearByShops => nearByShops.review === "5");
+        const { businessType } = this.props
+        // const fiveStarRatingShops = nearByShops.filter(nearByShops => nearByShops.review === "5");
         let shopIds = []
-        for (let index = 0; index < fiveStarRatingShops.length; index++) {
-            const element = fiveStarRatingShops[index]._id;
+        for (let index = 0; index < nearByShops.length; index++) {
+            const element = nearByShops[index]._id;
             shopIds.push(element)
         }
-        console.log(shopIds, "Pack_Get_With_Shop_Id")
         this.setState({ isloader: true })
         let cloneLocation = {
             shopIds: shopIds
@@ -262,9 +316,39 @@ class Home extends Component {
         axios(options)
             .then(result => {
                 let packages = result.data.data
-                console.log(packages, "Fetch_Packages")
+                let packageFilterdAccordingToBusinessType = []
+                //for business type barberShop soorting
+                if (packages.length && businessType === "barberShop") {
+                    for (let index = 0; index < packages.length; index++) {
+                        const element = packages[index];
+                        const businessTypeClone = packages[index].businessType;
+                        if (businessTypeClone === "Barbershop") {
+                            packageFilterdAccordingToBusinessType.push(element)
+                        }
+                    }
+                }
+                //for business type saloon soorting
+                if (packages.length && businessType === "saloon") {
+                    for (let index = 0; index < packages.length; index++) {
+                        const element = packages[index];
+                        const businessTypeClone = packages[index].businessType;
+                        if (businessTypeClone === "Salons") {
+                            packageFilterdAccordingToBusinessType.push(element)
+                        }
+                    }
+                }
+                //for business type Spa soorting
+                if (packages.length && businessType === "beautySaloon") {
+                    for (let index = 0; index < packages.length; index++) {
+                        const element = packages[index];
+                        const businessTypeClone = packages[index].businessType;
+                        if (businessTypeClone === "Beauty Salons, Spas & Other") {
+                            packageFilterdAccordingToBusinessType.push(element)
+                        }
+                    }
+                }
                 this.setState({
-                    packages: packages,
+                    packages: packageFilterdAccordingToBusinessType,
                     isloader: false,
                 })
             })
@@ -277,35 +361,6 @@ class Home extends Component {
                 })
             })
     }
-
-    // getHairStyles() {
-    //     var options = {
-    //         method: 'GET',
-    //         url: `${this.props.bseUrl}/getNearbyShopServices/getAllHairsyles`,
-    //         headers:
-    //         {
-    //             'cache-control': 'no-cache',
-    //             "Allow-Cross-Origin": '*',
-    //         },
-    //     }
-    //     axios(options)
-    //         .then(result => {
-    //             let hairStyles = result.data.data
-    //             console.log(hairStyles, "Fetch_HairStyles")
-    //             const sortedData = hairStyles.filter(hairStyles => hairStyles.serviceName === "Hair Style");
-    //             console.log(sortedData, "AfteSorting_HairStyles");
-    //             this.setState({
-    //                 hairStyles: sortedData,
-    //             })
-    //         })
-    //         .catch(err => {
-    //             let error = JSON.parse(JSON.stringify(err))
-    //             console.log(error, 'ERRROR', err)
-    //             this.setState({
-    //                 err: error,
-    //             })
-    //         })
-    // }
 
     getShopWithId(_id) {
         console.log(_id, "USERID")
@@ -322,7 +377,6 @@ class Home extends Component {
         axios(options)
             .then(result => {
                 let shopwithid = result.data.data
-                // console.log(shopwithid, "Fetch_shops_withID")
                 Actions.Shop({ shop: shopwithid[0] })
             })
             .catch(err => {
@@ -332,7 +386,6 @@ class Home extends Component {
                     err: error,
                 })
             })
-
     }
 
     getMultipleShopWithId(shopid) {
@@ -369,7 +422,6 @@ class Home extends Component {
         else {
             Alert.alert("There is no data")
         }
-
     }
 
     getAllServices() {
@@ -382,89 +434,178 @@ class Home extends Component {
             })
                 .then(result => {
                     let allServices = result.data.data
-                    console.log(allServices, "allServices_getting_home_screen")
+                    // console.log(allServices, "allServices_getting_home_screen")
+
                     let Haircut = []
-                    let Coloring = []
+                    let Style = []
+                    let Hair_Color = []
+                    let Shave = []
+                    let Children_Haircut = []
+                    let Wax = []
+
+                    let Ladies_Haircuts = []
+                    let Blow_Dry = []
+                    let Hair_Coloring = []
+                    let Mens_Haircuts = []
                     let Styling = []
-                    let Shaving = []
-                    let Childrens_Haircut = []
+                    let Treatments = []
+                    let Bridal_And_Weding = []
+
+
+                    let Nails = []
+                    let Brows_Lashes = []
                     let Waxing = []
-                    // let Hairdryer = []
-                    // let Hairspa = []
-                    // let Shampoo = []
+                    let Body_Treatment = []
+                    let Hair_Treatments = []
+                    let Tanning = []
+                    let Mens_Grooming = []
+
+
                     let More = []
+
                     for (let index = 0; index < allServices.length; index++) {
                         const service = allServices[index];
-                        const serviceName = allServices[index].serviceName;
+                        const categoryName = allServices[index].categoryName;
                         // console.log(service, "getAllServices")
 
-                        if (serviceName === "Haircut") {
+                        // barberShop
+                        if (categoryName === "Haircut") {
                             if (Haircut.indexOf(service.userId) == -1) {
                                 Haircut.push(service.userId)
                             }
                         }
-
-                        if (serviceName === "Coloring") {
-                            if (Coloring.indexOf(service.userId) == -1) {
-                                Coloring.push(service.userId)
+                        if (categoryName === "Style") {
+                            if (Style.indexOf(service.userId) == -1) {
+                                Style.push(service.userId)
+                            }
+                        }
+                        if (categoryName === "Hair Color") {
+                            if (Hair_Color.indexOf(service.userId) == -1) {
+                                Hair_Color.push(service.userId)
+                            }
+                        }
+                        if (categoryName === "Shave") {
+                            if (Shave.indexOf(service.userId) == -1) {
+                                Shave.push(service.userId)
+                            }
+                        }
+                        if (categoryName === "Children Haircut") {
+                            if (Children_Haircut.indexOf(service.userId) == -1) {
+                                Children_Haircut.push(service.userId)
+                            }
+                        }
+                        if (categoryName === "Wax") {
+                            if (Wax.indexOf(service.userId) == -1) {
+                                Wax.push(service.userId)
                             }
                         }
 
-                        if (serviceName === "Styling") {
+                        // saloon
+                        if (categoryName === "Ladies Haircuts") {
+                            if (Ladies_Haircuts.indexOf(service.userId) == -1) {
+                                Ladies_Haircuts.push(service.userId)
+                            }
+                        }
+                        if (categoryName === "Blow Dry") {
+                            if (Blow_Dry.indexOf(service.userId) == -1) {
+                                Blow_Dry.push(service.userId)
+                            }
+                        }
+                        if (categoryName === "Hair Coloring") {
+                            if (Hair_Coloring.indexOf(service.userId) == -1) {
+                                Hair_Coloring.push(service.userId)
+                            }
+                        }
+                        if (categoryName === "Men's Haircuts") {
+                            if (Mens_Haircuts.indexOf(service.userId) == -1) {
+                                Mens_Haircuts.push(service.userId)
+                            }
+                        }
+                        if (categoryName === "Styling") {
                             if (Styling.indexOf(service.userId) == -1) {
                                 Styling.push(service.userId)
                             }
                         }
-
-                        if (serviceName === "Shaving") {
-                            if (Shaving.indexOf(service.userId) == -1) {
-                                Shaving.push(service.userId)
+                        if (categoryName === "Styling") {
+                            if (Styling.indexOf(service.userId) == -1) {
+                                Styling.push(service.userId)
+                            }
+                        }
+                        if (categoryName === "Treatments") {
+                            if (Treatments.indexOf(service.userId) == -1) {
+                                Treatments.push(service.userId)
+                            }
+                        }
+                        if (categoryName === "Bridal & Weding") {
+                            if (Bridal_And_Weding.indexOf(service.userId) == -1) {
+                                Bridal_And_Weding.push(service.userId)
                             }
                         }
 
-                        if (serviceName === "Childrens Haircut") {
-                            if (Childrens_Haircut.indexOf(service.userId) == -1) {
-                                Childrens_Haircut.push(service.userId)
+                        // spa
+                        if (categoryName === "Nails") {
+                            if (Nails.indexOf(service.userId) == -1) {
+                                Nails.push(service.userId)
                             }
                         }
-
-                        if (serviceName === "Waxing") {
+                        if (categoryName === "Brows & Lashes") {
+                            if (Brows_Lashes.indexOf(service.userId) == -1) {
+                                Brows_Lashes.push(service.userId)
+                            }
+                        }
+                        if (categoryName === "Waxing") {
                             if (Waxing.indexOf(service.userId) == -1) {
                                 Waxing.push(service.userId)
                             }
                         }
-
-                        // if (serviceName === "Hairdryer") {
-                        //     if (Hairdryer.indexOf(service.userId) == -1) {
-                        //         Hairdryer.push(service.userId)
-                        //     }
-                        // }
-                        // if (serviceName === "Hairspa") {
-                        //     if (Hairspa.indexOf(service.userId) == -1) {
-                        //         Hairspa.push(service.userId)
-                        //     }
-                        // }
-                        // if (serviceName === "Shampoo") {
-                        //     if (Shampoo.indexOf(service.userId) == -1) {
-                        //         Shampoo.push(service.userId)
-                        //     }
-                        // }
-
+                        if (categoryName === "Body Treatment") {
+                            if (Body_Treatment.indexOf(service.userId) == -1) {
+                                Body_Treatment.push(service.userId)
+                            }
+                        }
+                        if (categoryName === "Hair Treatments") {
+                            if (Hair_Treatments.indexOf(service.userId) == -1) {
+                                Hair_Treatments.push(service.userId)
+                            }
+                        }
+                        if (categoryName === "Tanning") {
+                            if (Tanning.indexOf(service.userId) == -1) {
+                                Tanning.push(service.userId)
+                            }
+                        }
+                        if (categoryName === "Men’s Grooming") {
+                            if (Mens_Grooming.indexOf(service.userId) == -1) {
+                                Mens_Grooming.push(service.userId)
+                            }
+                        }
                         else {
-                            // console.log(service, "MORE_DATA")
                             More.push(service)
                         }
                     }
                     this.setState({
                         Haircut,
-                        Coloring,
+                        Style,
+                        Hair_Color,
+                        Shave,
+                        Children_Haircut,
+                        Wax,
+
+                        Ladies_Haircuts,
+                        Blow_Dry,
+                        Hair_Coloring,
+                        Mens_Haircuts,
                         Styling,
-                        Shaving,
-                        Childrens_Haircut,
+                        Treatments,
+                        Bridal_And_Weding,
+
+                        Nails,
+                        Brows_Lashes,
                         Waxing,
-                        // Hairdryer,
-                        // Hairspa,
-                        // Shampoo,
+                        Body_Treatment,
+                        Hair_Treatments,
+                        Tanning,
+                        Mens_Grooming,
+
                         More,
                     })
                 })
@@ -636,22 +777,41 @@ class Home extends Component {
     render() {
         let { fullName } = this.props.userProfile
         let { nearByShops, bestBarberShops, packages, hairStyles,
+
+            // barberShop
             Haircut,
-            Coloring,
+            Style,
+            Hair_Color,
+            Shave,
+            Children_Haircut,
+            Wax,
+
+            // saloon
+            Ladies_Haircuts,
+            Blow_Dry,
+            Hair_Coloring,
+            Mens_Haircuts,
             Styling,
-            Shaving,
-            Childrens_Haircut,
+            Treatments,
+            Bridal_And_Weding,
+
+            // spa
+            Nails,
+            Brows_Lashes,
             Waxing,
+            Body_Treatment,
+            Hair_Treatments,
+            Tanning,
+            Mens_Grooming,
             More,
-            // Hairdryer,
-            // Hairspa,
-            // Shampoo,
+
             isloader,
             activity,
             moreLoader
         } = this.state
 
-        console.log(Coloring, "Childrens_Haircut")
+        let { businessType } = this.props
+
         return (
             <View
                 style={{
@@ -683,69 +843,128 @@ class Home extends Component {
                         <View style={{ width: "100%", marginTop: 5 }}>
                             <Text style={{ fontSize: fullName.length < 12 ? 16 : 12, fontWeight: "bold", textAlign: "left" }}>Hi {fullName}</Text>
                         </View>
+                        {
+                            (businessType === "barberShop") ? (
+                                <View
+                                    style={{
+                                        flex: 0.45, flexDirection: "row",
+                                        width: "100%", height: 40, marginTop: 10,
+                                        borderRadius: 10,
+                                        justifyContent: "center", alignItems: "center",
+                                        backgroundColor: "#EEF7FF",
+                                    }}
+                                >
+                                    <View
+                                        style={{
+                                            width: "5%",
+                                            borderColor: 'gray',
+                                            justifyContent: "center",
+                                            alignItems: "center",
+                                            backgroundColor: "#EEF7FF",
+                                        }}
+                                    >
+                                        <AntDesign name="search1" style={{ marginLeft: "3%", color: '#909090', fontWeight: 'bold', fontSize: 15 }} />
+                                    </View>
 
-
-                        {/* <View style={{ width: "105%", top: -5, justifyContent: "center", alignItems: "center", flex: 1, flexDirection: "row", backgroundColor: "red" }}>
-                            <View style={{
-                                flex: 8, flexDirection: "row", justifyContent: "center", alignItems: "center",
-                            }}>
-                                <View style={{
-                                    flex: 1,
-                                    justifyContent: "center", alignItems: "center",
-                                }}>
-                                    <Image source={require('../../../../assets/Path27909.png')} resizeMode="contain"
-                                        style={{ height: "50%", width: "50%", }}
-                                    />
+                                    <View
+                                        style={{
+                                            width: "80%", borderColor: 'gray', justifyContent: "center", alignItems: "center",
+                                            backgroundColor: "#EEF7FF",
+                                        }}
+                                    >
+                                        <TextInput
+                                            style={{ width: "90%", }}
+                                            value={this.state.email}
+                                            placeholder={"Search"}
+                                            onFocus={() => this.onFocusSearch()}
+                                            placeholderTextColor="grey"
+                                        />
+                                    </View>
                                 </View>
+                            ) : null}
 
-                                <View style={{
-                                    flex: 8
-                                }}>
-                                    <Text style={{ textAlign: "left" }}>My location</Text>
+                        {
+                            (businessType === "saloon") ? (
+                                <View
+                                    style={{
+                                        flex: 0.45, flexDirection: "row",
+                                        width: "100%", height: 40, marginTop: 10,
+                                        borderRadius: 10,
+                                        justifyContent: "center", alignItems: "center",
+                                        backgroundColor: "#FFF2EA",
+                                    }}
+                                >
+                                    <View
+                                        style={{
+                                            width: "5%",
+                                            borderColor: 'gray',
+                                            // justifyContent: "center",
+                                            // alignItems: "center",
+                                            backgroundColor: "#FFF2EA",
+                                        }}
+                                    >
+                                        <AntDesign name="search1" style={{ marginLeft: "3%", color: '#909090', fontWeight: 'bold', fontSize: 15 }} />
+                                    </View>
+
+                                    <View
+                                        style={{
+                                            width: "80%", borderColor: 'gray', justifyContent: "center", alignItems: "center",
+                                            backgroundColor: "#FFF2EA",
+                                        }}
+                                    >
+                                        <TextInput
+                                            style={{ width: "90%", }}
+                                            value={this.state.email}
+                                            placeholder={"Search"}
+                                            onFocus={() => this.onFocusSearch()}
+                                            placeholderTextColor="grey"
+                                        />
+                                    </View>
                                 </View>
-                            </View>
+                            ) : null
+                        }
 
-                            <View style={{
-                                flex: 3, justifyContent: "center", alignItems: "center", flexDirection: "row",
-                            }}>
-                                <TouchableOpacity
-                                    onPress={() => Actions.Googlemapfullview()}
-                                    style={{ flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
-                                    <Entypo name="direction" style={{ color: "#FD6958", fontWeight: 'bold', fontSize: 20 }} />
-                                    <Text style={{ color: "#FD6958" }}>CHANGE</Text>
-                                </TouchableOpacity>
-                            </View>
-                        </View> */}
+                        {
+                            (businessType === "beautySaloon") ? (
+                                <View
+                                    style={{
+                                        flex: 0.45, flexDirection: "row",
+                                        width: "100%", height: 40, marginTop: 10,
+                                        borderRadius: 10,
+                                        justifyContent: "center", alignItems: "center",
+                                        backgroundColor: "#FDE5F3",
+                                    }}
+                                >
+                                    <View
+                                        style={{
+                                            width: "5%",
+                                            borderColor: 'gray',
+                                            justifyContent: "center",
+                                            alignItems: "center",
+                                            backgroundColor: "#FDE5F3",
+                                        }}
+                                    >
+                                        <AntDesign name="search1" style={{ marginLeft: "3%", color: '#909090', fontWeight: 'bold', fontSize: 15 }} />
+                                    </View>
 
-                        <View
-                            style={{
-                                flex: 0.45, flexDirection: "row",
-                                width: "100%", height: 40, marginTop: 10,
-                                borderRadius: 10,
-                                justifyContent: "center", alignItems: "center",
-                                backgroundColor: "#E8E6E7",
-                            }}
-                        >
-                            <View
-                                style={{ width: "5%", borderColor: 'gray', backgroundColor: "#E8E6E7", justifyContent: "center", alignItems: "center", }}
-                            >
-                                <AntDesign name="search1" style={{ marginLeft: "3%", color: '#909090', fontWeight: 'bold', fontSize: 15 }} />
-                            </View>
+                                    <View
+                                        style={{
+                                            width: "80%", borderColor: 'gray', justifyContent: "center", alignItems: "center",
+                                            backgroundColor: "#FDE5F3",
+                                        }}
+                                    >
+                                        <TextInput
+                                            style={{ width: "90%", }}
+                                            value={this.state.email}
+                                            placeholder={"Search"}
+                                            onFocus={() => this.onFocusSearch()}
+                                            placeholderTextColor="grey"
+                                        />
+                                    </View>
+                                </View>
+                            ) : null
+                        }
 
-                            <View
-                                style={{ width: "80%", borderColor: 'gray', backgroundColor: "#E8E6E7", justifyContent: "center", alignItems: "center", }}
-                            >
-                                <TextInput
-                                    style={{ width: "90%", }}
-                                    value={this.state.email}
-                                    placeholder={"Best Barbershops"}
-                                    // onChangeText={text => onChangeText(text)}
-                                    onFocus={() => this.onFocusSearch()}
-                                    placeholderTextColor="grey"
-
-                                />
-                            </View>
-                        </View>
                     </View>
 
                     <View style={{
@@ -757,108 +976,284 @@ class Home extends Component {
                     }}>
                         <ScrollView
                             contentContainerStyle={{}}
-                            style={{ width: "95%" }}
+                            style={{ width: "100%" }}
                         >
                             <View style={{
-                                width: "95%", marginTop: 10,
+                                width: "95%", marginTop: 10, marginLeft: 10,
                             }}>
                                 <Text style={{ color: "black", fontWeight: "bold", fontSize: 16 }}>Top Services</Text>
                             </View>
 
-                            <View style={{
-                                width: "100%",
-                                height: 180,
-                                flex: 1,
-                                flexDirection: "row",
-                                flexWrap: "wrap",
-                                // justifyContent: "center",
-                                // alignItems: "center",
-                                // backgroundColor: "yellow"
-                            }}>
+                            {
+                                (businessType === "barberShop") ? (
+                                    <View style={{
+                                        width: "100%",
+                                        height: 220,
+                                        flex: 1,
+                                        padding: 4,
+                                        justifyContent: "center",
+                                        alignItems: "center",
+                                        backgroundColor: "#EEF7FF"
+                                        // backgroundColor: "red"
+                                    }}>
+                                        <View style={{
+                                            width: "95%",
+                                            height: 180,
+                                            // flex: 1,
+                                            borderTopLeftRadius: 35,
+                                            borderTopRightRadius: 10,
+                                            borderBottomRightRadius: 10,
+                                            borderBottomLeftRadius: 10,
+                                            flexDirection: "row",
+                                            flexWrap: "wrap",
+                                            backgroundColor: "white"
+                                        }}>
+                                            <TouchableOpacity style={styles.iconsStyle}
+                                                onPress={() => { this.getMultipleShopWithId(Haircut) }}
+                                            >
+                                                <Image source={require('../../../../assets/services/barberShop/haircut.png')} resizeMode="contain"
+                                                    style={{ width: "100%", height: "100%", }}
+                                                />
+                                            </TouchableOpacity>
+                                            <TouchableOpacity style={styles.iconsStyle}
+                                                onPress={() => { this.getMultipleShopWithId(Style) }}
+                                            >
+                                                <Image source={require('../../../../assets/services/barberShop/styling.png')} resizeMode="contain"
+                                                    style={{ width: "100%", height: "100%", }}
+                                                />
+                                            </TouchableOpacity>
+                                            <TouchableOpacity style={styles.iconsStyle}
+                                                onPress={() => { this.getMultipleShopWithId(Hair_Color) }}
+                                            >
+                                                <Image source={require('../../../../assets/services/barberShop/coloring.png')} resizeMode="contain"
+                                                    style={{ width: "100%", height: "100%", }}
+                                                />
+                                            </TouchableOpacity>
+                                            <TouchableOpacity style={styles.iconsStyle}
+                                                onPress={() => { this.getMultipleShopWithId(Shave) }}
+                                            >
+                                                <Image source={require('../../../../assets/services/barberShop/shaving.png')} resizeMode="contain"
+                                                    style={{ width: "100%", height: "100%", }}
+                                                />
+                                            </TouchableOpacity>
+                                            <TouchableOpacity style={styles.iconsStyle}
+                                                onPress={() => { this.getMultipleShopWithId(Children_Haircut) }}
+                                            >
+                                                <Image source={require('../../../../assets/services/barberShop/childrecutting.png')} resizeMode="contain"
+                                                    style={{ width: "100%", height: "100%", }}
+                                                />
+                                            </TouchableOpacity>
+                                            <TouchableOpacity style={styles.iconsStyle}
+                                                onPress={() => { this.getMultipleShopWithId(Wax) }}
+                                            >
+                                                <Image source={require('../../../../assets/services/barberShop/waxing.png')} resizeMode="contain"
+                                                    style={{ width: "100%", height: "100%", }}
+                                                />
+                                            </TouchableOpacity>
+                                            <TouchableOpacity style={styles.iconsStyle}
+                                                onPress={() => Actions.ServiceListing({ More, headerTitle: "More Services" })}
+                                            >
+                                                <Image source={require('../../../../assets/services/barberShop/more.png')} resizeMode="contain"
+                                                    style={{ width: "100%", height: "100%", }}
+                                                />
+                                            </TouchableOpacity>
+                                        </View>
+                                    </View>
+                                ) : null
+                            }
 
-                                <TouchableOpacity style={styles.iconsStyle}
-                                    onPress={() => { this.getMultipleShopWithId(Haircut) }}
-                                >
-                                    <Image source={require('../../../../assets/services/haircut.png')} resizeMode="contain"
-                                        style={{ width: "100%", height: "100%", }}
-                                    />
-                                </TouchableOpacity>
+                            {
+                                (businessType === "saloon") ? (
+                                    <View style={{
+                                        width: "100%",
+                                        height: 220,
+                                        flex: 1,
+                                        padding: 4,
+                                        justifyContent: "center",
+                                        alignItems: "center",
+                                        backgroundColor: "#FFF2EA"
+                                    }}>
+                                        <View style={{
+                                            width: "95%",
+                                            height: 180,
+                                            borderTopLeftRadius: 35,
+                                            borderTopRightRadius: 10,
+                                            borderBottomRightRadius: 10,
+                                            borderBottomLeftRadius: 10,
+                                            justifyContent: "center",
+                                            alignItems: "center",
+                                            flexDirection: "row",
+                                            flexWrap: "wrap",
+                                            backgroundColor: "white"
+                                        }}>
+                                            <TouchableOpacity style={styles.iconsStyleSaloon}
+                                                onPress={() => { this.getMultipleShopWithId(Ladies_Haircuts) }}
+                                            >
+                                                <Image source={require('../../../../assets/services/saloon/LadiesHaircuts.png')} resizeMode="contain"
+                                                    style={{ width: "100%", height: "100%", }}
+                                                />
+                                            </TouchableOpacity>
 
-                                <TouchableOpacity style={styles.iconsStyle}
-                                    onPress={() => { this.getMultipleShopWithId(Coloring) }}
-                                >
-                                    <Image source={require('../../../../assets/services/coloring.png')} resizeMode="contain"
-                                        style={{ width: "100%", height: "100%", }}
-                                    />
-                                </TouchableOpacity>
+                                            <TouchableOpacity style={styles.iconsStyleSaloon}
+                                                onPress={() => { this.getMultipleShopWithId(Blow_Dry) }}
+                                            >
+                                                <Image source={require('../../../../assets/services/saloon/BlowDry.png')} resizeMode="contain"
+                                                    style={{ width: "100%", height: "100%", }}
+                                                />
+                                            </TouchableOpacity>
 
-                                <TouchableOpacity style={styles.iconsStyle}
-                                    onPress={() => { this.getMultipleShopWithId(Styling) }}
-                                >
-                                    <Image source={require('../../../../assets/services/styling.png')} resizeMode="contain"
-                                        style={{ width: "100%", height: "100%", }}
-                                    />
-                                </TouchableOpacity>
+                                            <TouchableOpacity style={styles.iconsStyleSaloon}
+                                                onPress={() => { this.getMultipleShopWithId(Hair_Coloring) }}
+                                            >
+                                                <Image source={require('../../../../assets/services/saloon/HairColoring.png')} resizeMode="contain"
+                                                    style={{ width: "100%", height: "100%", }}
+                                                />
+                                            </TouchableOpacity>
 
+                                            <TouchableOpacity style={styles.iconsStyleSaloon}
+                                                onPress={() => { this.getMultipleShopWithId(Mens_Haircuts) }}
+                                            >
+                                                <Image source={require('../../../../assets/services/saloon/MensHaircuts.png')} resizeMode="contain"
+                                                    style={{ width: "100%", height: "100%", }}
+                                                />
+                                            </TouchableOpacity>
 
-                                <TouchableOpacity style={styles.iconsStyle}
-                                    onPress={() => { this.getMultipleShopWithId(Shaving) }}
-                                >
-                                    <Image source={require('../../../../assets/services/shaving.png')} resizeMode="contain"
-                                        style={{ width: "100%", height: "100%", }}
-                                    />
-                                </TouchableOpacity>
+                                            <TouchableOpacity style={styles.iconsStyleSaloon}
+                                                onPress={() => { this.getMultipleShopWithId(Styling) }}
+                                            >
+                                                <Image source={require('../../../../assets/services/saloon/Styling.png')} resizeMode="contain"
+                                                    style={{ width: "100%", height: "100%", }}
+                                                />
+                                            </TouchableOpacity>
 
-                                <TouchableOpacity style={styles.iconsStyle}
-                                    onPress={() => { this.getMultipleShopWithId(Childrens_Haircut) }}
-                                >
-                                    <Image source={require('../../../../assets/services/childrecutting.png')} resizeMode="contain"
-                                        style={{ width: "100%", height: "100%", }}
-                                    />
-                                </TouchableOpacity>
+                                            <TouchableOpacity style={styles.iconsStyleSaloon}
+                                                onPress={() => { this.getMultipleShopWithId(Wax) }}
+                                            >
+                                                <Image source={require('../../../../assets/services/saloon/ChildrenHairCuts.png')} resizeMode="contain"
+                                                    style={{ width: "100%", height: "100%", }}
+                                                />
+                                            </TouchableOpacity>
 
-                                <TouchableOpacity style={styles.iconsStyle}
-                                    onPress={() => { this.getMultipleShopWithId(Waxing) }}
-                                >
-                                    <Image source={require('../../../../assets/services/waxing.png')} resizeMode="contain"
-                                        style={{ width: "100%", height: "100%", }}
-                                    />
-                                </TouchableOpacity>
+                                            <TouchableOpacity style={styles.iconsStyleSaloon}
+                                                onPress={() => { this.getMultipleShopWithId(Treatments) }}
+                                            >
+                                                <Image source={require('../../../../assets/services/saloon/Treatments.png')} resizeMode="contain"
+                                                    style={{ width: "100%", height: "100%", }}
+                                                />
+                                            </TouchableOpacity>
 
-                                {/* <TouchableOpacity style={styles.iconsStyle}
-                                    onPress={() => { this.getMultipleShopWithId(Hairdryer) }}
-                                >
-                                    <Image source={require('../../../../assets/services/hairdryer.png')} resizeMode="contain"
-                                        style={{ width: "100%", height: "100%", }}
-                                    />
-                                </TouchableOpacity>
+                                            <TouchableOpacity style={styles.iconsStyleSaloon}
+                                                onPress={() => { this.getMultipleShopWithId(Bridal_And_Weding) }}
+                                            >
+                                                <Image source={require('../../../../assets/services/saloon/BridalWeding.png')} resizeMode="contain"
+                                                    style={{ width: "100%", height: "100%", }}
+                                                />
+                                            </TouchableOpacity>
 
-                                <TouchableOpacity style={styles.iconsStyle}
-                                    onPress={() => { this.getMultipleShopWithId(Hairspa) }}
-                                >
-                                    <Image source={require('../../../../assets/services/hairspa.png')} resizeMode="contain"
-                                        style={{ width: "100%", height: "100%", }}
-                                    />
-                                </TouchableOpacity>
+                                            <TouchableOpacity style={styles.iconsStyleSaloon}
+                                                onPress={() => Actions.ServiceListing({ More, headerTitle: "More Services" })}
+                                            >
+                                                <Image source={require('../../../../assets/services/barberShop/more.png')} resizeMode="contain"
+                                                    style={{ width: "100%", height: "100%", }}
+                                                />
+                                            </TouchableOpacity>
+                                        </View>
+                                    </View>
+                                ) : null
+                            }
 
-                                <TouchableOpacity style={styles.iconsStyle}
-                                    onPress={() => { this.getMultipleShopWithId(Shampoo) }}
-                                >
-                                    <Image source={require('../../../../assets/services/shampo.png')} resizeMode="contain"
-                                        style={{ width: "100%", height: "100%", }}
-                                    />
-                                </TouchableOpacity> */}
+                            {/* beautySaloon */}
+                            {
+                                (businessType === "beautySaloon") ? (
+                                    <View style={{
+                                        width: "100%",
+                                        height: 220,
+                                        flex: 1,
+                                        padding: 4,
+                                        justifyContent: "center",
+                                        alignItems: "center",
+                                        backgroundColor: "#FDE5F3"
+                                    }}>
+                                        <View style={{
+                                            width: "95%",
+                                            height: 180,
+                                            borderTopLeftRadius: 35,
+                                            borderTopRightRadius: 10,
+                                            borderBottomRightRadius: 10,
+                                            borderBottomLeftRadius: 10,
+                                            justifyContent: "center",
+                                            alignItems: "center",
+                                            flexDirection: "row",
+                                            flexWrap: "wrap",
+                                            backgroundColor: "white"
+                                        }}>
+                                            <TouchableOpacity style={styles.iconsStyle}
+                                                onPress={() => { this.getMultipleShopWithId(Nails) }}
+                                            >
+                                                <Image source={require('../../../../assets/services/beautySaloon/1nails.png')} resizeMode="contain"
+                                                    style={{ width: "100%", height: "100%", }}
+                                                />
+                                            </TouchableOpacity>
 
+                                            <TouchableOpacity style={styles.iconsStyle}
+                                                onPress={() => { this.getMultipleShopWithId(Brows_Lashes) }}
+                                            >
+                                                <Image source={require('../../../../assets/services/beautySaloon/2browsandlashed.png')} resizeMode="contain"
+                                                    style={{ width: "100%", height: "100%", }}
+                                                />
+                                            </TouchableOpacity>
 
+                                            <TouchableOpacity style={styles.iconsStyle}
+                                                onPress={() => { this.getMultipleShopWithId(Waxing) }}
+                                            >
+                                                <Image source={require('../../../../assets/services/beautySaloon/3waxing.png')} resizeMode="contain"
+                                                    style={{ width: "100%", height: "100%", }}
+                                                />
+                                            </TouchableOpacity>
 
-                                <TouchableOpacity style={styles.iconsStyle}
-                                    onPress={() => Actions.ServiceListing({ More, headerTitle: "More Services" })}
-                                >
-                                    <Image source={require('../../../../assets/services/more.png')} resizeMode="contain"
-                                        style={{ width: "100%", height: "100%", }}
-                                    />
-                                </TouchableOpacity>
-                            </View>
+                                            <TouchableOpacity style={styles.iconsStyle}
+                                                onPress={() => { this.getMultipleShopWithId(Body_Treatment) }}
+                                            >
+                                                <Image source={require('../../../../assets/services/beautySaloon/4bodytreatment.png')} resizeMode="contain"
+                                                    style={{ width: "100%", height: "100%", }}
+                                                />
+                                            </TouchableOpacity>
+
+                                            <TouchableOpacity style={styles.iconsStyle}
+                                                onPress={() => { this.getMultipleShopWithId(Hair_Treatments) }}
+                                            >
+                                                <Image source={require('../../../../assets/services/beautySaloon/5hairtreatments.png')} resizeMode="contain"
+                                                    style={{ width: "100%", height: "100%", }}
+                                                />
+                                            </TouchableOpacity>
+
+                                            <TouchableOpacity style={styles.iconsStyle}
+                                                onPress={() => { this.getMultipleShopWithId(Tanning) }}
+                                            >
+                                                <Image source={require('../../../../assets/services/beautySaloon/6traning.png')} resizeMode="contain"
+                                                    style={{ width: "100%", height: "100%", }}
+                                                />
+                                            </TouchableOpacity>
+
+                                            <TouchableOpacity style={styles.iconsStyle}
+                                                onPress={() => { this.getMultipleShopWithId(Mens_Grooming) }}
+                                            >
+                                                <Image source={require('../../../../assets/services/beautySaloon/7mensgromming.png')} resizeMode="contain"
+                                                    style={{ width: "100%", height: "100%", }}
+                                                />
+                                            </TouchableOpacity>
+
+                                            <TouchableOpacity style={styles.iconsStyle}
+                                                onPress={() => Actions.ServiceListing({ More, headerTitle: "More Services" })}
+                                            >
+                                                <Image source={require('../../../../assets/services/barberShop/more.png')} resizeMode="contain"
+                                                    style={{ width: "100%", height: "100%", }}
+                                                />
+                                            </TouchableOpacity>
+                                        </View>
+                                    </View>
+                                ) : null
+                            }
 
                             <View>
                                 {
@@ -878,7 +1273,21 @@ class Home extends Component {
                                                 (nearByShops && nearByShops != 0) ? (
                                                     <View style={{ width: "95%", marginTop: 10, flex: 1, flexDirection: "row", }}>
                                                         <TouchableOpacity style={{ flex: 1 }}>
-                                                            <Text style={{ color: "black", fontWeight: "bold", fontSize: 16 }}>Nearby Barbershops</Text>
+                                                            {
+                                                                businessType === "barberShop" ?
+                                                                    <Text style={{ color: "black", fontWeight: "bold", fontSize: 16, marginLeft: 10, }}>Nearby Barbershops</Text>
+                                                                    : null
+                                                            }
+                                                            {
+                                                                businessType === "saloon" ?
+                                                                    <Text style={{ color: "black", fontWeight: "bold", fontSize: 16, marginLeft: 10, }}>Nearby Saloon</Text>
+                                                                    : null
+                                                            }
+                                                            {
+                                                                businessType === "beautySaloon" ?
+                                                                    <Text style={{ color: "black", fontWeight: "bold", fontSize: 16, marginLeft: 10, }}>Nearby Spa</Text>
+                                                                    : null
+                                                            }
                                                         </TouchableOpacity>
                                                     </View>
                                                 ) : null
@@ -963,8 +1372,6 @@ class Home extends Component {
                                 }
                             </View>
 
-
-
                             <View>
                                 {
                                     (isloader === true) ? (
@@ -984,7 +1391,21 @@ class Home extends Component {
                                                 (bestBarberShops && bestBarberShops != 0) ? (
                                                     <View style={{ width: "95%", marginTop: 10, flex: 1, flexDirection: "row", }}>
                                                         <TouchableOpacity style={{ flex: 1 }}>
-                                                            <Text style={{ color: "black", fontWeight: "bold", fontSize: 16 }}>Top rated Barbershops</Text>
+                                                            {
+                                                                businessType === "barberShop" ?
+                                                                    <Text style={{ color: "black", fontWeight: "bold", fontSize: 16, marginLeft: 10, }}>Top Rated Barbershops</Text>
+                                                                    : null
+                                                            }
+                                                            {
+                                                                businessType === "saloon" ?
+                                                                    <Text style={{ color: "black", fontWeight: "bold", fontSize: 16, marginLeft: 10, }}>Top Rated Saloon</Text>
+                                                                    : null
+                                                            }
+                                                            {
+                                                                businessType === "beautySaloon" ?
+                                                                    <Text style={{ color: "black", fontWeight: "bold", fontSize: 16, marginLeft: 10, }}>Top Rated Spa</Text>
+                                                                    : null
+                                                            }
                                                         </TouchableOpacity>
                                                     </View>
                                                 ) : null
@@ -1077,7 +1498,6 @@ class Home extends Component {
                                                 }
                                             </InfiniteScroll>
                                         </>
-
                                 }
                             </View>
 
@@ -1101,7 +1521,24 @@ class Home extends Component {
                                                 (packages && packages != 0) ? (
                                                     <View style={{ width: "95%", marginTop: 10, flex: 1, flexDirection: "row", }}>
                                                         <View style={{ flex: 1.5 }}>
-                                                            <Text style={{ color: "black", fontWeight: "bold", fontSize: 16 }}>Special Packages & Offers</Text>
+                                                            {/* <Text style={{ color: "black", fontWeight: "bold", fontSize: 16, marginLeft: 10, }}>Special Packages & Offers</Text> */}
+
+                                                            {
+                                                                businessType === "barberShop" ?
+                                                                    <Text style={{ color: "black", fontWeight: "bold", fontSize: 16, marginLeft: 10, }}>Special Packages & Offers Barbershops</Text>
+                                                                    : null
+                                                            }
+                                                            {
+                                                                businessType === "saloon" ?
+                                                                    <Text style={{ color: "black", fontWeight: "bold", fontSize: 16, marginLeft: 10, }}>Special Packages & Offers Saloon</Text>
+                                                                    : null
+                                                            }
+                                                            {
+                                                                businessType === "beautySaloon" ?
+                                                                    <Text style={{ color: "black", fontWeight: "bold", fontSize: 16, marginLeft: 10, }}>Special Packages & Offers Spa</Text>
+                                                                    : null
+                                                            }
+
                                                         </View>
                                                     </View>
                                                 ) : null
@@ -1178,7 +1615,6 @@ class Home extends Component {
                                                 }
                                             </InfiniteScroll>
                                         </>
-
                                 }
                             </View>
 
@@ -1210,7 +1646,6 @@ const styles = StyleSheet.create({
         flex: 1,
         paddingBottom: 150,
         backgroundColor: "green",
-
     },
     card: {
         width: 250, height: 120,
@@ -1227,6 +1662,9 @@ const styles = StyleSheet.create({
     },
     iconsStyle: {
         width: "22%", height: "42%", justifyContent: "center", alignItems: "center", margin: 5,
+    },
+    iconsStyleSaloon: {
+        width: "19%", height: "38%", justifyContent: "center", alignItems: "center", marginTop: 15,
     },
 
 });

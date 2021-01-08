@@ -21,9 +21,10 @@ class Nearby extends Component {
     }
 
     componentDidMount() {
-        const { currentLocation } = this.props
+        const { currentLocation, businessType } = this.props
+        console.log(businessType, "businessType")
         if (currentLocation) {
-            this.props.getNearByShopsUnder5Km(currentLocation)
+            this.props.getNearByShopsUnder5Km(currentLocation, businessType)
         }
     }
 
@@ -51,6 +52,7 @@ class Nearby extends Component {
         //         filterShops = shops;
         //     }
         // }
+
         return (
             <View style={{
                 flex: 1,
@@ -244,11 +246,11 @@ let mapStateToProps = state => {
 };
 function mapDispatchToProps(dispatch) {
     return ({
-        setNearByShops: (shops) => {
-            dispatch(setNearByShops(shops));
-        },
-        getNearByShopsUnder5Km: (shops) => {
-            dispatch(getNearByShopsUnder5Km(shops));
+        // setNearByShops: (shops) => {
+        //     dispatch(setNearByShops(shops));
+        // },
+        getNearByShopsUnder5Km: (shops, businessType) => {
+            dispatch(getNearByShopsUnder5Km(shops, businessType));
         },
     })
 }

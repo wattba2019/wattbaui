@@ -1,7 +1,8 @@
 import React, { Component } from "react";
-import { View, Image, TouchableOpacity, Text, } from 'react-native';
+import { View, Image, TouchableOpacity, Text, BackHandler } from 'react-native';
 import { connect } from "react-redux";
 import { Actions } from 'react-native-router-flux';
+import { setBusinessType } from "./../../Store/Action/action";
 
 class BusinessType extends Component {
     constructor(props) {
@@ -10,6 +11,14 @@ class BusinessType extends Component {
         };
     }
 
+    setBussinessType(type) {
+        console.log(type, "type")
+        this.props.setBusinessType(type)
+    }
+
+    componentWillUnmount() {
+        BackHandler.removeEventListener('hardwareBackPress', BackHandler.exitApp());
+    }
     render() {
         return (
             <View style={{ flex: 1, backgroundColor: "#fff" }}>
@@ -30,37 +39,40 @@ class BusinessType extends Component {
                     </View>
                 </View>
 
-                <View style={{ flex: 8, justifyContent: "center", }}>
-                    <View style={{ flex: 0.3 }}>
+                <View style={{ flex: 8, marginTop: 10, marginBottom: 10, justifyContent: "center", }}>
+                    <View style={{ flex: 0.3, }}>
                         <TouchableOpacity
-                            onPress={() => Actions.AppContainer({ businessType: "barberShop" })}
+                            // onPress={() => Actions.AppContainer({ businessType: "barberShop" })}
+                            onPress={() => this.setBussinessType("barberShop")}
                         >
                             <Image
                                 source={require('../../../assets/businessType/barberShop.png')}
                                 resizeMode="contain"
-                                style={{ height: "100%", width: "90%", }}
+                                style={{ height: "100%", width: "90%", marginLeft: "-8%" }}
                             />
                         </TouchableOpacity>
                     </View>
-                    <View style={{ flex: 0.3 }}>
+                    <View style={{ flex: 0.3, marginTop: 20, }}>
                         <TouchableOpacity
-                            onPress={() => Actions.AppContainer({ businessType: "saloon" })}
+                            // onPress={() => Actions.AppContainer({ businessType: "saloon" })}
+                            onPress={() => this.setBussinessType("saloon")}
                         >
                             <Image
                                 source={require('../../../assets/businessType/saloon.png')}
                                 resizeMode="contain"
-                                style={{ height: "100%", width: "90%", }}
+                                style={{ height: "100%", width: "90%", marginLeft: "-8%" }}
                             />
                         </TouchableOpacity>
                     </View>
-                    <View style={{ flex: 0.3 }}>
+                    <View style={{ flex: 0.3, marginTop: 20, }}>
                         <TouchableOpacity
-                            onPress={() => Actions.AppContainer({ businessType: "beautySaloon" })}
+                            // onPress={() => Actions.AppContainer({ businessType: "beautySaloon" })}
+                            onPress={() => this.setBussinessType("beautySaloon")}
                         >
                             <Image
                                 source={require('../../../assets/businessType/beautysaloon.png')}
                                 resizeMode="contain"
-                                style={{ height: "100%", width: "90%", }}
+                                style={{ height: "100%", width: "90%", marginLeft: "-8%" }}
                             />
                         </TouchableOpacity>
                     </View>
@@ -76,6 +88,9 @@ let mapStateToProps = state => {
 };
 function mapDispatchToProps(dispatch) {
     return ({
+        setBusinessType: (type) => {
+            dispatch(setBusinessType(type));
+        },
     })
 }
 export default connect(mapStateToProps, mapDispatchToProps)(BusinessType);

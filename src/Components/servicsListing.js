@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Image, StatusBar, TouchableOpacity, Text, ScrollView } from 'react-native';
+import { View, Image, StatusBar, TouchableOpacity, Text, ScrollView, Alert } from 'react-native';
 import { connect } from "react-redux";
 import { Actions } from 'react-native-router-flux';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -21,14 +21,13 @@ class ServiceListing extends Component {
         };
     }
 
-
     test(parm) {
         const { More, } = this.props
         return More
     }
 
     UNSAFE_componentWillMount() {
-        const { More, } = this.props
+        const { More } = this.props
         let obj = {}
 
         for (let index = 0; index < More.length; index++) {
@@ -46,6 +45,7 @@ class ServiceListing extends Component {
             obj[element.serviceName] = local
         }
 
+        console.log(obj, "setObject")
         this.setState({
             MoreAfterSort: obj
         })
@@ -90,8 +90,8 @@ class ServiceListing extends Component {
     render() {
         const { headerTitle, More, } = this.props
         const { MoreAfterSort } = this.state
-        // console.log(MoreAfterSort, "More_services")
-        let images = [womenHairstyling, surface, surface2, dye, makeup, mascara]
+        console.log(MoreAfterSort, More, "More_services")
+        // let images = [womenHairstyling, surface, surface2, dye, makeup, mascara]
 
         return (
             <View style={{
@@ -101,7 +101,7 @@ class ServiceListing extends Component {
             }}>
                 <StatusBar backgroundColor="white" barStyle="dark-content" />
 
-                <View style={{ flex: 0.7, marginTop:Platform.OS === 'ios' ? 25 : 0,flexDirection: "row", borderBottomWidth: 0.5, borderBottomColor: 'grey', }}>
+                <View style={{ flex: 0.7, marginTop: Platform.OS === 'ios' ? 25 : 0, flexDirection: "row", borderBottomWidth: 0.5, borderBottomColor: 'grey', }}>
                     <View style={{ flex: 1, justifyContent: "center", }}>
                         <TouchableOpacity onPress={() => Actions.pop()}>
                             <Ionicons name="ios-arrow-back" style={{ marginLeft: 25, color: "black", fontWeight: 'bold', fontSize: 28 }} />
@@ -117,26 +117,24 @@ class ServiceListing extends Component {
                 <View style={{ flex: 8, }}>
                     <ScrollView>
                         <View style={{ paddingVertical: 5, paddingHorizontal: 15, width: "90%", marginHorizontal: "5%" }}>
-                            {
+
+                            {/* {
                                 (MoreAfterSort) ? (
                                     Object.keys(MoreAfterSort).map((key, index) => {
-                                        // console.log(key, index, "INSIDE_MAP")
                                         return (
                                             <TouchableOpacity key={index}
                                                 onPress={() => this.getMultipleShopWithId(MoreAfterSort[key])}
-                                                // onPress={() => Actions.ServiceDetaild({ serviceDetails: key, })}
                                                 style={{ marginTop: 25, flexDirection: "row", flex: 1 }}>
                                                 <View style={{ flex: 2 }}>
                                                     <Image
                                                         resizeMode="contain"
                                                         style={{ width: 35, height: 35 }}
                                                         source={iconForServices}
-                                                        // source={images[Math.floor(Math.random() * 6)]}
                                                     />
                                                 </View>
                                                 <View style={{ flex: 7 }}>
                                                     <Text>{key}</Text>
-                                                    {/* <Text style={{ fontSize: 11, color: "grey" }}>{MoreAfterSort[key].length ? MoreAfterSort[key].length : null} Shops</Text> */}
+                                                    <Text style={{ fontSize: 11, color: "grey" }}>{MoreAfterSort[key].length ? MoreAfterSort[key].length : null} Shops</Text>
                                                 </View>
                                                 <TouchableOpacity style={{ flex: 1 }}
                                                     onPress={() => Actions.ServiceDetaild({ serviceDetails: key, })}
@@ -147,7 +145,54 @@ class ServiceListing extends Component {
                                         )
                                     })
                                 ) : null
+                            } */}
+
+
+                            {
+                                (MoreAfterSort) ? (
+                                    Object.keys(MoreAfterSort).map((key, index) => {
+                                        console.log(key, MoreAfterSort[key], "MoreAfterSort")
+                                        // return (
+
+                                        // )
+                                    })
+                                ) : null
                             }
+
+                            {
+                                (More) ? (
+                                    More.map((key, index) => {
+                                        console.log(key, 'keykeykey')
+                                        return (
+                                            <TouchableOpacity
+                                                key={index}
+                                                onPress={() => this.getMultipleShopWithId(key.userId._id)}
+                                                style={{ marginTop: 25, flexDirection: "row", flex: 1 }}
+                                            >
+                                                <View style={{ flex: 2 }}>
+                                                    <Image
+                                                        resizeMode="contain"
+                                                        style={{ width: 35, height: 35 }}
+                                                        source={iconForServices}
+                                                    />
+                                                </View>
+                                                <View style={{ flex: 7 }}>
+                                                    <Text>{key.categoryName}</Text>
+                                                    <Text style={{ fontSize: 11, color: "grey" }}>{key.extraServices[0].serviceName}</Text>
+                                                </View>
+                                                <TouchableOpacity
+                                                    style={{ flex: 1 }}
+                                                    onPress={() => Actions.ServiceDetaild({ serviceDetails: key.categoryName, })}
+                                                >
+                                                    <Text style={{ fontSize: 11, color: "#FD6958" }}>View</Text>
+                                                </TouchableOpacity>
+                                            </TouchableOpacity>
+                                        )
+                                    })
+
+                                ) : null
+                            }
+
                         </View>
                     </ScrollView>
                 </View>

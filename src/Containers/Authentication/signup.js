@@ -32,9 +32,9 @@ class Signup extends Component {
         };
     }
 
-    componentWillUnmount() {
-        BackHandler.removeEventListener('hardwareBackPress', BackHandler.exitApp());
-    }
+    // componentWillUnmount() {
+    //     BackHandler.removeEventListener('hardwareBackPress', BackHandler.exitApp());
+    // }
 
     UNSAFE_componentWillMount() {
         const { fullName, email, phoneNumber, password, selectedCountry, imgPath } = this.props
@@ -162,6 +162,7 @@ class Signup extends Component {
                             value={fullName}
                             placeholder={"Full Name"}
                             placeholderTextColor="grey"
+                            returnKeyType='send'
                         />
                     </View>
                     <View
@@ -173,6 +174,7 @@ class Signup extends Component {
                             value={email}
                             placeholder={"Email"}
                             placeholderTextColor="grey"
+                            returnKeyType='send'
                         />
                     </View>
 
@@ -229,6 +231,7 @@ class Signup extends Component {
                                     value={phoneNumber}
                                     placeholder={"Number"}
                                     placeholderTextColor="grey"
+                                    returnKeyType='send'
                                 />
                             </View>
                         </View>
@@ -261,7 +264,7 @@ class Signup extends Component {
                             value={password}
                             placeholder={"Password"}
                             placeholderTextColor="grey"
-
+                            returnKeyType='send'
                         />
                         <Entypo
                             onPress={() => {

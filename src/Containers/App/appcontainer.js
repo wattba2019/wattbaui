@@ -72,7 +72,8 @@ class AppContainer extends Component {
                                         language: 'en',
                                     }}
                                     autoFocus={this.state.focus}
-                                    returnKeyType={'default'}
+                                    // returnKeyType={'default'}
+                                    returnKeyType='next'
                                     fetchDetails={true}
                                     styles={{
                                         textInputContainer: {
@@ -101,21 +102,21 @@ class AppContainer extends Component {
                 {
                     (this.state.rout === "Home") ? (
                         <ScrollView style={{ flex: 6, backgroundColor: "white" }}>
-                            <Home />
+                            <Home businessType={this.props.businessType} />
                         </ScrollView>
                     ) : null
                 }
                 {
                     (this.state.rout === "Nearby") ? (
                         <View style={{ flex: 6, backgroundColor: "white" }}>
-                            <Nearby focusInput={this.state.focus} />
+                            <Nearby focusInput={this.state.focus} businessType={this.props.businessType} />
                         </View>
                     ) : null
                 }
                 {
                     (this.state.rout === "Appointments") ? (
                         <ScrollView style={{ flex: 6, backgroundColor: "white" }}>
-                            <Appointments />
+                            <Appointments businessType={this.props.businessType} />
                         </ScrollView>
 
                     ) : null
@@ -123,7 +124,7 @@ class AppContainer extends Component {
                 {
                     (this.state.rout === "Profile") ? (
                         <ScrollView style={{ flex: 6, backgroundColor: "white" }}>
-                            <Profile />
+                            <Profile businessType={this.props.businessType} />
                         </ScrollView>
                     ) : null
                 }
@@ -188,7 +189,10 @@ class AppContainer extends Component {
 }
 
 function mapStateToProp(state) {
-    return ({ bseUrl: state.root.bseUrl })
+    return ({
+        bseUrl: state.root.bseUrl,
+        businessType: state.root.businessType
+    })
 }
 function mapDispatchToProp(dispatch) {
     return ({

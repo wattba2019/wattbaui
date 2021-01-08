@@ -10,6 +10,8 @@ import { Actions } from 'react-native-router-flux';
 // import ShopsCards from '../../../Components/shopscards';
 import BasicInfo from '../shop/basicInfo';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import Gallery from '../shop/gallery';
+
 
 class BarberDetails extends Component {
     constructor(props) {
@@ -28,7 +30,7 @@ class BarberDetails extends Component {
         }
         if (key.ref.key == ".1") {
             this.setState({
-                activeColor: "review"
+                activeColor: "gallery"
             })
         }
     }
@@ -36,6 +38,9 @@ class BarberDetails extends Component {
     render() {
         const { activeColor } = this.state
         const { barberDetails, shop, workingHours } = this.props
+
+        console.log(barberDetails.galleryImages, shop, "barberDetails")
+
         return (
             <View style={{
                 flex: 1,
@@ -118,7 +123,7 @@ class BarberDetails extends Component {
                             style={{ width: "70%", height: 50, marginTop: 30, marginHorizontal: "15%", marginBottom: 20 }}
                         >
                             <TouchableOpacity
-                                onPress={() => Actions.ChooseService({shop:shop})}
+                                onPress={() => Actions.ChooseService({ shop: shop })}
                             >
                                 <ImageBackground source={require('../../../assets/buttonBackground.png')} resizeMode="contain"
                                     style={{ height: "100%", width: "100%", justifyContent: "center", }}
@@ -146,6 +151,23 @@ class BarberDetails extends Component {
                                 <BasicInfo barberDetails={barberDetails} shop={shop} workingHours={workingHours} />
 
                             </Tab>
+
+                            {/* //Gallery// */}
+                            <Tab
+                                heading={
+                                    <TabHeading
+                                        style={{ flexDirection: "column", backgroundColor: "white" }}
+                                    >
+                                        <Text style={{ color: activeColor === "gallery" ? "#FD6958" : "black" }}>Photos</Text>
+                                    </TabHeading>
+                                }
+                            >
+                                <View>
+                                    <Gallery shop={shop} galleryStylist={barberDetails.galleryImages} />
+                                </View>
+                            </Tab>
+
+
 
                             {/* //Review// */}
 

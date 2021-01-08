@@ -9,6 +9,14 @@ export function setUserCredentials(userCredentials, routeInsideApp) {
     }
 }
 
+
+export function setBusinessType(type) {
+    return dispatch => {
+        dispatch({ type: "BUSINESS_TYPE", payload: type })
+        Actions.AppContainer()
+    }
+}
+
 export function setUserCurrentLocationWithUserCredentials(location, userCredentials) {
     // console.log(location, userCredentials, "location_setUserCurrentLocation")
     return dispatch => {
@@ -75,7 +83,7 @@ export function setShop(shop) {
 }
 
 export function setNearByShops(shops) {
-    // console.log(shops, "INSIDEACTION")
+    console.log(shops, "INSIDEACTION")
     return dispatch => {
         dispatch({ type: "SET_NEARBY_SHOP", payload: shops })
         if (shops) {
@@ -90,7 +98,6 @@ export function setNearByShops(shops) {
             }
             dispatch({ type: "SET_MARKERS", payload: shopLocationMarkers })
         }
-
     }
 }
 
@@ -120,7 +127,7 @@ export function distance(lat1, lon1, lat2, lon2) {
 }
 
 
-export function getNearByShopsUnder5Km(currentLocation) {
+export function getNearByShopsUnder5Km(currentLocation, businessType) {
     // console.log(currentLocation, "INSIDEACTION")
     return dispatch => {
         if (currentLocation != null) {
@@ -151,15 +158,59 @@ export function getNearByShopsUnder5Km(currentLocation) {
                         shops.push(element)
                     }
                     shops = shops.sort((a, b) => a.distance - b.distance)
-                    // console.log(shops, "Fetch_Shops_NearBy")
-                    if (shops) {
-                        dispatch({ type: "SET_NEARBY_SHOP", payload: shops })
-                        let shopLocationMarkers = []
+                    console.log(shops, "Fetch_Shops_NearBy")
+                    let filterdAccordingToBusinessType = []
+
+                    //for business type barberShop soorting
+                    if (shops.length && businessType === "barberShop") {
                         for (let index = 0; index < shops.length; index++) {
+                            const element = shops[index];
+                            const businessTypeClone = shops[index].businessType;
+                            if (businessTypeClone === "Barbershop" ||
+                                businessTypeClone === "Barbershop + Salon" ||
+                                businessTypeClone === "Barbershop + Beauty Salons, Spas & Other" ||
+                                businessTypeClone === "Salons + Barbershop + Spa/Other") {
+                                filterdAccordingToBusinessType.push(element)
+                            }
+                        }
+                    }
+
+                    //for business type saloon soorting
+                    if (shops.length && businessType === "saloon") {
+                        for (let index = 0; index < shops.length; index++) {
+                            const element = shops[index];
+                            const businessTypeClone = shops[index].businessType;
+                            if (businessTypeClone === "Salons" ||
+                                businessTypeClone === "Barbershop + Salon" ||
+                                businessTypeClone === "Salons + Beauty Salons, Spas & Otherr" ||
+                                businessTypeClone === "Salons + Barbershop + Spa/Other") {
+                                filterdAccordingToBusinessType.push(element)
+                            }
+                        }
+                    }
+
+                    //for business type beautySaloon soorting
+                    if (shops.length && businessType === "beautySaloon") {
+                        for (let index = 0; index < shops.length; index++) {
+                            const element = shops[index];
+                            const businessTypeClone = shops[index].businessType;
+                            if (businessTypeClone === "Beauty Salons, Spas & Other" ||
+                                businessTypeClone === "Salons + Beauty Salons, Spas & Other" ||
+                                businessTypeClone === "Barbershop + Beauty Salons, Spas & Other" ||
+                                businessTypeClone === "Salons + Barbershop + Spa/Other") {
+                                filterdAccordingToBusinessType.push(element)
+                            }
+                        }
+                    }
+
+                    if (filterdAccordingToBusinessType) {
+                        dispatch({ type: "SET_NEARBY_SHOP", payload: filterdAccordingToBusinessType })
+                        let shopLocationMarkers = []
+                        for (let index = 0; index < filterdAccordingToBusinessType.length; index++) {
                             let location = {
-                                latitude: shops[index].location.coordinates[0],
-                                longitude: shops[index].location.coordinates[1],
-                                title: shops[index].businessName,
+                                latitude: filterdAccordingToBusinessType[index].location.coordinates[0],
+                                longitude: filterdAccordingToBusinessType[index].location.coordinates[1],
+                                title: filterdAccordingToBusinessType[index].businessName,
                             }
                             shopLocationMarkers.push(location)
                         }
