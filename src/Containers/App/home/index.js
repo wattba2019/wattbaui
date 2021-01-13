@@ -1,5 +1,9 @@
 import React, { Component } from "react";
-import { View, Image, StyleSheet, TouchableOpacity, Text, TextInput, ScrollView, Alert, RefreshControl, ActivityIndicator } from 'react-native';
+import {
+    View, Image, StyleSheet, TouchableOpacity, Text,
+    TextInput, ScrollView, Alert, RefreshControl,
+    ActivityIndicator
+} from 'react-native';
 import { connect } from "react-redux";
 import { Actions } from 'react-native-router-flux';
 import { setNearByShops, } from "../../../Store/Action/action";
@@ -12,29 +16,20 @@ class Home extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            isloader: false,
             search: [],
             allServicesNames: [],
             nearByShops: [],
             bestBarberShops: [],
             packages: [],
-            hairStyles: [],
-
-            //infinite Scrolling states
-            activity: false,
-            isloader: false,
-            moreLoader: false,
-            offsetBestBarber: 0,
-            offsetNearByShops: 0,
-            offsetPackages: 0,
-
-
+            //barbers
             Haircut: [],
             Style: [],
             Hair_Color: [],
             Shave: [],
             Children_Haircut: [],
             Wax: [],
-
+            //saloon
             Ladies_Haircuts: [],
             Blow_Dry: [],
             Hair_Coloring: [],
@@ -42,7 +37,7 @@ class Home extends Component {
             Styling: [],
             Treatments: [],
             Bridal_And_Weding: [],
-
+            //spa
             Nails: [],
             Brows_Lashes: [],
             Waxing: [],
@@ -55,13 +50,8 @@ class Home extends Component {
     }
 
     UNSAFE_componentWillMount() {
-        console.log(this.props, "USER_CURRENT_LOCATION")
         this.getNeabyShops()
-        // this.getBestBarbershops()
-        // this.getPackages()
         this.getAllServices()
-        // this.getHairStyles()
-        // this.setState({ activity: false, })
     }
 
     distance(lat1, lon1, lat2, lon2) {
@@ -80,7 +70,6 @@ class Home extends Component {
 
     getNeabyShops() {
         const { currentLocation, businessType } = this.props
-        let { offsetNearByShops, } = this.state
         if (currentLocation != null) {
             this.setState({ isloader: true })
             let cloneLocation = {
@@ -111,7 +100,6 @@ class Home extends Component {
                         nearByShops.push(element)
                     }
                     nearByShops = nearByShops.sort((a, b) => a.distance - b.distance)
-
                     //for business type barberShop soorting
                     if (nearByShops.length && businessType === "barberShop") {
                         for (let index = 0; index < nearByShops.length; index++) {
@@ -125,7 +113,6 @@ class Home extends Component {
                             }
                         }
                     }
-
                     //for business type saloon soorting
                     if (nearByShops.length && businessType === "saloon") {
                         for (let index = 0; index < nearByShops.length; index++) {
@@ -139,7 +126,6 @@ class Home extends Component {
                             }
                         }
                     }
-
                     //for business type beautySaloon soorting
                     if (nearByShops.length && businessType === "beautySaloon") {
                         for (let index = 0; index < nearByShops.length; index++) {
@@ -153,12 +139,10 @@ class Home extends Component {
                             }
                         }
                     }
-                    console.log(nearByShops, filterdAccordingToBusinessType, businessType, "Fetch_Shops_NearBy_Home_Screen")
                     this.props.setNearByShops(filterdAccordingToBusinessType)
                     this.setState({
                         nearByShops: filterdAccordingToBusinessType,
                         isloader: false,
-                        offsetNearByShops: 2
                     })
                     this.getBestBarbershops()
                     this.getNearbyPackages(nearByShops)
@@ -178,118 +162,19 @@ class Home extends Component {
     getBestBarbershops() {
         let { nearByShops } = this.state
         let sortedShops = []
-        // let noRating = []
-
         if (nearByShops) {
-            console.log(nearByShops[0], "SORTING")
             for (let index = 0; index < nearByShops.length; index++) {
                 const element = nearByShops[index];
                 const review = nearByShops[index].review;
                 if (review != "No rating") {
                     sortedShops.push(element)
                 }
-                // else {
-                //     noRating.push(element)
-                // }
             }
-            // for (let index = 0; index < noRating.length; index++) {
-            //     const element = noRating[index];
-            //     sortedShops.push(element)
-            // }
-
             const ratingSorting = sortedShops.sort((a, b) => b.review - a.review)
-            // console.log(sortedShops, ratingSorting, "ratingSorting")
             this.setState({ bestBarberShops: ratingSorting })
-            // const ratingSorting = nearByShops.sort((a, b) => b.review - a.review)
         }
-
-        // const result = nearByShops.sort((a, b) => b.review - a.review)
-        // const result = nearByShops.sort((a, b) =>
-        //     b.review != "No rating" ? b.review - a.review : null
-        //     // console.log(a, b, "result")
-        // )
-
-        // this.setState({ bestBarberShops: result })
-
-        // const fiveStarRatingShops = nearByShops.filter(nearByShops => nearByShops.review === "5");
-        // let bestShops = []
-        // for (let index = 0; index < fiveStarRatingShops.length; index++) {
-        //     const element = fiveStarRatingShops[index];
-        //     if (index < 5) {
-        //         bestShops.push(element)
-        //     }
-        //     else {
-        //         break
-        //     }
-        // }
-        // this.setState({
-        //     bestBarberShops: bestShops,
-        // })
-
-        // this.setState({ isloader: true })
-        // var options = {
-        //     method: 'GET',
-        //     url: `${this.props.bseUrl}/getallshops/getAllShops/${offsetBestBarber}/${2}`,
-
-        //     headers:
-        //     {
-        //         'cache-control': 'no-cache',
-        //         "Allow-Cross-Origin": '*',
-        //     },
-        // }
-        // axios(options)
-        //     .then(result => {
-        //         let bestBarberShops = result.data.data
-        //         // console.log(bestBarberShops, "Fetch_Best_Shops")
-        //         this.setState({
-        //             bestBarberShops: bestBarberShops,
-        //             isloader: false,
-        //             offsetBestBarber: 2
-        //         })
-        //     })
-        //     .catch(err => {
-        //         let error = JSON.parse(JSON.stringify(err))
-        //         console.log(error, 'ERRROR', err)
-        //         this.setState({
-        //             err: error,
-        //             isloader: false,
-        //         })
-        //     })
-
     }
 
-    // getPackages() {
-    //     let { offsetPackages, } = this.state
-    //     this.setState({ isloader: true })
-    //     var options = {
-    //         method: 'GET',
-    //         url: `${this.props.bseUrl}/getNearbyShopServices/getAllPackage/${offsetPackages}/${2}`,
-    //         headers:
-    //         {
-    //             'cache-control': 'no-cache',
-    //             "Allow-Cross-Origin": '*',
-    //         },
-    //     }
-    //     axios(options)
-    //         .then(result => {
-    //             let packages = result.data.data
-    //             // console.log(packages, "Fetch_Packages")
-    //             this.setState({
-    //                 packages: packages,
-    //                 offsetPackages: 2,
-    //                 isloader: false,
-    //             })
-    //         })
-    //         .catch(err => {
-    //             let error = JSON.parse(JSON.stringify(err))
-    //             console.log(error, 'ERRROR', err)
-    //             this.setState({
-    //                 err: error,
-    //                 isloader: false,
-    //             })
-    //         })
-
-    // }
 
     getNearbyPackages(nearByShops) {
         const { businessType } = this.props
@@ -300,9 +185,7 @@ class Home extends Component {
             shopIds.push(element)
         }
         this.setState({ isloader: true })
-        let cloneLocation = {
-            shopIds: shopIds
-        }
+        let cloneLocation = { shopIds: shopIds }
         var options = {
             method: 'POST',
             url: `${this.props.bseUrl}/getNearbyShopServices/getNearByPackages/`,
@@ -363,7 +246,6 @@ class Home extends Component {
     }
 
     getShopWithId(_id) {
-        console.log(_id, "USERID")
         var options = {
             method: 'GET',
             url: `${this.props.bseUrl}/getallshops/getShopWithId/${_id}`,
@@ -372,7 +254,6 @@ class Home extends Component {
                 'cache-control': 'no-cache',
                 "Allow-Cross-Origin": '*',
             },
-
         }
         axios(options)
             .then(result => {
@@ -389,11 +270,8 @@ class Home extends Component {
     }
 
     getMultipleShopWithId(shopid) {
-        console.log(shopid, "shopid")
         if (shopid.length) {
-            cloneData = {
-                shopid: shopid
-            }
+            cloneData = { shopid: shopid }
             var options = {
                 method: 'POST',
                 url: `${this.props.bseUrl}/getallshops/getMultipleShopWithId/`,
@@ -407,9 +285,8 @@ class Home extends Component {
             axios(options)
                 .then(result => {
                     let shops = result.data.data
-                    const fiveStarRatingShops = shops.filter(shops => shops.review === "5");
-                    Actions.SearchResults({ shops: fiveStarRatingShops, headerTitle: "Top Services" })
-                    // console.log(shops, "Fetch_multiple_shops_withID")
+                    // const fiveStarRatingShops = shops.filter(shops => shops.review === "5");
+                    Actions.SearchResults({ shops: shops, headerTitle: "Top Services" })
                 })
                 .catch(err => {
                     let error = JSON.parse(JSON.stringify(err))
@@ -434,8 +311,7 @@ class Home extends Component {
             })
                 .then(result => {
                     let allServices = result.data.data
-                    // console.log(allServices, "allServices_getting_home_screen")
-
+                    console.log(allServices, "allServices_getting_home_screen")
                     let Haircut = []
                     let Style = []
                     let Hair_Color = []
@@ -451,7 +327,6 @@ class Home extends Component {
                     let Treatments = []
                     let Bridal_And_Weding = []
 
-
                     let Nails = []
                     let Brows_Lashes = []
                     let Waxing = []
@@ -459,15 +334,12 @@ class Home extends Component {
                     let Hair_Treatments = []
                     let Tanning = []
                     let Mens_Grooming = []
-
-
                     let More = []
 
                     for (let index = 0; index < allServices.length; index++) {
                         const service = allServices[index];
                         const categoryName = allServices[index].categoryName;
-                        // console.log(service, "getAllServices")
-
+                        // console.log(service, "Service_Get")
                         // barberShop
                         if (categoryName === "Haircut") {
                             if (Haircut.indexOf(service.userId) == -1) {
@@ -499,7 +371,6 @@ class Home extends Component {
                                 Wax.push(service.userId)
                             }
                         }
-
                         // saloon
                         if (categoryName === "Ladies Haircuts") {
                             if (Ladies_Haircuts.indexOf(service.userId) == -1) {
@@ -541,7 +412,6 @@ class Home extends Component {
                                 Bridal_And_Weding.push(service.userId)
                             }
                         }
-
                         // spa
                         if (categoryName === "Nails") {
                             if (Nails.indexOf(service.userId) == -1) {
@@ -605,7 +475,6 @@ class Home extends Component {
                         Hair_Treatments,
                         Tanning,
                         Mens_Grooming,
-
                         More,
                     })
                 })
@@ -629,155 +498,16 @@ class Home extends Component {
             nearByShops: [],
             bestBarberShops: [],
             packages: [],
-            activity: false,
             isloader: false,
-            moreLoader: false,
-            offsetBestBarber: 0,
-            offsetNearByShops: 0,
-            offsetPackages: 0,
         }, () => {
             this.UNSAFE_componentWillMount()
         })
-
     }
 
-    _onEndReachedNeabyShops() {
-        let { offsetNearByShops, moreLoader } = this.state
-        const { currentLocation } = this.props
-
-        this.setState({ moreLoader: true })
-
-        if (currentLocation != null && moreLoader === false) {
-            let cloneLocation = {
-                lat: currentLocation.coords.latitude,
-                long: currentLocation.coords.longitude,
-                km: 15,
-            }
-            var options = {
-                method: 'POST',
-                url: `${this.props.bseUrl}/getallshops/${offsetNearByShops}/${2}`,
-                headers:
-                {
-                    'cache-control': 'no-cache',
-                    "Allow-Cross-Origin": '*',
-                },
-                data: cloneLocation
-            }
-            axios(options)
-                .then(result => {
-                    let nearByShops = result.data.data
-                    console.log(nearByShops, "Fetch_Shops_NearBy")
-                    if (nearByShops.length != 0) {
-                        let clonData = this.state.nearByShops
-                        for (var i = 0; i < nearByShops.length; i++) {
-                            clonData.push(nearByShops[i])
-                        }
-                        // this.props.setNearByShops(clonData)
-                    }
-                    this.setState({
-                        // nearByShops: clonData,
-                        moreLoader: false,
-                        isloader: false,
-                        offsetNearByShops: offsetNearByShops + nearByShops.length
-                    })
-
-                })
-                .catch(err => {
-                    let error = JSON.parse(JSON.stringify(err))
-                    console.log(error, 'ERRROR', err)
-                    this.setState({
-                        err: error,
-                        isloader: false,
-                        moreLoader: false,
-                    })
-                })
-        }
-    }
-
-    _onEndReachedBestBarberShops() {
-        let { offsetBestBarber, moreLoader } = this.state
-        this.setState({ moreLoader: true })
-        if (moreLoader === false) {
-            var options = {
-                method: 'GET',
-                url: `${this.props.bseUrl}/getallshops/getAllShops/${offsetBestBarber}/${2}`,
-                headers:
-                {
-                    'cache-control': 'no-cache',
-                    "Allow-Cross-Origin": '*',
-                },
-            }
-            axios(options)
-                .then(result => {
-                    let bestBarberShops = result.data.data
-                    // console.log(bestBarberShops, "Fetch_Best_Shops")
-                    let clonData = this.state.bestBarberShops
-                    for (var i = 0; i < bestBarberShops.length; i++) {
-                        clonData.push(bestBarberShops[i])
-                    }
-                    this.setState({
-                        isloader: false,
-                        moreLoader: false,
-                        offsetBestBarber: offsetBestBarber + bestBarberShops.length
-                    })
-                })
-                .catch(err => {
-                    let error = JSON.parse(JSON.stringify(err))
-                    console.log(error, 'ERRROR', err)
-                    this.setState({
-                        err: error,
-                        isloader: false,
-                        moreLoader: false,
-                    })
-                })
-        }
-    }
-
-    _onEndReachedSpecialPackages() {
-        let { offsetPackages, moreLoader } = this.state
-        this.setState({ moreLoader: true })
-        if (moreLoader === false) {
-            var options = {
-                method: 'GET',
-                url: `${this.props.bseUrl}/getNearbyShopServices/getAllPackage/${offsetPackages}/${2}`,
-                headers:
-                {
-                    'cache-control': 'no-cache',
-                    "Allow-Cross-Origin": '*',
-                },
-            }
-            axios(options)
-                .then(result => {
-                    let packages = result.data.data
-                    // console.log(packages, "Fetch_Packages")
-                    let clonData = this.state.packages
-                    for (var i = 0; i < packages.length; i++) {
-                        clonData.push(packages[i])
-                    }
-
-                    this.setState({
-                        // packages: packages,
-                        offsetPackages: offsetPackages + packages.length,
-                        isloader: false,
-                        moreLoader: false,
-                    })
-                })
-                .catch(err => {
-                    let error = JSON.parse(JSON.stringify(err))
-                    console.log(error, 'ERRROR', err)
-                    this.setState({
-                        err: error,
-                        isloader: false,
-                        moreLoader: false,
-                    })
-                })
-        }
-    }
 
     render() {
         let { fullName } = this.props.userProfile
-        let { nearByShops, bestBarberShops, packages, hairStyles,
-
+        let { nearByShops, bestBarberShops, packages,
             // barberShop
             Haircut,
             Style,
@@ -785,7 +515,6 @@ class Home extends Component {
             Shave,
             Children_Haircut,
             Wax,
-
             // saloon
             Ladies_Haircuts,
             Blow_Dry,
@@ -794,7 +523,6 @@ class Home extends Component {
             Styling,
             Treatments,
             Bridal_And_Weding,
-
             // spa
             Nails,
             Brows_Lashes,
@@ -804,23 +532,13 @@ class Home extends Component {
             Tanning,
             Mens_Grooming,
             More,
-
             isloader,
-            activity,
-            moreLoader
         } = this.state
 
         let { businessType } = this.props
-
+        console.log(Ladies_Haircuts, "Ladies_Haircuts")
         return (
-            <View
-                style={{
-                    flex: 1,
-                    width: "100%",
-                    alignItems: "center",
-                    // backgroundColor: "red",
-                }}
-            >
+            <View style={{ flex: 1, width: "100%", alignItems: "center", }}>
                 <InfiniteScroll
                     style={{ width: "100%" }}
                     showsHorizontalScrollIndicator={false}
@@ -838,7 +556,6 @@ class Home extends Component {
                         marginHorizontal: "2.5%",
                         justifyContent: "center",
                         alignItems: "center",
-                        // backgroundColor:"red"
                     }}>
                         <View style={{ width: "100%", marginTop: 5 }}>
                             <Text style={{ fontSize: fullName.length < 12 ? 16 : 12, fontWeight: "bold", textAlign: "left" }}>Hi {fullName}</Text>
@@ -865,7 +582,6 @@ class Home extends Component {
                                     >
                                         <AntDesign name="search1" style={{ marginLeft: "3%", color: '#909090', fontWeight: 'bold', fontSize: 15 }} />
                                     </View>
-
                                     <View
                                         style={{
                                             width: "80%", borderColor: 'gray', justifyContent: "center", alignItems: "center",
@@ -881,7 +597,8 @@ class Home extends Component {
                                         />
                                     </View>
                                 </View>
-                            ) : null}
+                            ) : null
+                        }
 
                         {
                             (businessType === "saloon") ? (
@@ -898,8 +615,6 @@ class Home extends Component {
                                         style={{
                                             width: "5%",
                                             borderColor: 'gray',
-                                            // justifyContent: "center",
-                                            // alignItems: "center",
                                             backgroundColor: "#FFF2EA",
                                         }}
                                     >
@@ -949,7 +664,9 @@ class Home extends Component {
 
                                     <View
                                         style={{
-                                            width: "80%", borderColor: 'gray', justifyContent: "center", alignItems: "center",
+                                            width: "80%", borderColor: 'gray',
+                                            justifyContent: "center",
+                                            alignItems: "center",
                                             backgroundColor: "#FDE5F3",
                                         }}
                                     >
@@ -964,26 +681,13 @@ class Home extends Component {
                                 </View>
                             ) : null
                         }
-
                     </View>
 
-                    <View style={{
-                        flex: 8,
-                        width: "100%",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        // backgroundColor: "red",
-                    }}>
-                        <ScrollView
-                            contentContainerStyle={{}}
-                            style={{ width: "100%" }}
-                        >
-                            <View style={{
-                                width: "95%", marginTop: 10, marginLeft: 10,
-                            }}>
+                    <View style={{ flex: 8, width: "100%", justifyContent: "center", alignItems: "center", }}>
+                        <ScrollView style={{ width: "100%" }}>
+                            <View style={{ width: "95%", marginTop: 10, marginLeft: 10, }}>
                                 <Text style={{ color: "black", fontWeight: "bold", fontSize: 16 }}>Top Services</Text>
                             </View>
-
                             {
                                 (businessType === "barberShop") ? (
                                     <View style={{
@@ -994,12 +698,10 @@ class Home extends Component {
                                         justifyContent: "center",
                                         alignItems: "center",
                                         backgroundColor: "#EEF7FF"
-                                        // backgroundColor: "red"
                                     }}>
                                         <View style={{
                                             width: "95%",
                                             height: 180,
-                                            // flex: 1,
                                             borderTopLeftRadius: 35,
                                             borderTopRightRadius: 10,
                                             borderBottomRightRadius: 10,
@@ -1061,7 +763,6 @@ class Home extends Component {
                                     </View>
                                 ) : null
                             }
-
                             {
                                 (businessType === "saloon") ? (
                                     <View style={{
@@ -1161,8 +862,6 @@ class Home extends Component {
                                     </View>
                                 ) : null
                             }
-
-                            {/* beautySaloon */}
                             {
                                 (businessType === "beautySaloon") ? (
                                     <View style={{
@@ -1293,58 +992,50 @@ class Home extends Component {
                                                 ) : null
                                             }
 
-                                            <InfiniteScroll
-                                                showsHorizontalScrollIndicator={true}
-                                                horizontal={true}
-                                            // onLoadMoreAsync={this._onEndReachedNeabyShops.bind(this)}
-                                            >
+                                            <InfiniteScroll showsHorizontalScrollIndicator={true} horizontal={true}>
                                                 {
                                                     (nearByShops && nearByShops != 0) ? (
                                                         nearByShops.map((key, index) => {
                                                             return (
-                                                                <TouchableOpacity key={index} style={{
-                                                                    margin: 10,
-                                                                    flexDirection: "row",
-                                                                    marginBottom: 20,
-                                                                    height: 170,
-                                                                    width: 250,
-                                                                }} key={index}
+                                                                <TouchableOpacity key={index}
+                                                                    style={{
+                                                                        margin: 10,
+                                                                        flexDirection: "row",
+                                                                        marginBottom: 20,
+                                                                        height: 170,
+                                                                        width: 250,
+                                                                    }}
                                                                     onPress={() => Actions.Shop({ shop: key })}
                                                                 >
-                                                                    <View style={{ width: 250, }}>
-                                                                        <View style={{
-                                                                            flex: 2,
-                                                                        }}>
+                                                                    <View style={{ width: 250 }}>
+                                                                        <View style={{ flex: 2 }}>
                                                                             {(key.coverImage != null) ? (
                                                                                 <Image style={{
                                                                                     width: "100%", height: "100%",
-                                                                                    // borderTopLeftRadius: 6, borderTopRightRadius: 6,
                                                                                 }}
                                                                                     resizeMode="cover"
                                                                                     source={{ uri: key.coverImage }}
                                                                                 />
-                                                                            ) : <Image source={require('../../../../assets/nophoto.jpg')} resizeMode="cover"
-                                                                                style={{
-                                                                                    width: "100%", height: "100%",
-                                                                                    // borderTopLeftRadius: 6, borderTopRightRadius: 6,
-                                                                                }}
+                                                                            ) : <Image
+                                                                                    source={require('../../../../assets/nophoto.jpg')}
+                                                                                    resizeMode="cover"
+                                                                                    style={{ width: "100%", height: "100%", }}
                                                                                 />
                                                                             }
                                                                         </View>
-                                                                        <View style={{
-                                                                            top: -10,
-                                                                            height: 50,
-                                                                            // borderBottomRightRadius: 6, borderBottomLeftRadius: 6,
-                                                                            padding: "2%",
-                                                                            borderColor: "#E8E6E7",
-                                                                            borderWidth: 1,
-                                                                            flex: 1,
-                                                                            flexDirection: "row",
-                                                                            backgroundColor: "white",
-                                                                        }}>
-                                                                            <View style={{
-                                                                                flex: 5,
-                                                                            }}>
+                                                                        <View
+                                                                            style={{
+                                                                                top: -10,
+                                                                                height: 50,
+                                                                                padding: "2%",
+                                                                                borderColor: "#E8E6E7",
+                                                                                borderWidth: 1,
+                                                                                flex: 1,
+                                                                                flexDirection: "row",
+                                                                                backgroundColor: "white",
+                                                                            }}
+                                                                        >
+                                                                            <View style={{ flex: 5, }}>
                                                                                 <Text style={styles.card_text}>{key.businessName}</Text>
                                                                                 <Text style={{ color: "#7F7F7F" }}>{key.addressLine1}</Text>
                                                                             </View>
@@ -1368,7 +1059,6 @@ class Home extends Component {
                                                 }
                                             </InfiniteScroll>
                                         </>
-
                                 }
                             </View>
 
@@ -1386,7 +1076,6 @@ class Home extends Component {
                                         </View>
                                     ) :
                                         <>
-
                                             {
                                                 (bestBarberShops && bestBarberShops != 0) ? (
                                                     <View style={{ width: "95%", marginTop: 10, flex: 1, flexDirection: "row", }}>
@@ -1410,24 +1099,20 @@ class Home extends Component {
                                                     </View>
                                                 ) : null
                                             }
-
-
-                                            <InfiniteScroll
-                                                showsHorizontalScrollIndicator={true}
-                                                horizontal={true}
-                                            // onLoadMoreAsync={this._onEndReachedBestBarberShops.bind(this)}
-                                            >
+                                            <InfiniteScroll showsHorizontalScrollIndicator={true} horizontal={true}>
                                                 {
                                                     (bestBarberShops && bestBarberShops != 0) ? (
                                                         bestBarberShops.map((key, index) => {
                                                             return (
-                                                                <TouchableOpacity key={index} style={{
-                                                                    margin: 10,
-                                                                    flexDirection: "row",
-                                                                    marginBottom: 20,
-                                                                    height: 170,
-                                                                    width: 250,
-                                                                }}
+                                                                <TouchableOpacity
+                                                                    key={index}
+                                                                    style={{
+                                                                        margin: 10,
+                                                                        flexDirection: "row",
+                                                                        marginBottom: 20,
+                                                                        height: 170,
+                                                                        width: 250,
+                                                                    }}
                                                                     onPress={() => Actions.Shop({ shop: key })}
                                                                 >
                                                                     <View style={{ width: 250, }}>
@@ -1435,25 +1120,21 @@ class Home extends Component {
                                                                             flex: 2,
                                                                         }}>
                                                                             {(key.coverImage != null) ? (
-                                                                                <Image style={{
-                                                                                    width: "100%", height: "100%",
-                                                                                    // borderTopLeftRadius: 6, borderTopRightRadius: 6,
-                                                                                }}
+                                                                                <Image
+                                                                                    style={{ width: "100%", height: "100%", }}
                                                                                     resizeMode="cover"
                                                                                     source={{ uri: key.coverImage }}
                                                                                 />
-                                                                            ) : <Image source={require('../../../../assets/nophoto.jpg')} resizeMode="cover"
-                                                                                style={{
-                                                                                    width: "100%", height: "100%",
-                                                                                    // borderTopLeftRadius: 6, borderTopRightRadius: 6,
-                                                                                }}
+                                                                            ) : <Image
+                                                                                    source={require('../../../../assets/nophoto.jpg')}
+                                                                                    resizeMode="cover"
+                                                                                    style={{ width: "100%", height: "100%", }}
                                                                                 />
                                                                             }
                                                                         </View>
                                                                         <View style={{
                                                                             top: -10,
                                                                             height: 50,
-                                                                            // borderBottomRightRadius: 6, borderBottomLeftRadius: 6,
                                                                             padding: "2%",
                                                                             borderColor: "#E8E6E7",
                                                                             borderWidth: 1,
@@ -1461,9 +1142,7 @@ class Home extends Component {
                                                                             flexDirection: "row",
                                                                             backgroundColor: "white",
                                                                         }}>
-                                                                            <View style={{
-                                                                                flex: 5,
-                                                                            }}>
+                                                                            <View style={{ flex: 5 }}>
                                                                                 <Text style={styles.card_text}>{key.businessName}</Text>
                                                                                 <Text style={{ color: "#7F7F7F" }}>{key.addressLine1}</Text>
                                                                             </View>
@@ -1480,8 +1159,7 @@ class Home extends Component {
                                                                             </View>
                                                                         </View>
                                                                     </View>
-
-                                                                    {
+                                                                    {/* {
                                                                         (this.state[`moreloader${index}`] === true) ? (
                                                                             <View style={{
                                                                                 justifyContent: 'center',
@@ -1490,7 +1168,7 @@ class Home extends Component {
                                                                                 <ActivityIndicator size="large" color="#FD6958" />
                                                                             </View>
                                                                         ) : null
-                                                                    }
+                                                                    } */}
                                                                 </TouchableOpacity>
                                                             )
                                                         })
@@ -1500,7 +1178,6 @@ class Home extends Component {
                                         </>
                                 }
                             </View>
-
 
                             <View>
                                 {
@@ -1516,13 +1193,10 @@ class Home extends Component {
                                         </View>
                                     ) :
                                         <>
-
                                             {
                                                 (packages && packages != 0) ? (
                                                     <View style={{ width: "95%", marginTop: 10, flex: 1, flexDirection: "row", }}>
                                                         <View style={{ flex: 1.5 }}>
-                                                            {/* <Text style={{ color: "black", fontWeight: "bold", fontSize: 16, marginLeft: 10, }}>Special Packages & Offers</Text> */}
-
                                                             {
                                                                 businessType === "barberShop" ?
                                                                     <Text style={{ color: "black", fontWeight: "bold", fontSize: 16, marginLeft: 10, }}>Special Packages & Offers Barbershops</Text>
@@ -1538,22 +1212,18 @@ class Home extends Component {
                                                                     <Text style={{ color: "black", fontWeight: "bold", fontSize: 16, marginLeft: 10, }}>Special Packages & Offers Spa</Text>
                                                                     : null
                                                             }
-
                                                         </View>
                                                     </View>
                                                 ) : null
                                             }
 
-                                            <InfiniteScroll
-                                                showsHorizontalScrollIndicator={true}
-                                                horizontal={true}
-                                            // onLoadMoreAsync={this._onEndReachedSpecialPackages.bind(this)}
-                                            >
+                                            <InfiniteScroll showsHorizontalScrollIndicator={true} horizontal={true}>
                                                 {
                                                     (packages && packages != 0) ? (
                                                         packages.map((key, index) => {
                                                             return (
-                                                                <TouchableOpacity key={index}
+                                                                <TouchableOpacity
+                                                                    key={index}
                                                                     style={{
                                                                         margin: 10,
                                                                         flexDirection: "row",
@@ -1566,26 +1236,19 @@ class Home extends Component {
                                                                     <View style={{ width: 250, }}>
                                                                         <View style={{ flex: 2, }}>
                                                                             {(key.packageImage != null) ? (
-                                                                                <Image style={{
-                                                                                    width: "100%", height: "100%",
-                                                                                    // borderTopLeftRadius: 6, borderTopRightRadius: 6,
-                                                                                }}
+                                                                                <Image
+                                                                                    style={{ width: "100%", height: "100%" }}
                                                                                     resizeMode="cover"
                                                                                     source={{ uri: key.packageImage }}
                                                                                 />
                                                                             ) : <Image source={require('../../../../assets/nophoto.jpg')} resizeMode="cover"
-                                                                                style={{
-                                                                                    width: "100%", height: "100%",
-                                                                                    // borderTopLeftRadius: 6, borderTopRightRadius: 6,
-                                                                                }}
-                                                                                />
+                                                                                style={{ width: "100%", height: "100%", }} />
                                                                             }
                                                                         </View>
 
                                                                         <View style={{
                                                                             top: -10,
                                                                             height: 50,
-                                                                            // borderBottomRightRadius: 6, borderBottomLeftRadius: 6,
                                                                             padding: "2%",
                                                                             borderColor: "#E8E6E7",
                                                                             borderWidth: 1,
@@ -1593,9 +1256,7 @@ class Home extends Component {
                                                                             flexDirection: "row",
                                                                             backgroundColor: "white",
                                                                         }}>
-                                                                            <View style={{
-                                                                                flex: 5,
-                                                                            }}>
+                                                                            <View style={{ flex: 5, }}>
                                                                                 <Text style={styles.card_text}>{key.packageName}</Text>
                                                                                 <Text style={{ color: "#7F7F7F" }}>{key.price} GBP</Text>
                                                                             </View>
@@ -1617,7 +1278,6 @@ class Home extends Component {
                                         </>
                                 }
                             </View>
-
                         </ScrollView>
                     </View>
                 </InfiniteScroll>
@@ -1625,6 +1285,7 @@ class Home extends Component {
         );
     }
 }
+
 let mapStateToProps = state => {
     return {
         currentLocation: state.root.currentLocation,
@@ -1652,7 +1313,6 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-end',
         padding: 10,
         backgroundColor: 'white',
-        // borderRadius: 6,
         overflow: 'hidden'
     },
     card_text: {
