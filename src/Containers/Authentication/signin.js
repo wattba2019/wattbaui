@@ -50,15 +50,18 @@ class Signin extends Component {
                 alert(err.response.data.message)
                 this.setState({
                     loader: !this.state.loader,
-                    activateAccount: true
-                }, () => {
-                    setTimeout(() => {
-                        this.setState({
-                            activateAccount: false
-                        })
-                    }, 10000)
-
                 })
+                if (err.response.data.message != "Invalid password") {
+                    this.setState({
+                        activateAccount: true
+                    }, () => {
+                        setTimeout(() => {
+                            this.setState({
+                                activateAccount: false
+                            })
+                        }, 10000)
+                    })
+                }
             })
     }
 

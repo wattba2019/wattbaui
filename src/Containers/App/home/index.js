@@ -536,7 +536,7 @@ class Home extends Component {
         } = this.state
 
         let { businessType } = this.props
-        console.log(Ladies_Haircuts, "Ladies_Haircuts")
+        console.log(More, "Ladies_Haircuts")
         return (
             <View style={{ flex: 1, width: "100%", alignItems: "center", }}>
                 <InfiniteScroll

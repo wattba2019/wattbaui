@@ -67,13 +67,25 @@ class BookAppointment extends Component {
                             for (let i = 0; i < stylist.workingDays.length; i++) {
                                 const element = stylist.workingDays[i];
                                 const elementDay = stylist.workingDays[i].day;
-                                const openTime = stylist.workingDays[i].brStart;
-                                const closeTIme = stylist.workingDays[i].brEnd;
+                                // const openTime = stylist.workingDays[i].brStart;
+                                // const closeTIme = stylist.workingDays[i].brEnd;
+                                const openTime = moment(stylist.workingDays[i].brStart, ["h:mm A"]).format("hh:mm A");
+                                const closeTIme = moment(stylist.workingDays[i].brEnd, ["h:mm A"]).format("hh:mm A");
                                 if (day === elementDay) {
                                     if (element.working === true) {
-                                        // console.log(stylist, "stylistBookAppointment")
-                                        soortedBarberList.push(stylist)
+                                        let getTimeAmPm = this.formatAMPM(new Date);
+                                        var timeCorrectFormat = moment(getTimeAmPm, ["h:mm A"]).format("hh:mm A");
+                                        let OTime = this.getTimeMilliseconds(openTime);
+                                        let CTime = this.getTimeMilliseconds(closeTIme);
+                                        let currentTime = this.getTimeMilliseconds(timeCorrectFormat);
+                                        console.log(OTime, CTime, currentTime, openTime, closeTIme, "TimingCheck")
+                                        if (currentTime > OTime && currentTime < CTime) {
+                                            null
+                                        }
+                                        else {
+                                            soortedBarberList.push(stylist)
 
+                                        }
                                     }
                                 }
                             }
@@ -136,6 +148,15 @@ class BookAppointment extends Component {
             })
         }
 
+    }
+
+    getTimeMilliseconds(timeString) {
+        var t = timeString.match(/(\d{1,2}):(\d{2}) ([AP]M)/),
+            h = parseInt(t[1], 10),
+            isAm = t[3] === 'AM',
+            isMidnight = h === 12 && isAm,
+            isNoon = h === 12 && !isAm;
+        return new Date(0).setUTCHours(isMidnight ? 0 : h + (isAm || isNoon ? 0 : 12), parseInt(t[2], 10));
     }
 
     makeDateStr(dateStr) {
@@ -245,13 +266,28 @@ class BookAppointment extends Component {
                             for (let i = 0; i < stylist.workingDays.length; i++) {
                                 const element = stylist.workingDays[i];
                                 const elementDay = stylist.workingDays[i].day;
-                                const openTime = stylist.workingDays[i].brStart;
-                                const closeTIme = stylist.workingDays[i].brEnd;
+                                // const openTime = stylist.workingDays[i].brStart;
+                                // const closeTIme = stylist.workingDays[i].brEnd;
+                                const openTime = moment(stylist.workingDays[i].brStart, ["h:mm A"]).format("hh:mm A");
+                                const closeTIme = moment(stylist.workingDays[i].brEnd, ["h:mm A"]).format("hh:mm A");
                                 if (day === elementDay) {
                                     if (element.working === true) {
                                         // console.log(stylist, "stylistBookAppointment")
                                         // soortedBarberList.push(stylist)
-                                        barberList.push(stylist)
+                                        // barberList.push(stylist)
+                                        let getTimeAmPm = this.formatAMPM(new Date);
+                                        var timeCorrectFormat = moment(getTimeAmPm, ["h:mm A"]).format("hh:mm A");
+                                        let OTime = this.getTimeMilliseconds(openTime);
+                                        let CTime = this.getTimeMilliseconds(closeTIme);
+                                        let currentTime = this.getTimeMilliseconds(timeCorrectFormat);
+                                        console.log(OTime, CTime, currentTime, openTime, closeTIme, "TimingCheck")
+                                        if (currentTime > OTime && currentTime < CTime) {
+                                            null
+                                        }
+                                        else {
+                                            barberList.push(stylist)
+
+                                        }
                                     }
                                 }
                             }

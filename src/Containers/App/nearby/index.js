@@ -62,23 +62,24 @@ class Nearby extends Component {
             }}>
                 <View style={{
                     marginTop: Platform.OS === 'ios' ? 22 : 10,
-                    height: Platform.OS === 'ios' ? 120 : 100,
+                    // height: Platform.OS === 'ios' ? 60 : 30,
                     width: "95%",
                     justifyContent: "center",
                     alignItems: "center",
                     // backgroundColor: "red"
                 }}>
 
-
-
-                    <View style={{ width: "100%", flexDirection: "row", justifyContent: "space-between", marginTop: Platform.OS === 'ios' ? 20 : 0, }}>
-                        <Text style={{ fontSize: fullName.length < 12 ? 16 : 12, fontWeight: "bold", textAlign: "left" }}>{fullName}</Text>
+                    <View style={{ width: "100%", flexDirection: "row", justifyContent: "flex-end", marginTop: Platform.OS === 'ios' ? 20 : 0, }}>
+                        {/* <Text style={{ fontSize: fullName.length < 12 ? 16 : 12, fontWeight: "bold", textAlign: "left" }}>{fullName}</Text> */}
                         {
                             (Platform.OS === 'android') ?
-                                <TouchableOpacity style={{
-                                    width: 50, alignItems: "flex-end", zIndex: 1,
-                                    // backgroundColor: "green"
-                                }} onPress={() => Actions.Filters()}>
+                                <TouchableOpacity
+                                    style={{
+                                        width: 50, zIndex: 1, justifyContent: "center", alignItems: "flex-end",
+                                        // backgroundColor: "green"
+                                    }}
+                                    onPress={() => Actions.Filters()}
+                                >
                                     <IconFontAwesome name="filter" size={25} style={{ color: "grey" }} />
                                 </TouchableOpacity> : null
                         }
@@ -95,8 +96,8 @@ class Nearby extends Component {
                             </TouchableOpacity> : null
                     }
 
-                    <View style={{ width: "105%", top: Platform.OS === 'ios' ? -35 : -25, justifyContent: "center", alignItems: "center", flex: 1, flexDirection: "row", }}>
-                        <View style={{ flex: 8, flexDirection: "row", justifyContent: "center", alignItems: "center", }}>
+                    {/* <View style={{ width: "105%", top: Platform.OS === 'ios' ? -35 : -25, justifyContent: "center", alignItems: "center", flex: 1, flexDirection: "row", }}> */}
+                    {/* <View style={{ flex: 8, flexDirection: "row", justifyContent: "center", alignItems: "center", }}>
                             <View style={{ flex: 1, justifyContent: "center", alignItems: "center", }}>
                                 <Image source={require('../../../../assets/Path27909.png')} resizeMode="contain"
                                     style={{ height: "32%", width: "32%", }}
@@ -105,9 +106,9 @@ class Nearby extends Component {
                             <View style={{ flex: 8 }}>
                                 <Text style={{ textAlign: "left" }}>My location</Text>
                             </View>
-                        </View>
+                        </View> */}
 
-                        {/* <View style={{ flex: 3, justifyContent: "center", alignItems: "center", flexDirection: "row", }}>
+                    {/* <View style={{ flex: 3, justifyContent: "center", alignItems: "center", flexDirection: "row", }}>
                             <TouchableOpacity
                                 style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", }}
                                 onPress={() => { Actions.Googlemapfullview({ draggable: true }) }}
@@ -116,7 +117,7 @@ class Nearby extends Component {
                                 <Text style={{ color: "#FD6958" }}>CHANGE</Text>
                             </TouchableOpacity>
                         </View> */}
-                    </View>
+                    {/* </View> */}
 
                     {/* <View style={{ flex: 1, flexDirection: "row", width: "100%", height: 40, borderRadius: 10, justifyContent: "center", alignItems: "center", backgroundColor: "#E8E6E7", }}>
                         <View style={{ width: "5%", borderColor: 'gray', backgroundColor: "#E8E6E7", justifyContent: "center", alignItems: "center", }}>

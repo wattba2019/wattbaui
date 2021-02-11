@@ -26,30 +26,30 @@ class ServiceListing extends Component {
         return More
     }
 
-    UNSAFE_componentWillMount() {
-        const { More } = this.props
-        let obj = {}
+    // UNSAFE_componentWillMount() {
+    //     const { More } = this.props
+    //     let obj = {}
 
-        for (let index = 0; index < More.length; index++) {
-            const element = More[index];
-            let local = obj[element.serviceName]
-            if (local) {
-                if (local.indexOf(element.userId) == -1) {
-                    local.push(element.userId)
-                }
-                // local.push(element.userId)
-            }
-            else {
-                local = [element.userId]
-            }
-            obj[element.serviceName] = local
-        }
+    //     for (let index = 0; index < More.length; index++) {
+    //         const element = More[index];
+    //         let local = obj[element.serviceName]
+    //         if (local) {
+    //             if (local.indexOf(element.userId) == -1) {
+    //                 local.push(element.userId)
+    //             }
+    //             // local.push(element.userId)
+    //         }
+    //         else {
+    //             local = [element.userId]
+    //         }
+    //         obj[element.serviceName] = local
+    //     }
 
-        console.log(obj, "setObject")
-        this.setState({
-            MoreAfterSort: obj
-        })
-    }
+    //     console.log(obj, "setObject")
+    //     this.setState({
+    //         MoreAfterSort: obj
+    //     })
+    // }
 
 
     getMultipleShopWithId(shopid) {
@@ -90,10 +90,13 @@ class ServiceListing extends Component {
     render() {
         const { headerTitle, More, } = this.props
         const { MoreAfterSort } = this.state
-        console.log(MoreAfterSort, More, "More_services")
+        console.log(More, "More_services")
         // let images = [womenHairstyling, surface, surface2, dye, makeup, mascara]
 
         return (
+            // <View>
+            //     <Text>Hello World</Text>
+            // </View>
             <View style={{
                 flex: 1,
                 width: "100%",
@@ -148,7 +151,7 @@ class ServiceListing extends Component {
                             } */}
 
 
-                            {
+                            {/* {
                                 (MoreAfterSort) ? (
                                     Object.keys(MoreAfterSort).map((key, index) => {
                                         console.log(key, MoreAfterSort[key], "MoreAfterSort")
@@ -157,12 +160,12 @@ class ServiceListing extends Component {
                                         // )
                                     })
                                 ) : null
-                            }
+                            } */}
 
                             {
                                 (More) ? (
                                     More.map((key, index) => {
-                                        console.log(key, 'keykeykey')
+                                        // console.log(key, 'keykeykey')
                                         return (
                                             <TouchableOpacity
                                                 key={index}
@@ -178,14 +181,14 @@ class ServiceListing extends Component {
                                                 </View>
                                                 <View style={{ flex: 7 }}>
                                                     <Text>{key.categoryName}</Text>
-                                                    <Text style={{ fontSize: 11, color: "grey" }}>{key.extraServices[0].serviceName}</Text>
+                                                    <Text style={{ fontSize: 11, color: "grey" }}>{key.extraServices[0] ? key.extraServices[0].serviceName : null}</Text>
                                                 </View>
-                                                <TouchableOpacity
+                                                {/* <TouchableOpacity
                                                     style={{ flex: 1 }}
-                                                    onPress={() => Actions.ServiceDetaild({ serviceDetails: key.categoryName, })}
+                                                    onPress={() => Actions.ServiceDetaild({ serviceDetails: key, })}
                                                 >
                                                     <Text style={{ fontSize: 11, color: "#FD6958" }}>View</Text>
-                                                </TouchableOpacity>
+                                                </TouchableOpacity> */}
                                             </TouchableOpacity>
                                         )
                                     })

@@ -42,7 +42,6 @@ class shop extends Component {
     }
 
     getMultipleShopWithId(shopid) {
-
         cloneData = {
             shopid: shopid
         }
@@ -61,7 +60,6 @@ class shop extends Component {
                 let shops = result.data.data
                 console.log(shops, "Fetch_multiple_shops_withID_inside_profile")
                 Actions.FavouritesShops({ shops: shops, headerTitle: "Favourites" })
-
             })
             .catch(err => {
                 let error = JSON.parse(JSON.stringify(err))

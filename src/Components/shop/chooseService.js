@@ -11,10 +11,7 @@ import RadioForm, { RadioButton, RadioButtonInput, RadioButtonLabel } from 'reac
 import Entypo from 'react-native-vector-icons/Entypo';
 import axios from 'axios';
 import { setShopServices, } from '../../Store/Action/action';
-
 import CheckBox from 'react-native-check-box'
-
-
 
 class ChooseService extends Component {
     constructor(props) {
@@ -30,6 +27,7 @@ class ChooseService extends Component {
 
     UNSAFE_componentWillMount() {
         let { shopServices, } = this.props
+        console.log(shopServices, "shopServices")
         this.setState({
             shopServices: shopServices.slice(0)
         })

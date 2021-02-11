@@ -1,7 +1,7 @@
 const INITIAL_STATE = {
   //API's URL
   bseUrl: "https://fathomless-citadel-43321.herokuapp.com",
-  // bseUrl: "http://192.168.10.55:3002",
+  // bseUrl: "http://192.168.10.11:3002",
   //user details
   businessType: "",
   userProfile: {},

@@ -19,7 +19,7 @@ class BasicInfo extends Component {
         return (
             <View>
                 <View style={{ paddingHorizontal: 25, paddingVertical: 10 }} >
-                    <Text style={{ marginTop: 20, fontWeight: "bold" }}>Working Hours</Text>
+                    {/* <Text style={{ marginTop: 20, fontWeight: "bold" }}>Working Hours</Text>
                     {
                         (workingHours) ? (
                             workingHours.map((key, index) => {
@@ -38,7 +38,7 @@ class BasicInfo extends Component {
                                 )
                             })
                         ) : null
-                    }
+                    } */}
                    
                     <View style={{ flex: 1, flexDirection: "row" }}>
                         <View style={{ flex: 6, marginTop: 20, }}>

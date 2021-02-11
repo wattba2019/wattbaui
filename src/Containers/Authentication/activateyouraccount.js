@@ -11,7 +11,6 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import { connect } from "react-redux";
 import { Actions } from 'react-native-router-flux';
 import firebase from 'react-native-firebase'
-import CountryPicker from 'react-native-country-picker-modal';
 import axios from 'axios';
 
 class ActivateAccount extends Component {
@@ -19,13 +18,13 @@ class ActivateAccount extends Component {
         super(props);
         this.state = {
             loader: false,
-
-            phoneNumber: "",
-            // dialCode: "1",
             dialCode: "44",
-            imgPath: require(`../../services/resources/flags/images/gb.png`),
+            phoneNumber: "",
             // phoneNumber: "3368990499",
             // phoneNumber: "7480824582"
+            // dialCode: "92",
+            // phoneNumber: "3450558623"
+            imgPath: require(`../../services/resources/flags/images/gb.png`),
         };
     }
 

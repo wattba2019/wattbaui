@@ -2,15 +2,13 @@ import React, { Component } from "react";
 import {
     View, Image, ActivityIndicator, StyleSheet,
     ImageBackground, StatusBar, TouchableOpacity,
-    Text, TextInput, ScrollView, Picker, Platform
+    Text, TextInput, Platform
 } from 'react-native';
 //icons import
 import AntDesign from 'react-native-vector-icons/AntDesign';
-
 import { connect } from "react-redux";
 import { Actions } from 'react-native-router-flux';
 import firebase from 'react-native-firebase'
-import CountryPicker from 'react-native-country-picker-modal';
 import axios from 'axios';
 
 class Veryfiyournumber extends Component {
@@ -20,9 +18,7 @@ class Veryfiyournumber extends Component {
             loader: false,
             phoneNumber: "",
             dialCode: "44",
-            // dialCode: "92",
             imgPath: require(`../../services/resources/flags/images/gb.png`),
-            // phoneNumber: "7480824582"
         };
     }
 
@@ -34,7 +30,6 @@ class Veryfiyournumber extends Component {
                 imgPath: this.props.imgPath
             })
         }
-
         if (this.props.route === "signup") {
             this.setState({
                 dialCode: this.props.dialCode,
@@ -58,15 +53,12 @@ class Veryfiyournumber extends Component {
         let { dialCode, phoneNumber, } = this.state
         let newNumber = "+" + dialCode + phoneNumber;
         let oldNumber = this.props.phoneNumberWithCode
-        console.log(newNumber, oldNumber, "PHONE_NUMBER")
-        this.setState({
-            loader: true
-        })
+        // console.log(newNumber, oldNumber, "PHONE_NUMBER")
+        this.setState({ loader: true })
         let cloneNumbers = {
             phoneNumber: oldNumber,
             newNumber
         }
-        console.log(cloneNumbers, "cloneNumbers")
         var options = {
             method: 'POST',
             url: `${this.props.bseUrl}/signup/phoneUpdate/`,
@@ -77,93 +69,52 @@ class Veryfiyournumber extends Component {
             },
             data: cloneNumbers
         };
-
         axios(options)
             .then((data) => {
-                console.log(data, "data")
                 firebase.auth().signInWithPhoneNumber(newNumber)
                     .then(confirmResult => {
                         this.setState({
                             loader: false
                         })
-                        console.log(confirmResult, "CONFIRMATION_RESULT")
+                        // console.log(confirmResult, "CONFIRMATION_RESULT")
                         Actions.Phoneverification({ confirmResult: confirmResult, email: this.props.email, newNumber: newNumber })
                     })
                     .catch(error => {
-                        this.setState({
-                            loader: false
-                        })
-                        console.log(error,'errorerror')
+                        this.setState({ loader: false })
+                        console.log(error, 'errorerror')
                         alert(error)
                     });
             }).catch((err) => {
                 console.log(err.response.data.message, "ERROR_ON_UPDATE_PHONE")
-                // console.log(err, "ERROR_ON_UPDATE_PHONE")
                 alert(err.response.data.message)
-                this.setState({
-                    loader: false
-                })
+                this.setState({ loader: false })
             })
-
     }
 
     render() {
         let { dialCode, phoneNumber, imgPath, loader } = this.state
         return (
             <View style={{ flex: 1, backgroundColor: "white" }}>
-
                 <StatusBar backgroundColor="white" barStyle="dark-content" />
-
                 {/* //header// */}
-
-                <View style={{
-                    flex: 0.8, flexDirection: "row", width: "100%", marginTop: Platform.OS === 'ios' ? 30 : 0
-                    // backgroundColor: "red"
-                }}>
-                    <TouchableOpacity
-                        style={{
-                            flex: 0.2,
-                            // backgroundColor: "orange"
-                        }}
-                        onPress={() => Actions.pop()}
-                    >
+                <View style={{ flex: 0.8, flexDirection: "row", width: "100%", marginTop: Platform.OS === 'ios' ? 30 : 0 }}>
+                    <TouchableOpacity style={{ flex: 0.2, }} onPress={() => Actions.Signin()}>
                         <View style={{ flex: 2, justifyContent: "center", alignItems: "center", }}>
                             <Image source={require('../../../assets/ArrowLeft.png')}
                                 style={{ height: "40%", width: "40%", }}
                             />
                         </View>
                     </TouchableOpacity>
-
                 </View>
-
                 {/* //body// */}
-
-                <View style={{
-                    flex: 8,
-                    width: "100%",
-                    // justifyContent: "center",
-                    alignItems: "center",
-                    // backgroundColor: "red",
-                }}>
-                    {/* <Text style={{ fontSize: 30, fontWeight: "bold", textAlign: "center", marginTop: 50 }}>Verify your {"\n"} phone number</Text> */}
+                <View style={{ flex: 8, width: "100%", alignItems: "center", }}>
                     <Text style={{ fontSize: 30, fontWeight: "bold", textAlign: "center", marginTop: 50 }}>Phone Verification </Text>
-                    {/* <Text style={{ marginTop: 40, textAlign: "center" }}>We have sent you an SMS with a code to{"\n"} number {"+" + dialCode + " " + phoneNumber} </Text> */}
                     <Text style={{ marginTop: 40, textAlign: "center" }}>To verify your phone, an OTP code will be{"\n"} send to your  number {"+" + dialCode + " " + phoneNumber} via SMS </Text>
-
                     {/* main container */}
+                    <View style={{ flexDirection: "row", width: "85%", height: 50, marginTop: 40, borderRadius: 50, backgroundColor: "#E8E6E7", }}>
 
-                    <View
-                        style={{
-                            flexDirection: "row", width: "85%", height: 50, marginTop: 40, borderRadius: 50,
-                            backgroundColor: "#E8E6E7",
-                            // backgroundColor: "red",
-                        }}
-                    >
                         {/* picker container */}
-
-                        <View style={{ borderRightColor: "grey", borderRightWidth: 0.5, flex: 2.5, flexDirection: "row", }}
-                        // onPress={() => { this.changePhoneCode() }}
-                        >
+                        <View style={{ borderRightColor: "grey", borderRightWidth: 0.5, flex: 2.5, flexDirection: "row", }}>
                             <View style={{ flex: 1.5, justifyContent: "center", alignItems: "center", }}>
                                 <View style={{ marginLeft: 30 }}>
                                     <Image
@@ -180,31 +131,22 @@ class Veryfiyournumber extends Component {
                                 </View>
                             </View>
                         </View>
-
                         {/* input phone container */}
-
                         <View style={{ backgroundColor: "yellow", flex: 2.8, }}>
-                            <View
-                                style={{ borderColor: 'gray', backgroundColor: "#E8E6E7", justifyContent: "center", alignItems: "center" }}
-                            >
+                            <View style={{ borderColor: 'gray', backgroundColor: "#E8E6E7", justifyContent: "center", alignItems: "center" }}>
                                 <TextInput
                                     keyboardType={"numeric"}
-                                    style={{ height: 50, width: "90%",color:"black" }}
+                                    style={{ height: 50, width: "90%", color: "black" }}
                                     onChangeText={(phoneNumber) => this.setState({ phoneNumber })}
                                     value={phoneNumber}
                                     placeholder={"Number"}
                                     placeholderTextColor="grey"
-
                                 />
                             </View>
                         </View>
-
                         {/* cancele container */}
-
                         <TouchableOpacity
-                            onPress={() => {
-                                this.clearNumber()
-                            }}
+                            onPress={() => { this.clearNumber() }}
                             style={{ flex: 0.8, width: "100%", justifyContent: "center", alignItems: "center", }}>
                             <Image source={require('../../../assets/Shape.png')} resizeMode="contain"
                                 style={{ height: "40%", width: "40%", }}
@@ -213,13 +155,8 @@ class Veryfiyournumber extends Component {
                     </View>
                     <View style={styles.container}>
                     </View>
-
-                    <View
-                        style={{ width: "85%", height: 50, marginTop: 60, }}
-                    >
-                        <TouchableOpacity
-                            onPress={() => this.sendCode()}
-                        >
+                    <View style={{ width: "85%", height: 50, marginTop: 60, }}>
+                        <TouchableOpacity onPress={() => this.sendCode()}>
                             <ImageBackground source={require('../../../assets/buttonBackground.png')} resizeMode="contain"
                                 style={{ height: "100%", width: "100%", justifyContent: "center", }}
                             >
@@ -233,7 +170,6 @@ class Veryfiyournumber extends Component {
                     </View>
                 </View>
             </View>
-
         );
     }
 }
@@ -253,8 +189,6 @@ const styles = StyleSheet.create({
     contentContainer: {
         paddingBottom: 500,
         backgroundColor: "white",
-
     },
     input: { justifyContent: 'center', alignItems: 'center', width: '90%' },
-
 });

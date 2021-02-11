@@ -1,9 +1,12 @@
 import React, { Component } from "react";
-import { Platform, View, Image, ActivityIndicator, StyleSheet, BackHandler, Linking, ImageBackground, StatusBar, TouchableOpacity, Text, TextInput, ScrollView } from 'react-native';
+import {
+    Platform, View, Image, ActivityIndicator, StyleSheet,
+    Linking, ImageBackground, StatusBar,
+    TouchableOpacity, Text, TextInput, ScrollView
+} from 'react-native';
 import { connect } from "react-redux";
 import { Actions } from 'react-native-router-flux';
 import axios from 'axios';
-import CountryPicker from 'react-native-country-picker-modal';
 //icons import
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -14,16 +17,15 @@ class Signup extends Component {
         this.state = {
             loader: false,
             showPassword: true,
+            // dialCode: "92",
             // fullName: "Abdullah Shah",
-            // email: "abddullahshah@gmail.com",
+            // email: "abddullahshah1@gmail.com",
             // password: "12345678",
             // phoneNumber: "3368990497", //ufone
             // phoneNumber: "3450558623", //bug
             // phoneNumber: "3452153709", //white list
             // phoneNumber: "3040200538", //zeshan
-
             dialCode: "44",
-            // dialCode: "92",
             imgPath: require(`../../services/resources/flags/images/gb.png`),
             fullName: "",
             email: "",
@@ -31,10 +33,6 @@ class Signup extends Component {
             phoneNumber: "",
         };
     }
-
-    // componentWillUnmount() {
-    //     BackHandler.removeEventListener('hardwareBackPress', BackHandler.exitApp());
-    // }
 
     UNSAFE_componentWillMount() {
         const { fullName, email, phoneNumber, password, selectedCountry, imgPath } = this.props
@@ -53,7 +51,6 @@ class Signup extends Component {
         }
 
     }
-
 
     changePhoneCode() {
         const { fullName, email, phoneNumber, password, } = this.state
@@ -146,16 +143,9 @@ class Signup extends Component {
                     </View>
                 </View>
                 {/* //body// */}
-                <View style={{
-                    // flex: 8,
-                    width: "100%",
-                    justifyContent: "center",
-                    alignItems: "center",
-                }}>
+                <View style={{ width: "100%", justifyContent: "center", alignItems: "center", }}>
                     <Text style={{ fontSize: 30, fontWeight: "bold" }}>Create an account</Text>
-                    <View
-                        style={{ width: "85%", marginTop: 40, borderColor: 'gray', backgroundColor: "#E8E6E7", borderRadius: 25, justifyContent: "center", alignItems: "center" }}
-                    >
+                    <View style={{ width: "85%", marginTop: 40, borderColor: 'gray', backgroundColor: "#E8E6E7", borderRadius: 25, justifyContent: "center", alignItems: "center" }}>
                         <TextInput
                             style={{ height: 50, width: "90%", color: "black" }}
                             onChangeText={(fullName) => this.setState({ fullName })}
@@ -165,9 +155,7 @@ class Signup extends Component {
                             returnKeyType='send'
                         />
                     </View>
-                    <View
-                        style={{ width: "85%", marginTop: 20, borderColor: 'gray', backgroundColor: "#E8E6E7", borderRadius: 25, justifyContent: "center", alignItems: "center" }}
-                    >
+                    <View style={{ width: "85%", marginTop: 20, borderColor: 'gray', backgroundColor: "#E8E6E7", borderRadius: 25, justifyContent: "center", alignItems: "center" }}>
                         <TextInput
                             style={{ height: 50, width: "90%", color: "black" }}
                             onChangeText={(email) => this.setState({ email })}
@@ -177,29 +165,10 @@ class Signup extends Component {
                             returnKeyType='send'
                         />
                     </View>
-
-                    {/* <View
-                        style={{ width: "85%", marginTop: 20, borderColor: 'gray', backgroundColor: "#E8E6E7", borderRadius: 25, justifyContent: "center", alignItems: "center" }}
-                    >
-                        <TextInput
-                            keyboardType={"numeric"}
-                            style={{ height: 50, width: "90%", }}
-                            onChangeText={(phoneNumber) => this.setState({ phoneNumber })}
-                            value={phoneNumber}
-                            // placeholder={"Phone Number"}
-                            placeholder={"Phone +447480824582"}
-                        />
-                    </View> */}
-
-                    <View
-                        style={{ flex: 1, flexDirection: "row", width: "85%", height: 50, marginTop: 25, backgroundColor: "#E8E6E7", borderRadius: 50 }}
-                    >
+                    <View style={{ flex: 1, flexDirection: "row", width: "85%", height: 50, marginTop: 25, backgroundColor: "#E8E6E7", borderRadius: 50 }}>
                         {/* picker container */}
-
                         <View style={{ borderRightColor: "grey", borderRightWidth: 0.5, flex: 2.2, flexDirection: "row", }}>
-                            <View style={{ borderRightColor: "grey", borderRightWidth: 0.5, flex: 2.5, flexDirection: "row", }}
-                            // onPress={() => { this.changePhoneCode() }}
-                            >
+                            <View style={{ borderRightColor: "grey", borderRightWidth: 0.5, flex: 2.5, flexDirection: "row", }}>
                                 <View style={{ flex: 1.5, justifyContent: "center", alignItems: "center", }}>
                                     <View style={{ marginLeft: 30 }}>
                                         <Image
@@ -217,13 +186,9 @@ class Signup extends Component {
                                 </View>
                             </View>
                         </View>
-
                         {/* input phone container */}
-
                         <View style={{ backgroundColor: "yellow", flex: 3, }}>
-                            <View
-                                style={{ borderColor: 'gray', backgroundColor: "#E8E6E7", justifyContent: "center", alignItems: "center" }}
-                            >
+                            <View style={{ borderColor: 'gray', backgroundColor: "#E8E6E7", justifyContent: "center", alignItems: "center" }}>
                                 <TextInput
                                     keyboardType={"numeric"}
                                     style={{ height: 50, width: "90%", color: "black" }}
@@ -235,9 +200,7 @@ class Signup extends Component {
                                 />
                             </View>
                         </View>
-
                         {/* cancele container */}
-
                         <TouchableOpacity
                             onPress={() => {
                                 this.clearNumber()
@@ -274,7 +237,6 @@ class Signup extends Component {
                             style={{ marginLeft: 10, color: '#909090', fontWeight: 'bold', fontSize: 18 }}
                         />
                     </View>
-
                     <View style={{ width: "85%", height: 50, marginTop: 50, }}>
                         <TouchableOpacity
                             onPress={() => this.signup()} >
@@ -289,18 +251,11 @@ class Signup extends Component {
                             </ImageBackground>
                         </TouchableOpacity>
                     </View>
-                    <TouchableOpacity style={{ marginTop: "15%" }}
-                        onPress={() => Linking.openURL("https://www.wattba.app/TAndC")}
-                    >
+                    <TouchableOpacity style={{ marginTop: "10%", height: 60, }}
+                        onPress={() => Linking.openURL("https://www.wattba.app/TAndC")}>
                         <Text style={{ color: "black", textAlign: "center", top: 20 }}>By proceeding, I accept the </Text>
                         <Text style={{ color: "black", textAlign: "center", top: 20, fontWeight: "bold" }}>Terms & Conditions of WattBa </Text>
                     </TouchableOpacity>
-                    {/* <TouchableOpacity
-                        style={{ flexDirection: "row", marginTop: 50, }}
-                        onPress={() => Actions.Signin()} >
-                        <Text style={{ textAlign: "center", fontSize: 15, color: "#B7B7C0" }}>Already have an account? </Text>
-                        <Text style={{ textAlign: "center", fontSize: 15, color: "#F28602" }}>Sign in</Text>
-                    </TouchableOpacity> */}
                 </View>
             </ScrollView>
         );
@@ -317,13 +272,9 @@ function mapDispatchToProps(dispatch) {
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Signup);
 
-
 const styles = StyleSheet.create({
     contentContainer: {
-        // flex: 1,
         paddingBottom: 150,
         backgroundColor: "white",
-
     },
-
 });

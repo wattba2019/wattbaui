@@ -56,7 +56,7 @@ class AppContainer extends Component {
                 {/* //body// */}
                 {
                     (this.state.rout === "Nearby") ? (
-                        <View style={{ width: "100%", position: "absolute", zIndex: 1, marginTop: Platform.OS === 'ios' ? "26%" : "16%", backgroundColor: "white" }}>
+                        <View style={{ width: "100%", position: "absolute", zIndex: 1, marginTop: Platform.OS === 'ios' ? "13%" : "8%", backgroundColor: "white" }}>
                             <View style={{ width: "95%", marginHorizontal: "2.5%" }}>
                                 <GooglePlacesAutocomplete
                                     placeholder='Enter Location'

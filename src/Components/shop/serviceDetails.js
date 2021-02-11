@@ -18,6 +18,7 @@ class ServiceDetaild extends Component {
 
     render() {
         let { serviceDetails, busy, shop } = this.props
+        console.log(serviceDetails, "Service_details")
         return (
             <View style={{
                 flex: 1,
@@ -69,8 +70,9 @@ class ServiceDetaild extends Component {
                                 </View>
                             ) : null
                         }
-                        {
-                            (serviceDetails) ? (serviceDetails.extraServices.map((key, index) => {
+
+                        {/* {
+                            (serviceDetails.extraServices) ? (serviceDetails.extraServices.map((key, index) => {
                                 // console.log(key, index, "INSIDE_MAP")
                                 return (
                                     <View key={index} style={{
@@ -82,9 +84,9 @@ class ServiceDetaild extends Component {
                                 )
                             })
                             ) : <Text style={{ color: "#FD6958", fontSize: 16, fontWeight: "bold" }}>There is no data</Text>
-                        }
+                        } */}
 
-                        {
+                        {/* {
                             busy ? <View
                                 style={{ width: "85%", height: 50, marginTop: 30, }}
                             >
@@ -98,7 +100,20 @@ class ServiceDetaild extends Component {
                                     </ImageBackground>
                                 </TouchableOpacity>
                             </View> : null
-                        }
+                        } */}
+
+                        <View style={{ width: "85%", height: 50, marginTop: 30, }}>
+                            <TouchableOpacity
+                                onPress={() => Actions.ChooseService({ serviceDetails: serviceDetails, shop })}
+                            >
+                                <ImageBackground source={require('../../../assets/buttonBackground.png')} resizeMode="contain"
+                                    style={{ height: "100%", width: "100%", justifyContent: "center", }}
+                                >
+                                    <Text style={{ textAlign: "center", fontSize: 15, margin: 12, color: "white" }}>Book</Text>
+                                </ImageBackground>
+                            </TouchableOpacity>
+                        </View>
+
 
                     </View>
                 </ScrollView>
