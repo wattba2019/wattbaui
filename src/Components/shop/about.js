@@ -25,7 +25,7 @@ class About extends Component {
         let { shop, workingHours, gallery, busy, currentLocation } = this.props
         let { readmore } = this.state
 
-        console.log(busy, "workingHoursABuout")
+        console.log(workingHours, "workingHoursABuout")
 
 
         return (
@@ -52,15 +52,21 @@ class About extends Component {
                             workingHours.map((key, index) => {
                                 return (
                                     <View style={{ flexDirection: "row", flex: 1 }} key={index}>
-                                        <View style={{ flex: 1 }}>
-                                            <Text style={{ color: "green" }}>{'\u2B24'} <Text style={{ color: "black" }}> {key.day}</Text></Text>
-                                        </View>
-                                        <View style={{ flex: 0.5 }}>
-                                            <Text>{key.openTimings}</Text>
-                                        </View>
-                                        <View style={{ flex: 0.5 }}>
-                                            <Text>{key.closingTime}</Text>
-                                        </View>
+                                        {
+                                            (key.open) ? (
+                                                <>
+                                                    <View style={{ flex: 1 }}>
+                                                        <Text style={{ color: "green" }}>{'\u2B24'} <Text style={{ color: "black" }}> {key.day}</Text></Text>
+                                                    </View>
+                                                    <View style={{ flex: 0.5 }}>
+                                                        <Text>{key.openTimings}</Text>
+                                                    </View>
+                                                    <View style={{ flex: 0.5 }}>
+                                                        <Text>{key.closingTime}</Text>
+                                                    </View>
+                                                </>
+                                            ) : null
+                                        }
                                     </View>
                                 )
                             })

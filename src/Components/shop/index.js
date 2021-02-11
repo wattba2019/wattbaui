@@ -160,10 +160,7 @@ class shop extends Component {
 
     getStylists() {
         let urlm = `${this.props.bseUrl}/stylist/${this.props.shop._id}`
-        axios({
-            method: 'get',
-            url: urlm,
-        })
+        axios({ method: 'get', url: urlm, })
             .then(result => {
                 let data = result.data.data
                 // console.log(data, "DATA_FROM_API_STYLISTS")
@@ -211,7 +208,6 @@ class shop extends Component {
     getTimeAccordingToRequiredFormat(start, end) {
         var startTime = moment(start, 'HH:mm a');
         var endTime = moment(end, 'HH:mm a');
-
         var timeStops = [];
         var startFormat = new moment(startTime).format('HH:mm a')
         startFormat = startFormat.substring(0, startFormat.length - 3)
@@ -457,7 +453,7 @@ class shop extends Component {
                                 (favroite) ?
                                     (
                                         <Entypo name="heart" style={{ color: "#FD6958", fontWeight: 'bold', fontSize: 28 }} />
-                                        )
+                                    )
                                     :
                                     <Entypo name="heart-outlined" style={{ color: "#FD6958", fontWeight: 'bold', fontSize: 28 }} />
 
