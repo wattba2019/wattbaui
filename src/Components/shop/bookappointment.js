@@ -73,19 +73,19 @@ class BookAppointment extends Component {
                                 const closeTIme = moment(stylist.workingDays[i].brEnd, ["h:mm A"]).format("hh:mm A");
                                 if (day === elementDay) {
                                     if (element.working === true) {
-                                        let getTimeAmPm = this.formatAMPM(new Date);
-                                        var timeCorrectFormat = moment(getTimeAmPm, ["h:mm A"]).format("hh:mm A");
-                                        let OTime = this.getTimeMilliseconds(openTime);
-                                        let CTime = this.getTimeMilliseconds(closeTIme);
-                                        let currentTime = this.getTimeMilliseconds(timeCorrectFormat);
-                                        console.log(OTime, CTime, currentTime, openTime, closeTIme, "TimingCheck")
-                                        if (currentTime > OTime && currentTime < CTime) {
-                                            null
-                                        }
-                                        else {
-                                            soortedBarberList.push(stylist)
-
-                                        }
+                                        // let getTimeAmPm = this.formatAMPM(new Date);
+                                        // var timeCorrectFormat = moment(getTimeAmPm, ["h:mm A"]).format("hh:mm A");
+                                        // let OTime = this.getTimeMilliseconds(openTime);
+                                        // let CTime = this.getTimeMilliseconds(closeTIme);
+                                        // let currentTime = this.getTimeMilliseconds(timeCorrectFormat);
+                                        // console.log(OTime, CTime, currentTime, openTime, closeTIme, "TimingCheck")
+                                        // if (currentTime > OTime && currentTime < CTime) {
+                                        //     null
+                                        // }
+                                        // else {
+                                        //     soortedBarberList.push(stylist)
+                                        // }
+                                        soortedBarberList.push(stylist)
                                     }
                                 }
                             }
@@ -221,7 +221,7 @@ class BookAppointment extends Component {
         return timeStops;
     }
 
-    getFreeBarber() {
+    getFreeBarber(slotTIme) {
         var { selectedSlotTime, date, stylists } = this.state
         var { renderSelectedService } = this.props
         var shopId = this.props.shopId
@@ -275,18 +275,19 @@ class BookAppointment extends Component {
                                         // console.log(stylist, "stylistBookAppointment")
                                         // soortedBarberList.push(stylist)
                                         // barberList.push(stylist)
-                                        let getTimeAmPm = this.formatAMPM(new Date);
-                                        var timeCorrectFormat = moment(getTimeAmPm, ["h:mm A"]).format("hh:mm A");
+                                        // let getTimeAmPm = this.formatAMPM(new Date);
+                                        // var timeCorrectFormat = moment(getTimeAmPm, ["h:mm A"]).format("hh:mm A");
+                                        var timeCorrectFormat = moment(selectedSlotTime, ["h:mm A"]).format("hh:mm A");
                                         let OTime = this.getTimeMilliseconds(openTime);
                                         let CTime = this.getTimeMilliseconds(closeTIme);
-                                        let currentTime = this.getTimeMilliseconds(timeCorrectFormat);
-                                        console.log(OTime, CTime, currentTime, openTime, closeTIme, "TimingCheck")
-                                        if (currentTime > OTime && currentTime < CTime) {
+                                        // let currentTime = this.getTimeMilliseconds(timeCorrectFormat);
+                                        let selectedSlotMilisec = this.getTimeMilliseconds(timeCorrectFormat);
+                                        // console.log(OTime, CTime, selectedSlotMilisec, openTime, closeTIme, timeCorrectFormat, "TimingCheck")
+                                        if (selectedSlotMilisec >= OTime && selectedSlotMilisec <= CTime) {
                                             null
                                         }
                                         else {
                                             barberList.push(stylist)
-
                                         }
                                     }
                                 }
@@ -344,10 +345,11 @@ class BookAppointment extends Component {
     }
 
     slotSelect(key, index) {
+        console.log(key, "SLOT_TIME")
         this.setState({
             selectedSlotTime: key
         }, () => {
-            this.getFreeBarber()
+            this.getFreeBarber(key)
         })
     }
 
