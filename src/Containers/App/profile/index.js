@@ -76,15 +76,15 @@ class Profile extends Component {
         else {
             Alert.alert("There is no data")
         }
-
     }
 
-    logout() { this.clearAssync() }
+    // logout() { Actions.Signin() }
 
+    logout() { this.clearAssync() }
     clearAssync = async () => {
         try {
             await AsyncStorage.clear();
-            Actions.Signin()
+            Actions.Signin({ logoutApp: true })
         } catch (error) {
             // Error retrieving data
         }

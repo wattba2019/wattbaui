@@ -1,10 +1,15 @@
 import React, { Component } from "react";
-import { View, Image, ActivityIndicator, ImageBackground, StatusBar, TouchableOpacity, Text, TextInput, ScrollView, BackHandler, AsyncStorage } from 'react-native';
+import {
+    View, Image, ActivityIndicator, ImageBackground, StatusBar,
+    TouchableOpacity, Text, TextInput, ScrollView,
+    BackHandler, AsyncStorage, PermissionsAndroid
+} from 'react-native';
 import { connect } from "react-redux";
 import { Actions } from 'react-native-router-flux';
 import axios from 'axios';
-import { setUserCredentials } from "./../../Store/Action/action";
+import { setUserCredentials, setUserCurrentLocationWithUserCredentials } from "./../../Store/Action/action";
 import Entypo from 'react-native-vector-icons/Entypo';
+import Geolocation from 'react-native-geolocation-service';
 
 class Signin extends Component {
     constructor(props) {
@@ -13,61 +18,119 @@ class Signin extends Component {
             loader: false,
             activateAccount: false,
             showPassword: true,
-            // email: "abddullahshah@gmail.com",
-            // password: "12345678",
-            email: "",
-            password: "",
+            email: "abddullahshah@gmail.com",
+            password: "12345678",
+            // email: "",
+            // password: "",
         };
+    }
+
+    UNSAFE_componentWillMount() {
+        console.log(this.props.logoutApp, "Logout_App")
     }
 
     signin = () => {
         let { email, password, } = this.state;
-        this.setState({ loader: !this.state.loader })
-        let cloneSignUpData = {
-            email,
-            password
+        let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+        if (reg.test(email) === false) {
+            alert("invalid email type")
         }
-        var options = {
-            method: 'POST',
-            url: `${this.props.bseUrl}/signin`,
-            headers:
-            {
-                'cache-control': 'no-cache',
-                "Allow-Cross-Origin": '*',
-            },
-            data: cloneSignUpData
-        };
-        axios(options)
-            .then((data) => {
-                console.log(data.data, "USER_LOGIN_SUCCESSFULLY")
-                this.setState({
-                    loader: !this.state.loader
-                })
-                this._storeData(data.data)
-                this.props.setUserCredentials(data.data)
-            }).catch((err) => {
-                console.log(err.response.data.message, "ERROR_ON_SIGN_IN")
-                alert(err.response.data.message)
-                this.setState({
-                    loader: !this.state.loader,
-                })
-                if (err.response.data.message != "Invalid password") {
+        else {
+            this.setState({ loader: !this.state.loader })
+            let cloneSignUpData = {
+                email: email.toLowerCase(),
+                password
+            }
+            var options = {
+                method: 'POST',
+                url: `${this.props.bseUrl}/signin`,
+                headers:
+                {
+                    'cache-control': 'no-cache',
+                    "Allow-Cross-Origin": '*',
+                },
+                data: cloneSignUpData
+            };
+            axios(options)
+                .then((data) => {
+                    console.log(data.data, "USER_LOGIN_SUCCESSFULLY")
                     this.setState({
-                        activateAccount: true
-                    }, () => {
-                        setTimeout(() => {
-                            this.setState({
-                                activateAccount: false
-                            })
-                        }, 10000)
+                        loader: !this.state.loader
                     })
+                    this._storeData(data.data)
+                    if (this.props.logoutApp) {
+                        this.allowLocation(data.data)
+                        this._storeDataLocation()
+                    }
+                    else {
+                        this.props.setUserCredentials(data.data)
+                    }
+                }).catch((err) => {
+                    console.log(err.response.data.message, "ERROR_ON_SIGN_IN")
+                    alert(err.response.data.message)
+                    this.setState({
+                        loader: !this.state.loader,
+                    })
+                    if (err.response.data.message != "Invalid password") {
+                        this.setState({
+                            activateAccount: true
+                        }, () => {
+                            setTimeout(() => {
+                                this.setState({
+                                    activateAccount: false
+                                })
+                            }, 10000)
+                        })
+                    }
+                })
+        }
+    }
+
+    async requestPermissions() {
+        if (Platform.OS === 'ios') {
+            Geolocation.requestAuthorization('whenInUse');
+        }
+        if (Platform.OS === 'android') {
+            await PermissionsAndroid.request(
+                PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+            );
+        }
+    }
+
+    allowLocation = (userProfile) => {
+        this.requestPermissions()
+        // Instead of navigator.geolocation, just use Geolocation.
+        Geolocation.getCurrentPosition(
+            (position) => {
+                if (position) {
+                    console.log(position, "USER_CURRENT_LOCATION_AllowAcces")
+                    this.props.setUserCurrentLocationWithUserCredentials(position, userProfile)
                 }
-            })
+            },
+            (error) => {
+                // See error code charts below.
+                console.log(error.code, error.message, "ERROR_ON_GETTING_YOUR_LOCATION_AllowAcces");
+                this.setState({
+                    loader: false,
+                    err: error.message
+                })
+            },
+            { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000, }
+        );
     }
 
     _storeData = async (data) => {
         try {
             await AsyncStorage.setItem('userProfile', JSON.stringify(data));
+        } catch (error) {
+            // Error saving data
+        }
+    };
+
+    _storeDataLocation = async (data) => {
+        console.log("Assync", data)
+        try {
+            await AsyncStorage.setItem('locationAllow', JSON.stringify(true));
         } catch (error) {
             // Error saving data
         }
@@ -188,6 +251,9 @@ function mapDispatchToProps(dispatch) {
     return ({
         setUserCredentials: (user) => {
             dispatch(setUserCredentials(user));
+        },
+        setUserCurrentLocationWithUserCredentials: (position, userProfile) => {
+            dispatch(setUserCurrentLocationWithUserCredentials(position, userProfile));
         },
     })
 }

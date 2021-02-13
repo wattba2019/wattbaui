@@ -19,9 +19,10 @@ class Signup extends Component {
             showPassword: true,
             // dialCode: "92",
             // fullName: "Abdullah Shah",
-            // email: "abddullahshah1@gmail.com",
+            // email: "Abddullahshah1@gmail.com",
             // password: "12345678",
             // phoneNumber: "3368990497", //ufone
+            // phoneNumber: "3368990498", //ufone
             // phoneNumber: "3450558623", //bug
             // phoneNumber: "3452153709", //white list
             // phoneNumber: "3040200538", //zeshan
@@ -81,7 +82,7 @@ class Signup extends Component {
                     })
                     let cloneSignUpData = {
                         fullName,
-                        email,
+                        email: email.toLowerCase(),
                         phoneNumber: phoneNumberWithCode,
                         password,
                         createdAt: Date.now(),
