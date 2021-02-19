@@ -29,13 +29,14 @@ class SplashScreen extends Component {
         })
       }
       else {
-        setInterval(() => {
-          if (this.state.percent < 100) {
-            this.setState({
-              percent: this.state.percent + 2
-            })
-          }
-        }, 10);
+        this._retrieveData()
+        // setInterval(() => {
+        //   if (this.state.percent < 100) {
+        //     this.setState({
+        //       percent: this.state.percent + 2
+        //     })
+        //   }
+        // }, 10);
       }
     });
   }
@@ -47,6 +48,7 @@ class SplashScreen extends Component {
         // We have data!!
         let userProfile = JSON.parse(value)
         let locationAllow = await this._checkLocationAllow()
+        console.log(locationAllow, userProfile, "CONSOLE_CHECK")
         if (locationAllow) {
           this.allowLocation(userProfile)
         }
@@ -76,7 +78,6 @@ class SplashScreen extends Component {
     }
   };
 
-
   async requestPermissions() {
     if (Platform.OS === 'ios') {
       Geolocation.requestAuthorization('whenInUse');
@@ -101,6 +102,9 @@ class SplashScreen extends Component {
       (error) => {
         // See error code charts below.
         console.log(error.code, error.message, "ERROR_ON_GETTING_YOUR_LOCATION_AllowAcces");
+        if (error.code === 5) {
+          this.props.setUserCurrentLocationWithUserCredentials(null, userProfile)
+        }
         this.setState({
           loader: false,
           err: error.message
@@ -117,9 +121,9 @@ class SplashScreen extends Component {
   }
 
   render() {
-    if (this.state.percent === 100) {
-      this._retrieveData()
-    }
+    // if (this.state.percent === 100) {
+    //   this._retrieveData()
+    // }
     return (
       <ImageBackground source={require('../../../assets/background.png')} style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <StatusBar backgroundColor="#F86078" barStyle="dark-content" />
@@ -140,13 +144,21 @@ class SplashScreen extends Component {
             ) :
               <Text style={{ color: "white", fontWeight: "bold" }}>Loading...</Text>
           }
+          {
+            (this.state.err) ? (
+              <Text style={{ color: "white", fontWeight: "bold" }}>{this.state.err}</Text>
+            ) :
+              null
+          }
         </View>
       </ImageBackground>
     );
   }
 }
+
 let mapStateToProps = state => {
   return {
+    currentLocation: state.root.currentLocation,
   };
 };
 function mapDispatchToProps(dispatch) {

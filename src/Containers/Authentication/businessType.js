@@ -84,6 +84,7 @@ class BusinessType extends Component {
 
 let mapStateToProps = state => {
     return {
+        currentLocation: state.root.currentLocation,
     };
 };
 function mapDispatchToProps(dispatch) {

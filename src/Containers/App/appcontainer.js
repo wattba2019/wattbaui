@@ -49,7 +49,6 @@ class AppContainer extends Component {
     // }
 
     render() {
-        console.log(this.props.businessType, "Business_Type")
         return (
             <View style={{ flex: 1, }}>
                 <StatusBar backgroundColor="white" barStyle="dark-content" />

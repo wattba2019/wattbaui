@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
-import {
-    View, Text, StyleSheet, TouchableOpacity,
-    ScrollView, Image, ImageBackground
-} from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView, Image, ImageBackground } from 'react-native';
 import { connect } from "react-redux";
 import Entypo from 'react-native-vector-icons/Entypo';
 import { Actions } from 'react-native-router-flux';
@@ -24,10 +21,6 @@ class About extends Component {
     render() {
         let { shop, workingHours, gallery, busy, currentLocation } = this.props
         let { readmore } = this.state
-
-        console.log(workingHours, "workingHoursABuout")
-
-
         return (
             <View>
                 <View style={{ paddingHorizontal: 25, paddingVertical: 10, }} >
