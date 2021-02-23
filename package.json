@@ -25,6 +25,7 @@
     "react-native-google-maps-directions": "^2.1.1",
     "react-native-google-places-autocomplete": "^1.6.0",
     "react-native-image-slider": "^2.0.3",
+    "react-native-image-zoom-viewer": "^3.0.1",
     "react-native-infinite-scroll": "^1.0.6",
     "react-native-infinite-scrolling": "^2.0.0",
     "react-native-maps": "0.26.1",

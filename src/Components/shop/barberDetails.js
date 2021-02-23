@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import {
-    View, Image, ActivityIndicator, StyleSheet,
+    View, Image, ActivityIndicator, StyleSheet, Modal,
     ImageBackground, StatusBar, TouchableOpacity,
     Text, TextInput, ScrollView, Platform,
 } from 'react-native';
@@ -11,13 +11,14 @@ import { Actions } from 'react-native-router-flux';
 import BasicInfo from '../shop/basicInfo';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Gallery from '../shop/gallery';
-
+import ImageViewer from 'react-native-image-zoom-viewer';
 
 class BarberDetails extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            activeColor: "basicinfo"
+            activeColor: "basicinfo",
+            fullImage: false
         };
     }
 
@@ -36,10 +37,8 @@ class BarberDetails extends Component {
     }
 
     render() {
-        const { activeColor } = this.state
+        const { activeColor, fullImage } = this.state
         const { barberDetails, shop, workingHours } = this.props
-
-        console.log(barberDetails.galleryImages, shop, "barberDetails")
 
         return (
             <View style={{
@@ -96,11 +95,43 @@ class BarberDetails extends Component {
                                     /> */}
                                     {
                                         (barberDetails.coverImage != null) ? (
-                                            <Image source={{ uri: barberDetails.coverImage }} resizeMode="cover"
-                                                style={{ width: "100%", height: "100%", }} />
-                                        ) : <Image source={require('../../../assets/nophoto.jpg')} resizeMode="cover"
-                                            style={{ width: "100%", height: "100%", }} />
+                                            <TouchableOpacity style={{ width: "100%", height: "100%", }} onPress={() => {
+                                                this.setState({
+                                                    fullImage: !fullImage
+                                                })
+                                            }}>
+                                                <Image source={{ uri: barberDetails.coverImage }} resizeMode="cover"
+                                                    style={{ width: "100%", height: "100%", }} />
+                                            </TouchableOpacity>
+                                        ) :
+                                            <TouchableOpacity style={{ width: "100%", height: "100%", }} onPress={() => {
+                                                this.setState({
+                                                    fullImage: !fullImage
+                                                })
+                                            }}>
+                                                <Image source={require('../../../assets/nophoto.jpg')} resizeMode="cover"
+                                                    style={{ width: "100%", height: "100%", }} />
+                                            </TouchableOpacity>
                                     }
+
+                                    {
+                                        (barberDetails.coverImage != null && fullImage) ? (
+                                            <Modal visible={true} transparent={true}>
+                                                <ImageViewer imageUrls={[{
+                                                    url: barberDetails.coverImage,
+                                                }
+                                                ]} />
+                                                <TouchableOpacity style={{ width: "100%", height: 50, justifyContent: "center", alignItems: "center", backgroundColor: "white" }} onPress={() => {
+                                                    this.setState({
+                                                        fullImage: !fullImage
+                                                    })
+                                                }}>
+                                                    <Text>BACK</Text>
+                                                </TouchableOpacity>
+                                            </Modal>
+                                        ) : null
+                                    }
+
                                 </View>
                             </View>
 
@@ -188,7 +219,7 @@ class BarberDetails extends Component {
                         </Tabs>
                     </ScrollView>
                 </View>
-            </View>
+            </View >
         );
     }
 }

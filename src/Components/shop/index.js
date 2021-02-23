@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {
     View, Text, StyleSheet, TouchableOpacity, Linking, Platform,
-    ScrollView, Image, SafeAreaView, ActivityIndicator, Alert
+    ScrollView, Image, SafeAreaView, ActivityIndicator, Modal, BackHandler
 } from 'react-native';
 import { connect } from "react-redux";
 import { Tabs, Tab, TabHeading } from 'native-base';
@@ -16,6 +16,7 @@ import { setShopServices, setStylists, setWorkingHour, setGallery, setSpecialPac
 import axios from 'axios';
 import moment from 'moment';
 import handleGetDirections from '../getdirectiononmap';
+import ImageViewer from 'react-native-image-zoom-viewer';
 
 class shop extends Component {
     constructor(props) {
@@ -27,7 +28,8 @@ class shop extends Component {
             favroiteShops: [],
             favroite: false,
             favroiteLoader: true,
-            busy: true
+            busy: true,
+            fullImage: false
         }
     }
 
@@ -359,21 +361,51 @@ class shop extends Component {
     }
 
     render() {
-        const { activeColor, workingtime, workingHours, services, packages, stylists, gallery, favroite, favroiteLoader, initialPage } = this.state
+        const { fullImage, activeColor, workingtime, workingHours, services, packages, stylists, gallery, favroite, favroiteLoader, initialPage } = this.state
         let { shop, currentLocation } = this.props
         return (
             <View style={{ flex: 1 }}>
                 <SafeAreaView style={styles.container} >
                     {
                         (shop.coverImage != null) ? (
-                            <Image source={{ uri: shop.coverImage }} resizeMode="cover"
-                                // style={{ width: "100%", height: "250" }}
+                            <TouchableOpacity onPress={() => {
+                                this.setState({
+                                    fullImage: !fullImage
+                                })
+                            }}>
+                                <Image source={{ uri: shop.coverImage }} resizeMode="cover"
+                                    // style={{ width: "100%", height: "250" }}
+                                    style={{ width: "100%", height: "100%" }}
+                                />
+                            </TouchableOpacity>
+                        ) :
+                            <TouchableOpacity onPress={() => {
+                                this.setState({
+                                    fullImage: !fullImage
+                                })
+                            }}> <Image source={require('../../../assets/nophoto.jpg')} resizeMode="cover"
                                 style={{ width: "100%", height: "100%" }}
-                            />
-                        ) : <Image source={require('../../../assets/nophoto.jpg')} resizeMode="cover"
-                            style={{ width: "100%", height: "100%" }}
-                            // style={{ width: "100%", height: 250 }}
-                            />
+                                // style={{ width: "100%", height: 250 }}
+                                />
+                            </TouchableOpacity>
+                    }
+
+                    {
+                        (shop.coverImage != null && fullImage) ? (
+                            <Modal visible={fullImage} transparent={true}>
+                                <ImageViewer imageUrls={[{
+                                    url: shop.coverImage,
+                                }
+                                ]} />
+                                <TouchableOpacity style={{ width: "100%", height: 50, justifyContent: "center", alignItems: "center", backgroundColor: "white" }} onPress={() => {
+                                    this.setState({
+                                        fullImage: !fullImage
+                                    })
+                                }}>
+                                    <Text>BACK TO SHOP</Text>
+                                </TouchableOpacity>
+                            </Modal>
+                        ) : null
                     }
 
                     <TouchableOpacity onPress={() => Actions.pop()}
