@@ -367,7 +367,7 @@ class shop extends Component {
             <View style={{ flex: 1 }}>
                 <SafeAreaView style={styles.container} >
                     {
-                        (shop.coverImage != null) ? (
+                        (shop && shop.coverImage != null) ? (
                             <TouchableOpacity onPress={() => {
                                 this.setState({
                                     fullImage: !fullImage
@@ -379,13 +379,10 @@ class shop extends Component {
                                 />
                             </TouchableOpacity>
                         ) :
-                            <TouchableOpacity onPress={() => {
-                                this.setState({
-                                    fullImage: !fullImage
-                                })
-                            }}> <Image source={require('../../../assets/nophoto.jpg')} resizeMode="cover"
-                                style={{ width: "100%", height: "100%" }}
-                                // style={{ width: "100%", height: 250 }}
+                            <TouchableOpacity>
+                                <Image source={require('../../../assets/nophoto.jpg')}
+                                    resizeMode="cover"
+                                    style={{ width: "100%", height: "100%" }}
                                 />
                             </TouchableOpacity>
                     }
