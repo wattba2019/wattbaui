@@ -78,7 +78,7 @@ class Nearby extends Component {
                                         width: 50, zIndex: 1, justifyContent: "center", alignItems: "flex-end",
                                         // backgroundColor: "green"
                                     }}
-                                    onPress={() => Actions.Filters()}
+                                    onPress={() => Actions.Filters({ businessType: this.props.businessType })}
                                 >
                                     <IconFontAwesome name="filter" size={25} style={{ color: "grey" }} />
                                 </TouchableOpacity> : null
@@ -189,7 +189,7 @@ class Nearby extends Component {
                                                                     width: "100%", height: "100%",
                                                                     // borderTopLeftRadius: 6, borderTopRightRadius: 6,
                                                                 }}
-                                                                />
+                                                            />
                                                             }
                                                         </View>
                                                         <View style={{

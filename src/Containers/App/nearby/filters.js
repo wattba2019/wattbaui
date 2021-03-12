@@ -1,178 +1,285 @@
 import React, { Component } from "react";
-import {
-    View, ActivityIndicator, StyleSheet,
-    StatusBar, TouchableOpacity,
-    Text, ScrollView, Alert, Platform
-} from 'react-native';
+import { View, ActivityIndicator, StyleSheet, StatusBar, TouchableOpacity, Text, ScrollView, Alert, Platform } from 'react-native';
 import { connect } from "react-redux";
-import { Actions } from 'react-native-router-flux';
-import RangeSlider from 'rn-range-slider';
-import Geocoder from 'react-native-geocoding';
-import axios from 'axios';
 import { setNearByShops } from "../../../Store/Action/action";
-import Entypo from 'react-native-vector-icons/Entypo';
-
+import { Actions } from 'react-native-router-flux';
+import axios from 'axios';
+import RangeSlider from 'rn-range-slider';
 //icons import
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import Entypo from 'react-native-vector-icons/Entypo';
 
 class Filters extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            // gender: "Female",
             // service: "Haircut",
-            rangeLow: "",
+            rangeLow: 5,
             sortedby: "highToLow",
             selectedService: "",
             allServicesNames: [],
             isloader: false,
-            err: ""
+            err: "",
+
+            //barbers
+            Haircut: [],
+            Style: [],
+            Hair_Color: [],
+            Shave: [],
+            Children_Haircut: [],
+            Wax: [],
+            //saloon
+            Ladies_Haircuts: [],
+            Blow_Dry: [],
+            Hair_Coloring: [],
+            Mens_Haircuts: [],
+            Styling: [],
+            Treatments: [],
+            Bridal_And_Weding: [],
+            //spa
+            Nails: [],
+            Brows_Lashes: [],
+            Waxing: [],
+            Body_Treatment: [],
+            Hair_Treatments: [],
+            Tanning: [],
+            Mens_Grooming: [],
+            More: [],
         };
     }
 
     UNSAFE_componentWillMount() {
-        // this.getLocationNameGeoCoader()
+        const { businessType } = this.props
         this.getAllServices()
-    }
-
-    getLocationNameGeoCoader() {
-        // Initialize the module (needs to be done only once)
-        Geocoder.init("AIzaSyBQHKZTwhPJX_9IevM5jKC8kmz0NzqAaBk"); // use a valid API key
-        // With more options
-        // Geocoder.init("xxxxxxxxxxxxxxxxxxxxxxxxx", {language : "en"}); // set the language
-
-        Geocoder.from("Colosseum")
-            .then(json => {
-                var location = json.results[0].geometry.location;
-                console.log(location);
-            })
-            .catch(error => console.warn(error));
-
-        Geocoder.from(41.89, 12.49)
-            .then(json => {
-                var addressComponent = json.results[0].address_components[0];
-                console.log(addressComponent, "LOCATION_NAME");
-                alert(addressComponent)
-            })
-            .catch(error => console.warn(error));
-
-        // Works as well :
-        // ------------
+        // console.log(this.props.businessType, "businessType")
+        let serviceList;
+        if (businessType === "barberShop") {
+            serviceList = ["Haircut", "Style", "Hair_Color", "Shave", "Children_Haircut", "Wax", "More"]
+        }
+        if (businessType === "saloon") {
+            serviceList = ["Ladies_Haircuts", "Blow_Dry", "Hair_Coloring", "Mens_Haircuts", "Styling", "Treatments", "Bridal_And_Weding", "More"]
+        }
+        if (businessType === "beautySaloon") {
+            serviceList = ["Nails", "Brows_Lashes", "Waxing", "Body_Treatment", "Hair_Treatments", "Tanning", "Mens_Grooming", "More"]
+        }
+        this.setState({ allServicesNames: serviceList })
     }
 
     getAllServices() {
-        let urlM = `${this.props.bseUrl}/getallshops/getAllService1`
-        axios({
-            method: 'get',
-            url: urlM,
-        })
-            .then(result => {
-                console.log(result.data.data, "Fetch_all_services")
-                let allServices = result.data.data
-                let allServicesNames = []
-                for (let index = 0; index < allServices.length; index++) {
-                    const element = allServices[index].serviceName;
-                    if (allServicesNames.indexOf(element) == -1) {
-                        allServicesNames.push(element)
-                    }
-                }
-                this.setState({
-                    allServicesNames: allServicesNames
-                })
-            })
-            .catch(err => {
-                let error = JSON.parse(JSON.stringify(err))
-                console.log(error, 'ERRROR', err)
-                this.setState({
-                    err: error,
-                })
-            })
-    }
-
-    selectService(key, index) {
-        this.setState({
-            selectedService: key
-        })
-    }
-
-    saveSearch() {
-        const { rangeLow, sortedby, selectedService } = this.state
         const { currentLocation } = this.props
-        this.setState({
-            isloader: true
-        })
         if (currentLocation != null) {
-            let cloneLocation = {
-                lat: currentLocation.coords.latitude,
-                long: currentLocation.coords.longitude,
-                km: rangeLow,
-            }
-            var options = {
-                method: 'POST',
-                url: `${this.props.bseUrl}/getallshops/`,
-                headers:
-                {
-                    'cache-control': 'no-cache',
-                    "Allow-Cross-Origin": '*',
-                },
-                data: cloneLocation
-            }
-            axios(options)
+            // let urlM = `${this.props.bseUrl}/getallshops/getAllService1/${currentLocation.coords.latitude}/${currentLocation.coords.longitude}`
+            let urlM = `${this.props.bseUrl}/getallshops/getAllService1/`
+            axios({
+                method: 'get',
+                url: urlM,
+            })
                 .then(result => {
-                    let shops = result.data.data
-                    console.log(shops, "Fetch_search_data")
-                    if (shops.length) {
-                        // alert("Available_Shops")
-                        let nearbyShopIDs = []
-                        for (let index = 0; index < shops.length; index++) {
-                            const element = shops[index]._id;
-                            nearbyShopIDs.push(element)
-                        }
-                        this.getNearbyShopsServices(nearbyShopIDs, shops)
-                        // this.setState({ isloader: false })
-                    }
-                    else {
-                        Alert.alert("There is no shops in " + cloneLocation.km + " kilometre")
-                        this.setState({
-                            err: "There is no shops in " + cloneLocation.km + " kilometre",
-                            isloader: false
-                        }, () => {
-                            setTimeout(() => {
-                                this.setState({
-                                    err: ""
-                                })
-                            }, 30000)
+                    let allServices = result.data.data
+                    // console.log(allServices, "allServices_getting_Filter_screen")
+                    let Haircut = []
+                    let Style = []
+                    let Hair_Color = []
+                    let Shave = []
+                    let Children_Haircut = []
+                    let Wax = []
 
-                        })
+                    let Ladies_Haircuts = []
+                    let Blow_Dry = []
+                    let Hair_Coloring = []
+                    let Mens_Haircuts = []
+                    let Styling = []
+                    let Treatments = []
+                    let Bridal_And_Weding = []
+
+                    let Nails = []
+                    let Brows_Lashes = []
+                    let Waxing = []
+                    let Body_Treatment = []
+                    let Hair_Treatments = []
+                    let Tanning = []
+                    let Mens_Grooming = []
+                    let More = []
+
+                    for (let index = 0; index < allServices.length; index++) {
+                        const service = allServices[index];
+                        const categoryName = allServices[index].categoryName;
+                        // console.log(service, "Service_Get")
+                        // barberShop
+                        if (categoryName === "Haircut") {
+                            if (Haircut.indexOf(service.userId) == -1) {
+                                Haircut.push(service.userId)
+                            }
+                        }
+                        if (categoryName === "Style") {
+                            if (Style.indexOf(service.userId) == -1) {
+                                Style.push(service.userId)
+                            }
+                        }
+                        if (categoryName === "Hair Color") {
+                            if (Hair_Color.indexOf(service.userId) == -1) {
+                                Hair_Color.push(service.userId)
+                            }
+                        }
+                        if (categoryName === "Shave") {
+                            if (Shave.indexOf(service.userId) == -1) {
+                                Shave.push(service.userId)
+                            }
+                        }
+                        if (categoryName === "Children Haircut") {
+                            if (Children_Haircut.indexOf(service.userId) == -1) {
+                                Children_Haircut.push(service.userId)
+                            }
+                        }
+                        if (categoryName === "Wax") {
+                            if (Wax.indexOf(service.userId) == -1) {
+                                Wax.push(service.userId)
+                            }
+                        }
+                        // saloon
+                        if (categoryName === "Ladies Haircuts") {
+                            if (Ladies_Haircuts.indexOf(service.userId) == -1) {
+                                Ladies_Haircuts.push(service.userId)
+                            }
+                        }
+                        if (categoryName === "Blow Dry") {
+                            if (Blow_Dry.indexOf(service.userId) == -1) {
+                                Blow_Dry.push(service.userId)
+                            }
+                        }
+                        if (categoryName === "Hair Coloring") {
+                            if (Hair_Coloring.indexOf(service.userId) == -1) {
+                                Hair_Coloring.push(service.userId)
+                            }
+                        }
+                        if (categoryName === "Men's Haircuts") {
+                            if (Mens_Haircuts.indexOf(service.userId) == -1) {
+                                Mens_Haircuts.push(service.userId)
+                            }
+                        }
+                        if (categoryName === "Styling") {
+                            if (Styling.indexOf(service.userId) == -1) {
+                                Styling.push(service.userId)
+                            }
+                        }
+                        if (categoryName === "Treatments") {
+                            if (Treatments.indexOf(service.userId) == -1) {
+                                Treatments.push(service.userId)
+                            }
+                        }
+                        if (categoryName === "Bridal & Weding") {
+                            if (Bridal_And_Weding.indexOf(service.userId) == -1) {
+                                Bridal_And_Weding.push(service.userId)
+                            }
+                        }
+                        // spa
+                        if (categoryName === "Nails") {
+                            if (Nails.indexOf(service.userId) == -1) {
+                                Nails.push(service.userId)
+                            }
+                        }
+                        if (categoryName === "Brows & Lashes") {
+                            if (Brows_Lashes.indexOf(service.userId) == -1) {
+                                Brows_Lashes.push(service.userId)
+                            }
+                        }
+                        if (categoryName === "Waxing") {
+                            if (Waxing.indexOf(service.userId) == -1) {
+                                Waxing.push(service.userId)
+                            }
+                        }
+                        if (categoryName === "Body Treatment") {
+                            if (Body_Treatment.indexOf(service.userId) == -1) {
+                                Body_Treatment.push(service.userId)
+                            }
+                        }
+                        if (categoryName === "Hair Treatments") {
+                            if (Hair_Treatments.indexOf(service.userId) == -1) {
+                                Hair_Treatments.push(service.userId)
+                            }
+                        }
+                        if (categoryName === "Tanning") {
+                            if (Tanning.indexOf(service.userId) == -1) {
+                                Tanning.push(service.userId)
+                            }
+                        }
+                        if (categoryName === "Men’s Grooming") {
+                            if (Mens_Grooming.indexOf(service.userId) == -1) {
+                                Mens_Grooming.push(service.userId)
+                            }
+                        }
+                        if (categoryName != "Haircut" &&
+                            categoryName != "Style" &&
+                            categoryName != "Hair Color" &&
+                            categoryName != "Shave" &&
+                            categoryName != "Children Haircut" &&
+                            categoryName != "Wax" &&
+                            categoryName != "Ladies Haircuts" &&
+                            categoryName != "Blow Dry" &&
+                            categoryName != "Hair Coloring" &&
+                            categoryName != "Men's Haircuts" &&
+                            categoryName != "Styling" &&
+                            categoryName != "Treatments" &&
+                            categoryName != "Bridal & Weding" &&
+                            categoryName != "Nails" &&
+                            categoryName != "Brows & Lashes" &&
+                            categoryName != "Waxing" &&
+                            categoryName != "Body Treatment" &&
+                            categoryName != "Hair Treatments" &&
+                            categoryName != "Tanning" &&
+                            categoryName != "Men’s Grooming") {
+                            if (More.indexOf(service.userId) == -1) {
+                                More.push(service.userId)
+                            }
+                        }
                     }
+                    this.setState({
+                        Haircut,
+                        Style,
+                        Hair_Color,
+                        Shave,
+                        Children_Haircut,
+                        Wax,
+
+                        Ladies_Haircuts,
+                        Blow_Dry,
+                        Hair_Coloring,
+                        Mens_Haircuts,
+                        Styling,
+                        Treatments,
+                        Bridal_And_Weding,
+
+                        Nails,
+                        Brows_Lashes,
+                        Waxing,
+                        Body_Treatment,
+                        Hair_Treatments,
+                        Tanning,
+                        Mens_Grooming,
+                        More,
+                    }, () => {
+                        // console.log(this.state.More, "AFTER_SET_STATES")
+                    })
                 })
                 .catch(err => {
                     let error = JSON.parse(JSON.stringify(err))
-                    console.log(error, err, "cloneSerchKeywords")
+                    console.log(error, 'ERRROR', err)
                     this.setState({
                         err: error,
-                        isloader: false
-                    }, () => {
-                        setTimeout(() => {
-                            this.setState({
-                                err: ""
-                            })
-                        }, 10000)
-
                     })
                 })
-
-        }
-        else {
-            Alert.alert("Please open your location")
-            this.setState({
-                isloader: true
-            })
         }
     }
 
-    getNearbyShopsServices(nearbyShopIDs, shops, ) {
-        const { selectedService, sortedby } = this.state
+    selectService(key, index) {
+        this.setState({ selectedService: key })
+        // console.log(key, "selectService")
+    }
+
+    getNearbyShopsServices(nearbyShopIDs, shops,) {
+        const { selectedService, sortedby, } = this.state
+
+        // console.log(nearbyShopIDs, shops, selectedService, "sortedShops")
+
         let idsCloneData = { shopid: nearbyShopIDs }
         var options = {
             method: 'POST',
@@ -187,19 +294,18 @@ class Filters extends Component {
         axios(options)
             .then(result => {
                 let allShopsServices = result.data.data
-
+                // console.log(allShopsServices, "allShopsServices")
                 if (sortedby === "highToLow") {
                     allShopsServices.sort((a, b) => parseFloat(b.price) - parseFloat(a.price));
                 }
                 else {
                     allShopsServices.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
                 }
-                // console.log(allShopsServices, "Fetch_Shops_NearBy_Shops_Services")
                 if (selectedService != "") {
                     let sortedService = []
                     for (let index = 0; index < allShopsServices.length; index++) {
                         const element = allShopsServices[index];
-                        if (element.serviceName === selectedService) {
+                        if (element.categoryName === selectedService.replace("_", " ")) {
                             sortedService.push(element)
                         }
                     }
@@ -211,20 +317,10 @@ class Filters extends Component {
                             }
                         }
                     }
-                    Actions.SearchResults({ shops: sortedShops, headerTitle: "Search Result" })
-                    // console.log(sortedService, sortedShops, "sortedService")
-                    this.setState({
-                        isloader: false
-                    })
+                    // console.log(sortedShops, "sortedShops")
+                    Actions.SearchResults({ shops: sortedShops.length ? sortedShops : shops, headerTitle: "Search Result" })
+                    this.setState({ isloader: false })
                 }
-                else {
-                    Actions.SearchResults({ shops: shops, headerTitle: "Search Result" })
-                    // console.log(allShopsServices, shops, "withoutsoorted")
-                    this.setState({
-                        isloader: false
-                    })
-                }
-
             })
             .catch(err => {
                 let error = JSON.parse(JSON.stringify(err))
@@ -243,167 +339,92 @@ class Filters extends Component {
             })
     }
 
+    saveSearch() {
+        const { rangeLow, selectedService } = this.state
+        const { currentLocation } = this.props
+        if (currentLocation != null) {
+            if (selectedService != "") {
+                this.setState({ isloader: true })
+                cloneData = {
+                    shopid: this.state[`${selectedService}`],
+                    lat: currentLocation.coords.latitude,
+                    long: currentLocation.coords.longitude,
+                    km: rangeLow,
+                }
+                var options = {
+                    method: 'POST',
+                    url: `${this.props.bseUrl}/getallshops/getMultipleShopWithIdAndLocation/`,
+                    headers:
+                    {
+                        'cache-control': 'no-cache',
+                        "Allow-Cross-Origin": '*',
+                    },
+                    data: cloneData
+                }
+                axios(options)
+                    .then(result => {
+                        // this.setState({ isloader: false })
+                        let shops = result.data.data
+                        let idsShp = this.state[`${selectedService}`]
+                        // Actions.SearchResults({ shops: shops, headerTitle: "Top Services" })
+                        // console.log(shops, idsShp, "idsShp")
+                        this.getNearbyShopsServices(idsShp, shops)
+                    })
+                    .catch(err => {
+                        let error = JSON.parse(JSON.stringify(err))
+                        console.log(error, 'ERRROR', err)
+                        Actions.SearchResults({ shops: [], headerTitle: "Top Services" })
+                        this.setState({ isloader: false })
+                        // this.setState({ err: error, isloader: false })
+                    })
+            }
+            else {
+                Alert.alert("Please select service")
+            }
+        }
+        else {
+            Alert.alert("Please open your location")
+            this.setState({ isloader: true })
+        }
+    }
+
     render() {
-        const { rangeLow, allServicesNames, selectedService, isloader, err } = this.state
+        const { rangeLow, allServicesNames, selectedService, isloader, err, } = this.state
+        console.log(rangeLow, "RenderFunction")
         return (
             <ScrollView contentContainerStyle={styles.contentContainer}>
                 <StatusBar backgroundColor="white" barStyle="dark-content" />
                 <View style={{
-                    // flex: 2,
                     marginTop: Platform.OS === 'ios' ? 12 : null,
                     height: 60,
                     flexDirection: "row",
                     borderBottomWidth: 0.5,
                     borderBottomColor: "#8E8E93",
-                    // backgroundColor: "red"
                 }}>
-                    <View style={{
-                        flex: 1,
-                        justifyContent: "center",
-                        alignItems: "center",
-                        // backgroundColor: "orange"
-                    }}>
-                        {/* <TouchableOpacity
-                            onPress={() => Actions.pop()}
-                        >
-                            <Text style={{ marginTop: 10 }}>Cancle</Text>
-                        </TouchableOpacity> */}
+                    <View style={{ flex: 1, justifyContent: "center", alignItems: "center", }}>
                         <TouchableOpacity onPress={() => Actions.pop()}>
                             <Entypo name="cross" style={{ marginTop: 12, marginRight: "25%", fontSize: 25 }} />
                         </TouchableOpacity>
                     </View>
-                    <View style={{
-                        flex: 1,
-                        justifyContent: "center",
-                        alignItems: "center",
-                        // backgroundColor: "yellow"
-                    }}>
-                        <TouchableOpacity
-
-                        >
+                    <View style={{ flex: 1, justifyContent: "center", alignItems: "center", }}>
+                        <TouchableOpacity >
                             <Text style={{ marginTop: 10, fontWeight: "bold" }}>Filters</Text>
                         </TouchableOpacity>
                     </View>
-                    <View style={{
-                        flex: 1,
-                        justifyContent: "center",
-                        alignItems: "center",
-                        // backgroundColor: "gray"
-                    }}>
-
+                    <View style={{ flex: 1, justifyContent: "center", alignItems: "center", }}>
                         {
                             isloader === false ?
-                                <TouchableOpacity
-                                    // onPress={() => Actions.SearchResults()}
-                                    onPress={() => this.saveSearch()}
-                                >
+                                <TouchableOpacity onPress={() => this.saveSearch()}>
                                     <Text style={{ marginTop: 10, color: "#FD6958" }}>Save</Text>
                                 </TouchableOpacity>
                                 :
                                 <ActivityIndicator color="#FD6958" />
                         }
-
-
                     </View>
-
                 </View>
-                <View style={{
-                    flex: 8,
-                    // justifyContent: "center",
-                    alignItems: "center",
-                    width: "100%",
-                    marginTop: 0,
-                    // backgroundColor: "green"
-                }}>
-                    {/* <View style={{
-                        width: "90%", marginTop: 20, flexDirection: "row",
-                        // backgroundColor: "green"
-                    }}>
-                        <Text style={{ color: "#4A4A4A", fontSize: 16 }}>Location</Text>
-                    </View> */}
 
-                    {/* <TouchableOpacity style={{
-                        marginTop: 10,
-                        width: "90%",
-                        height: 45,
-                        borderRadius: 50,
-                        // justifyContent: "center",
-                        alignItems: "center",
-                        flexDirection: "row",
-                        backgroundColor: "#E8E6E7"
-                    }}
-                        // onPress={() => { Actions.Googlemapfullview({ draggable: true }) }}
-                        onPress={() => { Actions.FilteMap() }}
-                    >
-                        <FontAwesome name="location-arrow" style={{ marginLeft: "5%", color: '#909090', fontWeight: 'bold', fontSize: 20 }} />
-                        <Text style={{ marginLeft: "5%", color: "black", fontWeight: "bold", fontSize: 14 }}>Current location </Text>
-                        {
-                            this.props.searchLocationName != null ? <Text style={{ color: "#8E8E93", fontWeight: "bold", fontSize: 14 }}>({this.props.searchLocationName})</Text> : null
-                        }
-                    </TouchableOpacity> */}
-
-                    {/* gender */}
-                    {/* <View style={{
-                        width: "90%", marginTop: 10, flexDirection: "row",
-                        // backgroundColor: "green"
-                    }}>
-                        <Text style={{ color: "#4A4A4A", fontSize: 16 }}>Gender</Text>
-                    </View>
-
-                    <View style={{
-                        marginTop: 10,
-                        width: "90%",
-                        height: 45,
-                        borderRadius: 50,
-                        justifyContent: "center",
-                        alignItems: "center",
-                        flexDirection: "row",
-                        backgroundColor: "#E8E6E7",
-                        overflow: "hidden"
-
-                    }}>
-                        <View style={{
-                            flex: 1, flexDirection: "row", borderRadius: 50, height: "100%"
-                        }}>
-
-                            <TouchableOpacity style={{
-                                flex: 1,
-                                justifyContent: "center",
-                                alignItems: "center",
-                                backgroundColor: this.state.gender === "Male" ? "#FD6958" : "#E8E6E7",
-                            }}
-                                onPress={() => { this.setState({ gender: "Male" }) }}
-                            >
-                                <Text style={{ color: "black", fontSize: 16 }}>Male</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={{
-                                flex: 1,
-                                justifyContent: "center",
-                                alignItems: "center",
-                                backgroundColor: this.state.gender === "Female" ? "#FD6958" : "#E8E6E7",
-                            }}
-                                onPress={() => { this.setState({ gender: "Female" }) }}
-                            >
-                                <Text style={{ color: "black", fontSize: 16 }}>Female</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={{
-                                flex: 1,
-                                justifyContent: "center",
-                                alignItems: "center",
-                                backgroundColor: this.state.gender === "Others" ? "#FD6958" : "#E8E6E7",
-                            }}
-                                onPress={() => { this.setState({ gender: "Others" }) }}
-                            >
-                                <Text style={{ color: "black", fontSize: 16 }}>Others</Text>
-                            </TouchableOpacity>
-                        </View>
-
-                    </View> */}
-
-                    <View style={{
-                        width: "90%", marginTop: 10, flexDirection: "row", marginTop: 20
-                        // backgroundColor: "green"
-                    }}>
+                <View style={{ flex: 8, alignItems: "center", width: "100%", marginTop: 0, }}>
+                    <View style={{ width: "90%", marginTop: 10, flexDirection: "row", marginTop: 20 }}>
                         <View style={{ flex: 1 }}>
                             <Text style={{ color: "#4A4A4A", fontSize: 16, }}>Distance</Text>
                         </View>
@@ -414,46 +435,27 @@ class Filters extends Component {
                         </View>
                     </View>
 
-                    <View style={{
-                        width: "100%",
-                        height: 50,
-                        justifyContent: "center", alignItems: "center", top: -20,
-                        // backgroundColor: "red"
-                    }}>
+                    <View style={{ width: "100%", height: 50, justifyContent: "center", alignItems: "center", top: -20, }}>
                         <RangeSlider
                             style={{ width: "90%", height: 80 }}
                             gravity={'center'}
                             min={0}
                             max={25}
                             initialLowValue={5}
-                            // initialHighValue={5}
                             step={1}
                             rangeEnabled={false}
                             selectionColor="#FD6958"
                             blankColor="#E8E6E7"
                             thumbColor="#FD6958"
                             thumbBorderColor="#F1EBEB"
-                            onValueChanged={(low, high, fromUser) => {
-                                this.setState({ rangeLow: low, rangeHigh: high })
-                            }} />
-
+                            onValueChanged={(low, high, fromUser) => { this.setState({ rangeLow: low, rangeHigh: high }) }} />
                     </View>
 
-                    <View style={{
-                        width: "90%", flexDirection: "row",
-                        // backgroundColor: "green"
-                    }}>
+                    <View style={{ width: "90%", flexDirection: "row", }}>
                         <Text style={{ color: "#4A4A4A", fontSize: 16, }}>Services</Text>
                     </View>
-                    <View style={{
-                        // width: "90%",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        marginTop: 5, flexWrap: "wrap", flexDirection: "row",
-                        // backgroundColor: "green"
-                    }}>
+                    <View style={{ justifyContent: "center", alignItems: "center", marginTop: 5, flexWrap: "wrap", flexDirection: "row", }}>
                         {
-
                             (allServicesNames.length != 0) ? (
                                 allServicesNames.map((key, index) => {
                                     return (
@@ -470,36 +472,35 @@ class Filters extends Component {
                                                 backgroundColor: selectedService === key ? "#FD6958" : null,
                                             }}
                                                 onPress={() => { this.setState({ selectedService: "" }) }}
-
                                             >
                                                 <Text style={{
                                                     color: "black", fontSize: 12,
                                                     marginHorizontal: 25, marginVertical: 5,
                                                     color: selectedService === key ? "#ffff" : null,
-                                                }}>{key}</Text>
+                                                }}>{key.replace("_", " ").replace("More", "Others")}</Text>
                                             </TouchableOpacity>
-                                        ) : <TouchableOpacity key={index} style={{
-                                            justifyContent: "center",
-                                            alignItems: "center",
-                                            width: 150,
-                                            height: 35,
-                                            margin: 5,
-                                            borderRadius: 25,
-                                            borderWidth: 0.5,
-                                            borderColor: "grey",
-                                            backgroundColor: selectedService === key ? "#FD6958" : null,
-                                        }}
-                                            onPress={() => { this.selectService(key, index) }}
-
-                                        >
+                                        ) :
+                                            <TouchableOpacity
+                                                key={index}
+                                                style={{
+                                                    justifyContent: "center",
+                                                    alignItems: "center",
+                                                    width: 150,
+                                                    height: 35,
+                                                    margin: 5,
+                                                    borderRadius: 25,
+                                                    borderWidth: 0.5,
+                                                    borderColor: "grey",
+                                                    backgroundColor: selectedService === key ? "#FD6958" : null,
+                                                }}
+                                                onPress={() => { this.selectService(key, index) }}
+                                            >
                                                 <Text style={{
                                                     color: "black", fontSize: 12,
                                                     marginHorizontal: 25, marginVertical: 5,
                                                     color: selectedService === key ? "#ffff" : null,
-                                                }}>{key}</Text>
+                                                }}>{key.replace("_", " ").replace("More", "Others")}</Text>
                                             </TouchableOpacity>
-
-
                                     )
                                 })
 
@@ -507,67 +508,40 @@ class Filters extends Component {
                         }
                     </View>
 
-
-                    <View style={{
-                        width: "90%", marginTop: 20, marginBottom: 50
-                        // backgroundColor: "green"
-                    }}>
+                    <View style={{ width: "90%", marginTop: 20, marginBottom: 50 }}>
                         <Text style={{ color: "#4A4A4A", fontSize: 16, }}>Sortby</Text>
-
-                        {/* <TouchableOpacity style={{
-                            marginTop: 10,
-                        }}
-                            onPress={() => { this.setState({ sortedby: "Popular" }) }}
-                        >
-                            <Text style={{ color: "black", fontSize: 16, color: this.state.sortedby === "Popular" ? "#FD6958" : null, }}>Most Popular</Text>
-                        </TouchableOpacity> */}
-
                         {
                             (selectedService != "") ? (
                                 <>
-                                    <TouchableOpacity style={{
-                                        marginTop: 10,
-                                    }}
-                                        onPress={() => { this.setState({ sortedby: "lowToHigh" }) }}
-                                    >
-                                        {/* <Text style={{ color: "black", fontSize: 16, color: this.state.sortedby === "lowToHigh" ? "#FD6958" : null, }}>Cost Low to High</Text> */}
+                                    <TouchableOpacity style={{ marginTop: 10 }} onPress={() => { this.setState({ sortedby: "lowToHigh" }) }}>
                                         <Text style={{ color: "black", fontSize: 16, color: this.state.sortedby === "lowToHigh" ? "#FD6958" : null, }}>Ascending price</Text>
                                     </TouchableOpacity>
-
-                                    <TouchableOpacity style={{
-                                        marginTop: 10,
-                                    }}
-                                        onPress={() => { this.setState({ sortedby: "highToLow" }) }}
-                                    >
-                                        {/* <Text style={{ color: "black", fontSize: 16, color: this.state.sortedby === "highToLow" ? "#FD6958" : null, }}>Cost High to Low</Text> */}
+                                    <TouchableOpacity style={{ marginTop: 10 }} onPress={() => { this.setState({ sortedby: "highToLow" }) }}>
                                         <Text style={{ color: "black", fontSize: 16, color: this.state.sortedby === "highToLow" ? "#FD6958" : null, }}>Descending price</Text>
                                     </TouchableOpacity>
                                 </>
                             ) : <>
-                                    <TouchableOpacity disabled style={{ marginTop: 10, }}>
-                                        {/* <Text style={{ color: "grey", fontSize: 16, }}>Cost Low to High</Text> */}
-                                        <Text style={{ color: "grey", fontSize: 16, }}>Ascending price</Text>
-                                    </TouchableOpacity>
+                                <TouchableOpacity disabled style={{ marginTop: 10, }}>
+                                    <Text style={{ color: "grey", fontSize: 16, }}>Ascending price</Text>
+                                </TouchableOpacity>
 
-                                    <TouchableOpacity disabled style={{ marginTop: 10, }}>
-                                        {/* <Text style={{ color: "grey", fontSize: 16, }}>Cost High to Low</Text> */}
-                                        <Text style={{ color: "grey", fontSize: 16, }}>Descending price</Text>
-                                    </TouchableOpacity>
-                                </>
+                                <TouchableOpacity disabled style={{ marginTop: 10, }}>
+                                    <Text style={{ color: "grey", fontSize: 16, }}>Descending price</Text>
+                                </TouchableOpacity>
+                            </>
                         }
                     </View>
-
                     <View style={{ width: "90%", justifyContent: "center", alignItems: "center", }}>
                         {
                             err != "" ? <Text style={{ top: -10, color: "red" }}>{err}</Text> : null
                         }
                     </View>
-
                 </View>
             </ScrollView>
         );
     }
 }
+
 let mapStateToProps = state => {
     return {
         bseUrl: state.root.bseUrl,
@@ -577,20 +551,16 @@ let mapStateToProps = state => {
 };
 function mapDispatchToProps(dispatch) {
     return ({
-        setNearByShops: (shops, ) => {
+        setNearByShops: (shops,) => {
             dispatch(setNearByShops(shops));
         },
     })
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Filters);
 
-
 const styles = StyleSheet.create({
     contentContainer: {
-        // flex: 1,
         paddingBottom: 70,
         backgroundColor: "white",
-
     },
-
 });

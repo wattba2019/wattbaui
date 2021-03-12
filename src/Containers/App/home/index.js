@@ -246,6 +246,7 @@ class Home extends Component {
     }
 
     getShopWithId(_id) {
+        console.log(_id, "getShopWithId")
         var options = {
             method: 'GET',
             url: `${this.props.bseUrl}/getallshops/getShopWithId/${_id}`,
@@ -270,6 +271,7 @@ class Home extends Component {
     }
 
     getMultipleShopWithId(shopid) {
+        console.log(shopid, "getMultipleShopWithId")
         if (shopid.length) {
             cloneData = { shopid: shopid }
             var options = {
@@ -339,7 +341,7 @@ class Home extends Component {
                     for (let index = 0; index < allServices.length; index++) {
                         const service = allServices[index];
                         const categoryName = allServices[index].categoryName;
-                        // console.log(service, "Service_Get")
+                        console.log(service, "Service_Get")
                         // barberShop
                         if (categoryName === "Haircut") {
                             if (Haircut.indexOf(service.userId) == -1) {
@@ -504,7 +506,6 @@ class Home extends Component {
         })
     }
 
-
     render() {
         let { fullName } = this.props.userProfile
         let { nearByShops, bestBarberShops, packages,
@@ -536,7 +537,7 @@ class Home extends Component {
         } = this.state
 
         let { businessType } = this.props
-        console.log(this.props.currentLocation, "currentLocation_in_home")
+        console.log(this.props.currentLocation, Haircut, "currentLocation_in_home")
         return (
             <View style={{ flex: 1, width: "100%", alignItems: "center", }}>
                 <InfiniteScroll
@@ -1017,10 +1018,10 @@ class Home extends Component {
                                                                                     source={{ uri: key.coverImage }}
                                                                                 />
                                                                             ) : <Image
-                                                                                    source={require('../../../../assets/nophoto.jpg')}
-                                                                                    resizeMode="cover"
-                                                                                    style={{ width: "100%", height: "100%", }}
-                                                                                />
+                                                                                source={require('../../../../assets/nophoto.jpg')}
+                                                                                resizeMode="cover"
+                                                                                style={{ width: "100%", height: "100%", }}
+                                                                            />
                                                                             }
                                                                         </View>
                                                                         <View
@@ -1126,10 +1127,10 @@ class Home extends Component {
                                                                                     source={{ uri: key.coverImage }}
                                                                                 />
                                                                             ) : <Image
-                                                                                    source={require('../../../../assets/nophoto.jpg')}
-                                                                                    resizeMode="cover"
-                                                                                    style={{ width: "100%", height: "100%", }}
-                                                                                />
+                                                                                source={require('../../../../assets/nophoto.jpg')}
+                                                                                resizeMode="cover"
+                                                                                style={{ width: "100%", height: "100%", }}
+                                                                            />
                                                                             }
                                                                         </View>
                                                                         <View style={{
