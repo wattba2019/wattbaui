@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {
     View, Text, StyleSheet, TouchableOpacity, StatusBar,
-    ScrollView, Image, ActivityIndicator, Alert
+    ScrollView, Image, ActivityIndicator, Alert, 
 } from 'react-native';
 import { connect } from "react-redux";
 import Fontisto from 'react-native-vector-icons/Fontisto'
@@ -429,9 +429,9 @@ class BookAppointment extends Component {
     render() {
         let { totalCost, gendre, renderSelectedService } = this.props
         let { stylists, slots, selectedSlotTime, day, date, err, soortedBarberList } = this.state
-
+        let colorScheme;
         if (Platform.OS === 'ios') {
-            const colorScheme = Appearance.getColorScheme();
+            colorScheme = Appearance.getColorScheme();
         }
 
         return (
@@ -491,6 +491,8 @@ class BookAppointment extends Component {
                                 flexDirection: "row", backgroundColor: "#F1EDED"
                             }}>
 
+                            
+
                                 <DatePicker showIcon={false}
                                     minDate={moment().toDate()}
                                     style={{
@@ -520,15 +522,14 @@ class BookAppointment extends Component {
                                         datePicker: {
                                             backgroundColor: Platform.OS === 'ios' ? colorScheme === "dark" ? "white" : "white" : "white",
                                             ios_backgroundColor: 'white',
-                                            color: Platform.OS === 'ios' ? colorScheme === "dark" ? "black" : "black" : "black"
+                                            color: Platform.OS === 'ios' ? colorScheme === "dark" ? "black" : "black" : "black",
+                                            justifyContent:"center"
                                         },
-
                                         datePickerCon: {
                                             color: 'black',
                                             ios_backgroundColor: 'white',
                                             backgroundColor: 'white',
                                         },
-
                                         // ... You can check the source to find the other keys.
                                     }}
                                     // onDateChange={(date) => { this.setState({ date: date }) }}
@@ -628,7 +629,7 @@ class BookAppointment extends Component {
                                                                     />
                                                                 ) : <Image source={require('../../../assets/nophoto.jpg')} resizeMode="cover"
                                                                     style={{ width: "90%", height: "90%", borderRadius: 100 }}
-                                                                    />}
+                                                                />}
                                                             </View>
                                                             <Text style={{ marginTop: 5, fontSize: 10, color: "#000000", textAlign: "right", }}>{key.fullname}</Text>
                                                             <Text style={{ marginTop: 0, fontSize: 10, color: "#8E8E93", textAlign: "right", }}>{key.designation}</Text>

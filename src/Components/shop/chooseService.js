@@ -269,7 +269,7 @@ class ChooseService extends Component {
                                                 </TouchableOpacity>
 
                                                 {
-                                                    (key.selected) ? (
+                                                    (key.selected && key.extraServices.length) ? (
                                                         <Text style={{ fontWeight: "bold", marginTop: 10, marginLeft: "5%", textDecorationLine: 'underline', }}>{"Extra Services"}</Text>
                                                     ) : null
                                                 }

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Image, ActivityIndicator, StyleSheet, TouchableOpacity, Text, TextInput, ScrollView, Platform } from 'react-native';
+import { View, Image, ActivityIndicator, StyleSheet, TouchableOpacity, Text, TextInput, ScrollView, Platform, Dimensions } from 'react-native';
 import { connect } from "react-redux";
 import { Actions } from 'react-native-router-flux';
 import IconFontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -10,6 +10,7 @@ import { setNearByShops, getNearByShopsUnder5Km } from "../../../Store/Action/ac
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
 import axios from 'axios';
+var { height, width } = Dimensions.get('window');
 
 class Nearby extends Component {
     constructor(props) {
@@ -61,8 +62,7 @@ class Nearby extends Component {
                 backgroundColor: "white",
             }}>
                 <View style={{
-                    marginTop: Platform.OS === 'ios' ? 22 : 10,
-                    // height: Platform.OS === 'ios' ? 60 : 30,
+                    marginTop: Platform.OS === 'ios' ? "7.5%" : 10,
                     width: "95%",
                     justifyContent: "center",
                     alignItems: "center",
@@ -91,7 +91,7 @@ class Nearby extends Component {
                                 width: 50, alignItems: "flex-end", zIndex: 1, marginLeft: "80%", top: -25,
                                 // position:"absolute",
                                 // backgroundColor: "green"
-                            }} onPress={() => Actions.Filters()}>
+                            }} onPress={() => Actions.Filters({ businessType: this.props.businessType })}>
                                 <IconFontAwesome name="filter" size={25} style={{ color: "grey" }} />
                             </TouchableOpacity> : null
                     }
@@ -142,13 +142,13 @@ class Nearby extends Component {
 
                 </View>
 
-                <View style={{ flex: 8, width: "100%", height: "100%", justifyContent: "center", alignItems: "center", }}>
+                <View style={{ flex: 8, width: "100%", height: Platform.OS === 'ios' ? height : "100%", justifyContent: "center", alignItems: "center", backgroundColor: "#EDEDED", }}>
                     <View
                         style={{
-                            marginTop: 10,
+                            marginTop: "50%",
                             marginBottom: 0,
                             width: "100%",
-                            height: "100%",
+                            height: Platform.OS === 'ios' ? height : "100%",
                             marginHorizontal: "0%",
                             backgroundColor: "#EDEDED",
                         }}

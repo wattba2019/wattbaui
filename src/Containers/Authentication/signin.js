@@ -20,10 +20,10 @@ class Signin extends Component {
             showPassword: true,
             // email: "abddullahshah@gmail.com",
             // password: "12345678",
-            // email: "aa-khan@hotmail.co.uk",
-            // password: "Password123",
-            email: "",
-            password: "",
+            email: "aa-khan@hotmail.co.uk",
+            password: "Password123",
+            // email: "",
+            // password: "",
         };
     }
 

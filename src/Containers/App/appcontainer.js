@@ -41,7 +41,7 @@ class AppContainer extends Component {
             }
         }
         this.props.setUserCurrentLocation(searchLocation, true)
-        this.props.getNearByShopsUnder5Km(searchLocation)
+        this.props.getNearByShopsUnder5Km(searchLocation, this.props.businessType)
     }
 
     // componentWillUnmount() {
@@ -138,7 +138,7 @@ class AppContainer extends Component {
                                     />
                                 ) : <Image source={require('../../../assets/footericons/homeGrey.png')} resizeMode="contain"
                                     style={{ width: "40%", height: "40%", }}
-                                    />
+                                />
                             }
                             <Text style={{ textAlign: "center", marginTop: 0, color: this.state.rout === "Home" ? "#FD6958" : "#8E8E93", fontSize: 10 }}>Home</Text>
                         </TouchableOpacity>
@@ -150,7 +150,7 @@ class AppContainer extends Component {
                                     />
                                 ) : <Image source={require('../../../assets/footericons/nearbyGrey.png')} resizeMode="contain"
                                     style={{ width: "40%", height: "40%", }}
-                                    />
+                                />
                             }
                             <Text style={{ textAlign: "center", marginTop: 0, color: this.state.rout === "Nearby" ? "#FD6958" : "#8E8E93", fontSize: 10 }}>Nearby shops</Text>
                         </TouchableOpacity>
@@ -163,7 +163,7 @@ class AppContainer extends Component {
                                     />
                                 ) : <Image source={require('../../../assets/footericons/appointmentGrey.png')} resizeMode="contain"
                                     style={{ width: "40%", height: "40%", }}
-                                    />
+                                />
                             }
                             <Text style={{ textAlign: "center", marginTop: 0, color: this.state.rout === "Appointments" ? "#FD6958" : "#8E8E93", fontSize: 10 }}>Appointments</Text>
                         </TouchableOpacity>
@@ -176,7 +176,7 @@ class AppContainer extends Component {
                                     />
                                 ) : <Image source={require('../../../assets/footericons/profileGrey.png')} resizeMode="contain"
                                     style={{ width: "40%", height: "40%", }}
-                                    />
+                                />
                             }
                             <Text style={{ textAlign: "center", marginTop: 0, color: this.state.rout === "Profile" ? "#FD6958" : "#8E8E93", fontSize: 10 }}>Profile</Text>
                         </TouchableOpacity>
@@ -201,8 +201,8 @@ function mapDispatchToProp(dispatch) {
         setNearByShops: (shops) => {
             dispatch(setNearByShops(shops));
         },
-        getNearByShopsUnder5Km: (shops) => {
-            dispatch(getNearByShopsUnder5Km(shops));
+        getNearByShopsUnder5Km: (shops, businessType) => {
+            dispatch(getNearByShopsUnder5Km(shops, businessType));
         },
     })
 }

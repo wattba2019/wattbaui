@@ -158,7 +158,7 @@ export function getNearByShopsUnder5Km(currentLocation, businessType) {
                         shops.push(element)
                     }
                     shops = shops.sort((a, b) => a.distance - b.distance)
-                    console.log(shops, "Fetch_Shops_NearBy")
+                    console.log(shops, businessType, "Fetch_Shops_NearBy")
                     let filterdAccordingToBusinessType = []
 
                     //for business type barberShop soorting
@@ -204,6 +204,7 @@ export function getNearByShopsUnder5Km(currentLocation, businessType) {
                     }
 
                     if (filterdAccordingToBusinessType) {
+                        console.log(filterdAccordingToBusinessType, "filterdAccordingToBusinessType")
                         dispatch({ type: "SET_NEARBY_SHOP", payload: filterdAccordingToBusinessType })
                         let shopLocationMarkers = []
                         for (let index = 0; index < filterdAccordingToBusinessType.length; index++) {

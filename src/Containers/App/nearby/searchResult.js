@@ -1,8 +1,9 @@
 import React, { Component } from "react";
-import { View, Image, StatusBar, TouchableOpacity, Text, ScrollView, Platform } from 'react-native';
+import { View, Image, StatusBar, TouchableOpacity, Text, ScrollView, Platform, ViewPropTypes, Dimensions } from 'react-native';
 import { connect } from "react-redux";
 import { Actions } from 'react-native-router-flux';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+var { height, width } = Dimensions.get('window');
 
 class SearchResults extends Component {
     constructor(props) {
@@ -108,7 +109,12 @@ class SearchResults extends Component {
                                         </TouchableOpacity>
                                     )
                                 })
-                            ) : null
+
+                            ) :
+                                <View style={{ height: height, justifyContent: "center", alignItems: "center", }}>
+                                    <Text style={{ color: "grey", fontSize: 16, color: "#ff4500", top: "-10%" }}>No result in the nearby search</Text>
+                                </View>
+
                         }
                     </ScrollView>
                 </View>
