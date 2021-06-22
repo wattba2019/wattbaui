@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {
     View, Text, StyleSheet, TouchableOpacity, StatusBar,
-    ScrollView, Image, ActivityIndicator, Alert, 
+    ScrollView, Image, ActivityIndicator, Alert,
 } from 'react-native';
 import { connect } from "react-redux";
 import Fontisto from 'react-native-vector-icons/Fontisto'
@@ -491,7 +491,7 @@ class BookAppointment extends Component {
                                 flexDirection: "row", backgroundColor: "#F1EDED"
                             }}>
 
-                            
+
 
                                 <DatePicker showIcon={false}
                                     minDate={moment().toDate()}
@@ -523,7 +523,7 @@ class BookAppointment extends Component {
                                             backgroundColor: Platform.OS === 'ios' ? colorScheme === "dark" ? "white" : "white" : "white",
                                             ios_backgroundColor: 'white',
                                             color: Platform.OS === 'ios' ? colorScheme === "dark" ? "black" : "black" : "black",
-                                            justifyContent:"center"
+                                            justifyContent: "center"
                                         },
                                         datePickerCon: {
                                             color: 'black',

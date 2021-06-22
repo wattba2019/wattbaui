@@ -69,7 +69,8 @@ class Checkout extends Component {
     }
 
     async componentDidMount() {
-        await SQIPCore.setSquareApplicationId('sandbox-sq0idb-sYODojBTzgf0qX4bDKza0Q');
+        // await SQIPCore.setSquareApplicationId('sandbox-sq0idb-sYODojBTzgf0qX4bDKza0Q'); // testing key
+        await SQIPCore.setSquareApplicationId('sq0idp-thAHsRjRp6XUZ8gSyuxmOA'); // production key
 
         if (Platform.OS === 'ios') {
             await SQIPCardEntry.setIOSCardEntryTheme({
@@ -140,8 +141,8 @@ class Checkout extends Component {
                     this.submitBooking()
 
                 }).catch((err) => {
-                    console.log(err.response, "ERROR_Payment")
-                    Alert.alert(err.response.data.errorMessage)
+                    console.log(err.response.data.errorMessage, "ERROR_Payment")
+                    alert(err.response.data.errorMessage)
                 })
             // payment finished successfully
             // you must call this method to close card entry
