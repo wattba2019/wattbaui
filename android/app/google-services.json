@@ -46,6 +46,65 @@
             {
               "client_id": "88900422511-jvt5k3bhikkg8g07g4as1r97l34c4s13.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "88900422511-1lffvdavpu82ikc9ueiavpbethe41mgu.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "org.barbershop"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:88900422511:android:38926db318a4dd9472369a",
+        "android_client_info": {
+          "package_name": "com.wattba"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "88900422511-1p5v9eqapkcosk6jl87bu5qcnvflq46p.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.wattba",
+            "certificate_hash": "6e444e39d1abe52a27ba86fc13834f331fb7e310"
+          }
+        },
+        {
+          "client_id": "88900422511-r768qmkps9ed59cuhvq4pohjivja5c2f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.wattba",
+            "certificate_hash": "9134166e4ec463cb095c61b488e655333b085189"
+          }
+        },
+        {
+          "client_id": "88900422511-jvt5k3bhikkg8g07g4as1r97l34c4s13.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAjrK1ffX05DYhGzH_wEx5xfU89nltWCug"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "88900422511-jvt5k3bhikkg8g07g4as1r97l34c4s13.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "88900422511-1lffvdavpu82ikc9ueiavpbethe41mgu.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "org.barbershop"
+              }
             }
           ]
         }

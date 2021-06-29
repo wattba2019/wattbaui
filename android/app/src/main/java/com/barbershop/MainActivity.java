@@ -1,4 +1,4 @@
-package com.barbershop;
+package com.wattba;
 
 import com.facebook.react.ReactActivity;
 

@@ -1,4 +1,4 @@
-package com.barbershop;
+package com.wattba;
 
 import android.app.Application;
 import android.util.Log;
